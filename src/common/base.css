@@ -1,0 +1,81 @@
+html body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	font-family: Arial, sans-serif;
+}
+
+#zhongjyuan,
+.zhongjyuan {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	z-index: -1;
+	position: absolute;
+}
+
+#app,
+.app {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	z-index: 0;
+	position: fixed !important;
+	background-color: rgba(115, 170, 255, 0); /* 初始透明背景色 */
+	animation: common-animation-blink-fade 2s linear infinite; /* 添加动画效果 */
+}
+
+#app:hover,
+.app:hover {
+	animation-play-state: paused; /* 鼠标悬停时暂停动画 */
+	background-color: rgba(115, 170, 255, 0.3); /* 鼠标悬停时的背景色 */
+}
+
+/* 公共样式: 组件层级 */
+.common-comp-index {
+	z-index: 1;
+}
+
+/* 公共样式: 透明过渡 */
+.common-transition-opacity {
+	transition: opacity 0.3s ease;
+}
+
+@keyframes common-animation-dynamic {
+	0% {
+		background-position: 0%;
+	}
+	50% {
+		background-position: 100%;
+	}
+	100% {
+		background-position: 0%;
+	}
+}
+
+@keyframes common-animation-blink {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes common-animation-blink-fade {
+	0% {
+		background-color: rgba(115, 170, 255, 0); /* 初始透明背景色 */
+	}
+	50% {
+		background-color: rgba(115, 170, 255, 0.3); /* 中间浅色 */
+	}
+	100% {
+		background-color: rgba(115, 170, 255, 0); /* 结束透明背景色 */
+	}
+}

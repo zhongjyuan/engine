@@ -1,0 +1,22 @@
+// 配置 JavaScript 项目的编译选项
+{
+	"compilerOptions": {
+		"target": "ES6", // 指定目标为 ES6
+		"jsx": "preserve", // 保留 JSX 语法
+		"module": "commonjs", // 使用 CommonJS 模块化
+		"allowSyntheticDefaultImports": true, // 允许合成默认导入
+		"baseUrl": "./", // 基本路径为当前目录
+		"paths": {
+			"@resources/*": ["resources/*"],
+			"@extends/*": ["extends/*"],
+			"@config/*": ["config/*"],
+			"@server/*": ["server/*"],
+			"@common/*": ["src/common/*"],
+			"@comp/*": ["src/comps/*"],
+			"@window/*": ["src/window/*"],
+			"@demo/*": ["src/demo/*"]
+		}
+	},
+	// "include": ["src/**/*", "config/**/*", "static/**/*"],
+	"exclude": ["node_modules"] // 排除 'node_modules' 目录下的文件
+}

@@ -1,0 +1,22 @@
+/**window 快捷配置模版 */
+export default {
+	/**承载应用标识 */
+	app: "",
+	/**标题 */
+	title: "",
+	/**参数对象(打开时拼接) */
+	params: {},
+	/**Hash值 */
+	hash: "",
+	/**拖拽对象 */
+	drag: {
+		/**顶部定位 */
+		top: 0,
+		/**左侧定位 */
+		left: 0,
+		/**处于鼠标按下状态 */
+		mouseDown: false,
+		/**是否处于重新定位状态 */
+		positionable: false,
+	},
+};

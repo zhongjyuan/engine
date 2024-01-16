@@ -1,0 +1,8 @@
+{
+	"name": "English (United States)",
+	"identifier": "en-US",
+	"translations": {
+		"author": "Author",
+		"aboutUs": "AboutUs"
+	}
+}

@@ -1,0 +1,239 @@
+#comp-login {
+	background-color: #f5f5f5;
+	font-family: Arial, sans-serif;
+}
+
+#comp-login #background {
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* 切换到静态背景 */
+#comp-login #background.switched .static-background {
+	opacity: 1;
+}
+
+/* 隐藏动态渐变背景 */
+#comp-login #background.switched .dynamic-background {
+	opacity: 0;
+}
+
+#comp-login .dynamic-background {
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0.8;
+	transition: all 0.3s;
+	background-size: 400% 400%;
+	background: linear-gradient(120deg, #ff00ff, #00ffff, #f0f, #ff7f50, #87cefa);
+	animation: common-animation-dynamic 10s ease-in-out infinite;
+}
+
+/* 静态背景图片 */
+#comp-login .static-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-size: cover;
+	opacity: 0;
+	transition: opacity 0.3s ease-out;
+}
+
+#comp-login #login-form {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400px;
+	height: 500px;
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#comp-login #login-header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	border-bottom: 1px solid #f5f5f5;
+}
+
+#comp-login #login-header img {
+	width: 80px;
+	height: 80px;
+	margin-bottom: 10px;
+	border-radius: 50%;
+}
+
+#comp-login #login-header h2 {
+	font-size: 20px;
+	color: #333;
+}
+
+#comp-login #login-body {
+	padding: 20px;
+}
+
+#comp-login #login-body form {
+	display: flex;
+	flex-direction: column;
+}
+
+#comp-login .input-group {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+	border: 1px solid #f5f5f5;
+	border-radius: 5px;
+}
+
+#comp-login .input-group i {
+	font-size: 20px;
+	color: #999;
+	padding: 10px;
+}
+
+#comp-login .input-group input {
+	flex: 1;
+	height: 40px;
+	border: none;
+	outline: none;
+	background-color: transparent;
+	font-size: 16px;
+	color: #333;
+}
+
+#comp-login .captcha-group {
+	display: none;
+}
+
+#comp-login .captcha-group input {
+	width: calc(100% - 120px);
+}
+
+#comp-login .captcha-group button {
+	width: 100px;
+	height: 40px;
+	background-color: #87cefa;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	font-size: 14px;
+	color: #fff;
+	cursor: pointer;
+}
+
+#comp-login #third-party-login {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+#comp-login #third-party-login span {
+	margin-right: 10px;
+	font-size: 14px;
+	color: #999;
+}
+
+#comp-login #third-party-login i {
+	font-size: 24px;
+	color: #999;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+#comp-login #login-btn {
+	width: 100%;
+	height: 40px;
+	background-color: #ff7f50;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	font-size: 16px;
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+#comp-login #login-btn:hover {
+	background-color: #ff6347;
+}
+
+#comp-login #login-footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	border-top: 1px solid #f5f5f5;
+}
+
+#comp-login #login-footer span {
+	font-size: 14px;
+	color: #999;
+}
+
+#comp-login #login-footer a {
+	margin-left: 5px;
+	font-size: 14px;
+	color: #ff7f50;
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 0.2s;
+}
+
+#comp-login #login-footer a:hover {
+	color: #ff6347;
+}
+
+#comp-login #switch-btn {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	width: 40px;
+	height: 40px;
+	background-color: rgba(255, 255, 255, 0.8);
+	border: none;
+	outline: none;
+	border-radius: 50%;
+	font-size: 20px;
+	color: #333;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+#comp-login #switch-btn:hover {
+	background-color: rgba(255, 255, 255, 1);
+}
+
+#comp-login #switch-btn i {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#comp-login #login-form.hide {
+	animation: none;
+}
+
+#comp-login #login-form.hide #login-body {
+	display: none;
+}
+
+#comp-login #login-form.hide #login-footer {
+	display: none;
+}
