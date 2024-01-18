@@ -1118,4 +1118,13 @@ export default {
 		/**组件元素对象 */
 		componentElement: null,
 	},
+
+	/**设置组件配置 */
+	comp_socket: {
+		...drag,
+		/**DOM元素标识 */
+		domId: "comp-socket-client",
+		/**组件元素对象 */
+		componentElement: null,
+	},
 };

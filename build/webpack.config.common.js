@@ -21,8 +21,7 @@ module.exports = {
 		comp: "./src/comp.js",
 		win: "./src/win.js",
 		demo: "./demo.ts",
-		index: "./index.js",
-		server: "./server.js",
+		index: "./index.js"
 	},
 	output: {
 		publicPath: "/", // 输出目录的公共路径

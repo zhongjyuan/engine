@@ -22,12 +22,12 @@ module.exports = merge(commonConfig, {
 		historyApiFallback: {
 			ignoreCase: true, // 全局不区分大小写
 			rewrites: [
-				{ from: /^\/config\/langs\/zh-cn\.json$/i, to: "/config/langs/zh-CN.json" }, // 重写路径为大小写敏感的 "/config/langs/zh-CN.json"
+				{ from: /^\/config\/Language\.json$/i, to: "/config/language.json" }, // 重写路径为大小写敏感的 "/config/Language.json"
 			],
 		},
 		hot: true, // 启用热模块替换（HMR）功能，用于在开发过程中实时更新模块而无需刷新整个页面
 		open: true, // 在Dev Server启动时自动打开浏览器窗口
-		port: 7077, // 指定服务器端口，默认为8080
+		port: 1210, // 指定服务器端口，默认为8080
 		// onBeforeSetupMiddleware: function(devServer) {
 		// 	devServer.app.use((req, res, next) => {
 		// 		const originalUrl = req.url.toLowerCase();

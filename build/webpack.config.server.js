@@ -21,12 +21,14 @@ module.exports = {
 			"utf-8-validate": require.resolve("utf-8-validate"),
 		},
 		alias: {
-			"@common": path.resolve(__dirname, "../common"), // 别名 @common 对应的路径
-			"@extends": path.resolve(__dirname, "../extends"), // 别名 @extends 对应的路径
 			"@resources": path.resolve(__dirname, "../resources"), // 别名 @resources 对应的路径
+			"@extends": path.resolve(__dirname, "../extends"), // 别名 @extends 对应的路径
 			"@config": path.resolve(__dirname, "../config"), // 别名 @config 对应的路径
 			"@server": path.resolve(__dirname, "../server"), // 别名 @server 对应的路径
-			"@web": path.resolve(__dirname, "../web"), // 别名 @web 对应的路径
+			"@common": path.resolve(__dirname, "../src/common"), // 别名 @common 对应的路径
+			"@comp": path.resolve(__dirname, "../src/comps"), // 别名 @comp 对应的路径
+			"@demo": path.resolve(__dirname, "../src/demo"), // 别名 @demo 对应的路径
+			"@window": path.resolve(__dirname, "../src/window"), // 别名 @window 对应的路径
 		},
 		modules: [path.resolve(__dirname, "../node_modules")],
 		extensions: [".tsx", ".ts", ".js", ".css", ".vue", ".json"], // 解析模块时自动解析的扩展名

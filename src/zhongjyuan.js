@@ -140,6 +140,7 @@ import popupComp from "./comps/popup/index"; // 弹窗 组件
 import progressComp from "./comps/progress/index"; // 进度 组件
 import searchComp from "./comps/search/index"; // 查询 组件
 import settingComp from "./comps/setting/index"; // 设置 组件
+import socketComp from "./comps/socket/index"; // Socket 组件
 import timeComp from "./comps/time/index"; // 时间 组件
 import timeDownComp from "./comps/time_down/index"; // 倒计时 组件
 import timeUpComp from "./comps/time_up/index"; // 计时 组件
@@ -159,6 +160,7 @@ window.zhongjyuan.comp = {
 	progress: progressComp,
 	search: searchComp,
 	setting: settingComp,
+	socket: socketComp,
 	time: {
 		...timeComp,
 		down: timeDownComp,
