@@ -1,5 +1,5 @@
-import logger from "../logManagement";
-import { HTML } from "../consts/regular";
+import logger from "@base/logger";
+import { HTML } from "@common/consts/regular";
 import { isInt, isArray, isString, isNumber, isFunction, isNumeric, isNullOrUndefined, isUndefined, isDate, isNull, isEmpty } from "./default";
 
 export default {

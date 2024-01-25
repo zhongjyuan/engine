@@ -1,5 +1,5 @@
-import logger from "@common/logManagement";
-import calendar from "@common/calendarManagement";
+import logger from "@base/logger";
+import calendar from "@common/calendar";
 import { twoDigits } from "@common/utils/default";
 import { setStyle, queryParentElement } from "@common/utils/dom";
 

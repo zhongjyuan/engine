@@ -1,7 +1,7 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { setStyle } from "@common/utils/dom";
-import { formatString } from "@common/utils/format";
 import { countdown } from "@common/utils/math";
+import { formatString } from "@common/utils/format";
 
 import { comp_time_down as htmlTemplate } from "./html";
 

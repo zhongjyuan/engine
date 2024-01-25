@@ -1,4 +1,4 @@
-import logger from "../logManagement";
+import logger from "@base/logger";
 import { isEmpty, isFunction, isString } from "./default";
 
 export default {

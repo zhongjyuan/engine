@@ -1,4 +1,4 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { twoDigits } from "@common/utils/default";
 import { setStyle, animateScale, queryParentElement } from "@common/utils/dom";
 

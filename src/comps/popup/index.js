@@ -1,4 +1,4 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { uuid } from "@common/utils/default";
 import { setStyle } from "@common/utils/dom";
 

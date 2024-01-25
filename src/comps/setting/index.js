@@ -1,4 +1,4 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { mouseDrag } from "@common/utils/dom";
 
 import { comp_setting as htmlTemplate, comp_setting_0, comp_setting_1, comp_setting_2 } from "./html";

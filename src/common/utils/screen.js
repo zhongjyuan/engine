@@ -1,4 +1,4 @@
-import logger from "../logManagement";
+import logger from "@base/logger";
 
 export default {
 	isLandscape: logger.decorator(isLandscape, "tool-is-landscape"),

@@ -1,5 +1,5 @@
-import logger from "../logManagement";
-import { sort as sortConsts } from "../consts/default";
+import logger from "@base/logger";
+import { sort as sortConsts } from "@common/consts/default";
 import { isArray, isBoolean, isObject } from "./default";
 
 export default {

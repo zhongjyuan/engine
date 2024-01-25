@@ -1,6 +1,6 @@
-import logger from "../logManagement";
-import { common as commonConsts } from "../consts/default";
-import { BROWSER } from "../consts/regular";
+import logger from "@base/logger";
+import { BROWSER } from "@common/consts/regular";
+import { common as commonConsts } from "@common/consts/default";
 import { isEmpty, isString } from "./default";
 
 export default {

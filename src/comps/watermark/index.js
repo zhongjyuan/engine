@@ -1,4 +1,4 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { isObject, isString } from "@common/utils/default";
 import { addClass, hasClass, removeClass, setStyle } from "@common/utils/dom";
 

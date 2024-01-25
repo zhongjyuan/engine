@@ -1,7 +1,7 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { isFunction } from "@common/utils/default";
-import { addClass, getStyle, hasClass, removeClass, setStyle } from "@common/utils/dom";
 import { imageThemeColor } from "@common/utils/image";
+import { addClass, getStyle, hasClass, removeClass, setStyle } from "@common/utils/dom";
 
 import { comp_login as htmlTemplate } from "./html";
 

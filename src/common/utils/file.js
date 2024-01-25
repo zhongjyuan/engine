@@ -1,6 +1,6 @@
-import logger from "../logManagement";
-import { isFunction, isObject, isString } from "./default";
+import logger from "@base/logger";
 import { isChrome, isFirefox, isIE } from "./browse";
+import { isFunction, isObject, isString } from "./default";
 
 export default {
 	url: logger.decorator(fileUrl, "tool-file-url"),

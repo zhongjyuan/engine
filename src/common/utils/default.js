@@ -1,4 +1,4 @@
-import logger from "../logManagement";
+import logger from "@base/logger";
 
 export default {
 	uuid: logger.decorator(uuid, "tool-uuid"),
@@ -22,6 +22,7 @@ export default {
 	isNormal: logger.decorator(isNormal, "tool-is-normal"),
 	isEmpty: logger.decorator(isEmpty, "tool-is-empty"),
 	isObject: logger.decorator(isObject, "tool-is-object"),
+	isBrowserEnv: logger.decorator(isBrowserEnv, "tool-is-browser-env"),
 	delay: logger.decorator(delay, "tool-delay"),
 	forEach: logger.decorator(forEach, "tool-for-each"),
 	animate: logger.decorator(animate, "tool-animate"),
@@ -31,6 +32,18 @@ export default {
 	pollWithRetry: logger.decorator(pollWithRetry, "tool-poll-with-retry"),
 	waitForCondition: logger.decorator(waitForCondition, "tool-wait-for-condition"),
 };
+
+/**
+ * 检查当前环境是否为浏览器环境
+ * @returns {boolean} - 如果当前环境为浏览器环境，则返回 true；否则返回 false。
+ *
+ * @example
+ * const browserEnv = isBrowserEnv();
+ * console.log(browserEnv); // 输出 true 或 false，表示当前环境是否为浏览器环境
+ */
+export function isBrowserEnv() {
+	return typeof window !== "undefined" && typeof document !== "undefined" && typeof document.createElement === "function";
+}
 
 /**
  * 解析并执行以字符串形式表示的函数。

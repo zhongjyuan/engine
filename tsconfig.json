@@ -18,6 +18,7 @@
 			"@extends/*": ["extends/*"],
 			"@config/*": ["config/*"],
 			"@server/*": ["server/*"],
+			"@base/*": ["src/base/*"],
 			"@common/*": ["src/common/*"],
 			"@comp/*": ["src/comps/*"],
 			"@window/*": ["src/window/*"],

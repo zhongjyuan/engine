@@ -1,7 +1,7 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
+import { countup } from "@common/utils/math";
 import { setStyle } from "@common/utils/dom";
 import { formatString } from "@common/utils/format";
-import { countup } from "@common/utils/math";
 
 import { comp_time_up as htmlTemplate } from "./html";
 

@@ -1,4 +1,4 @@
-import logger from "../logManagement";
+import logger from "@base/logger";
 import { isArray, isDate, isNumeric, isString } from "./default";
 import { formatDate, parseDate, parseDecimal, parseInt1, parseThousands } from "./format";
 

@@ -1,4 +1,4 @@
-import logger from "../logManagement";
+import logger from "@base/logger";
 
 export default {
 	HSBToHEX: logger.decorator(HSBToHEX, "tool-color-HSBToHEX"),

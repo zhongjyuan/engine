@@ -1,4 +1,4 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 
 import { comp_time as htmlTemplate } from "./html";
 

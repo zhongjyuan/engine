@@ -1,7 +1,7 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { isFunction } from "@common/utils/default";
-import { setStyle, queryParentElement } from "@common/utils/dom";
 import { localStorage } from "@common/utils/storage";
+import { setStyle, queryParentElement } from "@common/utils/dom";
 
 import { comp_search as htmlTemplate } from "./html";
 

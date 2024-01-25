@@ -1,6 +1,6 @@
-import logger from "@common/logManagement";
-import { HEXToHSB, HSBToRGB, RGBToHEX, RGBToHSB } from "@common/utils/color";
+import logger from "@base/logger";
 import { setStyle, queryParentElement } from "@common/utils/dom";
+import { HEXToHSB, HSBToRGB, RGBToHEX, RGBToHSB } from "@common/utils/color";
 
 import { comp_color_picker as htmlTemplate } from "./html";
 

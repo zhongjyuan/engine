@@ -1,7 +1,7 @@
-import logger from "@common/logManagement";
-import { isEmpty, isFunction, isInt } from "@common/utils/default";
+import logger from "@base/logger";
 import { setStyle } from "@common/utils/dom";
 import { parsePercent } from "@common/utils/format";
+import { isEmpty, isFunction, isInt } from "@common/utils/default";
 
 import { comp_progress as htmlTemplate } from "./html";
 

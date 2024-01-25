@@ -1,4 +1,4 @@
-import logger from "../logManagement";
+import logger from "@base/logger";
 import { camelCase, removeWhitespace } from "./format";
 import { isFunction, isObject, isString } from "./default";
 

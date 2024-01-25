@@ -1,5 +1,5 @@
-import logger from "../logManagement";
-import { common as commonConsts } from "../consts/default";
+import logger from "@base/logger";
+import { common as commonConsts } from "@common/consts/default";
 import { isEmpty } from "./default";
 
 export default {

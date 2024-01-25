@@ -17,11 +17,10 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
 	entry: {
 		zhongjyuan: "./src/zhongjyuan.js",
-		window: "./src/window.js",
-		comp: "./src/comp.js",
-		win: "./src/win.js",
+		window: "./src/parent.js",
+		win: "./src/children.js",
 		demo: "./demo.ts",
-		index: "./index.js"
+		index: "./index.js",
 	},
 	output: {
 		publicPath: "/", // 输出目录的公共路径
@@ -36,6 +35,7 @@ module.exports = {
 			"@extends": path.resolve(__dirname, "../extends"), // 别名 @extends 对应的路径
 			"@config": path.resolve(__dirname, "../config"), // 别名 @config 对应的路径
 			"@server": path.resolve(__dirname, "../server"), // 别名 @server 对应的路径
+			"@base": path.resolve(__dirname, "../src/base"), // 别名 @base 对应的路径
 			"@common": path.resolve(__dirname, "../src/common"), // 别名 @common 对应的路径
 			"@comp": path.resolve(__dirname, "../src/comps"), // 别名 @comp 对应的路径
 			"@demo": path.resolve(__dirname, "../src/demo"), // 别名 @demo 对应的路径
@@ -48,11 +48,11 @@ module.exports = {
 			{
 				test: /\.(ts|tsx)$/, // 匹配以 .ts 或 .tsx 结尾的文件
 				use: "ts-loader", // 使用 ts-loader 加载器处理这些文件
-				exclude: /node_modules/, // 排除 node_modules 目录下的文件
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 			},
 			{
 				test: /\.(js)$/, // 匹配以 .js 结尾的文件
-				exclude: /node_modules/, // 排除 node_modules 目录下的文件
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				use: {
 					loader: "babel-loader", // 使用 babel-loader 加载器处理这些文件
 					options: {
@@ -62,6 +62,7 @@ module.exports = {
 			},
 			{
 				test: /\.html$/, // 匹配以 .html 结尾的文件
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				use: [
 					{
 						loader: "html-loader", // 使用 html-loader 加载器处理这些文件
@@ -73,6 +74,7 @@ module.exports = {
 			},
 			{
 				test: /\.less$/i,
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				use: [
 					process.env.NODE_ENV === "development" ? "style-loader" : MiniCssExtractPlugin.loader, // 根据环境选择不同的 CSS 加载器[development:直接设置到head上,否则就按需加载]
 					"css-loader",
@@ -81,22 +83,24 @@ module.exports = {
 			},
 			{
 				test: /\.(sa|sc|c)ss$/, // 匹配以 .sass、.scss 或 .css 结尾的文件
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				use: [
 					process.env.NODE_ENV === "development" ? "style-loader" : MiniCssExtractPlugin.loader, // 根据环境选择不同的 CSS 加载器[development:直接设置到head上,否则就按需加载]
 					"css-loader", // 处理 CSS 文件
 					"postcss-loader", // 使用 postcss-loader 加载器处理这些文件
 				],
-				exclude: /node_modules/, // 排除 node_modules 目录下的文件
 			},
 			{
 				test: /\.(ico)$/i, // 匹配以 .ico 结尾的文件
 				type: "asset/resource", // 将文件作为资源模块处理
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				generator: {
 					filename: "assets/icon-[name].[ext]?hash=[hash:8]&[query]", // 输出的文件名
 				},
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg|webp)$/, // 匹配以 .png、.jpg、.jpeg、.gif、.svg 或 .webp 结尾的文件
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				use: [
 					{
 						loader: "url-loader", // 使用 url-loader 加载器处理这些文件
@@ -110,6 +114,7 @@ module.exports = {
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/i, // 匹配以 .woff、.woff2、.eot、.ttf 或 .otf 结尾的文件
 				type: "asset/resource", // 将文件作为资源模块处理
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				generator: {
 					filename: "assets/font-[name].[ext]?hash=[hash:8]&[query]", // 输出的文件名
 				},
@@ -117,6 +122,7 @@ module.exports = {
 			{
 				test: /\.(mp4|webm|ogg|ogv|avi|mov|flv|mpeg|wmv)(\?.*)?$/, // 匹配以 .mp4、.webm、.ogg、.ogv、.avi、.mov、.flv、.mpeg 或 .wmv 结尾的文件
 				type: "asset/resource", // 将文件作为资源模块处理
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				generator: {
 					filename: "assets/video-[name].[ext]?hash=[hash:8]&[query]", // 输出的文件名
 				},
@@ -124,6 +130,7 @@ module.exports = {
 			{
 				test: /\.(mp3|wav|m4a|ogg|wma|aac|amr|mid|midi|ac3|ape|flac|opus)(\?.*)?$/, // 匹配以 .mp3、.wav、.m4a、.ogg、.wma、.aac、.amr、.mid、.midi、.ac3、.ape、.flac 或 .opus 结尾的文件
 				type: "asset/resource", // 将文件作为资源模块处理
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				generator: {
 					filename: "assets/audio-[name].[ext]?hash=[hash:8]&[query]", // 输出的文件名
 				},
@@ -131,6 +138,7 @@ module.exports = {
 			{
 				test: /\.vue$/, // 匹配以 .vue 结尾的文件
 				loader: "vue-loader", // 使用 vue-loader 加载器处理这些文件
+				exclude: /\/(node_modules|modules)\//, // 排除 node_modules 目录下的文件
 				options: {
 					compilerOptions: {
 						preserveWhitespace: false, // 不保留空白字符

@@ -1,6 +1,6 @@
-import logger from "../logManagement";
-import { isInt, isArray, isString, isDate } from "./default";
+import logger from "@base/logger";
 import { parseDate } from "./format";
+import { isInt, isArray, isString, isDate } from "./default";
 
 export default {
 	isWorkDay: logger.decorator(isWorkDay, "tool-is-workDay"),

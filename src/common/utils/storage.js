@@ -1,4 +1,4 @@
-import logger from "../logManagement";
+import logger from "@base/logger";
 import { isArray, isEmpty, isInt, isNull, isNullOrUndefined, isObject, isString } from "./default";
 
 export default {
@@ -125,7 +125,7 @@ export const localStorage = (function () {
 
 		try {
 			window.localStorage.setItem(storageKey(key), value);
-			manage && window.zhongjyuan.storage["localStorage"].set(key);
+			manage && window.zhongjyuan.storage["local"].set(key);
 		} catch (err) {
 			throw new Error(`localStorage 存储异常：${err}`);
 		}
@@ -218,7 +218,7 @@ export const sessionStorage = (function () {
 
 		try {
 			window.sessionStorage.setItem(storageKey(key), value);
-			manage && window.zhongjyuan.storage["sessionStorage"].set(key);
+			manage && window.zhongjyuan.storage["session"].set(key);
 		} catch (err) {
 			throw new Error(`sessionStorage 存储异常：${err}`);
 		}

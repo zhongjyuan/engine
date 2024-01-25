@@ -1,4 +1,4 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 
 import { comp_socket_client as htmlTemplate } from "./html";
 
@@ -284,8 +284,8 @@ export default (() => {
 			setting.isConnected = setting.socket.connected;
 			_cleanServerEvent()
 			_cleanClientEvent()
-			_clientOutputClear();
-			_serverOutputClear();
+			// _clientOutputClear();
+			// _serverOutputClear();
 			_serverOutput(`<span class="debug">${_currentTime()}: 断开连接</span>`);
 		});
 

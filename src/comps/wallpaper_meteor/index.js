@@ -1,4 +1,4 @@
-import logger from "@common/logManagement";
+import logger from "@base/logger";
 import { queryParentElement } from "@common/utils/dom";
 
 import { comp_wallpaper_meteor as htmlTemplate } from "./html";
