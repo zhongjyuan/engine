@@ -4,8 +4,7 @@ import (
 	"log"
 	"strings"
 	"wechat/chatgpt"
-
-	"github.com/eatmoreapple/openwechat"
+	"wechat/core"
 )
 
 // GroupMessageHandler 群消息处理
@@ -20,7 +19,7 @@ func GroupMessageHandler() MessageHandlerInterface {
 }
 
 // handle 处理消息
-func (handler *IGroupMessageHandler) handle(message *openwechat.Message) error {
+func (handler *IGroupMessageHandler) handle(message *core.Message) error {
 	if message.IsText() {
 		return handler.ReplyText(message)
 	}
@@ -29,7 +28,7 @@ func (handler *IGroupMessageHandler) handle(message *openwechat.Message) error {
 }
 
 // ReplyText 发送文本消息到群
-func (handler *IGroupMessageHandler) ReplyText(message *openwechat.Message) error {
+func (handler *IGroupMessageHandler) ReplyText(message *core.Message) error {
 
 	// 不是@的不处理
 	if !message.IsAt() {
@@ -44,7 +43,7 @@ func (handler *IGroupMessageHandler) ReplyText(message *openwechat.Message) erro
 		return err
 	}
 
-	group := openwechat.Group{sender}
+	group := core.Group{sender}
 	log.Printf("Received Group %v Text Message : %v", group.NickName, message.Content)
 
 	// 替换掉@文本，然后向GPT发起请求

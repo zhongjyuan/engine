@@ -4,8 +4,7 @@ import (
 	"log"
 	"strings"
 	"wechat/chatgpt"
-
-	"github.com/eatmoreapple/openwechat"
+	"wechat/core"
 )
 
 // UserMessageHandler 私聊消息处理
@@ -20,7 +19,7 @@ func UserMessageHandler() MessageHandlerInterface {
 }
 
 // handle 处理消息
-func (handler *IUserMessageHandler) handle(message *openwechat.Message) error {
+func (handler *IUserMessageHandler) handle(message *core.Message) error {
 	if message.IsText() {
 		return handler.ReplyText(message)
 	}
@@ -29,7 +28,7 @@ func (handler *IUserMessageHandler) handle(message *openwechat.Message) error {
 }
 
 // ReplyText 发送文本消息到群
-func (handler *IUserMessageHandler) ReplyText(message *openwechat.Message) error {
+func (handler *IUserMessageHandler) ReplyText(message *core.Message) error {
 	// 接收私聊消息
 	sender, err := message.Sender()
 	log.Printf("Received User %v Text Message : %v", sender.NickName, message.Content)

@@ -3,8 +3,7 @@ package handle
 import (
 	"log"
 	"wechat/config"
-
-	"github.com/eatmoreapple/openwechat"
+	"wechat/core"
 )
 
 const (
@@ -16,8 +15,8 @@ type HandleType string
 
 // MessageHandlerInterface 消息处理接口
 type MessageHandlerInterface interface {
-	handle(*openwechat.Message) error
-	ReplyText(*openwechat.Message) error
+	handle(*core.Message) error
+	ReplyText(*core.Message) error
 }
 
 // handlers 所有消息类型类型的处理器
@@ -30,7 +29,7 @@ func init() {
 }
 
 // Handler 全局处理入口
-func Handler(message *openwechat.Message) {
+func Handler(message *core.Message) {
 	log.Printf("hadler Received message : %v", message.Content)
 
 	// 处理群消息
