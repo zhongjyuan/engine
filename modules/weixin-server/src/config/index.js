@@ -39,7 +39,7 @@ export function getConfig(host) {
 		config.baseUri = origin + "/cgi-bin/mmwebwx-bin"; // 构建 baseUri，将 origin 和 "/cgi-bin/mmwebwx-bin" 拼接起来，赋给 config 对象的 baseUri 属性
 
 		// 根据不同的 URL 构建 config 对象的各个属性
-		config.API_jsLogin = "https://" + loginUrl + "/jslogin?appid=wx782c26e4c19acffb&fun=new&lang=zh-CN"; // 获取登录二维码的URL
+		config.API_jsLogin = "https://" + loginUrl + "/jslogin?appid=wx782c26e4c19acffb&fun=new&lang=zh-CN&https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage%3Fmod%3Ddesktop"; // 获取登录二维码的URL
 
 		config.API_login = "https://" + loginUrl + "/cgi-bin/mmwebwx-bin/login"; // 登录的URL
 

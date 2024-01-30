@@ -2,17 +2,13 @@ package core
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 )
 
-var (
-	emojiRegexp = regexp.MustCompile(`<span class="emoji emoji(.*?)"></span>`)
-)
+// ================================================= [类型](全局)公开 =================================================
 
 // Emoji 表情
-// 字段太多了,污染命名空间,封装成struct返回
 var Emoji = struct {
 	Smile        string
 	Grimace      string
@@ -285,20 +281,32 @@ var Emoji = struct {
 	Boring:       "[翻白眼]",
 }
 
-func FormatEmoji(text string) string {
-	result := emojiRegexp.FindAllStringSubmatch(text, -1)
+// ================================================= [函数](全局)公开 =================================================
 
-	for _, item := range result {
+// FormatEmoji 函数用于将文本中的 emoji 表情替换为对应的字符。
+//
+// 参数：
+//   - text：待处理的文本字符串。
+//
+// 返回值：
+//   - string：处理后的文本字符串，其中 emoji 表情被替换为对应的字符。
+func FormatEmoji(text string) string {
+	result := regexpEmoji.FindAllStringSubmatch(text, -1) // 查找所有的 emoji 表情
+
+	for _, item := range result { // 遍历每个匹配项
 		if len(item) != 2 {
 			continue
 		}
-		value := item[0]
-		emojiCodeStr := item[1]
-		emojiCode, err := strconv.ParseInt(emojiCodeStr, 16, 64)
+
+		value := item[0]        // emoji 表情的完整字符串
+		emojiCodeStr := item[1] // emoji 表情的编码字符串
+
+		emojiCode, err := strconv.ParseInt(emojiCodeStr, 16, 64) // 将编码字符串转换为整数
 		if err != nil {
 			continue
 		}
-		text = strings.Replace(text, value, fmt.Sprintf("%c", emojiCode), -1)
+
+		text = strings.Replace(text, value, fmt.Sprintf("%c", emojiCode), -1) // 替换为对应的字符
 	}
 
 	return text

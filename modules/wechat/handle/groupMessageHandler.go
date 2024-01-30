@@ -8,8 +8,7 @@ import (
 )
 
 // GroupMessageHandler 群消息处理
-type IGroupMessageHandler struct {
-}
+type IGroupMessageHandler struct{}
 
 var _ MessageHandlerInterface = (*IGroupMessageHandler)(nil)
 
@@ -60,14 +59,14 @@ func (handler *IGroupMessageHandler) ReplyText(message *core.Message) error {
 		return nil
 	}
 
-	// 获取@我的用户
+	// 获取@我的联系人
 	groupSender, err := message.SenderInGroup()
 	if err != nil {
 		log.Printf("get sender in group error :%v \n", err)
 		return err
 	}
 
-	// 回复@我的用户
+	// 回复@我的联系人
 	reply = strings.TrimSpace(reply)
 	reply = strings.Trim(reply, "\n")
 

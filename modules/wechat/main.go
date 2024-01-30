@@ -13,20 +13,20 @@ func main() {
 	bot.MessageHandler = handle.Handler
 
 	// 注册登陆二维码回调
-	bot.UUIDCallback = core.PrintlnQrcodeUrl
+	bot.UUIDCallback = core.PrintlnQRCodeUrl
 
 	// 创建热存储容器对象
-	reloadStorage := core.NewJsonFileHotReloadStorage("storage.json")
+	reloadStorage := core.NewFileHotReloadStorage("storage.json")
 
 	// 执行热登录
 	err := bot.HotLogin(reloadStorage)
 	if err != nil {
-		if err = bot.Login(); err != nil {
+		if err = bot.ScanLogin(); err != nil {
 			log.Printf("login error: %v \n", err)
 			return
 		}
 	}
 
-	// 阻塞主goroutine, 直到发生异常或者用户主动退出
+	// 阻塞主goroutine, 直到发生异常或者联系人主动退出
 	bot.Block()
 }

@@ -41,7 +41,7 @@ func Handler(message *core.Message) {
 	// 好友申请
 	if message.IsFriendAdd() {
 		if config.LoadConfig().AutoPass {
-			_, err := message.Agree("你好呀！我是基于chatGPT引擎开发的微信机器人，你可以向我提问任何问题。")
+			_, err := message.Agree("您好呀!这里是君烛科技AI小助手，您可以向我提问任何问题。")
 			if err != nil {
 				log.Fatalf("add friend agree error : %v", err)
 				return

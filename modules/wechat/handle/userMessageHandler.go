@@ -31,7 +31,7 @@ func (handler *IUserMessageHandler) handle(message *core.Message) error {
 func (handler *IUserMessageHandler) ReplyText(message *core.Message) error {
 	// 接收私聊消息
 	sender, err := message.Sender()
-	log.Printf("Received User %v Text Message : %v", sender.NickName, message.Content)
+	log.Printf("Received Contact %v Text Message : %v", sender.NickName, message.Content)
 
 	// 向GPT发起请求
 	requestText := strings.TrimSpace(message.Content)
@@ -47,7 +47,7 @@ func (handler *IUserMessageHandler) ReplyText(message *core.Message) error {
 		return nil
 	}
 
-	// 回复用户
+	// 回复联系人
 	reply = strings.TrimSpace(reply)
 	reply = strings.Trim(reply, "\n")
 	_, err = message.ReplyText(reply)

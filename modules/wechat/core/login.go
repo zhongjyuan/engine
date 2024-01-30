@@ -4,291 +4,197 @@ import (
 	"context"
 )
 
+// ================================================= [类型](全局)公开 =================================================
+
 // LoginCode 定义登录状态码
 type LoginCode string
 
 const (
-	// LoginCodeSuccess 登录成功
-	LoginCodeSuccess LoginCode = "200"
-	// LoginCodeScanned 已扫码
-	LoginCodeScanned LoginCode = "201"
-	// LoginCodeTimeout 登录超时
-	LoginCodeTimeout LoginCode = "400"
-	// LoginCodeWait 等待扫码
-	LoginCodeWait LoginCode = "408"
+	Success LoginCode = "200" // Success 登录成功
+	Scanned LoginCode = "201" // Scanned 已扫码
+	Timeout LoginCode = "400" // Timeout 登录超时
+	Wait    LoginCode = "408" // Wait 等待扫码
 )
 
-func (l LoginCode) String() string {
-	switch l {
-	case LoginCodeSuccess:
-		return "登录成功"
-	case LoginCodeScanned:
-		return "已扫码"
-	case LoginCodeTimeout:
-		return "登录超时"
-	case LoginCodeWait:
-		return "等待扫码"
-	default:
-		return "未知状态"
-	}
-}
+var (
+	Web     = WithMode(web)     // Web 网页版微信模式
+	Desktop = WithMode(desktop) // Desktop 桌面微信模式
+)
 
+// BotPreparer 是一个接口，用于准备机器人的方法。
 type BotPreparer interface {
-	Prepare(*Bot)
+	// Prepare 方法用于准备机器人。
+	//
+	// 入参：
+	//   - b：指向 Bot 对象的指针。
+	Prepare(b *Bot)
 }
 
+// BotLoginOption 是一个接口，用于设置机器人登录的选项。
 type BotLoginOption interface {
+	// BotPreparer 是 BotLoginOption 接口继承的 BotPreparer 接口。
 	BotPreparer
-	OnError(*Bot, error) error
-	OnSuccess(*Bot) error
+
+	// OnError 方法处理机器人登录出错的情况。
+	//
+	// 入参：
+	//   - b：指向 Bot 对象的指针。
+	//   - err：表示登录出错的错误对象。
+	//
+	// 返回值：
+	//   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
+	OnError(b *Bot, err error) error
+
+	// OnSuccess 方法处理机器人登录成功的情况。
+	//
+	// 入参：
+	//   - b：指向 Bot 对象的指针。
+	//
+	// 返回值：
+	//   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
+	OnSuccess(b *Bot) error
 }
 
-// BotOptionGroup 是一个 BotLoginOption 的集合
-// 用于将多个 BotLoginOption 组合成一个 BotLoginOption
-type BotOptionGroup []BotLoginOption
+// BotLoginOptions 是一个类型别名，表示一组机器人登录选项。
+type BotLoginOptions []BotLoginOption
 
-// Prepare 实现了 BotLoginOption 接口
-func (g BotOptionGroup) Prepare(bot *Bot) {
-	for _, option := range g {
-		option.Prepare(bot)
-	}
-}
+// BaseLoginOption 是一个基础的机器人登录选项。
+type BaseLoginOption struct{}
 
-// OnError 实现了 BotLoginOption 接口
-func (g BotOptionGroup) OnError(b *Bot, err error) error {
-	// 当有一个 BotLoginOption 的 OnError 返回的 error 等于 nil 时，就会停止执行后续的 BotLoginOption
-	for _, option := range g {
-		currentErr := option.OnError(b, err)
-		if currentErr == nil {
-			return nil
-		}
-		if currentErr != err {
-			return currentErr
-		}
-	}
-	return err
-}
-
-// OnSuccess 实现了 BotLoginOption 接口
-func (g BotOptionGroup) OnSuccess(b *Bot) error {
-	for _, option := range g {
-		if err := option.OnSuccess(b); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-type BaseBotLoginOption struct{}
-
-func (BaseBotLoginOption) Prepare(_ *Bot) {}
-
-func (BaseBotLoginOption) OnError(_ *Bot, err error) error { return err }
-
-func (BaseBotLoginOption) OnSuccess(_ *Bot) error { return nil }
-
-// DoNothingBotLoginOption 是一个空的 BotLoginOption，表示不做任何操作
-var DoNothingBotLoginOption = &BaseBotLoginOption{}
+// NothingLoginOption 是一个空的 BotLoginOption，表示不做任何操作
+var NothingLoginOption = &BaseLoginOption{}
 
 // RetryLoginOption 在登录失败后进行扫码登录
 type RetryLoginOption struct {
-	BaseBotLoginOption
-	MaxRetryCount    int
-	currentRetryTime int
+	MaxRetryCount    int // 最大重试次数
+	currentRetryTime int // 当前重试次数
+	BaseLoginOption      // 嵌入基本的BotLoginOption结构体
 }
 
-// OnError 实现了 BotLoginOption 接口
-// 当登录失败后，会调用此方法进行扫码登录
-func (r *RetryLoginOption) OnError(bot *Bot, err error) error {
-	if r.currentRetryTime >= r.MaxRetryCount {
-		return err
-	}
-	r.currentRetryTime++
-	return bot.Login()
+// BotPreparerFunc 类型是一个函数类型，用于准备 Bot 对象。
+//
+// 函数签名：func(*Bot)
+// 参数：
+//   - *Bot：指向 Bot 对象的指针。
+type BotPreparerFunc func(*Bot)
+
+// BotLogin 接口定义了登录的方法。
+type BotLogin interface {
+	// Login 方法用于登录机器人。
+	//
+	// 入参：
+	//   - bot：*Bot 类型，表示要登录的机器人。
+	//
+	// 返回值：
+	//   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
+	Login(bot *Bot) error
 }
 
+// ScanLogin 结构体用于扫码登录机器人。
+type ScanLogin struct {
+	UUID string // UUID 字段表示扫码登录的唯一标识符。
+}
+
+// HotLogin 结构表示热登录功能，包含一个 HotReloadStorage 类型的存储实例。
+type HotLogin struct {
+	storage HotReloadStorage // 存储实例
+}
+
+// PushLogin 结构表示推送登录功能，包含一个 HotReloadStorage 类型的存储实例。
+type PushLogin struct {
+	storage HotReloadStorage // 存储实例
+}
+
+// LoginChecker 结构体用于检查登录状态。
+type LoginChecker struct {
+	Bot           *Bot                          // 指向机器人实例的指针
+	Tip           string                        // 登录提示信息
+	UUIDCallback  func(bot *Bot, uuid string)   // UUID 回调函数
+	LoginCallBack func(body CheckLoginResponse) // 登录回调函数
+	ScanCallBack  func(body CheckLoginResponse) // 扫码回调函数
+}
+
+// ================================================= [函数](全局)公开 =================================================
+
+// NewRetryLoginOption 函数用于创建一个新的 RetryLoginOption 对象。
+//
+// 返回值：
+//   - BotLoginOption：返回一个实现了 BotLoginOption 接口的对象。
 func NewRetryLoginOption() BotLoginOption {
 	return &RetryLoginOption{MaxRetryCount: 1}
 }
 
-type BotPreparerFunc func(*Bot)
-
-func (f BotPreparerFunc) Prepare(b *Bot) {
-	f(b)
+func WithDomain(domain string) BotPreparer {
+	return BotPreparerFunc(func(b *Bot) { b.Caller.WechatClient.Domain = Domain(domain) })
 }
 
-// withMode 是一个 BotPreparerFunc，用于设置 Bot 的模式
-func withMode(mode Mode) BotPreparer {
-	return BotPreparerFunc(func(b *Bot) { b.Caller.Client.SetMode(mode) })
+// WithMode 函数用于创建一个 BotPreparer 对象，设置 Bot 的模式。
+//
+// 入参：
+//   - mode：Mode 类型，表示要设置的 Bot 模式。
+//
+// 返回值：
+//   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
+func WithMode(mode Mode) BotPreparer {
+	return BotPreparerFunc(func(b *Bot) { b.Caller.WechatClient.SetMode(mode) })
 }
 
-// btw, 这两个变量已经变了4回了, 但是为了兼容以前的代码, 还是得想着法儿让用户无感知的更新
-var (
-	// Normal 网页版微信模式
-	Normal = withMode(normal)
-
-	// Desktop 桌面微信模式
-	Desktop = withMode(desktop)
-)
-
-// WithContextOption 是一个 BotPreparerFunc，用于设置 Bot 的 context
+// WithContextOption 函数用于创建一个 BotPreparer 对象，设置 Bot 的上下文。
+//
+// 入参：
+//   - ctx：context.Context 类型，表示要设置的上下文。
+//
+// 返回值：
+//   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
+//
+// 注意：
+//   - 如果 context 为 nil，会抛出 panic 异常。
 func WithContextOption(ctx context.Context) BotPreparer {
 	if ctx == nil {
 		panic("context is nil")
 	}
+
 	return BotPreparerFunc(func(b *Bot) { b.context, b.cancel = context.WithCancel(ctx) })
 }
 
-// WithUUIDOption 是一个 BotPreparerFunc，用于设置 Bot 的 登录 uuid
+// WithUUIDOption 函数用于创建一个 BotPreparer 对象，设置 Bot 的 UUID。
+//
+// 入参：
+//   - uuid：string 类型，表示要设置的 UUID。
+//
+// 返回值：
+//   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
 func WithUUIDOption(uuid string) BotPreparer {
 	return BotPreparerFunc(func(b *Bot) { b.loginUUID = uuid })
 }
 
-// WithDeviceID 是一个 BotPreparerFunc，用于设置 Bot 的 设备 id
+// WithDeviceID 函数用于创建一个 BotPreparer 对象，设置 Bot 的设备 ID。
+//
+// 入参：
+//   - deviceId：string 类型，表示要设置的设备 ID。
+//
+// 返回值：
+//   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
 func WithDeviceID(deviceId string) BotPreparer {
 	return BotPreparerFunc(func(b *Bot) { b.deviceId = deviceId })
 }
 
-// BotLogin 定义了一个Login的接口
-type BotLogin interface {
-	Login(bot *Bot) error
-}
-
-// ScanLogin 扫码登录
-type ScanLogin struct {
-	UUID string
-}
-
-// Login 实现了 BotLogin 接口
-func (s *ScanLogin) Login(bot *Bot) error {
-	var uuid = s.UUID
-	if uuid == "" {
-		var err error
-		uuid, err = bot.Caller.GetLoginUUID(bot.Context())
-		if err != nil {
-			return err
-		}
-	}
-	return s.checkLogin(bot, uuid)
-}
-
-// checkLogin 该方法会一直阻塞，直到用户扫码登录，或者二维码过期
-func (s *ScanLogin) checkLogin(bot *Bot, uuid string) error {
-	bot.uuid = uuid
-	loginChecker := &LoginChecker{
-		Bot:           bot,
-		Tip:           "0",
-		UUIDCallback:  bot.UUIDCallback,
-		LoginCallBack: bot.LoginCallBack,
-		ScanCallBack:  bot.ScanCallBack,
-	}
-	return loginChecker.CheckLogin()
-}
-
-func botReload(bot *Bot, storage HotReloadStorage) error {
+// Reload 方法用于重新加载机器人实例。
+//
+// 该方法将传入的 HotReloadStorage 类型实例赋值给机器人实例的 hotReloadStorage 字段，并调用机器人实例的 Reload 方法进行重新加载。
+//
+// 入参：
+//   - bot：*Bot 类型，表示要重新加载的机器人实例。
+//   - storage：HotReloadStorage 类型，表示重新加载时使用的存储实例。
+//
+// 返回值：
+//   - error：返回一个 error 类型的值，表示重新加载过程中可能发生的错误。
+func Reload(bot *Bot, storage HotReloadStorage) error {
+	// 将 HotReloadStorage 实例赋值给机器人实例的 hotReloadStorage 字段
 	bot.hotReloadStorage = storage
-	return bot.reload()
-}
 
-// HotLogin 热登录模式
-type HotLogin struct {
-	storage HotReloadStorage
-}
-
-// Login 实现了 BotLogin 接口
-func (h *HotLogin) Login(bot *Bot) error {
-	if err := botReload(bot, h.storage); err != nil {
-		return err
-	}
-	return bot.webInit()
-}
-
-// PushLogin 免扫码登录模式
-type PushLogin struct {
-	storage HotReloadStorage
-}
-
-// Login 实现了 BotLogin 接口
-func (p *PushLogin) Login(bot *Bot) error {
-	if err := botReload(bot, p.storage); err != nil {
-		return err
-	}
-	resp, err := bot.Caller.WebWxPushLogin(bot.Context(), bot.Storage.LoginInfo.WxUin)
-	if err != nil {
-		return err
-	}
-	if err = resp.Err(); err != nil {
-		return err
-	}
-	return p.checkLogin(bot, resp.UUID)
-}
-
-// checkLogin 登录检查
-func (p *PushLogin) checkLogin(bot *Bot, uuid string) error {
-	bot.uuid = uuid
-	// 为什么把 UUIDCallback 和 ScanCallBack 置为nil呢?
-	// 因为这两个对用户是无感知的。
-	loginChecker := &LoginChecker{
-		Bot:           bot,
-		Tip:           "1",
-		LoginCallBack: bot.LoginCallBack,
-	}
-	return loginChecker.CheckLogin()
-}
-
-type LoginChecker struct {
-	Bot           *Bot
-	Tip           string
-	UUIDCallback  func(uuid string)
-	LoginCallBack func(body CheckLoginResponse)
-	ScanCallBack  func(body CheckLoginResponse)
-}
-
-func (l *LoginChecker) CheckLogin() error {
-	uuid := l.Bot.UUID()
-	// 二维码获取回调
-	if cb := l.UUIDCallback; cb != nil {
-		cb(uuid)
-	}
-	var tip = l.Tip
-	for {
-		// 长轮询检查是否扫码登录
-		resp, err := l.Bot.Caller.CheckLogin(l.Bot.Context(), uuid, tip)
-		if err != nil {
-			return err
-		}
-		code, err := resp.Code()
-		if err != nil {
-			return err
-		}
-		if tip == "1" {
-			tip = "0"
-		}
-		switch code {
-		case LoginCodeSuccess:
-			// 判断是否有登录回调，如果有执行它
-			redirectURL, err := resp.RedirectURL()
-			if err != nil {
-				return err
-			}
-			if err = l.Bot.loginFromURL(redirectURL); err != nil {
-				return err
-			}
-			if cb := l.LoginCallBack; cb != nil {
-				cb(resp)
-			}
-			return nil
-		case LoginCodeScanned:
-			// 执行扫码回调
-			if cb := l.ScanCallBack; cb != nil {
-				cb(resp)
-			}
-		case LoginCodeTimeout:
-			return ErrLoginTimeout
-		case LoginCodeWait:
-			continue
-		}
-	}
+	// 调用机器人实例的 Reload 方法进行重新加载
+	return bot.Reload()
 }
 
 // # 下面都是即将废弃的函数。
@@ -297,19 +203,379 @@ func (l *LoginChecker) CheckLogin() error {
 // # openwechat内部对这些函数的调用做了兼容处理, 如果你的代码中调用了这些函数, 请尽快修改。
 
 // Deprecated: 请使用 NewRetryLoginOption 代替
-// HotLoginWithRetry 热登录模式，如果登录失败会重试
+// HotLoginWithRetry 函数返回一个 BotLoginOption，用于进行热登录的配置选项。(如果登录失败会重试)
+//
+// 参数：
+//   - flag：一个 bool 类型的值，表示是否开启热登录重试。
+//
+// 返回值：
+//   - BotLoginOption：返回一个 BotLoginOption 类型的值，表示热登录的配置选项。
 func HotLoginWithRetry(flag bool) BotLoginOption {
+	// 如果 flag 为 true，则返回一个新的重试登录选项
 	if flag {
 		return NewRetryLoginOption()
 	}
-	return DoNothingBotLoginOption
+
+	// 否则返回一个空操作的登录选项
+	return NothingLoginOption
 }
 
 // Deprecated: 请使用 NewRetryLoginOption 代替
-// PushLoginWithRetry 免扫码登录模式，如果登录失败会重试
+// PushLoginWithRetry 函数返回一个 BotLoginOption，用于进行推送登录的配置选项。(免扫码登录模式，如果登录失败会重试)
+//
+// 参数：
+//   - flag：一个 bool 类型的值，表示是否开启推送登录重试。
+//
+// 返回值：
+//   - BotLoginOption：返回一个 BotLoginOption 类型的值，表示推送登录的配置选项。
 func PushLoginWithRetry(flag bool) BotLoginOption {
+	// 如果 flag 为 false，则返回一个空操作的登录选项
 	if !flag {
-		return DoNothingBotLoginOption
+		return NothingLoginOption
 	}
+
+	// 否则返回一个新的重试登录选项
 	return NewRetryLoginOption()
+}
+
+// ================================================= [函数](LoginCode)公开 =================================================
+
+// String 方法将登录状态码枚举值转换为对应的字符串。
+//
+// 入参：
+//   - l：登录状态码，类型为 LoginCode。
+//
+// 返回值：
+//   - string：表示登录状态码的字符串。
+
+func (l LoginCode) String() string {
+	switch l {
+	case Success:
+		return "登录成功"
+	case Scanned:
+		return "已扫码"
+	case Timeout:
+		return "登录超时"
+	case Wait:
+		return "等待扫码"
+	default:
+		return "未知状态"
+	}
+}
+
+// ================================================= [函数](BotLoginOptions)公开 =================================================
+
+// Prepare 方法用于对机器人进行准备操作。(实现了 BotLoginOption 接口)
+//
+// 入参：
+//   - g：BotOptionGroup 类型，表示一组机器人选项。
+//   - bot：*Bot 类型，指向机器人对象的指针。
+//
+// 无返回值。
+func (g BotLoginOptions) Prepare(bot *Bot) {
+	for _, option := range g {
+		option.Prepare(bot)
+	}
+}
+
+// OnError 方法用于处理机器人登录过程中出现错误的情况。(实现了 BotLoginOption 接口)
+//
+// 入参：
+//   - g：BotOptionGroup 类型，表示一组机器人选项。
+//   - b：*Bot 类型，指向机器人对象的指针。
+//   - err：error 类型，表示当前的错误对象。
+//
+// 返回值：
+//   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
+func (g BotLoginOptions) OnError(b *Bot, err error) error {
+	// 当有一个 BotLoginOption 的 OnError 返回的 error 等于 nil 时，就会停止执行后续的 BotLoginOption
+	for _, option := range g {
+		currentErr := option.OnError(b, err)
+		if currentErr == nil {
+			return nil
+		}
+
+		if currentErr != err {
+			return currentErr
+		}
+	}
+
+	return err
+}
+
+// OnSuccess 方法用于处理机器人登录过程中成功的情况。(实现了 BotLoginOption 接口)
+//
+// 入参：
+//   - g：BotOptionGroup 类型，表示一组机器人选项。
+//   - b：*Bot 类型，指向机器人对象的指针。
+//
+// 返回值：
+//   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
+func (g BotLoginOptions) OnSuccess(b *Bot) error {
+	for _, option := range g {
+		if err := option.OnSuccess(b); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ================================================= [函数](BaseLoginOption)公开 =================================================
+
+// Prepare 方法在机器人登录之前执行准备工作。
+//
+// 入参：
+//   - b：*Bot 类型，指向机器人对象的指针。
+func (BaseLoginOption) Prepare(_ *Bot) {}
+
+// OnError 方法用于处理机器人登录过程中出现错误的情况。
+//
+// 入参：
+//   - _：*Bot 类型，指向机器人对象的指针。
+//   - err：error 类型，表示当前的错误对象。
+//
+// 返回值：
+//   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
+func (BaseLoginOption) OnError(_ *Bot, err error) error { return err }
+
+// OnSuccess 方法用于处理机器人登录过程中成功的情况。
+//
+// 入参：
+//   - _：*Bot 类型，指向机器人对象的指针。
+//
+// 返回值：
+//   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
+func (BaseLoginOption) OnSuccess(_ *Bot) error { return nil }
+
+// ================================================= [函数](RetryLoginOption)公开 =================================================
+
+// OnError 方法用于处理机器人登录过程中出错的情况。(当登录失败后，会调用此方法进行扫码登录)
+//
+// 入参：
+//   - bot：*Bot 类型，指向机器人对象的指针。
+//   - err：error 类型，表示登录过程中可能发生的错误。
+//
+// 返回值：
+//   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
+func (r *RetryLoginOption) OnError(bot *Bot, err error) error {
+	if r.currentRetryTime >= r.MaxRetryCount { // 如果当前重试次数超过最大重试次数
+		return err // 返回错误对象
+	}
+
+	r.currentRetryTime++ // 当前重试次数加1
+
+	return bot.ScanLogin() // 调用bot的Login方法
+}
+
+// ================================================= [函数](BotPreparerFunc)公开 =================================================
+
+// Prepare 方法用于调用 BotPreparerFunc 函数类型的方法，准备 Bot 对象。
+//
+// 入参：
+//   - b：*Bot 类型，指向要准备的 Bot 对象的指针。
+func (f BotPreparerFunc) Prepare(b *Bot) {
+	f(b)
+}
+
+// ================================================= [函数](ScanLogin)公开 =================================================
+
+// Login 方法用于执行扫码登录操作。
+//
+// 该方法首先检查是否已经设置了 UUID，如果未设置则调用 bot.Caller.GetLoginUUID 方法获取 UUID，并进行登录检查。
+//
+// 入参：
+//   - bot：*Bot 类型，表示要登录的机器人。
+//
+// 返回值：
+//   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
+func (s *ScanLogin) Login(bot *Bot) error {
+	var uuid = s.UUID // 获取结构体中的 UUID 字段
+
+	if uuid == "" { // 如果 UUID 为空
+		var err error
+
+		uuid, err = bot.Caller.GetLoginUUID(bot.Context()) // 调用 bot.Caller.GetLoginUUID 方法获取 UUID
+		if err != nil {
+			return err // 如果获取 UUID 出错则返回该错误
+		}
+	}
+
+	return s.CheckLogin(bot, uuid) // 调用 checkLogin 方法进行登录检查
+}
+
+// CheckLogin 方法用于执行登录检查操作。(方法会一直阻塞，直到联系人扫码登录，或者二维码过期)
+//
+// 该方法创建一个 LoginChecker 实例，将 bot、uuid 以及登录回调函数等信息传递给实例，并调用其 CheckLogin 方法进行登录检查。
+//
+// 入参：
+//   - bot：*Bot 类型，表示要登录的机器人。
+//   - uuid：string 类型，表示扫码登录的唯一标识符。
+//
+// 返回值：
+//   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
+func (s *ScanLogin) CheckLogin(bot *Bot, uuid string) error {
+	// 设置机器人的 UUID 字段
+	bot.uuid = uuid
+
+	// 创建 LoginChecker 实例并设置相关信息
+	loginChecker := &LoginChecker{
+		Bot:           bot,
+		Tip:           "0",
+		UUIDCallback:  bot.UUIDCallback,
+		LoginCallBack: bot.LoginCallBack,
+		ScanCallBack:  bot.ScanCallBack,
+	}
+
+	// 调用 CheckLogin 方法进行登录检查
+	return loginChecker.CheckLogin()
+}
+
+// ================================================= [函数](HotLogin)公开 =================================================
+
+// Login 方法用于执行热登录操作。
+//
+// 该方法会调用 Reload 方法重新加载机器人实例，然后调用机器人实例的 Init 方法进行初始化。
+//
+// 入参：
+//   - h：*HotLogin 类型，表示要执行登录操作的 HotLogin 实例。
+//   - bot：*Bot 类型，表示要执行登录操作的机器人实例。
+//
+// 返回值：
+//   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
+func (h *HotLogin) Login(bot *Bot) error {
+	// 调用 Reload 方法重新加载机器人实例
+	if err := Reload(bot, h.storage); err != nil {
+		return err
+	}
+
+	// 调用机器人实例的 Init 方法进行初始化
+	return bot.Init()
+}
+
+// ================================================= [函数](PushLogin)公开 =================================================
+
+// Login 方法用于执行推送登录操作。
+//
+// 该方法会调用 Reload 方法重新加载机器人实例，然后调用机器人实例的 PushLogin 方法进行推送登录，最后调用 checkLogin 方法检查登录状态。
+//
+// 入参：
+//   - p：*PushLogin 类型，表示要执行登录操作的 PushLogin 实例。
+//   - bot：*Bot 类型，表示要执行登录操作的机器人实例。
+//
+// 返回值：
+//   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
+func (p *PushLogin) Login(bot *Bot) error {
+	// 调用 Reload 方法重新加载机器人实例
+	if err := Reload(bot, p.storage); err != nil {
+		return err
+	}
+
+	// 调用机器人实例的 PushLogin 方法进行推送登录
+	resp, err := bot.Caller.PushLogin(bot.Context(), bot.Storage.LoginInfo.WxUin)
+	if err != nil {
+		return err
+	}
+
+	// 检查返回结果中是否有错误
+	if err = resp.Error(); err != nil {
+		return err
+	}
+
+	// 调用 CheckLogin 方法检查登录状态
+	return p.CheckLogin(bot, resp.UUID)
+}
+
+// CheckLogin 方法用于检查登录状态。
+//
+// 该方法会将给定的 UUID 设置为机器人实例的 uuid 字段，并创建一个 LoginChecker 实例进行登录状态检查。
+//
+// 入参：
+//   - p：*PushLogin 类型，表示要执行登录操作的 PushLogin 实例。
+//   - bot：*Bot 类型，表示要执行登录操作的机器人实例。
+//   - uuid：string 类型，表示登录使用的 UUID。
+//
+// 返回值：
+//   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
+func (p *PushLogin) CheckLogin(bot *Bot, uuid string) error {
+	// 将给定的 UUID 设置为机器人实例的 uuid 字段
+	bot.uuid = uuid
+
+	// 创建一个 LoginChecker 实例进行登录状态检查
+	loginChecker := &LoginChecker{
+		Bot:           bot,
+		Tip:           "1",
+		LoginCallBack: bot.LoginCallBack,
+	}
+
+	return loginChecker.CheckLogin()
+}
+
+// ================================================= [函数](LoginChecker)公开 =================================================
+
+// CheckLogin 方法用于检查登录状态。
+//
+// 该方法会通过调用机器人实例的 Caller.CheckLogin() 方法，不断发送长轮询请求来检查是否扫码登录。
+// 根据返回的登录状态码进行相应的处理，并执行对应的回调函数。
+//
+// 返回值：
+//   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
+func (l *LoginChecker) CheckLogin() error {
+	// 获取机器人实例的 UUID
+	uuid := l.Bot.UUID()
+
+	// 如果存在 UUID 回调函数，则执行回调函数
+	if cb := l.UUIDCallback; cb != nil {
+		cb(l.Bot, uuid)
+	}
+
+	// 初始化登录提示信息
+	var tip = l.Tip
+	for {
+		// 发送长轮询请求，检查是否扫码登录
+		resp, err := l.Bot.Caller.CheckLogin(l.Bot.Context(), uuid, tip)
+		if err != nil {
+			return err
+		}
+
+		// 获取登录状态码
+		code, err := resp.Code()
+		if err != nil {
+			return err
+		}
+
+		// 根据状态码进行相应的处理
+		if tip == "1" {
+			tip = "0"
+		}
+
+		switch code {
+		case Success:
+			// 登录成功，执行登录回调函数
+			redirectURL, err := resp.RedirectURL()
+			if err != nil {
+				return err
+			}
+
+			if err = l.Bot.LoginFromURL(redirectURL); err != nil {
+				return err
+			}
+
+			if cb := l.LoginCallBack; cb != nil {
+				cb(resp)
+			}
+
+			return nil
+		case Scanned:
+			// 扫码成功，执行扫码回调函数
+			if cb := l.ScanCallBack; cb != nil {
+				cb(resp)
+			}
+
+		case Timeout:
+			return Error_LoginTimeout
+		case Wait:
+			continue
+		}
+	}
 }
