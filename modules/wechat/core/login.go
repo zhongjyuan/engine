@@ -30,6 +30,13 @@ type BotPreparer interface {
 	Prepare(b *Bot)
 }
 
+// BotPreparerHandler 类型是一个函数类型，用于准备 Bot 对象。
+//
+// 函数签名：func(*Bot)
+// 参数：
+//   - *Bot：指向 Bot 对象的指针。
+type BotPreparerHandler func(*Bot)
+
 // BotLoginOption 是一个接口，用于设置机器人登录的选项。
 type BotLoginOption interface {
 	// BotPreparer 是 BotLoginOption 接口继承的 BotPreparer 接口。
@@ -66,17 +73,11 @@ var NothingLoginOption = &BaseLoginOption{}
 
 // RetryLoginOption 在登录失败后进行扫码登录
 type RetryLoginOption struct {
+	BaseLoginOption // 嵌入基本的BotLoginOption结构体
+
 	MaxRetryCount    int // 最大重试次数
 	currentRetryTime int // 当前重试次数
-	BaseLoginOption      // 嵌入基本的BotLoginOption结构体
 }
-
-// BotPreparerFunc 类型是一个函数类型，用于准备 Bot 对象。
-//
-// 函数签名：func(*Bot)
-// 参数：
-//   - *Bot：指向 Bot 对象的指针。
-type BotPreparerFunc func(*Bot)
 
 // BotLogin 接口定义了登录的方法。
 type BotLogin interface {
@@ -107,8 +108,9 @@ type PushLogin struct {
 
 // LoginChecker 结构体用于检查登录状态。
 type LoginChecker struct {
-	Bot           *Bot                          // 指向机器人实例的指针
-	Tip           string                        // 登录提示信息
+	Bot *Bot   // 指向机器人实例的指针
+	Tip string // 登录提示信息
+
 	UUIDCallback  func(bot *Bot, uuid string)   // UUID 回调函数
 	LoginCallBack func(body CheckLoginResponse) // 登录回调函数
 	ScanCallBack  func(body CheckLoginResponse) // 扫码回调函数
@@ -124,10 +126,6 @@ func NewRetryLoginOption() BotLoginOption {
 	return &RetryLoginOption{MaxRetryCount: 1}
 }
 
-func WithDomain(domain string) BotPreparer {
-	return BotPreparerFunc(func(b *Bot) { b.Caller.WechatClient.Domain = Domain(domain) })
-}
-
 // WithMode 函数用于创建一个 BotPreparer 对象，设置 Bot 的模式。
 //
 // 入参：
@@ -136,7 +134,11 @@ func WithDomain(domain string) BotPreparer {
 // 返回值：
 //   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
 func WithMode(mode Mode) BotPreparer {
-	return BotPreparerFunc(func(b *Bot) { b.Caller.WechatClient.SetMode(mode) })
+	return BotPreparerHandler(func(b *Bot) { b.Caller.WechatClient.SetMode(mode) })
+}
+
+func WithDomain(domain string) BotPreparer {
+	return BotPreparerHandler(func(b *Bot) { b.Caller.WechatClient.Domain = Domain(domain) })
 }
 
 // WithContextOption 函数用于创建一个 BotPreparer 对象，设置 Bot 的上下文。
@@ -154,7 +156,7 @@ func WithContextOption(ctx context.Context) BotPreparer {
 		panic("context is nil")
 	}
 
-	return BotPreparerFunc(func(b *Bot) { b.context, b.cancel = context.WithCancel(ctx) })
+	return BotPreparerHandler(func(b *Bot) { b.context, b.cancel = context.WithCancel(ctx) })
 }
 
 // WithUUIDOption 函数用于创建一个 BotPreparer 对象，设置 Bot 的 UUID。
@@ -165,7 +167,7 @@ func WithContextOption(ctx context.Context) BotPreparer {
 // 返回值：
 //   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
 func WithUUIDOption(uuid string) BotPreparer {
-	return BotPreparerFunc(func(b *Bot) { b.loginUUID = uuid })
+	return BotPreparerHandler(func(b *Bot) { b.loginUUID = uuid })
 }
 
 // WithDeviceID 函数用于创建一个 BotPreparer 对象，设置 Bot 的设备 ID。
@@ -176,7 +178,7 @@ func WithUUIDOption(uuid string) BotPreparer {
 // 返回值：
 //   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
 func WithDeviceID(deviceId string) BotPreparer {
-	return BotPreparerFunc(func(b *Bot) { b.deviceId = deviceId })
+	return BotPreparerHandler(func(b *Bot) { b.deviceId = deviceId })
 }
 
 // Reload 方法用于重新加载机器人实例。
@@ -195,47 +197,6 @@ func Reload(bot *Bot, storage HotReloadStorage) error {
 
 	// 调用机器人实例的 Reload 方法进行重新加载
 	return bot.Reload()
-}
-
-// # 下面都是即将废弃的函数。
-// # 为了兼容老版本暂时留了下来, 但是它的函数签名已经发生了改变。
-// # 如果你是使用的是openwechat提供的api来调用这些函数，那么你是感知不到变动的。
-// # openwechat内部对这些函数的调用做了兼容处理, 如果你的代码中调用了这些函数, 请尽快修改。
-
-// Deprecated: 请使用 NewRetryLoginOption 代替
-// HotLoginWithRetry 函数返回一个 BotLoginOption，用于进行热登录的配置选项。(如果登录失败会重试)
-//
-// 参数：
-//   - flag：一个 bool 类型的值，表示是否开启热登录重试。
-//
-// 返回值：
-//   - BotLoginOption：返回一个 BotLoginOption 类型的值，表示热登录的配置选项。
-func HotLoginWithRetry(flag bool) BotLoginOption {
-	// 如果 flag 为 true，则返回一个新的重试登录选项
-	if flag {
-		return NewRetryLoginOption()
-	}
-
-	// 否则返回一个空操作的登录选项
-	return NothingLoginOption
-}
-
-// Deprecated: 请使用 NewRetryLoginOption 代替
-// PushLoginWithRetry 函数返回一个 BotLoginOption，用于进行推送登录的配置选项。(免扫码登录模式，如果登录失败会重试)
-//
-// 参数：
-//   - flag：一个 bool 类型的值，表示是否开启推送登录重试。
-//
-// 返回值：
-//   - BotLoginOption：返回一个 BotLoginOption 类型的值，表示推送登录的配置选项。
-func PushLoginWithRetry(flag bool) BotLoginOption {
-	// 如果 flag 为 false，则返回一个空操作的登录选项
-	if !flag {
-		return NothingLoginOption
-	}
-
-	// 否则返回一个新的重试登录选项
-	return NewRetryLoginOption()
 }
 
 // ================================================= [函数](LoginCode)公开 =================================================
@@ -359,23 +320,26 @@ func (BaseLoginOption) OnSuccess(_ *Bot) error { return nil }
 // 返回值：
 //   - error：返回一个错误对象，用于表示处理过程中可能发生的错误。
 func (r *RetryLoginOption) OnError(bot *Bot, err error) error {
-	if r.currentRetryTime >= r.MaxRetryCount { // 如果当前重试次数超过最大重试次数
+	// 如果当前重试次数超过最大重试次数
+	if r.currentRetryTime >= r.MaxRetryCount {
 		return err // 返回错误对象
 	}
 
-	r.currentRetryTime++ // 当前重试次数加1
+	// 当前重试次数加1
+	r.currentRetryTime++
 
-	return bot.ScanLogin() // 调用bot的Login方法
+	// 调用bot的Login方法
+	return bot.ScanLogin()
 }
 
-// ================================================= [函数](BotPreparerFunc)公开 =================================================
+// ================================================= [函数](BotPreparerHandler)公开 =================================================
 
-// Prepare 方法用于调用 BotPreparerFunc 函数类型的方法，准备 Bot 对象。
+// Prepare 方法用于调用 BotPreparerHandler 函数类型的方法，准备 Bot 对象。
 //
 // 入参：
 //   - b：*Bot 类型，指向要准备的 Bot 对象的指针。
-func (f BotPreparerFunc) Prepare(b *Bot) {
-	f(b)
+func (handler BotPreparerHandler) Prepare(b *Bot) {
+	handler(b)
 }
 
 // ================================================= [函数](ScanLogin)公开 =================================================
@@ -420,8 +384,9 @@ func (s *ScanLogin) CheckLogin(bot *Bot, uuid string) error {
 
 	// 创建 LoginChecker 实例并设置相关信息
 	loginChecker := &LoginChecker{
-		Bot:           bot,
-		Tip:           "0",
+		Bot: bot,
+		Tip: "0",
+
 		UUIDCallback:  bot.UUIDCallback,
 		LoginCallBack: bot.LoginCallBack,
 		ScanCallBack:  bot.ScanCallBack,
@@ -503,8 +468,9 @@ func (p *PushLogin) CheckLogin(bot *Bot, uuid string) error {
 
 	// 创建一个 LoginChecker 实例进行登录状态检查
 	loginChecker := &LoginChecker{
-		Bot:           bot,
-		Tip:           "1",
+		Bot: bot,
+		Tip: "1",
+
 		LoginCallBack: bot.LoginCallBack,
 	}
 

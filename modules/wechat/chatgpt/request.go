@@ -7,9 +7,11 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
+	"strings"
+	"zhongjyuan/wechat/config"
+	"zhongjyuan/wechat/storage"
 )
-
-const BASEURL = "http://47.116.100.195:188/api"
 
 // ResponseBody 请求体
 type ResponseBody struct {
@@ -18,11 +20,25 @@ type ResponseBody struct {
 	Network bool   `json:"network"`
 }
 
-func Completions(prompt string) (string, error) {
+func Completions(userId string, prompt string) (string, error) {
+	cfg := config.LoadConfig()
+
+	path, err := url.Parse(cfg.ChatGPTServer + cfg.ChatGPTProcess) // 解析同步检查链接地址
+	if err != nil {
+		return "", err
+	}
+
+	isMatch := strings.Contains(strings.Join(cfg.ChatGPTNewChatKeywords, ","), prompt)
+	if isMatch {
+		storage.SetChatStorage(userId)
+		return cfg.ChatGPTNewChatTips, nil
+	}
+
+	chatStorageItem := storage.GetChatStorage(userId)
 	requestBody := ResponseBody{
 		Prompt:  prompt,
-		UserId:  "#/chat/1705669354364",
-		Network: true,
+		Network: chatStorageItem.Network,
+		UserId:  "#/chat/" + chatStorageItem.ChatKey,
 	}
 
 	requestData, err := json.Marshal(requestBody)
@@ -31,7 +47,7 @@ func Completions(prompt string) (string, error) {
 	}
 	log.Printf("request gtp json string : %v", string(requestData))
 
-	req, err := http.NewRequest("POST", BASEURL+"/generateStream", bytes.NewBuffer(requestData))
+	req, err := http.NewRequest(http.MethodPost, path.String(), bytes.NewBuffer(requestData))
 	if err != nil {
 		return "", err
 	}
@@ -46,7 +62,8 @@ func Completions(prompt string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer response.Body.Close()
+
+	defer func() { _ = response.Body.Close() }()
 
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
@@ -56,6 +73,8 @@ func Completions(prompt string) (string, error) {
 
 	var reply = string(body)
 	log.Printf("gpt response text: %s \n", reply)
+
+	storage.SetMessageStorage(userId, prompt, reply)
 
 	return reply, nil
 }

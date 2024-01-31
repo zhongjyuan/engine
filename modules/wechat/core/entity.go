@@ -204,8 +204,10 @@ func (c CheckLoginResponse) Code() (LoginCode, error) {
 	if len(results) != 2 {
 		return "", errors.New("error status code match")
 	}
+
 	// 将字符串形式的状态码转换为 LoginCode 类型
 	code := string(results[1])
+
 	return LoginCode(code), nil
 }
 
@@ -305,5 +307,6 @@ func (p PushLoginResponse) Error() error {
 	if p.Ok() {
 		return nil
 	}
+
 	return errors.New(p.Msg)
 }

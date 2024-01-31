@@ -14,11 +14,11 @@ import (
 // 输入参数：
 //   - contacts Contacts: 联系人列表。
 //   - limit int: 搜索结果的最大数量限制，如果为 0 或负数则表示没有限制。
-//   - searchFunc func(*Contact) bool: 用于判断是否符合搜索条件的函数。
+//   - searchHandler func(*Contact) bool: 用于判断是否符合搜索条件的函数。
 //
 // 输出参数：
 //   - results Contacts: 匹配搜索条件的联系人列表。
-func Search(contacts Contacts, limit int, searchFunc func(*Contact) bool) (results Contacts) {
+func Search(contacts Contacts, limit int, searchHandler func(*Contact) bool) (results Contacts) {
 	// 如果 limit 小于等于 0，则将 limit 设置为搜索列表的总数
 	if limit <= 0 {
 		limit = contacts.Count()
@@ -31,8 +31,8 @@ func Search(contacts Contacts, limit int, searchFunc func(*Contact) bool) (resul
 			break
 		}
 
-		// 调用 searchFunc 判断当前成员是否符合搜索条件，并将符合条件的成员加入到结果列表中
-		if searchFunc(contact) {
+		// 调用 searchHandler 判断当前成员是否符合搜索条件，并将符合条件的成员加入到结果列表中
+		if searchHandler(contact) {
 			results = append(results, contact)
 		}
 	}
@@ -41,6 +41,18 @@ func Search(contacts Contacts, limit int, searchFunc func(*Contact) bool) (resul
 }
 
 // ================================================= [函数](Friends)公开 =================================================
+
+// Count 方法用于获取好友列表的成员数量。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - int: 好友列表的成员数量。
+func (fs Friends) Count() int {
+	// 返回好友列表的长度，即成员数量
+	return len(fs)
+}
 
 // Sort 方法用于对好友列表按照特定规则进行排序。
 //
@@ -64,18 +76,6 @@ func (fs Friends) Sort() Friends {
 func (fs Friends) Uniq() Friends {
 	// 调用 AsContacts 方法将好友列表转换为通讯录，再调用 Uniq 方法对通讯录进行去重操作，最后调用 Friends 方法将去重后的通讯录转换回好友列表
 	return fs.AsContacts().Uniq().Friends()
-}
-
-// Count 方法用于获取好友列表的成员数量。
-//
-// 输入参数：
-//   - 无。
-//
-// 输出参数：
-//   - int: 好友列表的成员数量。
-func (fs Friends) Count() int {
-	// 返回好友列表的长度，即成员数量
-	return len(fs)
 }
 
 // First 方法用于获取好友列表中第一个好友的指针。
@@ -153,17 +153,17 @@ func (fs Friends) BroadcastTextToFriendsByRandomTime(message string) error {
 //
 // 输入参数：
 //   - limit int: 搜索结果的最大数量。
-//   - searchFuncList ...func(friend *Friend) bool: 用于判断好友是否符合搜索条件的函数列表。
+//   - searchHandlers ...func(friend *Friend) bool: 用于判断好友是否符合搜索条件的函数列表。
 //
 // 输出参数：
 //   - Friends: 符合搜索条件的好友列表。
-func (fs Friends) Search(limit int, searchFuncList ...func(friend *Friend) bool) Friends {
+func (fs Friends) Search(limit int, searchHandlers ...func(friend *Friend) bool) Friends {
 	// 将好友列表转换为通讯录，并调用通讯录的 Search 方法进行搜索
 	return fs.AsContacts().Search(limit, func(contact *Contact) bool {
 		var friend = &Friend{contact}
 
-		for _, searchFunc := range searchFuncList {
-			if !searchFunc(friend) {
+		for _, searchHandler := range searchHandlers {
+			if !searchHandler(friend) {
 				return false
 			}
 		}
@@ -444,6 +444,11 @@ func (f *Friend) SendFile(file io.Reader) (*SentMessage, error) {
 
 // ================================================= [函数](Groups)公开 =================================================
 
+// Count 获取群组数量
+func (gs Groups) Count() int {
+	return len(gs)
+}
+
 // Sort 对群组进行排序
 func (gs Groups) Sort() Groups {
 	return gs.AsContacts().Sort().Groups()
@@ -452,11 +457,6 @@ func (gs Groups) Sort() Groups {
 // Uniq 对群组进行去重
 func (gs Groups) Uniq() Groups {
 	return gs.AsContacts().Uniq().Groups()
-}
-
-// Count 获取群组数量
-func (gs Groups) Count() int {
-	return len(gs)
 }
 
 // First 获取第一个群组
@@ -485,12 +485,12 @@ func (gs Groups) AsContacts() Contacts {
 }
 
 // Search 根据自定义条件查找群组
-func (gs Groups) Search(limit int, searchFuncList ...func(group *Group) bool) (results Groups) {
+func (gs Groups) Search(limit int, searchHandlers ...func(group *Group) bool) (results Groups) {
 	return gs.AsContacts().Search(limit, func(contact *Contact) bool {
 		var group = &Group{contact}
 
-		for _, searchFunc := range searchFuncList {
-			if !searchFunc(group) {
+		for _, searchHandler := range searchHandlers {
+			if !searchHandler(group) {
 				return false
 			}
 		}
@@ -665,6 +665,11 @@ func (g *Group) SendFile(file io.Reader) (*SentMessage, error) {
 
 // ================================================= [函数](MPs)公开 =================================================
 
+// Count 数量统计
+func (ms MPs) Count() int {
+	return len(ms)
+}
+
 // Sort 对公众号进行排序
 func (ms MPs) Sort() MPs {
 	return ms.AsContacts().Sort().MPs()
@@ -673,11 +678,6 @@ func (ms MPs) Sort() MPs {
 // Uniq 对公众号进行去重
 func (ms MPs) Uniq() MPs {
 	return ms.AsContacts().Uniq().MPs()
-}
-
-// Count 数量统计
-func (ms MPs) Count() int {
-	return len(ms)
 }
 
 // First 获取第一个
@@ -708,12 +708,12 @@ func (ms MPs) AsContacts() Contacts {
 }
 
 // Search 根据自定义条件查找
-func (ms MPs) Search(limit int, searchFuncList ...func(*MP) bool) (results MPs) {
+func (ms MPs) Search(limit int, searchHandlers ...func(*MP) bool) (results MPs) {
 	return ms.AsContacts().Search(limit, func(contact *Contact) bool {
 		var mp = &MP{contact}
 
-		for _, searchFunc := range searchFuncList {
-			if !searchFunc(mp) {
+		for _, searchHandler := range searchHandlers {
+			if !searchHandler(mp) {
 				return false
 			}
 		}

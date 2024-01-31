@@ -38,7 +38,7 @@ type JsonSerializer struct{}
 //
 // 返回值：
 //   - error: 错误对象，表示编码过程中发生的错误。
-func (jsonSerializer JsonSerializer) Encode(writer io.Writer, v interface{}) error {
+func (j JsonSerializer) Encode(writer io.Writer, v interface{}) error {
 	return json.NewEncoder(writer).Encode(v)
 }
 

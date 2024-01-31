@@ -14,16 +14,19 @@ import (
 
 // Bot 是一个聊天机器人的结构体，用于管理聊天机器人的各种功能和回调函数。
 type Bot struct {
-	err        error           // 错误信息。
-	self       *Self           // 自身信息，包含了聊天机器人的基本信息。
-	Caller     *Caller         // 调用器，用于发送网络请求。
-	cancel     func()          // 取消函数，用于取消协程的执行。
-	Storage    *Session        // 会话存储，用于保存登录状态和其他会话相关信息。
-	context    context.Context // 上下文，用于控制协程的生命周期。
-	Serializer Serializer      // 序列化器，用于对数据进行序列化，默认为json。
-	uuid       string          // UUID，用于登录和获取二维码。
-	deviceId   string          // 设备ID，用于标识设备。
-	loginUUID  string          // 登录UUID，用于登录验证。
+	err  error // 错误信息。
+	self *Self // 自身信息，包含了聊天机器人的基本信息。
+
+	uuid      string // UUID，用于登录和获取二维码。
+	deviceId  string // 设备ID，用于标识设备。
+	loginUUID string // 登录UUID，用于登录验证。
+
+	cancel  func()          // 取消函数，用于取消协程的执行。
+	context context.Context // 上下文，用于控制协程的生命周期。
+
+	Caller     *Caller    // 调用器，用于发送网络请求。
+	Storage    *Session   // 会话存储，用于保存登录状态和其他会话相关信息。
+	Serializer Serializer // 序列化器，用于对数据进行序列化，默认为json。
 
 	UUIDCallback      func(bot *Bot, uuid string)   // 获取UUID的回调函数，用于处理获取到UUID后的操作。
 	ScanCallBack      func(body CheckLoginResponse) // 扫码回调函数，用于获取扫码联系人的头像。
@@ -88,7 +91,7 @@ func NewBot(c context.Context) *Bot {
 }
 
 // DefaultBot 默认的Bot的构造方法,
-// mode不传入默认为 core.Normal,详情见mode
+// mode不传入默认为 core.Selector_NORMAL,详情见mode
 //
 //	bot := core.DefaultBot(core.Desktop)
 //
@@ -152,12 +155,12 @@ func (b *Bot) _dumpTo(writer io.Writer) error {
 	jar := b.Caller.WechatClient.GetCookieJar() // 获取机器人所使用的 CookieJar
 
 	item := HotReloadStorageItem{ // 创建一个 HotReloadStorageItem 结构体，用于存储机器人状态信息
-		BaseRequest: b.Storage.Request,            // 存储机器人的基本请求信息
 		Jar:         FromCookieJar(jar),           // 从 CookieJar 获取所有的 Cookie，并存储到 HotReloadStorageItem 中
-		LoginInfo:   b.Storage.LoginInfo,          // 存储机器人登录信息
+		UUID:        b.uuid,                       // 存储机器人的 UUID
 		Domain:      b.Caller.WechatClient.Domain, // 存储机器人所连接的微信服务器域名
 		SyncKey:     b.Storage.Response.SyncKey,   // 存储机器人的 SyncKey
-		UUID:        b.uuid,                       // 存储机器人的 UUID
+		LoginInfo:   b.Storage.LoginInfo,          // 存储机器人登录信息
+		BaseRequest: b.Storage.Request,            // 存储机器人的基本请求信息
 	}
 
 	return b.Serializer.Encode(writer, item) // 将 HotReloadStorageItem 序列化到指定的 Writer 中
@@ -279,12 +282,19 @@ func (b *Bot) SyncCheck() error {
 			return resp.Error()
 		}
 
-		// TODO 添加更多的状态码处理
 		switch resp.Selector {
-		case Normal:
+		case Selector_NORMAL:
 			continue
+		// case Selector_MOD_CONTACT:
+		// 	continue
+		// case Selector_NEW_MSG:
+		// 	continue
+		// case Selector_ADD_OR_DEL_CONTACT:
+		// 	continue
+		// case Selector_ENTER_OR_LEAVE_CHAT:
+		// 	continue
 		default:
-			messages, err := b._syncMessage()
+			messages, err := b.SyncMessage()
 			if err != nil {
 				return err
 			}
@@ -299,12 +309,8 @@ func (b *Bot) SyncCheck() error {
 			// 遍历所有消息
 			for _, message := range messages {
 				message.Init(b)
-				// 默认同步调用
-				// 如果异步调用则需自行处理
-				// 如配合 core.MessageMatchDispatcher 使用
-				// NOTE: 请确保 MessageHandler 不会阻塞，否则会导致收不到后续的消息
-				b._syncGroups(message)    // 更新群组信息
-				b.MessageHandler(message) // 处理消息
+				b.MessageHandler(message)      // 处理消息
+				b.GroupMessageHandler(message) // 更新群组信息
 			}
 		}
 	}
@@ -312,8 +318,8 @@ func (b *Bot) SyncCheck() error {
 	return err
 }
 
-// _syncMessage 同步消息
-func (b *Bot) _syncMessage() ([]*Message, error) {
+// SyncMessage 同步消息
+func (b *Bot) SyncMessage() ([]*Message, error) {
 	option := WechatCallerSyncOption{
 		BaseRequest:       b.Storage.Request,   // 设置基本请求参数
 		WebInitResponse:   b.Storage.Response,  // 设置Web初始化响应参数
@@ -335,8 +341,8 @@ func (b *Bot) _syncMessage() ([]*Message, error) {
 	return resp.AddMsgList, nil
 }
 
-// _syncGroups 更新群组信息
-func (b *Bot) _syncGroups(message *Message) {
+// SyncGroups 更新群组信息
+func (b *Bot) GroupMessageHandler(message *Message) {
 	// 判断是否为群组消息
 	if message.IsSendByGroup() {
 		// 判断是否为自己发送的消息
@@ -351,13 +357,18 @@ func (b *Bot) _syncGroups(message *Message) {
 		}
 
 		_, exist := contacts.GetByUserName(message.FromUserName)
-		if !exist { // 如果成员信息不存在，则从服务器获取
+		if !exist {
+			// 如果成员信息不存在，则从服务器获取
 			user := NewContact(message.Owner(), message.FromUserName)
-			_ = user.Detail() // 获取成员详细信息
 
-			b.self.contacts = b.self.contacts._append(user) // 将成员添加到成员列表中
+			// 获取成员详细信息
+			_ = user.Detail()
 
-			b.self.groups = b.self.contacts.Groups() // 更新群组列表
+			// 将成员添加到成员列表中
+			b.self.contacts = b.self.contacts.Append(user)
+
+			// 更新群组列表
+			b.self.groups = b.self.contacts.Groups()
 		}
 	}
 }

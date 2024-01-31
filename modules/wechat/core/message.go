@@ -105,9 +105,11 @@ type SendMessage struct {
 
 // SentMessage表示一条已发送消息的结构体
 type SentMessage struct {
-	*SendMessage        // 发送的消息
-	self         *Self  // 自己
-	MsgId        string // 消息ID
+	*SendMessage // 发送的消息
+
+	self *Self // 自己
+
+	MsgId string // 消息ID
 }
 
 // Card表示名片信息结构体
@@ -287,10 +289,12 @@ func NewMediaMessage(msgType MessageType, fromUserName, toUserName, mediaId stri
 
 func NewAppMessage(stat os.FileInfo, attachId string) *AppMessage {
 	m := &AppMessage{AppId: AppMessageAppId, Title: stat.Name()}
+
+	m.Type = AppMessageMode
 	m.Attachment.AttachId = attachId
 	m.Attachment.TotalLen = stat.Size()
-	m.Type = 6
 	m.Attachment.FileExt = FileExtension(stat.Name())
+
 	return m
 }
 

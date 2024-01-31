@@ -10,12 +10,13 @@ import (
 
 // HotReloadStorageItem 结构体用于存储热重载的相关信息。
 type HotReloadStorageItem struct {
-	UUID        string             // UUID 是字符串类型，可能用于唯一标识这个热重载存储项。
+	UUID   string // UUID 是字符串类型，可能用于唯一标识这个热重载存储项。
+	Domain Domain // Domain 是一个WechatDomain类型，可能用于存储微信域的相关信息。
+
 	Jar         *Jar               // Jar 指向一个Jar类型的指针，可能用于存储或操作JAR文件。
-	Domain      Domain             // Domain 是一个WechatDomain类型，可能用于存储微信域的相关信息。
 	SyncKey     *SyncKeyResponse   // SyncKey 指向一个SyncKey类型的指针，可能用于同步或解锁操作。
-	BaseRequest *BaseRequest       // BaseRequest 指向一个BaseRequest类型的指针，可能用于存储或操作基础请求信息。
 	LoginInfo   *LoginInfoResponse // LoginInfo 指向一个LoginInfo类型的指针，可能用于存储或操作登录信息。
+	BaseRequest *BaseRequest       // BaseRequest 指向一个BaseRequest类型的指针，可能用于存储或操作基础请求信息。
 }
 
 // HotReloadStorage 用于热重载的存储类型
@@ -23,9 +24,10 @@ type HotReloadStorage io.ReadWriter
 
 // FileHotReloadStorage 结构体用于实现文件的热重载功能(实现HotReloadStorage接口)
 type FileHotReloadStorage struct {
-	filename string     // filename 用于存储文件的路径或名称
-	file     *os.File   // file 是一个指向os.File类型的指针，表示一个已打开的文件(实现HotReloadStorage接口)
-	lock     sync.Mutex // lock 是一个互斥锁，用于保证对文件的并发访问安全
+	filename string // filename 用于存储文件的路径或名称
+
+	file *os.File   // file 是一个指向os.File类型的指针，表示一个已打开的文件(实现HotReloadStorage接口)
+	lock sync.Mutex // lock 是一个互斥锁，用于保证对文件的并发访问安全
 }
 
 // ================================================= [函数](全局)公开 =================================================

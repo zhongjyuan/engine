@@ -30,12 +30,12 @@ const (
 
 // Regexp
 var (
-	regexpUUID        = regexp.MustCompile(`uuid = "(.*?)";`)                                           // 用于匹配 uuid 的正则表达式
-	regexpAvatar      = regexp.MustCompile(`window.userAvatar = '(.*)';`)                               // 用于匹配联系人头像的正则表达式
-	regexpStatusCode  = regexp.MustCompile(`window.code=(\d+);`)                                        // 用于匹配状态码的正则表达式
-	regexpSyncCheck   = regexp.MustCompile(`window.syncCheckPath=\{retcode:"(\d+)",selector:"(\d+)"\}`) // 用于匹配 syncCheckPath 返回结果的正则表达式
-	regexpRedirectUri = regexp.MustCompile(`window.redirect_uri="(.*?)"`)                               // 用于匹配重定向 URI 的正则表达式
-	regexpEmoji       = regexp.MustCompile(`<span class="emoji emoji(.*?)"></span>`)                    // 用于匹配表情符号的正则表达式
+	regexpUUID        = regexp.MustCompile(`uuid = "(.*?)";`)                                       // 用于匹配 uuid 的正则表达式
+	regexpAvatar      = regexp.MustCompile(`window.userAvatar = '(.*)';`)                           // 用于匹配联系人头像的正则表达式
+	regexpStatusCode  = regexp.MustCompile(`window.code=(\d+);`)                                    // 用于匹配状态码的正则表达式
+	regexpSyncCheck   = regexp.MustCompile(`window.synccheck=\{retcode:"(\d+)",selector:"(\d+)"\}`) // 用于匹配 syncCheckPath 返回结果的正则表达式
+	regexpRedirectUri = regexp.MustCompile(`window.redirect_uri="(.*?)"`)                           // 用于匹配重定向 URI 的正则表达式
+	regexpEmoji       = regexp.MustCompile(`<span class="emoji emoji(.*?)"></span>`)                // 用于匹配表情符号的正则表达式
 )
 
 // MessageType 以Go惯用形式定义了PC微信所有的官方消息类型。

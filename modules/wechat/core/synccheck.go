@@ -10,11 +10,11 @@ import (
 type Selector string
 
 const (
-	Normal          Selector = "0" // 正常
-	NewMessage      Selector = "2" // 有新消息
-	ExchangeContact Selector = "4" // 联系人信息变更
-	ModContact      Selector = "6" // 添加或删除联系人
-	ModChatRoom     Selector = "7" // 进入或退出聊天室
+	Selector_NORMAL              Selector = "0" // 正常
+	Selector_NEW_MSG             Selector = "2" // 有新消息
+	Selector_MOD_CONTACT         Selector = "4" // 有人修改了自己的昵称或你修改了别人的备注
+	Selector_ADD_OR_DEL_CONTACT  Selector = "6" // 存在删除或者新增的好友信息
+	Selector_ENTER_OR_LEAVE_CHAT Selector = "7" // 进入或离开聊天界面
 )
 
 // SyncCheckResponse 表示同步检查响应的结构体
@@ -44,6 +44,10 @@ func NewSyncCheckResponse(b []byte) (*SyncCheckResponse, error) {
 
 // ================================================= [函数](SyncCheckResponse)公开 =================================================
 
+func (s SyncCheckResponse) Success() bool {
+	return s.RetCode == "0"
+}
+
 func (s SyncCheckResponse) Error() error {
 	if s.Success() {
 		return nil
@@ -57,26 +61,22 @@ func (s SyncCheckResponse) Error() error {
 	return Ret(i)
 }
 
-func (s SyncCheckResponse) Success() bool {
-	return s.RetCode == "0"
-}
-
 func (s SyncCheckResponse) Normal() bool {
-	return s.Success() && s.Selector == Normal
+	return s.Success() && s.Selector == Selector_NORMAL
 }
 
 func (s SyncCheckResponse) NewMessage() bool {
-	return s.Success() && s.Selector == NewMessage
+	return s.Success() && s.Selector == Selector_NEW_MSG
 }
 
-func (s SyncCheckResponse) ContactExchange() bool {
-	return s.Success() && s.Selector == ExchangeContact
+func (s SyncCheckResponse) ModContact() bool {
+	return s.Success() && s.Selector == Selector_MOD_CONTACT
 }
 
-func (s SyncCheckResponse) ContactMod() bool {
-	return s.Success() && s.Selector == ModContact
+func (s SyncCheckResponse) AddOrDelContact() bool {
+	return s.Success() && s.Selector == Selector_ADD_OR_DEL_CONTACT
 }
 
-func (s SyncCheckResponse) ChatRoomMod() bool {
-	return s.Success() && s.Selector == ModChatRoom
+func (s SyncCheckResponse) EnterOrLeaveChat() bool {
+	return s.Success() && s.Selector == Selector_ENTER_OR_LEAVE_CHAT
 }

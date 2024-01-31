@@ -10,8 +10,8 @@ import (
 
 // ================================================= [类型](全局)公开 =================================================
 
-// CookieEntry 代表一个 Cookie 条目。
-type CookieEntry struct {
+// entry 代表一个 Cookie 条目。
+type entry struct {
 	Name       string    // Name 是 Cookie 的名称。
 	Value      string    // Value 是 Cookie 的值。
 	Domain     string    // Domain 是 Cookie 的域。
@@ -24,17 +24,17 @@ type CookieEntry struct {
 	Expires    time.Time // Expires 是 Cookie 的过期时间。
 	Creation   time.Time // Creation 是 Cookie 的创建时间。
 	LastAccess time.Time // LastAccess 是 Cookie 的最后访问时间。
-	SeqNum     uint64    // SeqNum 是一个序列号，以便 Jar 以确定性顺序返回 Cookie，即使具有相同路径长度和创建时间的 Cookie 也是如此。这简化了测试。
+	seqNum     uint64    // SeqNum 是一个序列号，以便 Jar 以确定性顺序返回 Cookie，即使具有相同路径长度和创建时间的 Cookie 也是如此。这简化了测试。
 }
 
 // Jar 是一个与 cookiejar.Jar 相同的结构体。
 // cookiejar.Jar 的字段是私有的，因此我们无法直接使用它。
 // Jar 定义了一个 Cookie 存储结构。
 type Jar struct {
-	mu         sync.Mutex                        // mu 用于锁定剩余的字段。
-	NextSeqNum uint64                            // NextSeqNum 是下一个分配给新创建 SetCookies 的 Cookie 的序列号。
-	PsList     cookiejar.PublicSuffixList        // PsList 是公共后缀列表，用于处理域名和子域名的关系
-	Entries    map[string]map[string]CookieEntry // Entries 是一个条目集合，以它们的 eTLD+1 为键，以其名称/域/路径为子键。
+	PsList     cookiejar.PublicSuffixList  // PsList 是公共后缀列表，用于处理域名和子域名的关系
+	mu         sync.Mutex                  // mu 用于锁定剩余的字段。
+	Entries    map[string]map[string]entry // Entries 是一个条目集合，以它们的 eTLD+1 为键，以其名称/域/路径为子键。
+	NextSeqNum uint64                      // NextSeqNum 是下一个分配给新创建 SetCookies 的 Cookie 的序列号。
 }
 
 // CookieGroup 是 http.Cookie 的切片类型。
@@ -88,8 +88,8 @@ func GetWebWxDataTicket(cookies []*http.Cookie) (string, error) {
 // AsCookieJar 将 Jar 结构体不安全地转换为 http.CookieJar 接口。
 // 返回值:
 //   - http.CookieJar: 返回转换后的 http.CookieJar 接口。
-func (jar *Jar) AsCookieJar() http.CookieJar {
-	return (*cookiejar.Jar)(unsafe.Pointer(jar))
+func (j *Jar) AsCookieJar() http.CookieJar {
+	return (*cookiejar.Jar)(unsafe.Pointer(j))
 }
 
 // ================================================= [函数](CookieGroup)公开 =================================================

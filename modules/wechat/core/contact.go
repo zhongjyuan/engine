@@ -83,27 +83,31 @@ type MPs []*MP
 
 // ContactUpdater 结构表示联系人更新器，用于管理联系人的更新操作。
 type ContactUpdater struct {
-	max        int      // max 表示最大数量
-	index      int      // index 表示索引
-	updateTime int      // updateTime 表示更新时间
-	contacts   Contacts // contacts 表示联系人列表
-	current    Contacts // current 表示当前联系人列表
-	self       *Self    // self 表示自己的信息
+	self *Self // self 表示自己的信息
+
+	max        int // max 表示最大数量
+	index      int // index 表示索引
+	updateTime int // updateTime 表示更新时间
+
+	current  Contacts // current 表示当前联系人列表
+	contacts Contacts // contacts 表示联系人列表
 }
 
 // Self 类型表示登录账号的信息，包括联系人信息、机器人信息、文件助手、群聊、公众号等。
 type Self struct {
-	*Contact            // 联系人信息
-	fileHelper *Friend  // 文件助手好友
-	contacts   Contacts // 群聊成员列表
-	friends    Friends  // 好友列表
-	groups     Groups   // 群聊列表
-	mps        MPs      // 公众号列表
-	bot        *Bot     // 机器人信息
+	*Contact // 联系人信息
+
+	bot        *Bot    // 机器人信息
+	fileHelper *Friend // 文件助手好友
+
+	mps      MPs      // 公众号列表
+	groups   Groups   // 群聊列表
+	friends  Friends  // 好友列表
+	contacts Contacts // 群聊成员列表
 }
 
-// SendMessageFunc 是一个函数类型，定义了发送消息的方法。
-type SendMessageFunc func() (*SentMessage, error)
+// SendMessageHandler 是一个函数类型，定义了发送消息的方法。
+type SendMessageHandler func() (*SentMessage, error)
 
 // ================================================= [函数](全局)公开 =================================================
 
@@ -117,8 +121,8 @@ type SendMessageFunc func() (*SentMessage, error)
 //   - *Contact: 返回创建的联系人。
 func NewContact(self *Self, username string) *Contact {
 	return &Contact{
-		UserName: username,
 		self:     self,
+		UserName: username,
 	}
 }
 
@@ -146,40 +150,136 @@ func NewFileHelper(self *Self) *Friend {
 	return NewFriend(FileHelper, self)
 }
 
-// NewMembersUpdater 函数用于创建联系人更新器。
+// NewContactUpdater 函数用于创建联系人更新器。
 // 输入参数：
 //   - contacts: 需要更新的联系人列表。
 //
 // 输出参数：
 //   - *ContactUpdater: 返回联系人更新器的指针。
-func NewMembersUpdater(contacts Contacts) *ContactUpdater {
+func NewContactUpdater(contacts Contacts) *ContactUpdater {
 	return &ContactUpdater{
 		max:      50,
 		contacts: contacts,
 	}
 }
 
-// ================================================= [函数](Contacts)公开 =================================================
+// ================================================= [函数](ContactUpdater)公开 =================================================
 
-// Uniq 方法用于去重联系人列表中的元素，返回一个新的去重后的联系人列表。
+// Init 方法用于初始化联系人更新器。
 //
 // 输入参数：
-//   - cs: 要去重的联系人列表。
+//   - 无。
 //
 // 输出参数：
-//   - Contacts: 去重后的联系人列表。
-func (cs Contacts) Uniq() Contacts {
-	var uniqContacts = make(map[string]*Contact)
+//   - 无。
+func (cu *ContactUpdater) Init() {
+	// 判断联系人数量是否大于0
+	if cu.contacts.Count() > 0 {
+		// 获取第一个联系人的自身信息
+		cu.self = cu.contacts.First().Self()
+	}
+
+	// 判断联系人数量是否小于等于最大数量
+	if cu.contacts.Count() <= cu.max {
+		// 设置更新时间为1
+		cu.updateTime = 1
+	} else {
+		// 计算更新时间
+		cu.updateTime = cu.contacts.Count() / cu.max
+
+		// 若联系人数量不能整除最大数量
+		if cu.contacts.Count()%cu.max != 0 {
+			// 更新时间加1
+			cu.updateTime++
+		}
+	}
+}
+
+// Next 方法用于获取下一个更新的联系人。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果有下一个联系人需要更新，则返回 true；否则返回 false。
+func (cu *ContactUpdater) Next() bool {
+	// 判断是否已经到达更新时间
+	if cu.index >= cu.updateTime {
+		return false
+	}
+
+	// 更新索引
+	cu.index++
+
+	return true
+}
+
+// Update 方法用于更新联系人。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - error: 如果更新过程中出现错误，则返回相应的错误信息；否则返回 nil。
+func (cu *ContactUpdater) Update() error {
+	// 计算起始位置
+	start := cu.max * (cu.index - 1)
+
+	// 计算结束位置
+	end := cu.max * cu.index
+
+	// 若已经到达最后一次更新
+	if cu.index == cu.updateTime {
+		end = cu.contacts.Count() // 结束位置为联系人列表的长度
+	}
+
+	// 获取需要更新的联系人
+	cu.current = cu.contacts[start:end]
+
+	ctx := cu.self.Bot().Context()
+	req := cu.self.Bot().Storage.Request
+
+	contacts, err := cu.self.Bot().Caller.BatchGetContact(ctx, cu.current, req)
+	if err != nil {
+		return err
+	}
+
+	// 更新联系人
+	for i, contact := range contacts {
+		contact.self = cu.self
+		contact.FormatEmoji()
+
+		cu.contacts[start+i] = contact
+	}
+
+	return nil
+}
+
+// ================================================= [函数](Contacts)公开 =================================================
+
+// Init 方法用于初始化联系人列表。
+//
+// 输入参数：
+//   - self: 自己的信息。
+//
+// 输出参数：
+//   - 无。
+func (cs Contacts) Init(self *Self) {
 	for _, contact := range cs {
-		uniqContacts[contact.UserName] = contact // 将联系人列表中的元素添加到 map 中，使用 UserName 作为 key 进行去重
+		contact.self = self
+		contact.FormatEmoji()
 	}
+}
 
-	var contacts = make(Contacts, 0, len(uniqContacts))
-	for _, contact := range uniqContacts {
-		contacts = append(contacts, contact) // 将去重后的元素添加到新的联系人列表中
-	}
-
-	return contacts
+// Count 方法用于计算联系人列表的长度。
+//
+// 输入参数：
+//   - cs: 要计算长度的联系人列表。
+//
+// 输出参数：
+//   - int: 联系人列表的长度。
+func (cs Contacts) Count() int {
+	return len(cs)
 }
 
 // Sort 方法用于对联系人列表进行排序，返回一个新的排序后的联系人列表。
@@ -196,17 +296,6 @@ func (cs Contacts) Sort() Contacts {
 	return cs
 }
 
-// Count 方法用于计算联系人列表的长度。
-//
-// 输入参数：
-//   - cs: 要计算长度的联系人列表。
-//
-// 输出参数：
-//   - int: 联系人列表的长度。
-func (cs Contacts) Count() int {
-	return len(cs)
-}
-
 // First 方法用于获取联系人列表中的第一个元素。
 //
 // 输入参数：
@@ -215,7 +304,8 @@ func (cs Contacts) Count() int {
 // 输出参数：
 //   - *Contact: 联系人列表中的第一个元素，如果列表为空，则返回 nil。
 func (cs Contacts) First() *Contact {
-	if len(cs) > 0 { // 直接判断长度，无需调用 Count 方法
+	// 直接判断长度，无需调用 Count 方法
+	if len(cs) > 0 {
 		return cs[0]
 	}
 
@@ -230,7 +320,8 @@ func (cs Contacts) First() *Contact {
 // 输出参数：
 //   - *Contact: 联系人列表中的最后一个元素，如果列表为空，则返回 nil。
 func (cs Contacts) Last() *Contact {
-	length := len(cs) // 获取长度，无需调用 Count 方法
+	// 获取长度，无需调用 Count 方法
+	length := len(cs)
 	if length > 0 {
 		return cs[length-1]
 	}
@@ -238,7 +329,32 @@ func (cs Contacts) Last() *Contact {
 	return nil
 }
 
-// _append 方法用于向联系人列表中添加一个新的联系人，并返回更新后的联系人列表。
+// Uniq 方法用于去重联系人列表中的元素，返回一个新的去重后的联系人列表。
+//
+// 输入参数：
+//   - cs: 要去重的联系人列表。
+//
+// 输出参数：
+//   - Contacts: 去重后的联系人列表。
+func (cs Contacts) Uniq() Contacts {
+	var uniqContacts = make(map[string]*Contact)
+
+	// 将联系人列表中的元素添加到 map 中，使用 UserName 作为 key 进行去重
+	for _, contact := range cs {
+		uniqContacts[contact.UserName] = contact
+	}
+
+	var contacts = make(Contacts, 0, len(uniqContacts))
+
+	// 将去重后的元素添加到新的联系人列表中
+	for _, contact := range uniqContacts {
+		contacts = append(contacts, contact)
+	}
+
+	return contacts
+}
+
+// Append 方法用于向联系人列表中添加一个新的联系人，并返回更新后的联系人列表。
 //
 // 输入参数：
 //   - cs: 要添加联系人的联系人列表。
@@ -246,22 +362,9 @@ func (cs Contacts) Last() *Contact {
 //
 // 输出参数：
 //   - Contacts: 更新后的联系人列表，包含新添加的联系人。
-func (cs Contacts) _append(contact *Contact) Contacts {
-	return append(cs, contact) // 直接返回添加新联系人后的列表
-}
-
-// Init 方法用于初始化联系人列表。
-//
-// 输入参数：
-//   - self: 自己的信息。
-//
-// 输出参数：
-//   - 无。
-func (cs Contacts) Init(self *Self) {
-	for _, contact := range cs {
-		contact.self = self
-		contact.FormatEmoji()
-	}
+func (cs Contacts) Append(contact *Contact) Contacts {
+	// 直接返回添加新联系人后的列表
+	return append(cs, contact)
 }
 
 // Detail 方法用于获取联系人的详细信息。
@@ -277,7 +380,7 @@ func (cs Contacts) Detail() error {
 		return nil
 	}
 
-	updater := NewMembersUpdater(cs)
+	updater := NewContactUpdater(cs)
 
 	updater.Init()
 
@@ -301,12 +404,14 @@ func (cs Contacts) Detail() error {
 //   - Friends: 好友列表。
 func (cs Contacts) Friends() Friends {
 	friends := make(Friends, 0)
+
 	for _, contact := range cs {
 		friend, ok := contact.AsFriend()
 		if ok {
 			friends = append(friends, friend)
 		}
 	}
+
 	return friends
 }
 
@@ -319,12 +424,14 @@ func (cs Contacts) Friends() Friends {
 //   - Groups: 群组列表。
 func (cs Contacts) Groups() Groups {
 	groups := make(Groups, 0)
+
 	for _, contact := range cs {
 		group, ok := contact.AsGroup()
 		if ok {
 			groups = append(groups, group)
 		}
 	}
+
 	return groups
 }
 
@@ -337,12 +444,14 @@ func (cs Contacts) Groups() Groups {
 //   - MPs: 公众号列表。
 func (cs Contacts) MPs() MPs {
 	mps := make(MPs, 0)
+
 	for _, contact := range cs {
 		mp, ok := contact.AsMP()
 		if ok {
 			mps = append(mps, mp)
 		}
 	}
+
 	return mps
 }
 
@@ -351,14 +460,14 @@ func (cs Contacts) MPs() MPs {
 // 输入参数：
 //   - cs: 要搜索的联系人列表。
 //   - limit: 搜索结果的最大数量限制。
-//   - searchFuncs: 一个或多个用于定义搜索条件的函数。
+//   - searchHandlers: 一个或多个用于定义搜索条件的函数。
 //
 // 输出参数：
 //   - Contacts: 满足搜索条件的联系人列表。
-func (cs Contacts) Search(limit int, searchFuncs ...func(contact *Contact) bool) (results Contacts) {
+func (cs Contacts) Search(limit int, searchHandlers ...func(contact *Contact) bool) (results Contacts) {
 	return Search(cs, limit, func(contact *Contact) bool {
-		for _, searchFunc := range searchFuncs {
-			if !searchFunc(contact) {
+		for _, searchHandler := range searchHandlers {
+			if !searchHandler(contact) {
 				return false
 			}
 		}
@@ -413,7 +522,9 @@ func (cs Contacts) SearchByRemarkName(limit int, remarkName string) Contacts {
 //   - bool: 表示是否成功获取到联系人信息，如果成功返回 true，否则返回 false。
 func (cs Contacts) GetByUserName(username string) (*Contact, bool) {
 	contacts := cs.SearchByUserName(1, username)
+
 	contact := contacts.First()
+
 	return contact, contact != nil
 }
 
@@ -427,7 +538,9 @@ func (cs Contacts) GetByUserName(username string) (*Contact, bool) {
 //   - bool: 表示是否成功获取到联系人信息，如果成功返回 true，否则返回 false。
 func (cs Contacts) GetByRemarkName(remarkName string) (*Contact, bool) {
 	contacts := cs.SearchByRemarkName(1, remarkName)
+
 	contact := contacts.First()
+
 	return contact, contact != nil
 }
 
@@ -441,7 +554,9 @@ func (cs Contacts) GetByRemarkName(remarkName string) (*Contact, bool) {
 //   - bool: 表示是否成功获取到联系人信息，如果成功返回 true，否则返回 false。
 func (cs Contacts) GetByNickName(nickname string) (*Contact, bool) {
 	contacts := cs.SearchByNickName(1, nickname)
+
 	contact := contacts.First()
+
 	return contact, contact != nil
 }
 
@@ -546,6 +661,7 @@ func (c *Contact) Id() string {
 	// 如果uid不存在，尝试从头像url中获取
 	if c.HeadImgUrl != "" {
 		index := strings.Index(c.HeadImgUrl, "?") + 1
+
 		if len(c.HeadImgUrl) > index {
 			query := c.HeadImgUrl[index:]
 			params, err := url.ParseQuery(query)
@@ -555,6 +671,7 @@ func (c *Contact) Id() string {
 			return params.Get("seq")
 		}
 	}
+
 	return ""
 }
 
@@ -580,11 +697,14 @@ func (c *Contact) OrderSymbol() string {
 	}
 
 	// 对排序符号进行处理
-	symbol = html.UnescapeString(symbol) // 解码 HTML 实体字符
+	// 解码 HTML 实体字符
+	symbol = html.UnescapeString(symbol)
 
-	symbol = strings.ToUpper(symbol) // 转换为大写
+	// 转换为大写
+	symbol = strings.ToUpper(symbol)
 
-	symbol = regexp.MustCompile(`\W`).ReplaceAllString(symbol, "") // 移除非字母数字字符
+	// 移除非字母数字字符
+	symbol = regexp.MustCompile(`\W`).ReplaceAllString(symbol, "")
 
 	// 如果排序符号不为空且首字符不是字母，则返回 "~" 符号，表示放在最后
 	if len(symbol) > 0 && symbol[0] < 'A' {
@@ -821,92 +941,6 @@ func (c *Contact) SaveAvatarWithWriter(writer io.Writer) error {
 	return err
 }
 
-// ================================================= [函数](ContactUpdater)公开 =================================================
-
-// Init 方法用于初始化联系人更新器。
-//
-// 输入参数：
-//   - 无。
-//
-// 输出参数：
-//   - 无。
-func (cu *ContactUpdater) Init() {
-	// 判断联系人数量是否大于0
-	if cu.contacts.Count() > 0 {
-		// 获取第一个联系人的自身信息
-		cu.self = cu.contacts.First().Self()
-	}
-
-	// 判断联系人数量是否小于等于最大数量
-	if cu.contacts.Count() <= cu.max {
-		// 设置更新时间为1
-		cu.updateTime = 1
-	} else {
-		// 计算更新时间
-		cu.updateTime = cu.contacts.Count() / cu.max
-
-		// 若联系人数量不能整除最大数量
-		if cu.contacts.Count()%cu.max != 0 {
-			// 更新时间加1
-			cu.updateTime++
-		}
-	}
-}
-
-// Next 方法用于获取下一个更新的联系人。
-//
-// 输入参数：
-//   - 无。
-//
-// 输出参数：
-//   - bool: 如果有下一个联系人需要更新，则返回 true；否则返回 false。
-func (cu *ContactUpdater) Next() bool {
-	// 判断是否已经到达更新时间
-	if cu.index >= cu.updateTime {
-		return false
-	}
-
-	// 更新索引
-	cu.index++
-
-	return true
-}
-
-// Update 方法用于更新联系人。
-//
-// 输入参数：
-//   - 无。
-//
-// 输出参数：
-//   - error: 如果更新过程中出现错误，则返回相应的错误信息；否则返回 nil。
-func (cu *ContactUpdater) Update() error {
-	start := cu.max * (cu.index - 1) // 计算起始位置
-
-	end := cu.max * cu.index // 计算结束位置
-
-	if cu.index == cu.updateTime { // 若已经到达最后一次更新
-		end = cu.contacts.Count() // 结束位置为联系人列表的长度
-	}
-
-	// 获取需要更新的联系人
-	cu.current = cu.contacts[start:end]
-	ctx := cu.self.Bot().Context()
-	req := cu.self.Bot().Storage.Request
-	contacts, err := cu.self.Bot().Caller.BatchGetContact(ctx, cu.current, req)
-	if err != nil {
-		return err
-	}
-
-	// 更新联系人
-	for i, member := range contacts {
-		member.self = cu.self
-		member.FormatEmoji()
-		cu.contacts[start+i] = member
-	}
-
-	return nil
-}
-
 // ================================================= [函数](Self)公开 =================================================
 
 // StorageContacts 方法用于获取联系人列表。
@@ -931,14 +965,6 @@ func (s *Self) StorageMPSubscribeMessages() []*MPSubscribeMessageResponse {
 	return s.Bot().Storage.Response.MPSubscribeMsgList // 返回机器人存储的订阅号消息列表
 }
 
-// Id 方法用于获取 Self 对象的标识符。
-//
-// 输出参数：
-//   - int64: 返回 Self 对象的标识符。
-func (s *Self) Id() int64 {
-	return s.Uin
-}
-
 // Bot 返回 Self 对象所属的 Bot 对象。
 //
 // 入参：
@@ -951,54 +977,12 @@ func (s *Self) Bot() *Bot {
 	return s.bot
 }
 
-// IsFriendsGroupsMpsNil 方法用于判断联系人、群组和公众号列表是否都为空。
-//
-// 输入参数：
-//   - 无。
+// Id 方法用于获取 Self 对象的标识符。
 //
 // 输出参数：
-//   - bool: 如果联系人、群组和公众号列表都为空，则返回 true；否则返回 false。
-func (s *Self) IsFriendsGroupsMpsNil() bool {
-	return s.friends == nil && s.groups == nil && s.mps == nil
-}
-
-// UpdateContacts 方法用于更新用户的联系人列表。
-//
-// 输入参数：
-//   - 无。
-//
-// 输出参数：
-//   - error: 如果更新过程中出现错误，则返回对应的错误信息；否则返回 nil。
-func (s *Self) UpdateContacts() error {
-	// 从机器人的存储中获取登录信息
-	info := s.bot.Storage.LoginInfo
-
-	// 调用机器人的 GetContact 方法获取联系人列表
-	contacts, err := s.bot.Caller.GetContact(s.Bot().Context(), info)
-	if err != nil {
-		return err
-	}
-
-	// 初始化联系人列表，并将其赋值给缓存中的联系人列表
-	contacts.Init(s)
-
-	s.contacts = contacts
-
-	return nil
-}
-
-// UpdateContactsDetail 方法用于更新联系人详情信息。
-//
-// 输出参数：
-//   - error: 如果更新过程中出现错误，则返回对应的错误信息；否则返回 nil。
-func (s *Self) UpdateContactsDetail() error {
-	// 先获取所有的联系人
-	contacts, err := s.Contacts()
-	if err != nil {
-		return err
-	}
-
-	return contacts.Detail()
+//   - int64: 返回 Self 对象的标识符。
+func (s *Self) Id() int64 {
+	return s.Uin
 }
 
 // Contacts 方法用于获取用户的联系人列表，并可以选择是否强制更新缓存。
@@ -1113,6 +1097,56 @@ func (s *Self) MPs(update ...bool) (MPs, error) {
 	return s.mps, nil
 }
 
+// IsFriendsGroupsMpsNil 方法用于判断联系人、群组和公众号列表是否都为空。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果联系人、群组和公众号列表都为空，则返回 true；否则返回 false。
+func (s *Self) IsFriendsGroupsMpsNil() bool {
+	return s.friends == nil && s.groups == nil && s.mps == nil
+}
+
+// UpdateContacts 方法用于更新用户的联系人列表。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - error: 如果更新过程中出现错误，则返回对应的错误信息；否则返回 nil。
+func (s *Self) UpdateContacts() error {
+	// 从机器人的存储中获取登录信息
+	info := s.bot.Storage.LoginInfo
+
+	// 调用机器人的 GetContact 方法获取联系人列表
+	contacts, err := s.bot.Caller.GetContact(s.Bot().Context(), info)
+	if err != nil {
+		return err
+	}
+
+	// 初始化联系人列表，并将其赋值给缓存中的联系人列表
+	contacts.Init(s)
+
+	s.contacts = contacts
+
+	return nil
+}
+
+// UpdateContactsDetail 方法用于更新联系人详情信息。
+//
+// 输出参数：
+//   - error: 如果更新过程中出现错误，则返回对应的错误信息；否则返回 nil。
+func (s *Self) UpdateContactsDetail() error {
+	// 先获取所有的联系人
+	contacts, err := s.Contacts()
+	if err != nil {
+		return err
+	}
+
+	return contacts.Detail()
+}
+
 // SendMessageWrapper 方法用于封装发送消息的结果。
 //
 // 输入参数：
@@ -1166,9 +1200,9 @@ func (s *Self) ForwardMessageToContacts(message *SentMessage, delay time.Duratio
 
 			// 构建调用 SendTextMessage 的参数对象
 			option := &WechatCallerSendMessageOption{
+				Message:           message.SendMessage,
 				BaseRequest:       req,
 				LoginInfoResponse: info,
-				Message:           message.SendMessage,
 			}
 
 			// 调用 SendTextMessage 方法进行消息转发
@@ -1181,9 +1215,9 @@ func (s *Self) ForwardMessageToContacts(message *SentMessage, delay time.Duratio
 
 			// 构建调用 SendImageMessage 的参数对象
 			option := &WechatClientSendMessageOption{
+				Message:           message.SendMessage,
 				BaseRequest:       req,
 				LoginInfoResponse: info,
-				Message:           message.SendMessage,
 			}
 
 			// 调用 SendImageMessage 方法进行图片消息转发
@@ -1206,11 +1240,13 @@ func (s *Self) ForwardMessageToContacts(message *SentMessage, delay time.Duratio
 
 	var errGroup []error
 
-	for _, contact := range contacts { // 遍历联系人列表
+	// 遍历联系人列表
+	for _, contact := range contacts {
 		message.FromUserName = s.UserName     // 设置消息的发送者
 		message.ToUserName = contact.UserName // 设置消息的接收者
 
-		if err := forwardFunc(); err != nil { // 调用相应的转发方法进行消息转发
+		// 调用相应的转发方法进行消息转发
+		if err := forwardFunc(); err != nil {
 			errGroup = append(errGroup, err) // 发生错误时将错误添加到错误组中
 		}
 
@@ -1221,6 +1257,7 @@ func (s *Self) ForwardMessageToContacts(message *SentMessage, delay time.Duratio
 	if len(errGroup) > 0 {
 		return errors.Join(errGroup...) // 返回合并后的错误信息
 	}
+
 	// 返回 nil 表示没有错误发生
 	return nil
 }
@@ -1235,7 +1272,8 @@ func (s *Self) ForwardMessageToContacts(message *SentMessage, delay time.Duratio
 // 输出参数：
 //   - error: 如果转发过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) ForwardMessageToFriends(msg *SentMessage, delay time.Duration, friends ...*Friend) error {
-	contacts := Friends(friends).AsContacts()                  // 将好友列表转换为联系人列表
+	contacts := Friends(friends).AsContacts() // 将好友列表转换为联系人列表
+
 	return s.ForwardMessageToContacts(msg, delay, contacts...) // 调用 ForwardMessageToContacts 方法将消息转发给联系人列表
 }
 
@@ -1249,7 +1287,8 @@ func (s *Self) ForwardMessageToFriends(msg *SentMessage, delay time.Duration, fr
 // 输出参数：
 //   - error: 如果转发过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) ForwardMessageToGroups(msg *SentMessage, delay time.Duration, groups ...*Group) error {
-	contacts := Groups(groups).AsContacts()                    // 将群聊列表转换为联系人列表
+	contacts := Groups(groups).AsContacts() // 将群聊列表转换为联系人列表
+
 	return s.ForwardMessageToContacts(msg, delay, contacts...) // 调用 ForwardMessageToContacts 方法将消息转发给联系人列表
 }
 
@@ -1263,26 +1302,27 @@ func (s *Self) ForwardMessageToGroups(msg *SentMessage, delay time.Duration, gro
 // 输出参数：
 //   - error: 如果转发过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) ForwardMessageToMPs(msg *SentMessage, delay time.Duration, mps ...*MP) error {
-	contacts := MPs(mps).AsContacts()                          // 将公众号列表转换为联系人列表
+	contacts := MPs(mps).AsContacts() // 将公众号列表转换为联系人列表
+
 	return s.ForwardMessageToContacts(msg, delay, contacts...) // 调用 ForwardMessageToContacts 方法将消息转发给联系人列表
 }
 
 // SendMessageToContacts 方法用于向指定联系人发送消息，并延迟一段时间后转发消息给联系人。(群发)
 //
 // 输入参数：
-//   - sendMessageFunc: 发送消息的函数。
+//   - sendMessageHandler: 发送消息的函数。
 //   - delay: 延迟时间。
 //   - contacts: 要发送消息的联系人列表。
 //
 // 输出参数：
 //   - error: 如果发送消息或转发消息过程中出现错误，则返回相应的错误信息；否则返回 nil。
-func (s *Self) SendMessageToContacts(sendMessageFunc SendMessageFunc, delay time.Duration, contacts ...*Contact) error {
+func (s *Self) SendMessageToContacts(sendMessageHandler SendMessageHandler, delay time.Duration, contacts ...*Contact) error {
 	if len(contacts) == 0 {
 		return nil
 	}
 
 	// 调用发送消息的函数
-	message, err := sendMessageFunc()
+	message, err := sendMessageHandler()
 	if err != nil {
 		return err
 	}
@@ -1306,9 +1346,9 @@ func (s *Self) SendTextToContact(username, text string) (*SentMessage, error) {
 
 	// 构造发送消息的选项
 	option := &WechatCallerSendMessageOption{
+		Message:           message,
 		BaseRequest:       s.bot.Storage.Request,
 		LoginInfoResponse: s.bot.Storage.LoginInfo,
-		Message:           message,
 	}
 
 	// 调用 SendTextMessage 方法发送消息
@@ -1332,12 +1372,13 @@ func (s *Self) SendTextToContacts(text string, delay time.Duration, contacts ...
 		return nil
 	}
 
-	var sendMessageFunc SendMessageFunc = func() (*SentMessage, error) {
-		user := contacts[0]                             // 获取第一个联系人
+	var sendMessageHandler SendMessageHandler = func() (*SentMessage, error) {
+		user := contacts[0] // 获取第一个联系人
+
 		return s.SendTextToContact(user.UserName, text) // 调用 SendTextToContact 方法发送消息
 	}
 
-	return s.SendMessageToContacts(sendMessageFunc, delay, contacts[1:]...) // 调用 SendMessageToContacts 方法进行消息转发
+	return s.SendMessageToContacts(sendMessageHandler, delay, contacts[1:]...) // 调用 SendMessageToContacts 方法进行消息转发
 }
 
 // SendImageToContact 方法用于向指定联系人发送图片消息。
@@ -1380,13 +1421,14 @@ func (s *Self) SendImageToContacts(img io.Reader, delay time.Duration, contacts 
 		return nil
 	}
 
-	var sendMessageFunc SendMessageFunc = func() (*SentMessage, error) {
-		user := contacts[0]                             // 获取第一个联系人
+	var sendMessageHandler SendMessageHandler = func() (*SentMessage, error) {
+		user := contacts[0] // 获取第一个联系人
+
 		return s.SendImageToContact(user.UserName, img) // 调用 SendImageToContact 方法发送消息
 	}
 
 	// 调用 SendMessageToContacts 方法进行消息转发
-	return s.SendMessageToContacts(sendMessageFunc, delay, contacts[1:]...)
+	return s.SendMessageToContacts(sendMessageHandler, delay, contacts[1:]...)
 }
 
 // SendVideoToContact 方法用于向指定联系人发送视频消息。
@@ -1429,12 +1471,13 @@ func (s *Self) SendVideoToContacts(video io.Reader, delay time.Duration, contact
 		return nil
 	}
 
-	var sendMessageFunc SendMessageFunc = func() (*SentMessage, error) {
-		user := contacts[0]                               // 获取第一个联系人
+	var sendMessageHandler SendMessageHandler = func() (*SentMessage, error) {
+		user := contacts[0] // 获取第一个联系人
+
 		return s.SendVideoToContact(user.UserName, video) // 调用 SendVideoToContact 方法发送消息
 	}
 
-	return s.SendMessageToContacts(sendMessageFunc, delay, contacts[1:]...) // 调用 SendMessageToContacts 方法进行消息转发
+	return s.SendMessageToContacts(sendMessageHandler, delay, contacts[1:]...) // 调用 SendMessageToContacts 方法进行消息转发
 }
 
 // SendFileToContact 方法用于向指定联系人发送文件消息。
@@ -1477,12 +1520,13 @@ func (s *Self) SendFileToContacts(file io.Reader, delay time.Duration, contacts 
 		return nil
 	}
 
-	var sendMessageFunc SendMessageFunc = func() (*SentMessage, error) {
-		user := contacts[0]                             // 获取第一个联系人
+	var sendMessageHandler SendMessageHandler = func() (*SentMessage, error) {
+		user := contacts[0] // 获取第一个联系人
+
 		return s.SendFileToContact(user.UserName, file) // 调用 SendFileToContact 方法发送消息
 	}
 
-	return s.SendMessageToContacts(sendMessageFunc, delay, contacts[1:]...) // 调用 SendMessageToContacts 方法进行消息转发
+	return s.SendMessageToContacts(sendMessageHandler, delay, contacts[1:]...) // 调用 SendMessageToContacts 方法进行消息转发
 }
 
 // SendTextToFriend 方法用于向好友发送文本消息。
@@ -1509,7 +1553,8 @@ func (s *Self) SendTextToFriend(friend *Friend, text string) (*SentMessage, erro
 // 输出参数：
 //   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendTextToFriends(text string, delay time.Duration, friends ...*Friend) error {
-	contacts := Friends(friends).AsContacts()             // 将好友列表转换为联系人列表
+	contacts := Friends(friends).AsContacts() // 将好友列表转换为联系人列表
+
 	return s.SendTextToContacts(text, delay, contacts...) // 调用 SendTextToContacts 方法发送文本消息给联系人列表
 }
 
@@ -1537,7 +1582,8 @@ func (s *Self) SendImageToFriend(friend *Friend, file io.Reader) (*SentMessage, 
 // 输出参数：
 //   - error: 如果发送图片过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendImageToFriends(img io.Reader, delay time.Duration, friends ...*Friend) error {
-	contacts := Friends(friends).AsContacts()             // 将好友列表转换为联系人列表
+	contacts := Friends(friends).AsContacts() // 将好友列表转换为联系人列表
+
 	return s.SendImageToContacts(img, delay, contacts...) // 调用 SendImageToContacts 方法发送图片给联系人列表
 }
 
@@ -1565,7 +1611,8 @@ func (s *Self) SendVideoToFriend(friend *Friend, file io.Reader) (*SentMessage, 
 // 输出参数：
 //   - error: 如果发送视频过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendVideoToFriends(video io.Reader, delay time.Duration, friends ...*Friend) error {
-	contacts := Friends(friends).AsContacts()               // 将好友列表转换为联系人列表
+	contacts := Friends(friends).AsContacts() // 将好友列表转换为联系人列表
+
 	return s.SendVideoToContacts(video, delay, contacts...) // 调用 SendVideoToContacts 方法发送视频给联系人列表
 }
 
@@ -1593,7 +1640,8 @@ func (s *Self) SendFileToFriend(friend *Friend, file io.Reader) (*SentMessage, e
 // 输出参数：
 //   - error: 如果发送文件过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendFileToFriends(file io.Reader, delay time.Duration, friends ...*Friend) error {
-	contacts := Friends(friends).AsContacts()             // 将好友列表转换为联系人列表
+	contacts := Friends(friends).AsContacts() // 将好友列表转换为联系人列表
+
 	return s.SendFileToContacts(file, delay, contacts...) // 调用 SendFileToContacts 方法发送文件给联系人列表
 }
 
@@ -1620,7 +1668,8 @@ func (s *Self) SendTextToGroup(group *Group, text string) (*SentMessage, error) 
 // 输出参数：
 //   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendTextToGroups(text string, delay time.Duration, groups ...*Group) error {
-	contacts := Groups(groups).AsContacts()               // 将群聊列表转换为联系人列表
+	contacts := Groups(groups).AsContacts() // 将群聊列表转换为联系人列表
+
 	return s.SendTextToContacts(text, delay, contacts...) // 调用 SendTextToContacts 方法发送文本消息给联系人列表
 }
 
@@ -1647,7 +1696,8 @@ func (s *Self) SendImageToGroup(group *Group, file io.Reader) (*SentMessage, err
 // 输出参数：
 //   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendImageToGroups(img io.Reader, delay time.Duration, groups ...*Group) error {
-	contacts := Groups(groups).AsContacts()               // 将群聊列表转换为联系人列表
+	contacts := Groups(groups).AsContacts() // 将群聊列表转换为联系人列表
+
 	return s.SendImageToContacts(img, delay, contacts...) // 调用 SendImageToContacts 方法发送图片消息给联系人列表
 }
 
@@ -1674,7 +1724,8 @@ func (s *Self) SendVideoToGroup(group *Group, file io.Reader) (*SentMessage, err
 // 输出参数：
 //   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendVideoToGroups(video io.Reader, delay time.Duration, groups ...*Group) error {
-	contacts := Groups(groups).AsContacts()                 // 将群聊列表转换为联系人列表
+	contacts := Groups(groups).AsContacts() // 将群聊列表转换为联系人列表
+
 	return s.SendVideoToContacts(video, delay, contacts...) // 调用 SendVideoToContacts 方法发送视频消息给联系人列表
 }
 
@@ -1701,7 +1752,8 @@ func (s *Self) SendFileToGroup(group *Group, file io.Reader) (*SentMessage, erro
 // 输出参数：
 //   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (s *Self) SendFileToGroups(file io.Reader, delay time.Duration, groups ...*Group) error {
-	contacts := Groups(groups).AsContacts()               // 将群聊列表转换为联系人列表
+	contacts := Groups(groups).AsContacts() // 将群聊列表转换为联系人列表
+
 	return s.SendFileToContacts(file, delay, contacts...) // 调用 SendFileToContacts 方法发送文件消息给联系人列表
 }
 
@@ -1719,7 +1771,8 @@ func (s *Self) SendTextToMP(mp *MP, text string) (*SentMessage, error) {
 }
 
 func (s *Self) SendTextToMPs(text string, delay time.Duration, mps ...*MP) error {
-	contacts := MPs(mps).AsContacts()                     // 将公众号列表转换为联系人列表
+	contacts := MPs(mps).AsContacts() // 将公众号列表转换为联系人列表
+
 	return s.SendTextToContacts(text, delay, contacts...) // 调用 SendTextToContacts 方法发送文本消息给联系人列表
 }
 
@@ -1737,7 +1790,8 @@ func (s *Self) SendImageToMP(mp *MP, file io.Reader) (*SentMessage, error) {
 }
 
 func (s *Self) SendImageToMPs(file io.Reader, delay time.Duration, mps ...*MP) error {
-	contacts := MPs(mps).AsContacts()                      // 将公众号列表转换为联系人列表
+	contacts := MPs(mps).AsContacts() // 将公众号列表转换为联系人列表
+
 	return s.SendImageToContacts(file, delay, contacts...) // 调用 SendImageToContacts 方法发送图片消息给联系人列表
 }
 
@@ -1755,7 +1809,8 @@ func (s *Self) SendVideoToMP(mp *MP, file io.Reader) (*SentMessage, error) {
 }
 
 func (s *Self) SendVideoToMPs(file io.Reader, delay time.Duration, mps ...*MP) error {
-	contacts := MPs(mps).AsContacts()                      // 将公众号列表转换为联系人列表
+	contacts := MPs(mps).AsContacts() // 将公众号列表转换为联系人列表
+
 	return s.SendVideoToContacts(file, delay, contacts...) // 调用 SendVideoToContacts 方法发送视频消息给联系人列表
 }
 
@@ -1773,7 +1828,8 @@ func (s *Self) SendFileToMP(mp *MP, file io.Reader) (*SentMessage, error) {
 }
 
 func (s *Self) SendFileToMPs(file io.Reader, delay time.Duration, mps ...*MP) error {
-	contacts := MPs(mps).AsContacts()                     // 将公众号列表转换为联系人列表
+	contacts := MPs(mps).AsContacts() // 将公众号列表转换为联系人列表
+
 	return s.SendFileToContacts(file, delay, contacts...) // 调用 SendFileToContacts 方法发送文件消息给联系人列表
 }
 

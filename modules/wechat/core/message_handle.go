@@ -9,10 +9,10 @@ import (
 
 // MessageContext 包含了消息处理的上下文信息。
 type MessageContext struct {
-	index        int                        // index 表示当前处理的消息处理函数索引
-	abortIndex   int                        // abortIndex 表示中止处理的消息处理函数索引
-	*Message                                // 包含了 Message 结构体的所有字段
-	handlerGroup MessageContextHandlerGroup // handlerGroup 存储了消息处理函数的切片
+	index      int                   // index 表示当前处理的消息处理函数索引
+	abortIndex int                   // abortIndex 表示中止处理的消息处理函数索引
+	*Message                         // 包含了 Message 结构体的所有字段
+	handlers   MessageContextHandles // handlers 存储了消息处理函数的切片
 }
 
 // MessageHandler 是一个函数类型，用于处理消息的回调函数。
@@ -27,8 +27,8 @@ type MessageHandler func(message *Message)
 //   - ctx：一个指向 MessageContext 结构体的指针，表示要处理的消息上下文。
 type MessageContextHandler func(mctx *MessageContext)
 
-// MessageContextHandlerGroup 是一个 MessageContextHandler 函数类型的切片，用于存储消息上下文处理函数。
-type MessageContextHandlerGroup []MessageContextHandler
+// MessageContextHandles 是一个 MessageContextHandler 函数类型的切片，用于存储消息上下文处理函数。
+type MessageContextHandles []MessageContextHandler
 
 // MessageDispatcher 是一个接口类型，用于消息的分发。
 type MessageDispatcher interface {
@@ -54,8 +54,8 @@ type MessageMatch func(*Message) bool
 //   - matchFunc：MatchFunc 类型字段，表示匹配函数。
 //   - group：MessageContextHandlerGroup 类型字段，表示消息处理函数组。
 type MessageMatchNode struct {
-	match        MessageMatch
-	handlerGroup MessageContextHandlerGroup
+	match    MessageMatch
+	handlers MessageContextHandles
 }
 
 // MessageMatchNodes 是一个类型定义，表示匹配节点列表。
@@ -251,14 +251,14 @@ func DefaultMessageErrorHandler(err error) error {
 func (mctx *MessageContext) Next() {
 	mctx.index++ // 增加索引，准备执行下一个消息处理函数
 
-	for mctx.index <= len(mctx.handlerGroup) {
+	for mctx.index <= len(mctx.handlers) {
 		if mctx.IsAbort() {
 			return // 如果已中止处理，则直接返回
 		}
 
-		handle := mctx.handlerGroup[mctx.index-1] // 获取当前索引对应的消息处理函数
+		Handle := mctx.handlers[mctx.index-1] // 获取当前索引对应的消息处理函数
 
-		handle(mctx) // 执行消息处理函数
+		Handle(mctx) // 执行消息处理函数
 
 		mctx.index++ // 增加索引，准备执行下一个消息处理函数
 	}
@@ -291,10 +291,13 @@ func (mctx *MessageContext) IsAbort() bool {
 // 返回值：
 //   - MessageContextHandler：表示中止消息处理的处理函数，如果未中止消息处理，则返回 nil。
 func (mctx *MessageContext) AbortHandler() MessageContextHandler {
-	if mctx.abortIndex > 0 { // 如果中止索引大于 0，则表示已中止消息处理
-		return mctx.handlerGroup[mctx.abortIndex-1] // 返回中止索引对应的处理函数
+	// 如果中止索引大于 0，则表示已中止消息处理
+	if mctx.abortIndex > 0 {
+		return mctx.handlers[mctx.abortIndex-1] // 返回中止索引对应的处理函数
 	}
-	return nil // 返回 nil 表示未中止消息处理
+
+	// 返回 nil 表示未中止消息处理
+	return nil
 }
 
 // ================================================= [函数](MessageMatchDispatcher)公开 =================================================
@@ -325,15 +328,15 @@ func (mmd *MessageMatchDispatcher) SetAsync(async bool) {
 // 参数：
 //   - msg：*Message 类型指针，表示要分发的消息。
 func (mmd *MessageMatchDispatcher) Dispatch(message *Message) {
-	var handlerGroup MessageContextHandlerGroup // 定义 MessageContextHandlerGroup 变量
+	var handlers MessageContextHandles // 定义 MessageContextHandles 变量
 
 	for _, matchNode := range mmd.matchNodes { // 遍历匹配节点列表
 		if matchNode.match(message) { // 如果消息匹配当前节点
-			handlerGroup = append(handlerGroup, matchNode.handlerGroup...) // 将当前节点的处理器分组添加到 handlerGroup 中
+			handlers = append(handlers, matchNode.handlers...) // 将当前节点的处理器分组添加到 handlers 中
 		}
 	}
 
-	mctx := &MessageContext{Message: message, handlerGroup: handlerGroup} // 创建一个新的消息上下文实例
+	mctx := &MessageContext{Message: message, handlers: handlers} // 创建一个新的消息上下文实例
 	if mmd.async {
 		go mmd.Do(mctx) // 异步处理消息
 	} else {
@@ -362,7 +365,7 @@ func (mmd *MessageMatchDispatcher) RegisterHandler(match MessageMatch, handlers 
 		panic("MessageMatch can not be nil") // 抛出异常：MatchFunc 不能为空
 	}
 
-	node := &MessageMatchNode{match: match, handlerGroup: handlers} // 创建一个匹配节点
+	node := &MessageMatchNode{match: match, handlers: handlers} // 创建一个匹配节点
 
 	mmd.matchNodes = append(mmd.matchNodes, node) // 将匹配节点添加到匹配节点列表中
 }

@@ -37,7 +37,7 @@
 			"mode": "auto",
 			"request": "launch",
 			"name": "wechat|bot",
-			"program": "${workspaceFolder}\\modules\\wechat\\main.go",,
+			"program": "${workspaceFolder}\\modules\\wechat\\main.go",
 			"showLog": true,
 			// "env": {
 			// 	"GOPATH": "D:/Program Files/Go_Works",
