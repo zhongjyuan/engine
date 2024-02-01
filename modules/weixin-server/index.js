@@ -4,7 +4,6 @@ require("@babel/register")({
 	plugins: ["@babel/plugin-transform-runtime"],
 });
 
-const fs = require("fs");
 const qrcode = require("qrcode-terminal");
 
 const Weixin = require("./src/weixin").default;
@@ -20,9 +19,7 @@ try {
  * uuid事件，参数为uuid，根据uuid生成二维码
  */
 bot.on("uuid", (uuid) => {
-	qrcode.generate("https://login.weixin.qq.com/l/" + uuid, {
-		small: true,
-	});
+	qrcode.generate(`https://login.weixin.qq.com/l/${uuid}`, { small: true });
 	console.log("二维码链接：", "https://login.weixin.qq.com/qrcode/" + uuid);
 });
 
@@ -38,8 +35,7 @@ bot.on("user-avatar", (avatar) => {
  */
 bot.on("login", () => {
 	console.log("登录成功");
-	// 保存数据，将数据序列化之后保存到任意位置
-	// fs.writeFileSync("./sync-data.json", JSON.stringify(bot.botData));
+	bot.saveFile("storage", "storage.json", JSON.stringify(bot.Data)); // 保存数据，将数据序列化之后保存到任意位置
 });
 
 /**
@@ -47,8 +43,7 @@ bot.on("login", () => {
  */
 bot.on("logout", () => {
 	console.log("登出成功");
-	// 清除数据
-	// fs.unlinkSync("./sync-data.json");
+	bot.delFile("storage", "storage.json");
 });
 
 /**
@@ -56,14 +51,14 @@ bot.on("logout", () => {
  */
 bot.on("contacts-updated", (contacts) => {
 	console.log(contacts);
-	console.log("联系人数量：", Object.keys(bot.contacts).length);
+	console.log("联系人数量：", Object.keys(bot._contacts).length);
 });
 
 /**
  * 错误事件，参数一般为Error对象
  */
 bot.on("error", (err) => {
-	console.error("错误：", err);
+	console.error("错误：", err.tips);
 });
 
 /**
@@ -72,30 +67,23 @@ bot.on("error", (err) => {
 bot.on("login", () => {
 	/**
 	 * 演示发送消息到文件传输助手
-	 * 通常回复消息时可以用 msg.FromUserName
+	 * 通常回复消息时可以用 message.FromUserName
 	 */
 	let ToUserName = "filehelper";
 
 	/**
 	 * 发送文本消息，可以包含emoji(😒)和QQ表情([坏笑])
 	 */
-	bot.sendMsg("发送文本消息，可以包含emoji(😒)和QQ表情([坏笑])", ToUserName).catch((err) => {
+	bot.sendMessage("发送文本消息，可以包含emoji(😒)和QQ表情([坏笑])", ToUserName).catch((err) => {
 		bot.emit("error", err);
 	});
 
 	/**
 	 * 通过表情MD5发送表情
 	 */
-	bot
-		.sendMsg(
-			{
-				emoticonMd5: "00c801cdf69127550d93ca52c3f853ff",
-			},
-			ToUserName
-		)
-		.catch((err) => {
-			bot.emit("error", err);
-		});
+	bot.sendMessage({ emoticonMd5: "00c801cdf69127550d93ca52c3f853ff" }, ToUserName).catch((err) => {
+		bot.emit("error", err);
+	});
 
 	/**
 	 * 以下通过上传文件发送图片，视频，附件等
@@ -103,82 +91,51 @@ bot.on("login", () => {
 	 * file为多种类型
 	 * filename必填，主要为了判断文件类型
 	 */
-	// bot.sendMsg({
-	//   file: Stream || Buffer || ArrayBuffer || File || Blob,
-	//   filename: 'bot-qrcode.jpg'
-	// }, ToUserName)
-	//   .catch(err => {
-	//     bot.emit('error',err)
-	//   })
+	// bot.sendMessage({ file: Stream || Buffer || ArrayBuffer || File || Blob, filename: "bot-qrcode.jpg" }, ToUserName).catch((err) => {
+	// 	bot.emit("error", err);
+	// });
 
 	/**
 	 * 发送图片
 	 */
-	bot
-		.sendMsg(
-			{
-				file: request("https://raw.githubusercontent.com/nodeWechat/wechat4u/master/bot-qrcode.jpg"),
-				filename: "bot-qrcode.jpg",
-			},
-			ToUserName
-		)
-		.catch((err) => {
-			bot.emit("error", err);
-		});
+	// bot
+	// 	.sendMessage(
+	// 		{ file: request("https://github.com/zhongjyuan/wechatgpt/master/qrcode.jpg"), filename: "bot-qrcode.jpg" },
+	// 		ToUserName
+	// 	)
+	// 	.catch((err) => {
+	// 		bot.emit("error", err);
+	// 	});
 
 	/**
 	 * 发送表情
 	 */
-	bot
-		.sendMsg(
-			{
-				file: fs.createReadStream("./media/test.gif"),
-				filename: "test.gif",
-			},
-			ToUserName
-		)
-		.catch((err) => {
-			bot.emit("error", err);
-		});
+	// bot.sendMessage({ file: fs.createReadStream("./media/test.gif"), filename: "test.gif" }, ToUserName).catch((err) => {
+	// 	bot.emit("error", err);
+	// });
 
 	/**
 	 * 发送视频
 	 */
-	bot
-		.sendMsg(
-			{
-				file: fs.createReadStream("./media/test.mp4"),
-				filename: "test.mp4",
-			},
-			ToUserName
-		)
-		.catch((err) => {
-			bot.emit("error", err);
-		});
+	// bot.sendMessage({ file: fs.createReadStream("./media/test.mp4"), filename: "test.mp4" }, ToUserName).catch((err) => {
+	// 	bot.emit("error", err);
+	// });
 
 	/**
 	 * 发送文件
 	 */
-	bot
-		.sendMsg(
-			{
-				file: fs.createReadStream("./media/test.txt"),
-				filename: "test.txt",
-			},
-			ToUserName
-		)
-		.catch((err) => {
-			bot.emit("error", err);
-		});
+	// bot.sendMessage({ file: fs.createReadStream("./media/test.txt"), filename: "test.txt" }, ToUserName).catch((err) => {
+	// 	bot.emit("error", err);
+	// });
 
 	/**
 	 * 发送撤回消息请求
 	 */
 	bot
-		.sendMsg("测试撤回", ToUserName)
+		.sendMessage("测试撤回", ToUserName)
 		.then((res) => {
 			// 需要取得待撤回消息的MsgID
-			return bot.revokeMsg(res.MsgID, ToUserName);
+			return bot.revokeMessage(res.MsgID, ToUserName);
 		})
 		.catch((err) => {
 			console.log(err);
@@ -188,92 +145,75 @@ bot.on("login", () => {
 /**
  * 如何处理会话消息
  */
-bot.on("message", (msg) => {
+bot.on("message", (message) => {
 	/**
 	 * 获取消息时间
 	 */
-	console.log(`----------${msg.getDisplayTime()}----------`);
+	console.log(`----------${message.getDisplayTime()}----------`);
 	/**
 	 * 获取消息发送者的显示名
 	 */
-	console.log(bot.contacts[msg.FromUserName].getDisplayName());
+	console.log(bot._contacts[message.FromUserName].getDisplayName());
+
 	/**
 	 * 判断消息类型
 	 */
-	switch (msg.MsgType) {
-		case bot.CONF.MSGTYPE_TEXT:
-			/**
-			 * 文本消息
-			 */
-			console.log(msg.Content);
+	switch (message.MsgType) {
+		case bot._config.MSGTYPE_TEXT: // 文本消息
+			console.log(message.Content);
 			break;
-		case bot.CONF.MSGTYPE_IMAGE:
-			/**
-			 * 图片消息
-			 */
+		case bot._config.MSGTYPE_IMAGE: // 图片消息
 			console.log("图片消息，保存到本地");
 			bot
-				.getMsgImg(msg.MsgId)
+				.getMessageImg(message.MsgId)
 				.then((res) => {
-					// fs.writeFileSync(`./media/${msg.MsgId}.jpg`, res.data);
+					bot.saveFile("image", `${message.MsgId}.jpg`, res.data);
 				})
 				.catch((err) => {
 					bot.emit("error", err);
 				});
 			break;
-		case bot.CONF.MSGTYPE_VOICE:
-			/**
-			 * 语音消息
-			 */
+		case bot._config.MSGTYPE_VOICE: // 语音消息
 			console.log("语音消息，保存到本地");
 			bot
-				.getVoice(msg.MsgId)
+				.getVoice(message.MsgId)
 				.then((res) => {
-					// fs.writeFileSync(`./media/${msg.MsgId}.mp3`, res.data);
+					bot.saveFile("voice", `${message.MsgId}.mp3`, res.data);
 				})
 				.catch((err) => {
 					bot.emit("error", err);
 				});
 			break;
-		case bot.CONF.MSGTYPE_EMOTICON:
-			/**
-			 * 表情消息
-			 */
+		case bot._config.MSGTYPE_EMOTICON: // 表情消息
 			console.log("表情消息，保存到本地");
 			bot
-				.getMsgImg(msg.MsgId)
+				.getMsgImg(message.MsgId)
 				.then((res) => {
-					// fs.writeFileSync(`./media/${msg.MsgId}.gif`, res.data);
+					bot.saveFile("emoticon", `${message.MsgId}.gif`, res.data);
 				})
 				.catch((err) => {
 					bot.emit("error", err);
 				});
 			break;
-		case bot.CONF.MSGTYPE_VIDEO:
-		case bot.CONF.MSGTYPE_MICROVIDEO:
-			/**
-			 * 视频消息
-			 */
+		case bot._config.MSGTYPE_VIDEO:
+		case bot._config.MSGTYPE_MICROVIDEO: // 视频消息
 			console.log("视频消息，保存到本地");
 			bot
-				.getVideo(msg.MsgId)
+				.getVideo(message.MsgId)
 				.then((res) => {
-					// fs.writeFileSync(`./media/${msg.MsgId}.mp4`, res.data);
+					bot.saveFile("video", `${message.MsgId}.mp4`, res.data);
 				})
 				.catch((err) => {
 					bot.emit("error", err);
 				});
 			break;
-		case bot.CONF.MSGTYPE_APP:
-			if (msg.AppMsgType == 6) {
-				/**
-				 * 文件消息
-				 */
+		case bot._config.MSGTYPE_APP: // 文件消息
+			if (message.AppMsgType == 6) {
 				console.log("文件消息，保存到本地");
 				bot
-					.getDoc(msg.FromUserName, msg.MediaId, msg.FileName)
+					.getDoc(message.FromUserName, message.MediaId, message.FileName)
 					.then((res) => {
-						// fs.writeFileSync(`./media/${msg.FileName}`, res.data);
+						bot.saveFile("file", `${message.FileName}`, res.data);
 						console.log(res.type);
 					})
 					.catch((err) => {
@@ -289,8 +229,8 @@ bot.on("message", (msg) => {
 /**
  * 如何处理红包消息
  */
-bot.on("message", (msg) => {
-	if (msg.MsgType == bot.CONF.MSGTYPE_SYS && /红包/.test(msg.Content)) {
+bot.on("message", (message) => {
+	if (message.MsgType == bot._config.MSGTYPE_SYS && /红包/.test(message.Content)) {
 		// 若系统消息中带有‘红包’，则认为是红包消息
 		// wechat4u并不能自动收红包
 	}
@@ -299,8 +239,8 @@ bot.on("message", (msg) => {
 /**
  * 如何处理转账消息
  */
-bot.on("message", (msg) => {
-	if (msg.MsgType == bot.CONF.MSGTYPE_APP && msg.AppMsgType == bot.CONF.APPMSGTYPE_TRANSFERS) {
+bot.on("message", (message) => {
+	if (message.MsgType == bot._config.MSGTYPE_APP && message.AppMsgType == bot._config.APPMSGTYPE_TRANSFERS) {
 		// 转账
 	}
 });
@@ -308,10 +248,10 @@ bot.on("message", (msg) => {
 /**
  * 如何处理撤回消息
  */
-bot.on("message", (msg) => {
-	if (msg.MsgType == bot.CONF.MSGTYPE_RECALLED) {
-		// msg.Content是一个xml，关键信息是MsgId
-		let MsgId = msg.Content.match(/<msgid>(.*?)<\/msgid>.*?<replacemsg><!\[CDATA\[(.*?)\]\]><\/replacemsg>/)[0];
+bot.on("message", (message) => {
+	if (message.MsgType == bot._config.MSGTYPE_RECALLED) {
+		// message.Content是一个xml，关键信息是MsgId
+		let MsgId = message.Content.match(/<msgid>(.*?)<\/msgid>.*?<replacemsg><!\[CDATA\[(.*?)\]\]><\/replacemsg>/)[0];
 		// 得到MsgId后，根据MsgId，从收到过的消息中查找被撤回的消息
 	}
 });
@@ -319,12 +259,12 @@ bot.on("message", (msg) => {
 /**
  * 如何处理好友请求消息
  */
-bot.on("message", (msg) => {
-	if (msg.MsgType == bot.CONF.MSGTYPE_VERIFYMSG) {
+bot.on("message", (message) => {
+	if (message.MsgType == bot._config.MSGTYPE_VERIFYMSG) {
 		bot
-			.verifyUser(msg.RecommendInfo.UserName, msg.RecommendInfo.Ticket)
+			.verifyUser(message.RecommendInfo.UserName, message.RecommendInfo.Ticket)
 			.then((res) => {
-				console.log(`通过了 ${bot.Contact.getDisplayName(msg.RecommendInfo)} 好友请求`);
+				console.log(`通过了 ${bot._contact.getDisplayName(message.RecommendInfo)} 好友请求`);
 			})
 			.catch((err) => {
 				bot.emit("error", err);
@@ -335,9 +275,9 @@ bot.on("message", (msg) => {
 /**
  * 如何直接转发消息
  */
-bot.on("message", (msg) => {
+bot.on("message", (message) => {
 	// 不是所有消息都可以直接转发
-	bot.forwardMsg(msg, "filehelper").catch((err) => {
+	bot.forwardMessage(message, "filehelper").catch((err) => {
 		bot.emit("error", err);
 	});
 });
@@ -345,11 +285,11 @@ bot.on("message", (msg) => {
 /**
  * 如何获取联系人头像
  */
-bot.on("message", (msg) => {
+bot.on("message", (message) => {
 	bot
-		.getHeadImg(bot.contacts[msg.FromUserName].HeadImgUrl)
+		.getHeadImg(bot._contacts[message.FromUserName].HeadImgUrl)
 		.then((res) => {
-			// fs.writeFileSync(`./media/${msg.FromUserName}.jpg`, res.data);
+			bot.saveFile("head", `${message.FromUserName}.jpg`, res.data);
 		})
 		.catch((err) => {
 			bot.emit("error", err);

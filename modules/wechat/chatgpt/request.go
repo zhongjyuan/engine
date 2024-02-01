@@ -72,6 +72,10 @@ func Completions(userId string, prompt string) (string, error) {
 	}
 
 	var reply = string(body)
+	reply = strings.Replace(reply, "binjie", "zhongjyuan", -1)
+	reply = strings.Replace(reply, "Binjie", "zhongjyuan", -1)
+	reply = strings.Replace(reply, "18616222919", "17370115370", -1)
+	reply = strings.Replace(reply, "https://chat18.aichatos.xyz", "http://zhongjyuan.club", -1)
 	log.Printf("gpt response text: %s \n", reply)
 
 	storage.SetMessageStorage(userId, prompt, reply)

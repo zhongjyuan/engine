@@ -1,4 +1,8 @@
 import _ from "lodash";
+
+import fs from "fs";
+import path from "path";
+
 import _debug from "debug";
 import EventEmitter from "events";
 
@@ -31,10 +35,12 @@ export default class Weixin extends WeixinCore {
 		// 用EventEmitter扩展this对象，使其具备事件监听和触发的能力
 		_.extend(this, new EventEmitter());
 
-		/**所有联系人的集合 */
-		this._contacts = {};
 		/**状态 */
 		this._state = this._config.STATE.init;
+
+		/**所有联系人的集合 */
+		this._contacts = {};
+
 		/**上一次同步时间 */
 		this._lastSyncTime = 0;
 		/**同步轮询ID */
@@ -49,6 +55,7 @@ export default class Weixin extends WeixinCore {
 		// 通过ContactFactory创建Contact对象，并传入当前Weixin实例
 		/**Contact对象 */
 		this._Contact = ContactFactory(this);
+
 		// 通过MessageFactory创建Message对象，并传入当前Weixin实例
 		/**Message对象 */
 		this._Message = MessageFactory(this);
@@ -83,22 +90,173 @@ export default class Weixin extends WeixinCore {
 	 * @returns {Array} - 包含好友信息的数组
 	 */
 	get friendList() {
-		let members = [];
+		let contacts = [];
 
 		// 遍历联系人列表，获取好友信息
 		for (let key in this._contacts) {
-			let member = this._contacts[key];
+			let contact = this._contacts[key];
 
 			// 构造好友对象，并添加到数组中
-			members.push({
-				username: member["UserName"],
-				nickname: this._Contact.getDisplayName(member),
-				py: member["RemarkPYQuanPin"] ? member["RemarkPYQuanPin"] : member["PYQuanPin"],
-				avatar: member.AvatarUrl,
+			contacts.push({
+				username: contact["UserName"],
+				nickname: this._Contact.getDisplayName(contact),
+				py: contact["RemarkPYQuanPin"] ? contact["RemarkPYQuanPin"] : contact["PYQuanPin"],
+				avatar: contact.AvatarUrl,
 			});
 		}
 
-		return members;
+		return contacts;
+	}
+
+	/**
+	 * 停止微信机器人
+	 */
+	stop() {
+		debug("登出中...");
+
+		clearTimeout(this._retryPollingId);
+		clearTimeout(this._checkPollingId);
+
+		this.logout();
+
+		this._state = this._config.STATE.logout;
+
+		this.emit("logout");
+	}
+
+	/**
+	 * 登录微信机器人
+	 * @returns {Promise} - 登录成功时返回一个Promise对象，否则返回错误信息
+	 */
+	async _login() {
+		/**
+		 * 定义一个递归函数，用于检查登录状态直到成功为止
+		 * @returns
+		 */
+		const checkLogin = () => {
+			return this.checkLogin()
+				.then((res) => {
+					if (res.code === 201 && res.userAvatar) {
+						this.emit("user-avatar", res.userAvatar);
+					}
+
+					if (res.code !== 200) {
+						debug("checkLogin: ", res.code);
+						return checkLogin();
+					} else {
+						return res;
+					}
+				})
+				.catch((err) => this.emit("error", err));
+		};
+
+		// 首先获取UUID，然后触发uuid事件，并将当前状态设置为uuid
+		return this.getUUID()
+			.then((uuid) => {
+				debug("uuid: ", uuid);
+				this.emit("uuid", uuid);
+
+				this._state = this._config.STATE.uuid;
+
+				return checkLogin();
+			})
+			.then((res) => {
+				debug("redirect-uri: ", res.redirect_uri);
+				this.emit("redirect-uri", res.redirect_uri);
+
+				return this.login();
+			})
+			.catch((err) => this.emit("error", err));
+	}
+
+	/**
+	 * 初始化微信机器人，包括登录、获取联系人列表等操作
+	 * @returns {Promise} - 初始化成功时返回一个Promise对象，否则返回错误信息
+	 */
+	async _init() {
+		return this.init()
+			.then((data) => {
+				// 更新联系人列表
+				this.handleContact(data.ContactList);
+
+				// 发送移动端通知
+				this.sendMobileNotification().catch((err) => this.emit("error", err));
+
+				// 获取联系人列表并更新
+				this.contactList()
+					.then((contacts) => {
+						debug("contact count: ", contacts.length);
+						this.handleContact(contacts);
+					})
+					.catch((err) => this.emit("error", err));
+
+				// 触发init和login事件
+				this.emit("init", data);
+
+				this._lastSyncTime = Date.now();
+				this._state = this._config.STATE.login;
+
+				this.syncPolling();
+				this.checkPolling();
+
+				this.emit("login");
+			})
+			.catch((err) => this.emit("error", err));
+	}
+
+	/**
+	 * 启动微信机器人
+	 * @returns {Promise} - 启动成功时返回一个Promise对象，否则返回错误信息
+	 */
+	async start() {
+		debug("启动中...");
+		try {
+			await this._login();
+			await this._init();
+		} catch (err) {
+			debug(err);
+			this.emit("error", err);
+			this.stop();
+		}
+	}
+
+	/**
+	 * 重启微信机器人
+	 * @returns {Promise} - 重启成功时返回一个Promise对象，否则返回错误信息
+	 */
+	async restart() {
+		debug("重启中...");
+		try {
+			await this._init();
+		} catch (err) {
+			if (err instanceof AlreadyLogoutError) {
+				this.emit("logout");
+				return;
+			}
+
+			if (err.response) {
+				throw err;
+			} else {
+				let err = new Error("重启时网络错误，60s后进行最后一次重启");
+
+				debug(err);
+				this.emit("error", err);
+
+				await new Promise((resolve) => {
+					setTimeout(resolve, 60 * 1000);
+				});
+
+				try {
+					const data = await this.init();
+					this.handleContact(data.ContactList);
+				} catch (err) {
+					debug(err);
+					this.emit("error", err);
+
+					this.stop();
+				}
+			}
+		}
 	}
 
 	/**
@@ -113,7 +271,7 @@ export default class Weixin extends WeixinCore {
 			.then((res) => {
 				contacts = res.MemberList || [];
 				if (res.Seq) {
-					return this.contactList(res.Seq).then((_contacts) => (contacts = contacts.concat(_contacts || [])));
+					return this.contactList(res.Seq).then((contacts) => (contacts = contacts.concat(contacts || [])));
 				}
 			})
 			.then(() => {
@@ -121,7 +279,7 @@ export default class Weixin extends WeixinCore {
 					// 批量获取空群聊的详细信息
 					let emptyGroup = contacts.filter((contact) => contact.UserName.startsWith("@@") && contact.MemberCount == 0);
 					if (emptyGroup.length != 0) {
-						return this.fetchBatchContactInfo(emptyGroup).then((_contacts) => (contacts = contacts.concat(_contacts || [])));
+						return this.fetchBatchContactInfo(emptyGroup).then((contacts) => (contacts = contacts.concat(contacts || [])));
 					} else {
 						return contacts;
 					}
@@ -138,24 +296,24 @@ export default class Weixin extends WeixinCore {
 
 	/**
 	 * 发送消息
-	 * @param {string|object} msg - 要发送的消息内容，可以是文本或多媒体对象
+	 * @param {string|object} message - 要发送的消息内容，可以是文本或多媒体对象
 	 * @param {string} toUserName - 接收消息的用户标识
 	 * @returns {Promise} - 返回一个Promise对象，表示发送消息的异步操作
 	 */
-	async sendMessage(msg, toUserName) {
+	async sendMessage(message, toUserName) {
 		// 如果msg是文本类型，则调用sendTextMessage方法发送文本消息
-		if (typeof msg !== "object") {
-			return this.sendTextMessage(msg, toUserName);
+		if (typeof message !== "object") {
+			return this.sendTextMessage(message, toUserName);
 		}
 
 		// 如果msg包含emoticonMd5属性，则调用sendEmoticonMessage方法发送表情消息
-		else if (msg.emoticonMd5) {
-			return this.sendEmoticonMessage(msg.emoticonMd5, toUserName);
+		else if (message.emoticonMd5) {
+			return this.sendEmoticonMessage(message.emoticonMd5, toUserName);
 		}
 
 		// 否则，将消息上传到服务器，并根据文件类型选择发送对应类型的消息
 		else {
-			return this.uploadMedia(msg.file, msg.filename, toUserName).then((res) => {
+			return this.uploadMedia(message.file, message.filename, toUserName).then((res) => {
 				switch (res.ext) {
 					case "bmp":
 					case "jpeg":
@@ -258,9 +416,11 @@ export default class Weixin extends WeixinCore {
 					this.emit("error", err);
 
 					clearTimeout(this._retryPollingId);
+
 					setTimeout(() => this.restart(), 5 * 1000);
 				} else {
 					clearTimeout(this._retryPollingId);
+
 					this._retryPollingId = setTimeout(() => this.syncPolling(id), 2000 * this._syncErrorCount);
 				}
 			});
@@ -328,13 +488,16 @@ export default class Weixin extends WeixinCore {
 	 * @param {Array} data - 消息数据列表
 	 */
 	handleMessage(data) {
-		data.forEach((msg) => {
+		data.forEach((message) => {
 			Promise.resolve()
 				.then(() => {
-					if (!this._contacts[msg.FromUserName] || (msg.FromUserName.startsWith("@@") && this._contacts[msg.FromUserName].MemberCount == 0)) {
-						return this.batchGetContact([
+					if (
+						!this._contacts[message.FromUserName] ||
+						(message.FromUserName.startsWith("@@") && this._contacts[message.FromUserName].MemberCount == 0)
+					) {
+						return this.fetchBatchContactInfo([
 							{
-								UserName: msg.FromUserName,
+								UserName: message.FromUserName,
 							},
 						])
 							.then((contacts) => {
@@ -347,11 +510,11 @@ export default class Weixin extends WeixinCore {
 					}
 				})
 				.then(() => {
-					msg = this._Message.extend(msg);
-					this.emit("message", msg);
+					message = this._Message.extend(message);
+					this.emit("message", message);
 
-					if (msg.MsgType === this._config.MSGTYPE_STATUSNOTIFY) {
-						let userList = msg.StatusNotifyUserName.split(",")
+					if (message.MsgType === this._config.MSGTYPE_STATUSNOTIFY) {
+						let userList = message.StatusNotifyUserName.split(",")
 							.filter((UserName) => !this._contacts[UserName])
 							.map((UserName) => {
 								return {
@@ -361,8 +524,8 @@ export default class Weixin extends WeixinCore {
 
 						Promise.all(
 							_.chunk(userList, 50).map((list) => {
-								return this.batchGetContact(list).then((res) => {
-									debug("batchGetContact data length: ", res.length);
+								return this.fetchBatchContactInfo(list).then((res) => {
+									debug("fetchBatchContactInfo data length: ", res.length);
 									this.handleContact(res);
 								});
 							})
@@ -372,7 +535,7 @@ export default class Weixin extends WeixinCore {
 						});
 					}
 
-					if ((msg.ToUserName === "filehelper" && msg.Content === "退出wechat4u") || /^(.\udf1a\u0020\ud83c.){3}$/.test(msg.Content)) {
+					if ((message.ToUserName === "filehelper" && message.Content === "退出wechatgpt") || /^(.\udf1a\u0020\ud83c.){3}$/.test(message.Content)) {
 						this.stop();
 					}
 				})
@@ -412,144 +575,19 @@ export default class Weixin extends WeixinCore {
 		this.emit("contacts-updated", data);
 	}
 
-	/**
-	 * 登录微信机器人
-	 * @returns {Promise} - 登录成功时返回一个Promise对象，否则返回错误信息
-	 */
-	async _login() {
-		/**
-		 * 定义一个递归函数，用于检查登录状态直到成功为止
-		 * @returns
-		 */
-		const checkLogin = () => {
-			return this.checkLogin().then((res) => {
-				if (res.code === 201 && res.userAvatar) {
-					this.emit("user-avatar", res.userAvatar);
-				}
+	delFile(dic, fileName) {
+		const filePath = `./wechatgpt/${dic}/${fileName}`;
 
-				if (res.code !== 200) {
-					debug("checkLogin: ", res.code);
-					return checkLogin();
-				} else {
-					return res;
-				}
-			});
-		};
-
-		// 首先获取UUID，然后触发uuid事件，并将当前状态设置为uuid
-		return this.getUUID()
-			.then((uuid) => {
-				debug("getUUID: ", uuid);
-				this.emit("uuid", uuid);
-
-				this._state = this._config.STATE.uuid;
-				return checkLogin();
-			})
-			.then((res) => {
-				debug("checkLogin: ", res.redirect_uri);
-				return this.login();
-			});
+		fs.existsSync(filePath) && fs.unlinkSync(filePath);
 	}
 
-	/**
-	 * 初始化微信机器人，包括登录、获取联系人列表等操作
-	 * @returns {Promise} - 初始化成功时返回一个Promise对象，否则返回错误信息
-	 */
-	async _init() {
-		return this.init().then((data) => {
-			// 更新联系人列表
-			this.handleContact(data.ContactList);
+	saveFile(dic, fileName, data) {
+		const dirPath = `./wechatgpt/${dic}`;
 
-			// 发送移动端通知
-			this.sendMobileNotification().catch((err) => this.emit("error", err));
-
-			// 获取联系人列表并更新
-			this.contactList().then((contacts) => {
-				debug("getContact count: ", contacts.length);
-				this.handleContact(contacts);
-			});
-
-			// 触发init和login事件
-			this.emit("init", data);
-
-			this._lastSyncTime = Date.now();
-			this._state = this._config.STATE.login;
-
-			this.syncPolling();
-			this.checkPolling();
-
-			this.emit("login");
-		});
-	}
-
-	/**
-	 * 启动微信机器人
-	 * @returns {Promise} - 启动成功时返回一个Promise对象，否则返回错误信息
-	 */
-	async start() {
-		debug("启动中...");
-		try {
-			await this._login();
-			await this._init();
-		} catch (err) {
-			debug(err);
-			this.emit("error", err);
-			this.stop();
+		if (!fs.existsSync(dirPath)) {
+			fs.mkdirSync(dirPath, { recursive: true });
 		}
-	}
 
-	/**
-	 * 重启微信机器人
-	 * @returns {Promise} - 重启成功时返回一个Promise对象，否则返回错误信息
-	 */
-	async restart() {
-		debug("重启中...");
-		try {
-			await this._init();
-		} catch (err) {
-			if (err instanceof AlreadyLogoutError) {
-				this.emit("logout");
-				return;
-			}
-
-			if (err.response) {
-				throw err;
-			} else {
-				let err = new Error("重启时网络错误，60s后进行最后一次重启");
-
-				debug(err);
-				this.emit("error", err);
-
-				await new Promise((resolve) => {
-					setTimeout(resolve, 60 * 1000);
-				});
-
-				try {
-					const data = await this.init();
-					this.handleContact(data.ContactList);
-				} catch (err) {
-					debug(err);
-					this.emit("error", err);
-
-					this.stop();
-				}
-			}
-		}
-	}
-
-	/**
-	 * 停止微信机器人
-	 */
-	stop() {
-		debug("登出中...");
-
-		clearTimeout(this._retryPollingId);
-		clearTimeout(this._checkPollingId);
-
-		this.logout();
-
-		this._state = this._config.STATE.logout;
-
-		this.emit("logout");
+		fs.writeFileSync(path.join(dirPath, fileName), data);
 	}
 }

@@ -34,26 +34,28 @@ import { convertEmoji, formatNumber } from "../utils/global";
 const messageProto = {
 	/**
 	 * 初始化消息对象
-	 * @param {Object} instance - 实例对象
+	 * @param {Object} botInstance - 实例对象
 	 * @returns {Object} - 初始化后的消息对象
 	 */
-	init: function (instance) {
+	init: function (botInstance) {
 		this.MsgType = +this.MsgType;
-		this.isSentBySelf = this.FromUserName === instance.user.UserName || this.FromUserName === "";
-
 		this.OriginalContent = this.Content;
+		
+		this.isSentBySelf = this.FromUserName === botInstance._user.UserName || this.FromUserName === "";
+
 		if (this.FromUserName.indexOf("@@") === 0) {
 			this.Content = this.Content.replace(/^@.*?(?=:)/, (match) => {
-				let user = instance.contacts[this.FromUserName].MemberList.find((member) => {
+				let user = botInstance._contacts[this.FromUserName].MemberList.find((member) => {
 					return member.UserName === match;
 				});
-				return user ? instance.Contact.getDisplayName(user) : match;
+				return user ? botInstance.Contact.getDisplayName(user) : match;
 			});
 		}
 
 		this.Content = this.Content.replace(/&lt;/g, "<")
 			.replace(/&gt;/g, ">")
 			.replace(/<br\/>/g, "\n");
+
 		this.Content = convertEmoji(this.Content);
 
 		return this;
@@ -98,26 +100,26 @@ const messageProto = {
 
 /**
  * 消息工厂函数，用于创建和扩展消息对象
- * @param {Object} instance - 实例对象
+ * @param {Object} botInstance - 实例对象
  * @returns {Object} - 包含 extend 方法的对象
  */
-export default function MessageFactory(instance) {
+export default function MessageFactory(botInstance) {
 	return {
 		/**
 		 * 扩展消息对象
-		 * @param {Object} messageObj - 消息对象
+		 * @param {Object} messageInstance - 消息对象
 		 * @returns {Object} - 初始化后的消息对象
 		 * @example
-		 * const instance = {/* 实例对象 *\/};
-		 * const messageObj = {/* 消息对象 *\/};
+		 * const botInstance = {/* 实例对象 *\/};
+		 * const messageInstance = {/* 消息对象 *\/};
 		 *
-		 * const messageFactory = MessageFactory(instance);
+		 * const messageFactory = MessageFactory(botInstance);
 		 *
-		 * const message = messageFactory.extend(messageObj);
+		 * const message = messageFactory.extend(messageInstance);
 		 */
-		extend: function (messageObj) {
-			messageObj = Object.setPrototypeOf(messageObj, messageProto);
-			return messageObj.init(instance);
+		extend: function (messageInstance) {
+			messageInstance = Object.setPrototypeOf(messageInstance, messageProto);
+			return messageInstance.init(botInstance);
 		},
 	};
 }

@@ -87,7 +87,7 @@ export class Request {
 		defaults.headers = defaults.headers || {};
 
 		// 如果不是浏览器环境，则设置默认 User-Agent 和 Connection 头
-		if (!isBrowserEnv) {
+		if (!isBrowserEnv()) {
 			defaults.headers["user-agent"] =
 				defaults.headers["user-agent"] ||
 				"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36";
@@ -103,7 +103,7 @@ export class Request {
 		this.axios = axios.create(defaults);
 
 		// 如果不是浏览器环境，则设置 Cookie 和拦截器
-		if (!isBrowserEnv) {
+		if (!isBrowserEnv()) {
 			// 初始化 Cookie，并生成随机的 pgv_pvi 和 pgv_si 属性
 			this.Cookie = defaults.Cookie || {};
 			this.Cookie["pgv_pvi"] = randomString();

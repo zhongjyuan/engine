@@ -372,4 +372,12 @@ export default {
 		"userexperience_alarm",
 		"notification_messages",
 	],
+
+	/**屏蔽用户列表 */
+	SHIELDUSERS: [
+		"newsapp", //临时屏蔽腾讯新闻
+		"wxid_novlwrv3lqwv11", //old voice reminder
+		"gh_22b87fa7cb3c", //new voice reminder
+		"notification_messages",
+	],
 };

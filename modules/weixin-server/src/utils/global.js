@@ -108,3 +108,54 @@ export function convertEmoji(inputString) {
 		return "*"; // 发生错误时返回星号作为占位符
 	}
 }
+
+var _urlReg = "(\\s|\\n|<br>|^)(http(s)?://.)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?(&|&amp;)//=]*)";
+
+export function isUrl(str) {
+	return new RegExp(_urlReg, "i").test(str);
+}
+
+export function clearHtmlStr(str) {
+	return str ? str.replace(/<[^>]*>/g, "") : str;
+}
+
+export function htmlEncode(str) {
+	if (typeof str != "string") return "";
+	return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+export function htmlDecode(str) {
+	if (!str || str.length == 0) return "";
+	return str
+		.replace(/&lt;/g, "<")
+		.replace(/&gt;/g, ">")
+		.replace(/&#39;/g, "'")
+		.replace(/&quot;/g, '"')
+		.replace(/&amp;/g, "&");
+}
+
+export function getSize(bytes) {
+	bytes = +bytes;
+
+	if (!bytes) return;
+
+	var cRound = 10;
+	var BIT_OF_KB = 10,
+		BIT_OF_MB = 20,
+		BYTE_OF_KB = 1 << BIT_OF_KB,
+		BYTE_OF_MB = 1 << BIT_OF_MB;
+
+	// > 1MB
+	if (bytes >> BIT_OF_MB > 0) {
+		var bytesInMB = Math.round((bytes * cRound) / BYTE_OF_MB) / cRound;
+		return "" + bytesInMB + "MB";
+	}
+
+	// > 0.5K
+	if (bytes >> (BIT_OF_KB - 1) > 0) {
+		var bytesInKB = Math.round((bytes * cRound) / BYTE_OF_KB) / cRound;
+		return "" + bytesInKB + "KB";
+	}
+
+	return "" + bytes + "B";
+}

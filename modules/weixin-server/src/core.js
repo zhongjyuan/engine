@@ -30,7 +30,13 @@ export default class WeixinCore {
 	 * @param {Object} data - 数据对象
 	 */
 	constructor(data) {
-		this.STATE = getConfig().STATE;
+		/**
+		 * 配置信息
+		 * @type {Object}
+		 */
+		this._config = getConfig();
+
+		this._deviceId = generateDeviceID();
 
 		/**
 		 * 存储核心属性的对象
@@ -43,12 +49,13 @@ export default class WeixinCore {
 			skey: "",
 			passTicket: "",
 			formatedSyncKey: "",
+			webwxAuthTicket: "",
 			webwxDataTicket: "",
 			syncKey: { List: [] },
 		};
 
 		/**
-		 * 用户信息
+		 * 当前用户信息
 		 * @type {Object}
 		 */
 		this._user = {};
@@ -58,12 +65,6 @@ export default class WeixinCore {
 		 * @type {Object}
 		 */
 		this._cookie = {};
-
-		/**
-		 * 配置信息
-		 * @type {Object}
-		 */
-		this._config = getConfig();
 
 		/**
 		 * 存储数据对象
@@ -76,6 +77,9 @@ export default class WeixinCore {
 		 * @type {Request}
 		 */
 		this._request = new Request({ Cookie: this._cookie });
+
+		/**机器人状态枚举 */
+		this.STATE = this._config.STATE;
 	}
 
 	/**
@@ -98,25 +102,25 @@ export default class WeixinCore {
 	get Data() {
 		return {
 			/**
-			 * 存储 PROP 属性的对象
+			 * 存储 _prop 属性的对象
 			 * @type {Object}
 			 */
-			PROP: this._prop,
+			_prop: this._prop,
 			/**
-			 * 存储 CONF 属性的对象
+			 * 存储 _config 属性的对象
 			 * @type {Object}
 			 */
-			CONF: this._config,
+			_config: this._config,
 			/**
-			 * 存储 COOKIE 属性的对象
+			 * 存储 _cookie 属性的对象
 			 * @type {Object}
 			 */
-			COOKIE: this._cookie,
+			_cookie: this._cookie,
 			/**
-			 * 存储 user 属性的对象
+			 * 存储 _user 属性的对象
 			 * @type {Object}
 			 */
-			user: this._user,
+			_user: this._user,
 		};
 	}
 
@@ -129,7 +133,7 @@ export default class WeixinCore {
 			Uin: parseInt(this._prop.uin),
 			Sid: this._prop.sid,
 			Skey: this._prop.skey,
-			DeviceID: generateDeviceID(),
+			DeviceID: this._deviceId,
 		};
 	}
 
@@ -172,8 +176,6 @@ export default class WeixinCore {
 				QRLogin: {},
 			};
 
-			// res.data: "window.QRLogin.code = xxx; ..."
-
 			eval(res.data);
 			equal(window.QRLogin.code, 200, res);
 
@@ -181,7 +183,7 @@ export default class WeixinCore {
 			return window.QRLogin.uuid;
 		} catch (err) {
 			debug(err);
-			err.tips = "获取UUID失败";
+			err.tips = "获取UUID异常";
 			throw err;
 		}
 	}
@@ -192,7 +194,11 @@ export default class WeixinCore {
 	 */
 	async checkLogin() {
 		try {
+			let now = Math.floor(Date.now() / 1000);
+
 			let params = {
+				_: now.toString(),
+				r: Math.floor(now / 1579).toString(),
 				tip: 0,
 				loginicon: true,
 				uuid: this._prop.uuid,
@@ -211,14 +217,15 @@ export default class WeixinCore {
 
 			if (window.code === 200) {
 				this._config = getConfig(window.redirect_uri.match(/(?:\w+\.)+\w+/)[0]);
-				this.rediUri = window.redirect_uri;
+				this.redirectUri = window.redirect_uri;
 			} else if (window.code === 201 && window.userAvatar) {
-				// this._user.userAvatar = window.userAvatar
+				this._user.userAvatar = window.userAvatar;
 			}
+
 			return window;
 		} catch (err) {
 			debug(err);
-			err.tips = "获取手机确认登录信息失败";
+			err.tips = "获取手机确认登录信息异常";
 			throw err;
 		}
 	}
@@ -233,13 +240,14 @@ export default class WeixinCore {
 				method: "GET",
 				params: {
 					fun: "new",
+					mod: "desktop",
+					version: "v2",
 				},
-				// headers: {
-				// 	extspam:
-				// 		"Gp8ICJkIEpkICggwMDAwMDAwMRAGGoAI1GiJSIpeO1RZTq9QBKsRbPJdi84ropi16EYI10WB6g74sGmRwSNXjPQnYUKYotKkvLGpshucCaeWZMOylnc6o2AgDX9grhQQx7fm2DJRTyuNhUlwmEoWhjoG3F0ySAWUsEbH3bJMsEBwoB//0qmFJob74ffdaslqL+IrSy7LJ76/G5TkvNC+J0VQkpH1u3iJJs0uUYyLDzdBIQ6Ogd8LDQ3VKnJLm4g/uDLe+G7zzzkOPzCjXL+70naaQ9medzqmh+/SmaQ6uFWLDQLcRln++wBwoEibNpG4uOJvqXy+ql50DjlNchSuqLmeadFoo9/mDT0q3G7o/80P15ostktjb7h9bfNc+nZVSnUEJXbCjTeqS5UYuxn+HTS5nZsPVxJA2O5GdKCYK4x8lTTKShRstqPfbQpplfllx2fwXcSljuYi3YipPyS3GCAqf5A7aYYwJ7AvGqUiR2SsVQ9Nbp8MGHET1GxhifC692APj6SJxZD3i1drSYZPMMsS9rKAJTGz2FEupohtpf2tgXm6c16nDk/cw+C7K7me5j5PLHv55DFCS84b06AytZPdkFZLj7FHOkcFGJXitHkX5cgww7vuf6F3p0yM/W73SoXTx6GX4G6Hg2rYx3O/9VU2Uq8lvURB4qIbD9XQpzmyiFMaytMnqxcZJcoXCtfkTJ6pI7a92JpRUvdSitg967VUDUAQnCXCM/m0snRkR9LtoXAO1FUGpwlp1EfIdCZFPKNnXMeqev0j9W9ZrkEs9ZWcUEexSj5z+dKYQBhIICviYUQHVqBTZSNy22PlUIeDeIs11j7q4t8rD8LPvzAKWVqXE+5lS1JPZkjg4y5hfX1Dod3t96clFfwsvDP6xBSe1NBcoKbkyGxYK0UvPGtKQEE0Se2zAymYDv41klYE9s+rxp8e94/H8XhrL9oGm8KWb2RmYnAE7ry9gd6e8ZuBRIsISlJAE/e8y8xFmP031S6Lnaet6YXPsFpuFsdQs535IjcFd75hh6DNMBYhSfjv456cvhsb99+fRw/KVZLC3yzNSCbLSyo9d9BI45Plma6V8akURQA/qsaAzU0VyTIqZJkPDTzhuCl92vD2AD/QOhx6iwRSVPAxcRFZcWjgc2wCKh+uCYkTVbNQpB9B90YlNmI3fWTuUOUjwOzQRxJZj11NsimjOJ50qQwTTFj6qQvQ1a/I+MkTx5UO+yNHl718JWcR3AXGmv/aa9rD1eNP8ioTGlOZwPgmr2sor2iBpKTOrB83QgZXP+xRYkb4zVC+LoAXEoIa1+zArywlgREer7DLePukkU6wHTkuSaF+ge5Of1bXuU4i938WJHj0t3D8uQxkJvoFi/EYN/7u2P1zGRLV4dHVUsZMGCCtnO6BBigFMAA=",
-				// 	"client-version": "2.0.0",
-				// },
-				url: this.rediUri + "&fun=new&version=v2&mod=desktop",
+				headers: {
+					extspam: this._config.UOSExtspam,
+					"client-version": this._config.UOSClientVersion,
+				},
+				url: this.redirectUri,
 			});
 
 			let pm = res.data.match(/<ret>(.*)<\/ret>/);
@@ -249,20 +257,24 @@ export default class WeixinCore {
 				this._prop.uin = res.data.match(/<wxuin>(.*)<\/wxuin>/)[1];
 				this._prop.passTicket = res.data.match(/<pass_ticket>(.*)<\/pass_ticket>/)[1];
 			}
+
 			if (res.headers["set-cookie"]) {
 				res.headers["set-cookie"].forEach((item) => {
 					if (/webwx.*?data.*?ticket/i.test(item)) {
 						this._prop.webwxDataTicket = item.match(/=(.*?);/)[1];
+					} else if (/webwx.*?auth.*?ticket/i.test(item)) {
+						this._prop.webwxAuthTicket = item.match(/=(.*?);/)[1];
 					} else if (/wxuin/i.test(item)) {
 						this._prop.uin = item.match(/=(.*?);/)[1];
 					} else if (/wxsid/i.test(item)) {
 						this._prop.sid = item.match(/=(.*?);/)[1];
 					}
 				});
+				this._cookie = res.headers["set-cookie"];
 			}
 		} catch (err) {
 			debug(err);
-			err.tips = "登录失败";
+			err.tips = "登录异常";
 			throw err;
 		}
 	}
@@ -273,15 +285,9 @@ export default class WeixinCore {
 	 */
 	async init() {
 		try {
-			const params = {
-				r: ~new Date(),
-				skey: this._prop.skey,
-				pass_ticket: this._prop.passTicket,
-			};
+			const params = { _: Math.floor(Date.now() / 1000).toString() };
 
-			const data = {
-				BaseRequest: this._baseRequest(),
-			};
+			const data = { BaseRequest: this._baseRequest() };
 
 			const res = await this._request({
 				method: "POST",
@@ -306,28 +312,28 @@ export default class WeixinCore {
 			return initData;
 		} catch (err) {
 			debug(err);
-			err.tips = "微信初始化失败";
+			err.tips = "初始化异常";
 			throw err;
 		}
 	}
 
 	/**
 	 * 发送手机状态通知
-	 * @param {string} to - 接收通知的用户ID（可选）
+	 * @param {string} toUserName - 接收通知的用户ID（可选）
 	 * @returns {Promise<void>} Promise 对象，表示手机状态通知操作完成
 	 */
-	async sendMobileNotification(to) {
+	async sendMobileNotification(toUserName) {
 		try {
 			const params = {
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
 			const data = {
-				Code: to ? 1 : 3,
+				Code: toUserName ? 1 : 3,
 				BaseRequest: this._baseRequest(),
 				FromUserName: this._user.UserName,
-				ToUserName: to || this._user.UserName,
+				ToUserName: toUserName || this._user.UserName,
 				ClientMsgId: generateClientMsgID(),
 			};
 
@@ -343,7 +349,7 @@ export default class WeixinCore {
 			equal(responseData.BaseResponse.Ret, 0, res);
 		} catch (err) {
 			debug(err);
-			err.tips = "手机状态通知失败";
+			err.tips = "手机状态通知异常";
 			throw err;
 		}
 	}
@@ -356,9 +362,9 @@ export default class WeixinCore {
 	async fetchContacts(seq = 0) {
 		try {
 			const params = {
-				seq: seq,
-				lang: "zh_CN",
 				r: +new Date(),
+				seq: seq,
+				lang: this._config.lang,
 				skey: this._prop.skey,
 				pass_ticket: this._prop.passTicket,
 			};
@@ -375,7 +381,7 @@ export default class WeixinCore {
 			return data;
 		} catch (err) {
 			debug(err);
-			err.tips = "获取通讯录失败";
+			err.tips = "获取通讯录异常";
 			throw err;
 		}
 	}
@@ -388,9 +394,9 @@ export default class WeixinCore {
 	async fetchBatchContactInfo(contacts) {
 		try {
 			const params = {
-				type: "ex",
-				lang: "zh_CN",
 				r: +new Date(),
+				type: "ex",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
@@ -413,7 +419,7 @@ export default class WeixinCore {
 			return responseData.ContactList;
 		} catch (err) {
 			debug(err);
-			err.tips = "批量获取联系人失败";
+			err.tips = "批量获取联系人异常";
 			throw err;
 		}
 	}
@@ -441,9 +447,9 @@ export default class WeixinCore {
 			text = JSON.stringify(text);
 
 			const params = {
-				pass_ticket: this._prop.passTicket,
 				fun: "new",
-				lang: "zh_CN",
+				lang: this._config.lang,
+				pass_ticket: this._prop.passTicket,
 			};
 
 			const data = {
@@ -465,7 +471,7 @@ export default class WeixinCore {
 			});
 		} catch (err) {
 			debug(err);
-			err.tips = "状态报告失败";
+			err.tips = "状态报告异常";
 			throw err;
 		}
 	}
@@ -477,11 +483,12 @@ export default class WeixinCore {
 	async performSyncCheck() {
 		try {
 			const params = {
-				r: +new Date(),
-				sid: this._prop.sid,
+				_: (Date.now() * 1).toString(),
+				r: (Date.now() * 1).toString(),
 				uin: this._prop.uin,
+				sid: this._prop.sid,
 				skey: this._prop.skey,
-				deviceid: generateDeviceID(),
+				deviceid: this._baseRequest().DeviceID,
 				synckey: this._prop.formatedSyncKey,
 			};
 
@@ -510,7 +517,7 @@ export default class WeixinCore {
 			return window.synccheck.selector;
 		} catch (err) {
 			debug(err);
-			err.tips = "同步失败";
+			err.tips = "同步检查异常";
 			throw err;
 		}
 	}
@@ -522,7 +529,7 @@ export default class WeixinCore {
 	async performSync() {
 		try {
 			const params = {
-				lang: "zh_CN",
+				lang: this._config.lang,
 				sid: this._prop.sid,
 				skey: this._prop.skey,
 				pass_ticket: this._prop.passTicket,
@@ -555,7 +562,7 @@ export default class WeixinCore {
 			return responseData;
 		} catch (err) {
 			debug(err);
-			err.tips = "获取新信息失败";
+			err.tips = "获取新信息异常";
 			throw err;
 		}
 	}
@@ -569,7 +576,7 @@ export default class WeixinCore {
 			const params = {
 				type: 0,
 				redirect: 1,
-				lang: "zh_CN",
+				lang: this._config.lang,
 				skey: this._prop.skey,
 			};
 
@@ -582,34 +589,34 @@ export default class WeixinCore {
 			return "登出成功";
 		} catch (err) {
 			debug(err);
-			return "可能登出成功";
+			return "登出异常";
 		}
 	}
 
 	/**
 	 * 发送文本消息
-	 * @param {string} msg - 要发送的消息内容
-	 * @param {string} to - 目标用户的 UserName
+	 * @param {string} message - 要发送的消息内容
+	 * @param {string} toUserName - 目标用户的 UserName
 	 * @returns {Promise<Object>} Promise 对象，表示发送消息结果的数据对象
 	 * @throws {Error} 如果发送消息失败，则会抛出异常
 	 */
-	async sendTextMessage(msg, to) {
+	async sendTextMessage(message, toUserName) {
 		try {
 			const params = {
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
-			const clientMsgId = generateClientMsgID();
+			const clientMessageId = generateClientMsgID();
 			const data = {
 				Scene: 0,
 				BaseRequest: this._baseRequest(),
 				Msg: {
 					Type: this._config.MSGTYPE_TEXT,
-					Content: msg,
-					ToUserName: to,
-					LocalID: clientMsgId,
-					ClientMsgId: clientMsgId,
+					Content: message,
+					ToUserName: toUserName,
+					LocalID: clientMessageId,
+					ClientMsgId: clientMessageId,
 					FromUserName: this._user["UserName"],
 				},
 			};
@@ -627,7 +634,7 @@ export default class WeixinCore {
 			return responseData;
 		} catch (err) {
 			debug(err);
-			err.tips = "发送文本信息失败";
+			err.tips = "发送文本信息异常";
 			throw err;
 		}
 	}
@@ -635,28 +642,28 @@ export default class WeixinCore {
 	/**
 	 * 发送表情消息
 	 * @param {string} id - 表情消息ID，可以是 MediaId 或 EMoticonMd5
-	 * @param {string} to - 目标用户的 UserName
+	 * @param {string} toUserName - 目标用户的 UserName
 	 * @returns {Promise<Object>} Promise 对象，表示发送消息结果的数据对象
 	 * @throws {Error} 如果发送消息失败，则会抛出异常
 	 */
-	async sendEmoticonMessage(id, to) {
+	async sendEmoticonMessage(id, toUserName) {
 		try {
 			const params = {
 				fun: "sys",
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
-			const clientMsgId = generateClientMsgID();
+			const clientMessageId = generateClientMsgID();
 			const data = {
 				BaseRequest: this._baseRequest(),
 				Scene: 0,
 				Msg: {
 					Type: this._config.MSGTYPE_EMOTICON,
 					EmojiFlag: 2,
-					ToUserName: to,
-					LocalID: clientMsgId,
-					ClientMsgId: clientMsgId,
+					ToUserName: toUserName,
+					LocalID: clientMessageId,
+					ClientMsgId: clientMessageId,
 					FromUserName: this._user["UserName"],
 				},
 			};
@@ -680,7 +687,7 @@ export default class WeixinCore {
 			return responseData;
 		} catch (err) {
 			debug(err);
-			err.tips = "发送表情信息失败";
+			err.tips = "发送表情信息异常";
 			throw err;
 		}
 	}
@@ -749,11 +756,11 @@ export default class WeixinCore {
 					mediatype = "doc";
 			}
 
-			const clientMsgId = generateClientMsgID();
+			const clientMessageId = generateClientMsgID();
 
 			const uploadMediaRequest = JSON.stringify({
 				BaseRequest: this._baseRequest(),
-				ClientMediaId: clientMsgId,
+				ClientMediaId: clientMessageId,
 				TotalLen: size,
 				StartPos: 0,
 				DataLen: size,
@@ -820,7 +827,7 @@ export default class WeixinCore {
 			};
 		} catch (err) {
 			debug(err);
-			err.tips = "上传媒体文件失败";
+			err.tips = "上传媒体文件异常";
 			throw err;
 		}
 	}
@@ -828,29 +835,28 @@ export default class WeixinCore {
 	/**
 	 * 发送图片消息
 	 * @param {string} mediaId - 媒体文件的ID
-	 * @param {string} to - 接收方用户名
+	 * @param {string} toUserName - 接收方用户名
 	 * @returns {Promise<Object>} - 发送成功后返回的消息对象
 	 */
-	async sendPictureMessage(mediaId, to) {
+	async sendPictureMessage(mediaId, toUserName) {
 		try {
 			const params = {
 				f: "json",
 				fun: "async",
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
-			const clientMsgId = generateClientMsgID();
-
+			const clientMessageId = generateClientMsgID();
 			const data = {
 				BaseRequest: this._baseRequest(),
 				Scene: 0,
 				Msg: {
 					Type: this._config.MSGTYPE_IMAGE,
 					MediaId: mediaId,
-					ToUserName: to,
-					LocalID: clientMsgId,
-					ClientMsgId: clientMsgId,
+					ToUserName: toUserName,
+					LocalID: clientMessageId,
+					ClientMsgId: clientMessageId,
 					FromUserName: this._user.UserName,
 				},
 			};
@@ -868,7 +874,7 @@ export default class WeixinCore {
 			return responseData;
 		} catch (err) {
 			debug(err);
-			err.tips = "发送图片失败";
+			err.tips = "发送图片异常";
 			throw err;
 		}
 	}
@@ -876,29 +882,28 @@ export default class WeixinCore {
 	/**
 	 * 发送视频消息
 	 * @param {string} mediaId - 媒体文件的ID
-	 * @param {string} to - 接收方用户名
+	 * @param {string} toUserName - 接收方用户名
 	 * @returns {Promise<Object>} - 发送成功后返回的消息对象
 	 */
-	async sendVideoMessage(mediaId, to) {
+	async sendVideoMessage(mediaId, toUserName) {
 		try {
 			const params = {
 				f: "json",
 				fun: "async",
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
-			const clientMsgId = generateClientMsgID();
-
+			const clientMessageId = generateClientMsgID();
 			const data = {
 				BaseRequest: this._baseRequest(),
 				Scene: 0,
 				Msg: {
 					Type: this._config.MSGTYPE_VIDEO,
 					MediaId: mediaId,
-					ToUserName: to,
-					LocalID: clientMsgId,
-					ClientMsgId: clientMsgId,
+					ToUserName: toUserName,
+					LocalID: clientMessageId,
+					ClientMsgId: clientMessageId,
 					FromUserName: this._user.UserName,
 				},
 			};
@@ -916,7 +921,7 @@ export default class WeixinCore {
 			return responseData;
 		} catch (err) {
 			debug(err);
-			err.tips = "发送视频失败";
+			err.tips = "发送视频异常";
 			throw err;
 		}
 	}
@@ -927,20 +932,19 @@ export default class WeixinCore {
 	 * @param {string} name - 文件名
 	 * @param {number} size - 文件大小（字节）
 	 * @param {string} ext - 文件扩展名
-	 * @param {string} to - 接收方用户名
+	 * @param {string} toUserName - 接收方用户名
 	 * @returns {Promise<Object>} - 发送成功后返回的消息对象
 	 */
-	async sendDocumentMessage(mediaId, name, size, ext, to) {
+	async sendDocumentMessage(mediaId, name, size, ext, toUserName) {
 		try {
 			const params = {
 				f: "json",
 				fun: "async",
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
-			const clientMsgId = generateClientMsgID();
-
+			const clientMessageId = generateClientMsgID();
 			const content = `
 				<appmsg appid='wxeb7ec651dd0aefa9' sdkver=''>
 					<title>${name}</title>
@@ -964,9 +968,9 @@ export default class WeixinCore {
 				Msg: {
 					Type: this._config.APPMSGTYPE_ATTACH,
 					Content: content,
-					ToUserName: to,
-					LocalID: clientMsgId,
-					ClientMsgId: clientMsgId,
+					ToUserName: toUserName,
+					LocalID: clientMessageId,
+					ClientMsgId: clientMessageId,
 					FromUserName: this._user.UserName,
 				},
 			};
@@ -984,48 +988,48 @@ export default class WeixinCore {
 			return responseData;
 		} catch (err) {
 			debug(err);
-			err.tips = "发送文件失败";
+			err.tips = "发送文件异常";
 			throw err;
 		}
 	}
 
 	/**
 	 * 转发消息
-	 * @param {Object} msg - 需要转发的消息对象
-	 * @param {string} to - 接收方用户名
+	 * @param {Object} message - 需要转发的消息对象
+	 * @param {string} toUserName - 接收方用户名
 	 * @returns {Promise<Object>} - 转发成功后返回的消息对象
 	 */
-	async forwardMessage(msg, to) {
+	async forwardMessage(message, toUserName) {
 		try {
 			const params = {
 				f: "json",
 				fun: "async",
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
-			const clientMsgId = generateClientMsgID();
+			const clientMessageId = generateClientMsgID();
 			let data = {
 				BaseRequest: this._baseRequest(),
 				Scene: 2,
 				Msg: {
-					Type: msg.MsgType,
+					Type: message.MsgType,
 					MediaId: "",
-					Content: msg.Content.replace(/&lt;/g, "<").replace(/&gt;/g, ">"),
-					ToUserName: to,
-					LocalID: clientMsgId,
-					ClientMsgId: clientMsgId,
+					Content: message.Content.replace(/&lt;/g, "<").replace(/&gt;/g, ">"),
+					ToUserName: toUserName,
+					LocalID: clientMessageId,
+					ClientMsgId: clientMessageId,
 					FromUserName: this._user.UserName,
 				},
 			};
 
-			let url, pm;
-			switch (msg.MsgType) {
+			let url;
+			switch (message.MsgType) {
 				case this._config.MSGTYPE_TEXT:
 					url = this._config.API_webwxsendmsg;
-					if (msg.SubMsgType === this._config.MSGTYPE_LOCATION) {
+					if (message.SubMsgType === this._config.MSGTYPE_LOCATION) {
 						data.Msg.Type = this._config.MSGTYPE_LOCATION;
-						data.Msg.Content = msg.OriContent.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+						data.Msg.Content = message.OriContent.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 					}
 					break;
 				case this._config.MSGTYPE_IMAGE:
@@ -1034,7 +1038,7 @@ export default class WeixinCore {
 				case this._config.MSGTYPE_EMOTICON:
 					params.fun = "sys";
 					url = this._config.API_webwxsendemoticon;
-					data.Msg.EMoticonMd5 = msg.Content.replace(/^[\s\S]*?md5\s?=\s?"(.*?)"[\s\S]*?$/, "$1");
+					data.Msg.EMoticonMd5 = message.Content.replace(/^[\s\S]*?md5\s?=\s?"(.*?)"[\s\S]*?$/, "$1");
 					if (!data.Msg.EMoticonMd5) {
 						throw new Error("商店表情不能转发");
 					}
@@ -1050,10 +1054,10 @@ export default class WeixinCore {
 					break;
 				case this._config.MSGTYPE_APP:
 					url = this._config.API_webwxsendappmsg;
-					data.Msg.Type = msg.AppMsgType;
+					data.Msg.Type = message.AppMsgType;
 					data.Msg.Content = data.Msg.Content.replace(
 						/^[\s\S]*?(<appmsg[\s\S]*?<attachid>)[\s\S]*?(<\/attachid>[\s\S]*?<\/appmsg>)[\s\S]*?$/,
-						`$1${msg.MediaId}$2`
+						`$1${message.MediaId}$2`
 					);
 					break;
 				default:
@@ -1073,54 +1077,55 @@ export default class WeixinCore {
 			return responseData;
 		} catch (err) {
 			debug(err);
-			err.tips = "转发消息失败";
+			err.tips = "转发消息异常";
 			throw err;
 		}
 	}
 
 	/**
 	 * 撤回消息
-	 * @param {string} msgId - 待撤回的消息ID
+	 * @param {string} messageId - 待撤回的消息ID
 	 * @param {string} toUserName - 消息所在的聊天对象的用户名
 	 * @returns {Promise<Object>} - 包含操作结果的对象
 	 */
-	async revokeMessage(msgId, toUserName) {
+	async revokeMessage(messageId, toUserName) {
 		try {
 			const data = {
 				BaseRequest: this._baseRequest(),
-				SvrMsgId: msgId,
+				SvrMsgId: messageId,
 				ToUserName: toUserName,
 				ClientMsgId: generateClientMsgID(),
 			};
 
 			const res = await this._request({
 				method: "POST",
-				url: this._config.API_webwxrevokemsg,
 				data: data,
+				url: this._config.API_webwxrevokemsg,
 			});
 
 			const result = res.data;
 			if (result.BaseResponse.Ret !== 0) {
 				throw new Error(`撤回消息失败: ${JSON.stringify(res)}`);
 			}
+
 			return result;
 		} catch (err) {
 			debug(err);
-			err.tips = "撤回消息失败";
+			err.tips = "撤回消息异常";
 			throw err;
 		}
 	}
 
 	/**
 	 * 获取消息图片或表情
-	 * @param {string} msgId - 消息ID
+	 * @param {string} messageId - 消息ID
 	 * @returns {Promise<Object>} - 包含图片或表情数据和类型的对象
 	 */
-	async getMessageImg(msgId) {
+	async getMessageImg(messageId) {
 		try {
 			const params = {
 				type: "big",
-				MsgID: msgId,
+				MsgID: messageId,
 				skey: this._prop.skey,
 			};
 
@@ -1137,20 +1142,20 @@ export default class WeixinCore {
 			};
 		} catch (err) {
 			debug(err);
-			err.tips = "获取图片或表情失败";
+			err.tips = "获取图片或表情异常";
 			throw err;
 		}
 	}
 
 	/**
 	 * 获取视频
-	 * @param {string} msgId - 消息ID
+	 * @param {string} messageId - 消息ID
 	 * @returns {Promise<Object>} - 包含视频数据和类型的对象
 	 */
-	async getMessageVideo(msgId) {
+	async getMessageVideo(messageId) {
 		try {
 			const params = {
-				MsgID: msgId,
+				MsgID: messageId,
 				skey: this._prop.skey,
 			};
 
@@ -1170,20 +1175,20 @@ export default class WeixinCore {
 			};
 		} catch (err) {
 			debug(err);
-			err.tips = "获取视频失败";
+			err.tips = "获取视频异常";
 			throw err;
 		}
 	}
 
 	/**
 	 * 获取声音
-	 * @param {string} msgId - 消息ID
+	 * @param {string} messageId - 消息ID
 	 * @returns {Promise<Object>} - 包含声音数据和类型的对象
 	 */
-	async getMessageVoice(msgId) {
+	async getMessageVoice(messageId) {
 		try {
 			const params = {
-				MsgID: msgId,
+				MsgID: messageId,
 				skey: this._prop.skey,
 			};
 
@@ -1200,7 +1205,7 @@ export default class WeixinCore {
 			};
 		} catch (err) {
 			debug(err);
-			err.tips = "获取声音失败";
+			err.tips = "获取声音异常";
 			throw err;
 		}
 	}
@@ -1212,7 +1217,7 @@ export default class WeixinCore {
 	 */
 	async getHeadImg(HeadImgUrl) {
 		try {
-			const url = this._config.origin + HeadImgUrl;
+			const url = this._config.baseHost + HeadImgUrl;
 
 			const res = await this._request({
 				method: "GET",
@@ -1226,7 +1231,7 @@ export default class WeixinCore {
 			};
 		} catch (err) {
 			debug(err);
-			err.tips = "获取头像失败";
+			err.tips = "获取头像异常";
 			throw err;
 		}
 	}
@@ -1262,7 +1267,7 @@ export default class WeixinCore {
 			};
 		} catch (err) {
 			debug(err);
-			err.tips = "获取文件失败";
+			err.tips = "获取文件异常";
 			throw err;
 		}
 	}
@@ -1276,7 +1281,7 @@ export default class WeixinCore {
 	async verifyUser(UserName, Ticket) {
 		try {
 			const params = {
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
@@ -1307,10 +1312,11 @@ export default class WeixinCore {
 			if (result.BaseResponse.Ret !== 0) {
 				throw new Error(`通过好友请求失败: ${JSON.stringify(res)}`);
 			}
+
 			return result;
 		} catch (err) {
 			debug(err);
-			err.tips = "通过好友请求失败";
+			err.tips = "通过好友请求异常";
 			throw err;
 		}
 	}
@@ -1324,7 +1330,7 @@ export default class WeixinCore {
 	async addFriend(UserName, content = `我是${this._user.NickName}`) {
 		try {
 			const params = {
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
@@ -1359,17 +1365,11 @@ export default class WeixinCore {
 			return result;
 		} catch (err) {
 			debug(err);
-			err.tips = "添加好友失败";
+			err.tips = "添加好友异常";
 			throw err;
 		}
 	}
 
-	// Topic: Chatroom name
-	// MemberList format:
-	// [
-	//   {"UserName":"@250d8d156ad9f8b068c2e3df3464ecf2"},
-	//   {"UserName":"@42d725733741de6ac53cbe3738d8dd2e"}
-	// ]
 	/**
 	 * 创建群聊
 	 * @param {string} Topic - 群聊的主题
@@ -1379,7 +1379,7 @@ export default class WeixinCore {
 	async createChatroom(Topic, MemberList) {
 		try {
 			const params = {
-				lang: "zh_CN",
+				lang: this._config.lang,
 				r: ~new Date(),
 				pass_ticket: this._prop.passTicket,
 			};
@@ -1406,7 +1406,7 @@ export default class WeixinCore {
 			return result;
 		} catch (err) {
 			debug(err);
-			err.tips = "创建群失败";
+			err.tips = "创建群异常";
 			throw err;
 		}
 	}
@@ -1452,7 +1452,7 @@ export default class WeixinCore {
 			return result;
 		} catch (err) {
 			debug(err);
-			err.tips = "邀请或踢出群成员失败";
+			err.tips = "邀请或踢出群成员异常";
 			throw err;
 		}
 	}
@@ -1488,7 +1488,7 @@ export default class WeixinCore {
 			}
 		} catch (err) {
 			debug(err);
-			err.tips = "更新群名失败";
+			err.tips = "更新群名异常";
 			throw err;
 		}
 	}
@@ -1502,7 +1502,7 @@ export default class WeixinCore {
 	async updateRemarkName(UserName, RemarkName) {
 		try {
 			const params = {
-				lang: "zh_CN",
+				lang: this._config.lang,
 				pass_ticket: this._prop.passTicket,
 			};
 
@@ -1528,7 +1528,7 @@ export default class WeixinCore {
 			return result;
 		} catch (err) {
 			debug(err);
-			err.tips = "设置用户标签失败";
+			err.tips = "设置用户标签异常";
 			throw err;
 		}
 	}
@@ -1569,7 +1569,7 @@ export default class WeixinCore {
 			return result;
 		} catch (err) {
 			debug(err);
-			err.tips = "置顶或取消置顶失败";
+			err.tips = "置顶或取消置顶异常";
 			throw err;
 		}
 	}
