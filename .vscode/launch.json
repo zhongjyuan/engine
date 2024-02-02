@@ -21,23 +21,23 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "server|weixin|dev",
+			"name": "wechatbot|dev",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\modules\\weixin-server\\index.js"
+			"program": "${workspaceFolder}\\modules\\wechatbot\\main.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "server|weixin|pro",
+			"name": "wechatbot|pro",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\dist\\weixin-server.js"
+			"program": "${workspaceFolder}\\dist\\wechatbot.js"
 		},
 		{
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "wechat|bot",
-			"program": "${workspaceFolder}\\modules\\wechat\\main.go",
+			"name": "wechatgpt",
+			"program": "${workspaceFolder}\\modules\\wechatgpt\\main.go",
 			"showLog": true,
 			// "env": {
 			// 	"GOPATH": "D:/Program Files/Go_Works",

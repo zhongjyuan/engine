@@ -8,13 +8,16 @@
 		"build:localization": "node ./scripts/buildLocalization.js",
 		"build:web": "SET NODE_ENV=production && webpack --node-env production --config ./build/webpack.config.build.js --progress --color",
 		"build:server": "SET NODE_ENV=production && npx webpack --node-env production --config ./build/webpack.config.server.js --progress --color",
-		"build:weixin": "SET NODE_ENV=production && npx webpack --node-env production --config ./build/webpack.config.weixin.js --progress --color",
+		"build:wechatbot": "SET NODE_ENV=production && npx webpack --node-env production --config ./build/webpack.config.wechatbot.js --progress --color",
+		"build:wechatgpt": "go build modules/wechatgpt/main.go",
 		"dev:web": "SET NODE_ENV=development && webpack-dev-server --node-env development --config ./build/webpack.config.dev.js --progress --color",
 		"dev:server": "node ./server.js",
 		"start:server": "node ./dist/server.js",
-		"dev:weixin": "cross-env DEBUG=core,weixin node modules/weixin-server/index.js",
-		"start:weixin": "cross-env DEBUG=core,weixin node ./dist/weixin-server.js",
-		"compile:weixin": "babel modules/weixin-server/src -d extends/weixin-server -s --presets env"
+		"dev:wechatbot": "cross-env DEBUG=core,weixin node modules/wechatbot/main.js",
+		"start:wechatbot": "cross-env DEBUG=core,weixin node ./dist/wechatbot.js",
+		"compile:wechatbot": "babel modules/wechatbot/core -d extends/wechatbot -s --presets env",
+		"dev:wechatgpt": "go run modules/wechatgpt/main.go",
+		"start:wechatgpt": "nohup ./modules/wechatgpt/main > console.log 2>&1 &"
 	},
 	"keywords": [
 		"zhongjyuan",
