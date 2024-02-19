@@ -7,40 +7,52 @@ import (
 	"zhongjyuan/wechatgpt/core"
 )
 
-// UserMessageHandler 私聊消息处理
+// IUserMessageHandler 私聊消息处理
 type IUserMessageHandler struct{}
 
+// 此行代码用于确保 IUserMessageHandler 类型实现了 IMessageHandler 接口。
 var _ IMessageHandler = (*IUserMessageHandler)(nil)
 
-// NewUserMessageHandler 创建私聊处理器
+// UserMessageHandler 函数用于创建私聊消息处理器实例。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - IMessageHandler: 返回 IUserMessageHandler 实例作为 IMessageHandler 接口。
 func UserMessageHandler() IMessageHandler {
+	// 返回 IUserMessageHandler 实例指针作为 IMessageHandler 接口
 	return &IUserMessageHandler{}
 }
 
-// Handle 处理消息
+// Handle 方法用于处理私聊消息。
+//
+// 输入参数：
+//   - message: 要处理的消息对象。
+//
+// 输出参数：
+//   - error: 如果处理过程中发生错误，则返回非空的 error；否则返回 nil。
 func (handler *IUserMessageHandler) Handle(message *core.Message) error {
-	if message.IsText() {
-		return handler.ReplyText(message)
+	// 如果消息为文本类型，则调用 ReplyText 方法回复消息
+	if !message.IsText() || message.IsSendBySelf() {
+		return nil
 	}
 
-	return nil
-}
-
-// ReplyText 发送文本消息到群
-func (handler *IUserMessageHandler) ReplyText(message *core.Message) error {
-	// 接收私聊消息
+	// 获取消息发送者信息
 	sender, err := message.Sender()
 	if err != nil {
-		log.Printf("message sender unknown error: %v \n", err)
-		message.ReplyText("机器人又奔溃了，我一会发现了就去修。")
+		log.Printf("get sender in message error :%v \n", err)
 		return err
 	}
-	log.Printf("Received user %v Text Message : %v", sender.NickName, message.Content)
 
-	// 向GPT发起请求
+	// 记录消息日志
+	log.Printf("Received User %v Text Message : %v", sender.NickName, message.Content)
+
+	// 向 GPT 发起请求
 	requestText := strings.TrimSpace(message.Content)
 	requestText = strings.Trim(requestText, "\n")
 
+	// 向ChatGPT发起请求获取回复
 	reply, err := chatgpt.Completions(sender.NickName, requestText)
 	if err != nil {
 		log.Printf("chatgpt request error: %v \n", err)
@@ -48,18 +60,21 @@ func (handler *IUserMessageHandler) ReplyText(message *core.Message) error {
 		return err
 	}
 
+	// 如果回复为空则不进行处理
 	if reply == "" {
 		return nil
 	}
 
-	// 回复联系人
-	reply = strings.TrimSpace(reply)
-	reply = strings.Trim(reply, "\n")
+	// 回复给联系人
+	replyText := strings.TrimSpace(reply)
+	replyText = strings.Trim(replyText, "\n")
 
-	_, err = message.ReplyText(reply)
+	_, err = message.ReplyText(replyText)
 	if err != nil {
 		log.Printf("response user error: %v \n", err)
+		return err
 	}
 
-	return err
+	// 其他类型消息暂不处理，直接返回 nil
+	return nil
 }

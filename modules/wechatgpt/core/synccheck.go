@@ -25,7 +25,14 @@ type SyncCheckResponse struct {
 
 // ================================================= [函数](全局)公开 =================================================
 
-// NewSyncCheckResponse 根据字节切片创建 SyncCheckResponse 对象
+// NewSyncCheckResponse 从字节切片中解析出 SyncCheckResponse 对象。
+//
+// 输入参数：
+//   - b []byte: 包含同步检查响应数据的字节切片。
+//
+// 输出参数：
+//   - *SyncCheckResponse: 成功解析出的 SyncCheckResponse 对象指针。
+//   - error: 如果解析过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func NewSyncCheckResponse(b []byte) (*SyncCheckResponse, error) {
 	// 使用正则表达式解析字节切片
 	results := regexpSyncCheck.FindSubmatch(b)
@@ -43,11 +50,24 @@ func NewSyncCheckResponse(b []byte) (*SyncCheckResponse, error) {
 }
 
 // ================================================= [函数](SyncCheckResponse)公开 =================================================
-
+// Success 方法用于判断 SyncCheckResponse 是否成功。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果 SyncCheckResponse 成功，则返回 true；否则返回 false。
 func (s SyncCheckResponse) Success() bool {
 	return s.RetCode == "0"
 }
 
+// Error 方法用于获取 SyncCheckResponse 的错误信息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - error: 如果 SyncCheckResponse 成功，则返回 nil；否则返回相应的错误信息。
 func (s SyncCheckResponse) Error() error {
 	if s.Success() {
 		return nil
@@ -61,22 +81,57 @@ func (s SyncCheckResponse) Error() error {
 	return Ret(i)
 }
 
+// Normal 方法用于判断 SyncCheckResponse 是否为普通消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果 SyncCheckResponse 是普通消息，则返回 true；否则返回 false。
 func (s SyncCheckResponse) Normal() bool {
 	return s.Success() && s.Selector == Selector_NORMAL
 }
 
+// NewMessage 方法用于判断 SyncCheckResponse 是否为新消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果 SyncCheckResponse 是新消息，则返回 true；否则返回 false。
 func (s SyncCheckResponse) NewMessage() bool {
 	return s.Success() && s.Selector == Selector_NEW_MSG
 }
 
+// ModContact 方法用于判断 SyncCheckResponse 是否为修改联系人事件。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果 SyncCheckResponse 是修改联系人事件，则返回 true；否则返回 false。
 func (s SyncCheckResponse) ModContact() bool {
 	return s.Success() && s.Selector == Selector_MOD_CONTACT
 }
 
+// AddOrDelContact 方法用于判断 SyncCheckResponse 是否为添加或删除联系人事件。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果 SyncCheckResponse 是添加或删除联系人事件，则返回 true；否则返回 false。
 func (s SyncCheckResponse) AddOrDelContact() bool {
 	return s.Success() && s.Selector == Selector_ADD_OR_DEL_CONTACT
 }
 
+// EnterOrLeaveChat 方法用于判断 SyncCheckResponse 是否为进入或离开聊天事件。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果 SyncCheckResponse 是进入或离开聊天事件，则返回 true；否则返回 false。
 func (s SyncCheckResponse) EnterOrLeaveChat() bool {
 	return s.Success() && s.Selector == Selector_ENTER_OR_LEAVE_CHAT
 }

@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -277,16 +278,41 @@ func NewSendMessage(msgType MessageType, content, fromUserName, toUserName, medi
 	}
 }
 
-// NewTextMessage 文本消息的构造方法
+// NewTextMessage 函数用于创建一个新的文本消息。
+//
+// 输入参数：
+//   - content string: 消息内容。
+//   - fromUserName string: 发送者用户名。
+//   - toUserName string: 接收者用户名。
+//
+// 输出参数：
+//   - *SendMessage: 返回一个新的 SendMessage 实例。
 func NewTextMessage(content, fromUserName, toUserName string) *SendMessage {
 	return NewSendMessage(MessageText, content, fromUserName, toUserName, "")
 }
 
-// NewMediaMessage 媒体消息的构造方法
+// NewMediaMessage 函数用于创建一个新的多媒体消息。
+//
+// 输入参数：
+//   - msgType MessageType: 消息类型。
+//   - fromUserName string: 发送者用户名。
+//   - toUserName string: 接收者用户名。
+//   - mediaId string: 多媒体 ID。
+//
+// 输出参数：
+//   - *SendMessage: 返回一个新的 SendMessage 实例。
 func NewMediaMessage(msgType MessageType, fromUserName, toUserName, mediaId string) *SendMessage {
 	return NewSendMessage(msgType, "", fromUserName, toUserName, mediaId)
 }
 
+// NewAppMessage 函数用于创建一个新的应用消息。
+//
+// 输入参数：
+//   - stat os.FileInfo: 文件信息对象。
+//   - attachId string: 附件 ID。
+//
+// 输出参数：
+//   - *AppMessage: 返回一个新的 AppMessage 实例。
 func NewAppMessage(stat os.FileInfo, attachId string) *AppMessage {
 	m := &AppMessage{AppId: AppMessageAppId, Title: stat.Name()}
 
@@ -300,60 +326,110 @@ func NewAppMessage(stat os.FileInfo, attachId string) *AppMessage {
 
 // ================================================= [函数](Message)公开 =================================================
 
-// Set 设置消息的键值对
-// 入参：
-// key string: 键名
-// value interface{}: 键对应的值
+// Set 方法用于向消息对象中设置指定键的值。
+//
+// 输入参数：
+//   - key string: 要设置的键名。
+//   - value interface{}: 要设置的值。
 func (m *Message) Set(key string, value interface{}) {
-	m.mu.Lock()         // 加锁
+	m.mu.Lock() // 加锁
+
 	defer m.mu.Unlock() // 延迟解锁
+
 	if m.item == nil {
 		m.item = make(map[string]interface{})
 	}
+
 	m.item[key] = value
 }
 
-// Get 获取消息中指定键的值
-// 入参：
-// key string: 键名
-// 出参：
-// value interface{}: 键对应的值
-// exist bool: 指定的键是否存在，存在则为true，否则为false
+// Get 方法用于从消息对象中获取指定键的值。
+//
+// 输入参数：
+//   - key string: 要获取值的键名。
+//
+// 输出参数：
+//   - value interface{}: 获取到的值。
+//   - exist bool: 指定键是否存在，存在则为 true，否则为 false。
 func (m *Message) Get(key string) (value interface{}, exist bool) {
-	m.mu.RLock()         // 加读锁
+	m.mu.RLock() // 加读锁
+
 	defer m.mu.RUnlock() // 延迟释放读锁
+
 	value, exist = m.item[key]
+
 	return
 }
 
-// SaveFile 保存文件到指定的 io.Writer
+// String 方法用于返回消息的字符串表示形式。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - string: 消息的字符串表示形式。
+func (m *Message) String() string {
+	return fmt.Sprintf("<%s:%s>", m.MsgType, m.MsgId)
+}
+
+// SaveFile 方法用于将消息中的文件保存到指定的 Writer 中。
+//
+// 输入参数：
+//   - writer io.Writer: 要保存文件的 Writer。
+//
+// 输出参数：
+//   - error: 如果保存文件出错，则返回相应的错误；否则返回 nil。
 func (m *Message) SaveFile(writer io.Writer) error {
 	resp, err := m.GetFile()
 	if err != nil {
 		return err
 	}
+
 	defer func() { _ = resp.Body.Close() }()
+
 	_, err = io.Copy(writer, resp.Body)
+
 	return err
 }
 
-// SaveFileToLocal 保存文件到本地
+// SaveFileToLocal 方法用于将消息中的文件保存到本地指定的文件中。
+//
+// 输入参数：
+//   - filename string: 要保存文件的本地文件名。
+//
+// 输出参数：
+//   - error: 如果保存文件到本地出错，则返回相应的错误；否则返回 nil。
 func (m *Message) SaveFileToLocal(filename string) error {
+	// 创建目录
+	err := os.MkdirAll(filepath.Dir(filename), os.ModePerm)
+	if err != nil {
+		return err
+	}
+
 	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
+
 	defer func() { _ = file.Close() }()
+
 	return m.SaveFile(file)
 }
 
-// 消息初始化,根据不同的消息作出不同的处理
+// Init 方法用于初始化消息对象。
+//
+// 输入参数：
+//   - bot *Bot: 消息所属的机器人。
+//
+// 输出参数：
+//   - 无。
 func (m *Message) Init(bot *Bot) {
 	// 设置bot属性
 	m.bot = bot
 
 	// 将消息序列化并保存到Raw字段中
 	raw, _ := json.Marshal(m)
+
 	m.Raw = raw
 	m.RawContent = m.Content
 
@@ -410,16 +486,35 @@ func (m *Message) Init(bot *Bot) {
 	m.Content = FormatEmoji(m.Content)
 }
 
-// Bot 返回当前消息所属的Bot
+// Bot 方法用于获取消息所属的机器人对象。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *Bot: 返回消息所属的机器人对象指针。
 func (m *Message) Bot() *Bot {
 	return m.bot
 }
 
-// Owner 返回当前消息的拥有者
+// Owner 方法用于获取消息所属的机器人的 Self 对象。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *Self: 返回机器人的 Self 对象指针。
 func (m *Message) Owner() *Self {
 	return m.Bot().self
 }
 
+// Context 方法用于获取消息的上下文对象。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - context.Context: 返回消息的上下文对象。
 func (m *Message) Context() context.Context {
 	if m.context == nil {
 		return m.Bot().Context()
@@ -427,6 +522,13 @@ func (m *Message) Context() context.Context {
 	return m.context
 }
 
+// WithContext 方法用于设置消息的上下文对象。
+//
+// 输入参数：
+//   - ctx context.Context: 要设置的上下文对象。
+//
+// 输出参数：
+//   - 无。
 func (m *Message) WithContext(ctx context.Context) {
 	if ctx == nil {
 		panic("nil context")
@@ -434,16 +536,23 @@ func (m *Message) WithContext(ctx context.Context) {
 	m.context = ctx
 }
 
-// Sender 返回消息的发送者信息
-// 入参:
-// m *Message: 消息对象，表示需要获取发送者信息的消息。
-// 出参:
-// *Contact: 发送者信息的联系人对象。
-// error: 可能发生的错误。
-func (m *Message) Sender() (*Contact, error) {
+// Sender 方法用于获取消息的发送者信息。
+//
+// 输入参数：
+//   - args: 可选参数，用于替换默认的发送者用户名。
+//
+// 输出参数：
+//   - *Contact: 发送者的联系人对象。
+//   - error: 发生的错误（如果有）。
+func (m *Message) Sender(args ...string) (*Contact, error) {
 	// 如果消息是自己发送的，则返回消息所属联系人对象
-	if m.IsSendBySelf() {
+	if m.IsSendBySelf() && len(args) == 0 {
 		return m.Owner().Contact, nil
+	}
+
+	userName := m.FromUserName
+	if len(args) > 0 && args[0] != "" {
+		userName = args[0]
 	}
 
 	// 尝试从缓存中查找发送者信息
@@ -452,10 +561,10 @@ func (m *Message) Sender() (*Contact, error) {
 		return nil, err
 	}
 
-	user, exist := contacts.GetByUserName(m.FromUserName)
+	user, exist := contacts.GetByUserName(userName)
 	if !exist {
 		// 如果缓存中没有发送者信息，则从服务器获取
-		user = NewFriend(m.FromUserName, m.Owner()).Contact
+		user = NewFriend(userName, m.Owner()).Contact
 		err = user.Detail()
 	}
 
@@ -468,12 +577,14 @@ func (m *Message) Sender() (*Contact, error) {
 	return user, err
 }
 
-// SenderInGroup 返回群聊消息的发送者信息
-// 入参:
-// m *Message: 消息对象，表示需要获取发送者信息的消息。
-// 出参:
-// *Contact: 发送者信息的联系人对象。
-// error: 可能发生的错误。
+// SenderInGroup 方法用于获取群聊消息的发送者信息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *Contact: 返回群聊消息的发送者联系人对象指针。
+//   - error: 返回可能出现的错误。
 func (m *Message) SenderInGroup() (*Contact, error) {
 	// 如果消息不是来自群聊，则返回错误
 	if !m.IsFromGroup() {
@@ -506,7 +617,14 @@ func (m *Message) SenderInGroup() (*Contact, error) {
 	return group.SearchContactByUsername(m.senderUserNameInGroup)
 }
 
-// Agree 同意好友的请求
+// Agree 方法用于同意添加好友请求，并返回新添加的好友信息。
+//
+// 输入参数：
+//   - verifyContents []string: 验证内容列表，可选参数，用于验证添加好友的信息。
+//
+// 输出参数：
+//   - *Friend: 返回新添加的好友对象指针。
+//   - error: 返回可能出现的错误。
 func (m *Message) Agree(verifyContents ...string) (*Friend, error) {
 	if !m.IsFriendAdd() {
 		return nil, errors.New("friend add message required")
@@ -532,7 +650,13 @@ func (m *Message) Agree(verifyContents ...string) (*Friend, error) {
 	return friend, nil
 }
 
-// ToRead 将消息设置为已读
+// ToRead 方法用于将消息标记为已读状态。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - error: 返回可能出现的错误。
 func (m *Message) ToRead() error {
 	option := &WechatCallerStatusToReadOption{
 		BaseRequest:       m.bot.Storage.Request,
@@ -543,12 +667,14 @@ func (m *Message) ToRead() error {
 	return m.bot.Caller.StatusToRead(m.Context(), option)
 }
 
-// Receiver 返回消息的接收者信息
-// 入参:
-// m *Message: 消息对象，表示需要获取接收者信息的消息。
-// 出参:
-// *Contact: 接收者信息的联系人对象。
-// error: 可能发生的错误。
+// Receiver 方法用于获取消息的接收者联系人对象。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *Contact：消息的接收者联系人对象指针。
+//   - error：可能出现的错误。
 func (m *Message) Receiver() (*Contact, error) {
 	// 如果消息是系统消息或者发送到自己，则返回自己联系人对象
 	if m.IsSystem() || m.ToUserName == m.bot.self.UserName {
@@ -601,17 +727,36 @@ func (m *Message) Receiver() (*Contact, error) {
 	}
 }
 
-// HasFile 判断消息是否为文件类型的消息
+// HasFile 方法用于判断消息是否包含文件类型的内容。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool：如果消息包含文件类型的内容，则返回 true；否则返回 false。
 func (m *Message) HasFile() bool {
 	return m.IsPicture() || m.IsVoice() || m.IsVideo() || m.HasAttachment() || m.IsEmoticon()
 }
 
-// HasAttachment 是否有附件
+// HasAttachment 方法用于判断消息是否包含附件类型的内容。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool：如果消息包含附件类型的内容，则返回 true；否则返回 false。
 func (m *Message) HasAttachment() bool {
 	return m.IsMedia() && m.AppMsgType == AppMessageAttach
 }
 
-// GetFile 获取文件消息的文件
+// GetFile 方法用于根据消息类型获取相应的文件内容。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *http.Response：文件内容对应的 HTTP 响应对象指针。
+//   - error：可能出现的错误。
 func (m *Message) GetFile() (*http.Response, error) {
 	if !m.HasFile() {
 		return nil, errors.New("invalid message type")
@@ -631,7 +776,14 @@ func (m *Message) GetFile() (*http.Response, error) {
 	}
 }
 
-// GetPicture 获取图片消息的响应
+// GetPicture 方法用于获取图片类型的消息对应的图片内容。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *http.Response：图片内容对应的 HTTP 响应对象指针。
+//   - error：可能出现的错误。
 func (m *Message) GetPicture() (*http.Response, error) {
 	if !(m.IsPicture() || m.IsEmoticon()) {
 		return nil, errors.New("picture message required")
@@ -640,7 +792,14 @@ func (m *Message) GetPicture() (*http.Response, error) {
 	return m.bot.Caller.WechatClient.GetImageMessageResponse(m.Context(), m, m.bot.Storage.LoginInfo)
 }
 
-// GetVoice 获取录音消息的响应
+// GetVoice 方法用于获取语音类型的消息对应的语音内容。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *http.Response：语音内容对应的 HTTP 响应对象指针。
+//   - error：可能出现的错误。
 func (m *Message) GetVoice() (*http.Response, error) {
 	if !m.IsVoice() {
 		return nil, errors.New("voice message required")
@@ -649,7 +808,14 @@ func (m *Message) GetVoice() (*http.Response, error) {
 	return m.bot.Caller.WechatClient.GetVoiceMessageResponse(m.Context(), m, m.bot.Storage.LoginInfo)
 }
 
-// GetVideo 获取视频消息的响应
+// GetVideo 方法用于获取视频类型的消息对应的视频内容。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *http.Response：视频内容对应的 HTTP 响应对象指针。
+//   - error：可能出现的错误。
 func (m *Message) GetVideo() (*http.Response, error) {
 	if !m.IsVideo() {
 		return nil, errors.New("video message required")
@@ -658,7 +824,14 @@ func (m *Message) GetVideo() (*http.Response, error) {
 	return m.bot.Caller.WechatClient.GetVideoMessageResponse(m.Context(), m, m.bot.Storage.LoginInfo)
 }
 
-// GetMedia 获取媒体消息的响应
+// GetMedia 方法用于获取媒体类型的消息对应的媒体内容。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *http.Response：媒体内容对应的 HTTP 响应对象指针。
+//   - error：可能出现的错误。
 func (m *Message) GetMedia() (*http.Response, error) {
 	if !m.IsMedia() {
 		return nil, errors.New("media message required")
@@ -667,7 +840,14 @@ func (m *Message) GetMedia() (*http.Response, error) {
 	return m.bot.Caller.WechatClient.GetMediaMessageResponse(m.Context(), m, m.bot.Storage.LoginInfo)
 }
 
-// GetCardMessage 获取card类型
+// GetCardMessage 方法用于从消息中获取卡片消息类型的内容并将其解析为 CardMessage 结构体。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *CardMessage：解析后的卡片消息结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) GetCardMessage() (*CardMessage, error) {
 	if !m.IsCard() {
 		return nil, errors.New("card message required")
@@ -679,7 +859,14 @@ func (m *Message) GetCardMessage() (*CardMessage, error) {
 	return &card, err
 }
 
-// GetFriendAddMessage 获取FriendAddMessageContent内容
+// GetFriendAddMessage 方法用于从消息中获取好友添加类型的内容并将其解析为 FriendAddMessage 结构体。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *FriendAddMessage：解析后的好友添加消息结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) GetFriendAddMessage() (*FriendAddMessage, error) {
 	if !m.IsFriendAdd() {
 		return nil, errors.New("friend add message required")
@@ -691,7 +878,14 @@ func (m *Message) GetFriendAddMessage() (*FriendAddMessage, error) {
 	return &f, err
 }
 
-// GetRevokeMessage 获取撤回消息的内容
+// GetRevokeMessage 方法用于从消息中获取撤回类型的内容并将其解析为 RevokeMessage 结构体。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *RevokeMessage：解析后的撤回消息结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) GetRevokeMessage() (*RevokeMessage, error) {
 	if !m.IsRecalled() {
 		return nil, errors.New("recalled message required")
@@ -703,7 +897,14 @@ func (m *Message) GetRevokeMessage() (*RevokeMessage, error) {
 	return &r, err
 }
 
-// GetAppMessageContent 获取当前App Message的具体内容
+// GetAppMessageContent 方法用于从媒体消息中获取应用消息类型的内容并将其解析为 AppMessageContent 结构体。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *AppMessageContent：解析后的应用消息内容结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) GetAppMessageContent() (*AppMessageContent, error) {
 	if !m.IsMedia() {
 		return nil, errors.New("media message required")
@@ -717,7 +918,14 @@ func (m *Message) GetAppMessageContent() (*AppMessageContent, error) {
 	return &data, nil
 }
 
-// ReplyText 回复文本消息
+// ReplyText 方法用于回复文本消息。
+//
+// 输入参数：
+//   - content：回复的文本内容。
+//
+// 输出参数：
+//   - *SentMessage：发送的消息结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) ReplyText(content string) (*SentMessage, error) {
 	// 判断是否由自己发送
 	username := m.FromUserName
@@ -728,7 +936,14 @@ func (m *Message) ReplyText(content string) (*SentMessage, error) {
 	return m.Owner().SendTextToContact(username, content)
 }
 
-// ReplyImage 回复图片消息
+// ReplyImage 方法用于回复图片消息。
+//
+// 输入参数：
+//   - file：包含要发送的图片数据的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage：发送的消息结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) ReplyImage(file io.Reader) (*SentMessage, error) {
 	// 判断是否由自己发送
 	username := m.FromUserName
@@ -739,7 +954,14 @@ func (m *Message) ReplyImage(file io.Reader) (*SentMessage, error) {
 	return m.Owner().SendImageToContact(username, file)
 }
 
-// ReplyVideo 回复视频消息
+// ReplyVideo 方法用于回复视频消息。
+//
+// 输入参数：
+//   - file：包含要发送的视频数据的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage：发送的消息结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) ReplyVideo(file io.Reader) (*SentMessage, error) {
 	// 判断是否由自己发送
 	username := m.FromUserName
@@ -750,7 +972,14 @@ func (m *Message) ReplyVideo(file io.Reader) (*SentMessage, error) {
 	return m.Owner().SendVideoToContact(username, file)
 }
 
-// ReplyFile 回复文件消息
+// ReplyFile 方法用于回复文件消息。
+//
+// 输入参数：
+//   - file：包含要发送的文件数据的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage：发送的消息结构体指针。
+//   - error：可能出现的错误。
 func (m *Message) ReplyFile(file io.Reader) (*SentMessage, error) {
 	// 判断是否由自己发送
 	username := m.FromUserName
@@ -761,226 +990,441 @@ func (m *Message) ReplyFile(file io.Reader) (*SentMessage, error) {
 	return m.Owner().SendFileToContact(username, file)
 }
 
-// IsSendBySelf 判断消息是否由自己发送
-// 入参：无
-// 出参：
-// bool: 如果消息由自己发送，则返回true；否则返回false。
+// IsSendBySelf 方法用于判断消息是否由当前用户发送。
+//
+// 返回值：
+//   - bool：如果消息由当前用户发送，则返回 true，否则返回 false。
 func (m *Message) IsSendBySelf() bool {
 	return m.FromUserName == m.Owner().UserName
 }
 
-// IsSendByFriend 判断消息是否由好友发送
-// 入参：无
-// 出参：
-// bool: 如果消息由好友发送，则返回true；否则返回false。
+// IsSendByFriend 方法用于判断消息是否由朋友（非群组）发送。
+//
+// 返回值：
+//   - bool：如果消息由朋友发送，则返回 true，否则返回 false。
 func (m *Message) IsSendByFriend() bool {
 	return !m.IsSendByGroup() && strings.HasPrefix(m.FromUserName, "@") && !m.IsSendBySelf()
 }
 
-// IsSendByGroup 判断消息是否由群组发送
-// 入参：无
-// 出参：
-// bool: 如果消息由群组发送，则返回true；否则返回false。
+// IsSendByGroup 方法用于判断消息是否由群组发送。
+//
+// 返回值：
+//   - bool：如果消息由群组发送，则返回 true，否则返回 false。
 func (m *Message) IsSendByGroup() bool {
 	return strings.HasPrefix(m.FromUserName, "@@") || (m.IsSendBySelf() && strings.HasPrefix(m.ToUserName, "@@"))
 }
 
-// IsSelfSendToGroup 判断消息是否由自己发送到群组
-// 入参：无
-// 出参：
-// bool: 如果消息由自己发送到群组，则返回true；否则返回false。
+// IsSelfSendToGroup 方法用于判断消息是否由自己发送给群组。
+//
+// 返回值：
+//   - bool：如果消息由自己发送给群组，则返回 true，否则返回 false。
 func (m *Message) IsSelfSendToGroup() bool {
 	return m.IsSendBySelf() && strings.HasPrefix(m.ToUserName, "@@")
 }
 
-// IsText 判断消息是否为文本消息
-// 入参：无
-// 出参：
-// bool: 如果消息类型为文本消息且Url为空，则返回true；否则返回false。
+// IsText 方法用于判断消息是否为文本消息且不包含 URL。
+//
+// 返回值：
+//   - bool：如果消息为文本消息且不包含 URL，则返回 true，否则返回 false。
 func (m *Message) IsText() bool {
 	return m.MsgType == MessageText && m.Url == ""
 }
 
+// IsVoice 方法用于判断消息是否为语音消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为语音消息，则返回 true；否则返回 false。
 func (m *Message) IsVoice() bool {
 	return m.MsgType == MessageVoice
 }
 
+// IsVideo 方法用于判断消息是否为视频消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为视频消息，则返回 true；否则返回 false。
 func (m *Message) IsVideo() bool {
 	return m.MsgType == MessageVideo || m.MsgType == MessageMicroVideo
 }
 
+// IsMedia 方法用于判断消息是否为媒体消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为媒体消息，则返回 true；否则返回 false。
 func (m *Message) IsMedia() bool {
 	return m.MsgType == MessageApp
 }
 
+// IsPicture 方法用于判断消息是否为图片消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为图片消息，则返回 true；否则返回 false。
 func (m *Message) IsPicture() bool {
 	return m.MsgType == MessageImage
 }
 
+// IsLocation 方法用于判断消息是否为位置消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为位置消息，则返回 true；否则返回 false。
 func (m *Message) IsLocation() bool {
 	return m.MsgType == MessageText && strings.Contains(m.Url, "api.map.qq.com") && strings.Contains(m.Content, "pictype=location")
 }
 
-// IsEmoticon 是否为表情包消息
+// IsEmoticon 方法用于判断消息是否为表情包消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为表情包消息，则返回 true；否则返回 false。
 func (m *Message) IsEmoticon() bool {
 	return m.MsgType == MessageEmoticon
 }
 
+// IsRealtimeLocation 方法用于判断消息是否为实时位置消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为实时位置消息，则返回 true；否则返回 false。
 func (m *Message) IsRealtimeLocation() bool {
 	return m.IsRealtimeLocationStart() || m.IsRealtimeLocationStop()
 }
 
+// IsRealtimeLocationStart 方法用于判断消息是否为实时位置分享开始消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为实时位置分享开始消息，则返回 true；否则返回 false。
 func (m *Message) IsRealtimeLocationStart() bool {
 	return m.MsgType == MessageApp && m.AppMsgType == AppMessageLocation
 }
 
+// IsRealtimeLocationStop 方法用于判断消息是否为实时位置分享结束消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为实时位置分享结束消息，则返回 true；否则返回 false。
 func (m *Message) IsRealtimeLocationStop() bool {
 	return m.MsgType == MessageSys && m.Content == "位置共享已经结束"
 }
 
+// IsCard 方法用于判断消息是否为名片消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为名片消息，则返回 true；否则返回 false。
 func (m *Message) IsCard() bool {
 	return m.MsgType == MessageShareCard
 }
 
+// IsNotify 方法用于判断消息是否为通知消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为通知消息，则返回 true；否则返回 false。
 func (m *Message) IsNotify() bool {
 	return m.MsgType == 51 && m.StatusNotifyCode != 0
 }
 
+// IsSystem 方法用于判断消息是否为系统消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为系统消息，则返回 true；否则返回 false。
 func (m *Message) IsSystem() bool {
 	return m.MsgType == MessageSys
 }
 
-// IsRecalled 判断是否撤回
+// IsRecalled 方法用于判断消息是否为撤回消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为撤回消息，则返回 true；否则返回 false。
 func (m *Message) IsRecalled() bool {
 	return m.MsgType == MessageRecalled
 }
 
-// IsArticle 判断当前的消息类型是否为文章
+// IsArticle 方法用于判断消息是否为文章消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为文章消息，则返回 true；否则返回 false。
 func (m *Message) IsArticle() bool {
 	return m.AppMsgType == AppMessageUrl
 }
 
+// IsFriendAdd 方法用于判断消息是否为好友添加消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为好友添加消息，则返回 true；否则返回 false。
 func (m *Message) IsFriendAdd() bool {
 	return m.MsgType == MessageVerify && m.FromUserName == "fmessage"
 }
 
-// IsTransferAccounts 判断当前的消息是不是微信转账
+// IsTransferAccounts 方法用于判断消息是否为微信转账消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为微信转账消息，则返回 true；否则返回 false。
 func (m *Message) IsTransferAccounts() bool {
 	return m.IsMedia() && m.FileName == "微信转账"
 }
 
-// IsSendRedPacket 否发出红包判断当前是
+// IsSendRedPacket 方法用于判断消息是否为发出红包通知。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为发出红包通知，则返回 true；否则返回 false。
 func (m *Message) IsSendRedPacket() bool {
 	return m.IsSystem() && m.Content == "发出红包，请在手机上查看"
 }
 
-// IsReceiveRedPacket 判断当前是否收到红包
+// IsReceiveRedPacket 方法用于判断消息是否为收到红包通知。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为收到红包通知，则返回 true；否则返回 false。
 func (m *Message) IsReceiveRedPacket() bool {
 	return m.IsSystem() && m.Content == "收到红包，请在手机上查看"
 }
 
-// IsRenameGroup 判断当前是否是群组重命名
+// IsRenameGroup 方法用于判断消息是否为群组重命名消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为群组重命名消息，则返回 true；否则返回 false。
 func (m *Message) IsRenameGroup() bool {
 	return m.IsSystem() && strings.Contains(m.Content, "修改群名为")
 }
 
+// IsSysNotice 方法用于判断消息是否为系统通知消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为系统通知消息，则返回 true；否则返回 false。
 func (m *Message) IsSysNotice() bool {
 	return m.MsgType == 9999
 }
 
-// IsStatusNotify 判断是否为操作通知消息
+// IsStatusNotify 方法用于判断消息是否为操作通知消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为操作通知消息，则返回 true；否则返回 false。
 func (m *Message) IsStatusNotify() bool {
 	return m.MsgType == 51
 }
 
-// IsFromGroup 判断消息是否来自群组
-// 可能是自己或者别的群员发送
+// IsFromGroup 方法用于判断消息是否来自群组。
+// 可能是自己或者别的群员发送。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息来自群组，则返回 true；否则返回 false。
 func (m *Message) IsFromGroup() bool {
 	return m.IsSendByGroup() || (strings.HasPrefix(m.ToUserName, "@@") && m.IsSendBySelf())
 }
 
-func (m *Message) String() string {
-	return fmt.Sprintf("<%s:%s>", m.MsgType, m.MsgId)
-}
-
-// IsAt 判断消息是否为@消息
+// IsAt 方法用于判断消息是否为@消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为@消息，则返回 true；否则返回 false。
 func (m *Message) IsAt() bool {
 	return m.isAt
 }
 
-// IsJoinGroup 判断是否有人加入了群聊
+// IsJoinGroup 方法用于判断是否有人加入了群聊。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果有人加入群聊，则返回 true；否则返回 false。
 func (m *Message) IsJoinGroup() bool {
 	return m.IsSystem() && (strings.Contains(m.Content, "加入了群聊") || strings.Contains(m.Content, "分享的二维码加入群聊")) && m.IsSendByGroup()
 }
 
-// IsTickled 判断消息是否为拍一拍
+// IsTickled 方法用于判断消息是否为拍一拍消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为拍一拍消息，则返回 true；否则返回 false。
 func (m *Message) IsTickled() bool {
 	return m.IsSystem() && (strings.Contains(m.Content, "拍了拍") || strings.Contains(m.Content, "拍拍"))
 }
 
-// IsTickledMe 判断消息是否拍了拍自己
+// IsTickledMe 方法用于判断消息是否为拍了拍自己的消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为拍了拍自己的消息，则返回 true；否则返回 false。
 func (m *Message) IsTickledMe() bool {
 	return m.IsSystem() && (strings.Count(m.Content, "拍了拍我") == 1 || strings.Count(m.Content, "拍拍我") == 1)
 }
 
-// IsVoipInvite 判断消息是否为语音或视频通话邀请
+// IsVoipInvite 方法用于判断消息是否为语音或视频通话邀请消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息为语音或视频通话邀请消息，则返回 true；否则返回 false。
 func (m *Message) IsVoipInvite() bool {
 	return m.MsgType == MessageVoipInvite
 }
 
 // ================================================= [函数](SentMessage)公开 =================================================
 
-// Revoke 撤回该消息
+// Revoke 方法用于撤回已发送消息。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - error: 如果操作成功，则返回 nil；否则返回相应的错误信息。
 func (s *SentMessage) Revoke() error {
+	// 调用外部对象的 RevokeMessage 方法进行消息撤回操作
 	return s.self.RevokeMessage(s)
 }
 
-// CanRevoke 是否可以撤回该消息
+// CanRevoke 方法用于判断消息是否可以被撤回。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - bool: 如果消息可以被撤回，则返回 true；否则返回 false。
 func (s *SentMessage) CanRevoke() bool {
+	// 将 ClientMsgId 转换为 int64 类型
 	i, err := strconv.ParseInt(s.ClientMsgId, 10, 64)
 	if err != nil {
 		return false
 	}
 
+	// 将时间戳转换为时间对象
 	start := time.Unix(i/10000000, 0)
 
+	// 判断消息发送时间距离当前时间是否小于2分钟
 	return time.Since(start) < 2*time.Minute
 }
 
-// ForwardToFriends 转发该消息给好友
-// 该方法会阻塞直到所有好友都接收到消息
-// 这里为了兼容以前的版本，默认休眠0.5秒，如果需要更快的速度，可以使用 SentMessage.ForwardToFriendsWithDelay
+// ForwardToFriends 方法用于将消息转发给指定的好友列表。(该方法会阻塞直到所有好友都接收到消息)
+//
+// 输入参数：
+//   - friends: 好友列表，类型为可变参数，表示可以传入任意数量的 Friend 指针对象。
+//
+// 输出参数：
+//   - error: 如果操作成功，则返回 nil；否则返回相应的错误信息。
 func (s *SentMessage) ForwardToFriends(friends ...*Friend) error {
+	// 调用带有延迟时间的 ForwardToFriendsWithDelay 方法，默认延迟时间为 0.5 秒
 	return s.ForwardToFriendsWithDelay(time.Second/2, friends...)
 }
 
-// ForwardToFriendsWithDelay 转发该消息给好友，延迟指定时间
+// ForwardToFriendsWithDelay 方法用于将消息延迟一定时间后转发给指定的好友列表。
+//
+// 输入参数：
+//   - delay: 延迟时间，类型为 time.Duration，表示消息转发的延迟时间。
+//   - friends: 好友列表，类型为可变参数，表示可以传入任意数量的 Friend 指针对象。
+//
+// 输出参数：
+//   - error: 如果操作成功，则返回 nil；否则返回相应的错误信息。
 func (s *SentMessage) ForwardToFriendsWithDelay(delay time.Duration, friends ...*Friend) error {
+	// 调用外部对象的 ForwardMessageToFriends 方法进行消息转发操作
 	return s.self.ForwardMessageToFriends(s, delay, friends...)
 }
 
-// ForwardToGroups 转发该消息给群组
-// 该方法会阻塞直到所有群组都接收到消息
-// 这里为了兼容以前的版本，默认休眠0.5秒，如果需要更快的速度，可以使用 SentMessage.ForwardToGroupsDelay
+// ForwardToGroups 方法用于将消息转发给指定的群组列表。(该方法会阻塞直到所有群组都接收到消息)
+//
+// 输入参数：
+//   - groups: 群组列表，类型为可变参数，表示可以传入任意数量的 Group 指针对象。
+//
+// 输出参数：
+//   - error: 如果操作成功，则返回 nil；否则返回相应的错误信息。
 func (s *SentMessage) ForwardToGroups(groups ...*Group) error {
+	// 调用带有延迟时间的 ForwardToGroupsWithDelay 方法，默认延迟时间为 0.5 秒
 	return s.ForwardToGroupsWithDelay(time.Second/2, groups...)
 }
 
-// ForwardToGroupsWithDelay 转发该消息给群组， 延迟指定时间
+// ForwardToGroupsWithDelay 方法用于将消息延迟一定时间后转发给指定的群组列表。
+//
+// 输入参数：
+//   - delay: 延迟时间，类型为 time.Duration，表示消息转发的延迟时间。
+//   - groups: 群组列表，类型为可变参数，表示可以传入任意数量的 Group 指针对象。
+//
+// 输出参数：
+//   - error: 如果操作成功，则返回 nil；否则返回相应的错误信息。
 func (s *SentMessage) ForwardToGroupsWithDelay(delay time.Duration, groups ...*Group) error {
+	// 调用外部对象的 ForwardMessageToGroups 方法进行消息转发操作
 	return s.self.ForwardMessageToGroups(s, delay, groups...)
 }
 
 // ================================================= [函数](AppMessage)公开 =================================================
 
-// XmlByte将appmsg结构体转换为XML字节切片
-// 参数：
-// - f：appmsg结构体
-// 返回值：
-// - []byte：XML字节切片
-// - error：转换过程中可能出现的错误
+// XmlByte 方法用于将 AppMessage 结构体转换为 XML 格式的字节切片。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - []byte: 表示转换后的 XML 格式的字节切片。
+//   - error: 如果操作成功，则返回 nil；否则返回相应的错误信息。
 func (f AppMessage) XmlByte() ([]byte, error) {
-	// 使用xml.Marshal将appmsg结构体转换为XML格式的字节切片
+	// 使用 xml.Marshal 将 appmsg 结构体转换为 XML 格式的字节切片
 	xmlBytes, err := xml.Marshal(f)
 	if err != nil {
 		return nil, err

@@ -8,7 +8,9 @@ import (
 )
 
 func main() {
-	bot := core.DefaultBot(core.Desktop, core.WithDomain(config.LoadConfig().WechatDomain))
+	bot := core.DefaultBot(core.Desktop, core.WithDomain(config.LoadConfig().WechatDomain), core.BotPreparerHandler(func(b *core.Bot) {
+		log.Println("Bot 对象实例化完成。")
+	}))
 
 	// 注册消息处理函数
 	bot.MessageHandler = message.Handler

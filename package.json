@@ -9,7 +9,7 @@
 		"build:web": "SET NODE_ENV=production && webpack --node-env production --config ./build/webpack.config.build.js --progress --color",
 		"build:server": "SET NODE_ENV=production && npx webpack --node-env production --config ./build/webpack.config.server.js --progress --color",
 		"build:wechatbot": "SET NODE_ENV=production && npx webpack --node-env production --config ./build/webpack.config.wechatbot.js --progress --color",
-		"build:wechatgpt": "go build modules/wechatgpt/main.go",
+		"build:wechatgpt": "cd modules/wechatgpt/ && go build -ldflags=\"-X main.version=1.0.0\" -o wechatgpt.exe -a main.go && cd ../../",
 		"dev:web": "SET NODE_ENV=development && webpack-dev-server --node-env development --config ./build/webpack.config.dev.js --progress --color",
 		"dev:server": "node ./server.js",
 		"start:server": "node ./dist/server.js",
@@ -17,7 +17,7 @@
 		"start:wechatbot": "cross-env DEBUG=core,weixin node ./dist/wechatbot.js",
 		"compile:wechatbot": "babel modules/wechatbot/core -d extends/wechatbot -s --presets env",
 		"dev:wechatgpt": "go run modules/wechatgpt/main.go",
-		"start:wechatgpt": "nohup ./modules/wechatgpt/main > console.log 2>&1 &"
+		"start:wechatgpt": "nohup ./modules/wechatgpt/wechatgpt > console.log 2>&1 &"
 	},
 	"keywords": [
 		"zhongjyuan",

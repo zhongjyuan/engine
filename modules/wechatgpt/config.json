@@ -1,9 +1,17 @@
 {
 	"auto_pass": true,
 	"wechat_host": "wx.qq.com",
+	"wechat_storage": true,
+	"wechat_message_storage": true,
+	"wechat_storage_filename": "wechatStorage.json",
+	"wechat_message_storage_filename": "wechatMessageStorage.json",
+	"wechat_message_storage_file_maxsize": 52428800,
+	
+	"chatgpt": true,
 	"chatgpt_server": "http://47.116.100.195:188/api",
 	"chatgpt_process_path": "/generateStream",
-	"wechat_storage_filename": "wechatStorage.json",
+	"chatgpt_chat_storage": true,
+	"chatgpt_message_storage": true,
 	"chatgpt_chat_storage_filename": "gptChatStorage.json",
 	"chatgpt_message_storage_filename": "gptMessageStorage.json",
 	"chatgpt_message_storage_file_maxsize": 52428800,

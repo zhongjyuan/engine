@@ -38,8 +38,7 @@ type UserAgentHook struct {
 // defaultUserAgentHook 默认的User-Agent钩子
 var defaultUserAgentHook = UserAgentHook{UOSUserAgent}
 
-// WechatClient http请求客户端
-// 客户端需要维持Session会话
+// WechatClient http请求客户端(注:客户端需要维持Session会话)
 type WechatClient struct {
 	mode          Mode         // 设置一些client的请求行为(see webMode desktopMode)
 	client        *http.Client // client http客户端
@@ -148,18 +147,27 @@ func (h HttpHooks) AfterRequest(res *http.Response, err error) {
 
 // ================================================= [函数](UserAgentHook)公开 =================================================
 
+// BeforeRequest 用于在发送 HTTP 请求之前设置请求头中的 User-Agent 信息。
+//
+// 输入参数：
+//   - req: HTTP 请求对象。
 func (u UserAgentHook) BeforeRequest(req *http.Request) {
 	req.Header.Set("Contact-Agent", u.UserAgent)
 }
 
+// AfterRequest 用于在收到 HTTP 响应之后执行操作。
+//
+// 输入参数：
+//   - res: HTTP 响应对象。
+//   - err: 操作过程中遇到的错误。
 func (u UserAgentHook) AfterRequest(res *http.Response, err error) {}
 
 // ================================================= [函数](WechatClient)公开 =================================================
 
-// GetCookieJar 获取 WechatClient 的 CookieJar。
+// GetCookieJar 用于获取 WechatClient 的 CookieJar 对象。
 //
 // 返回值：
-//   - http.CookieJar: 返回 WechatClient 的 CookieJar 对象。
+//   - http.CookieJar: WechatClient 的 CookieJar 对象。
 func (c *WechatClient) GetCookieJar() http.CookieJar {
 	return c.client.Jar // 返回 WechatClient 的 CookieJar 对象
 }
@@ -180,18 +188,18 @@ func (c *WechatClient) GetHttpClient() *http.Client {
 	return c.client // 返回 WechatClient 的 HTTP 客户端对象指针
 }
 
-// SetMode 设置 WechatClient 的模式。
+// SetMode 用于设置 WechatClient 的模式。
 //
-// 参数：
-//   - mode：要设置的模式。
-//
-// 返回值：
-//
-//	无。
+// 输入参数：
+//   - mode: 模式。
 func (c *WechatClient) SetMode(mode Mode) {
 	c.mode = mode // 将 WechatClient 的模式设置为传入的模式
 }
 
+// SetDomain 用于设置 WechatClient 的域名信息。
+//
+// 输入参数：
+//   - host: 域名信息。
 func (c *WechatClient) SetDomain(host string) {
 	c.Domain = Domain(host)
 }

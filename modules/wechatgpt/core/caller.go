@@ -543,12 +543,16 @@ func (c *Caller) GetContact(ctx context.Context, info *LoginInfoResponse) (Conta
 
 // ================================================= [函数](Caller)method - webwxbatchgetcontact =================================================
 
-// 注: Members参数的长度不要大于50
-// BatchGetContact 函数用于批量获取 Web 微信联系人信息。(注: Members参数的长度不要大于50)
-// 接收一个 `context.Context` 对象作为参数，用于控制请求的上下文。
-// `contacts` 参数是一个 `Contacts` 对象，包含了需要获取信息的联系人列表。
-// `request` 参数是一个 `BaseRequest` 对象，包含了请求的基本信息。
-// 函数返回一个 `Contacts` 对象和一个错误。
+// BatchGetContact 用于批量获取联系人信息。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - contacts: 待获取联系人列表。
+//   - request: 基本请求信息。
+//
+// 输出参数：
+//   - Contacts: 获取到的联系人列表。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) BatchGetContact(ctx context.Context, contacts Contacts, request *BaseRequest) (Contacts, error) {
 	// 向服务器发送 BatchGetContact 请求，并接收响应
 	res, err := c.WechatClient.BatchGetContact(ctx, contacts, request)
@@ -579,10 +583,15 @@ func (c *Caller) BatchGetContact(ctx context.Context, contacts Contacts, request
 // WechatCallerSyncOption 类型是 WechatCallerCommonOption 的别名，用于指定 Web 微信同步的选项。
 type WechatCallerSyncOption WechatCallerCommonOption
 
-// Sync 函数用于执行 Web 微信消息同步操作。
-// 接收一个 `context.Context` 对象作为参数，用于控制请求的上下文。
-// `option` 参数是一个 `WechatCallerSyncOption` 对象指针，包含了同步的选项。
-// 函数返回一个 `SyncResponse` 对象指针和一个错误。
+// Sync 用于同步微信消息和联系人信息。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - option: 微信同步选项。
+//
+// 输出参数：
+//   - *SyncResponse: 同步响应对象。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) Sync(ctx context.Context, option *WechatCallerSyncOption) (*SyncResponse, error) {
 	// 构造 Sync 请求的选项对象
 	wxSyncOption := &WechatClientSyncOption{
@@ -623,10 +632,15 @@ type WechatCallerUploadMediaOption struct {
 	LoginInfoResponse *LoginInfoResponse // 登录信息
 }
 
-// UploadMedia 函数用于上传媒体文件。
-// 接收一个 `context.Context` 对象作为参数，用于控制请求的上下文。
-// `option` 参数是一个 `WechatCallerUploadMediaOption` 对象指针，包含了上传媒体文件的选项。
-// 函数返回一个 *UploadResponse 和一个错误。
+// UploadMedia 用于上传媒体文件。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - option: 上传媒体选项。
+//
+// 输出参数：
+//   - *UploadResponse: 上传响应对象。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) UploadMedia(ctx context.Context, option *WechatCallerUploadMediaOption) (*UploadResponse, error) {
 	// 构造 UploadChunk 请求的选项对象
 	clientWebWxUploadMediaByChunkOpt := &WechatClientUploadChunkOption{
@@ -674,10 +688,14 @@ type WechatCallerOplogOption struct {
 	ToUserName  string       // 目标联系人名称
 }
 
-// Oplog 函数用于执行 Web 微信操作日志操作。(修改联系人备注接口)
-// 接收一个 `context.Context` 对象作为参数，用于控制请求的上下文。
-// `option` 参数是一个 `WechatCallerOplogOption` 对象指针，包含了操作日志的选项。
-// 函数返回一个错误。
+// Oplog 用于记录操作日志。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - option: 操作日志选项。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) Oplog(ctx context.Context, option *WechatCallerOplogOption) error {
 	// 构造 Oplog 请求的选项对象
 	wxOpLogOption := &WechatClientOplogOption{
@@ -1004,10 +1022,15 @@ type WechatCallerSendMessageOption struct {
 	LoginInfoResponse *LoginInfoResponse // 登录信息
 }
 
-// SendTextMessage 函数用于执行 Web 微信发送消息操作。
-// 接收一个 `context.Context` 对象作为参数，用于控制请求的上下文。
-// `option` 参数是一个 `WechatCallerSendMessageOption` 对象指针，包含了发送消息的选项。
-// 函数返回一个 `SentMessage` 对象指针和一个错误。
+// SendTextMessage 用于发送文本消息。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - option: 发送消息选项。
+//
+// 输出参数：
+//   - *SentMessage: 发送的消息对象。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) SendTextMessage(ctx context.Context, option *WechatCallerSendMessageOption) (*SentMessage, error) {
 	// 构造 SendTextMessage 请求的选项对象
 	wxSendMsgOption := &WechatClientSendMessageOption{
@@ -1046,7 +1069,15 @@ type WechatCallerMediaMessageCommonOption struct {
 // WechatCallerSendImageMessageOption 结构体是基于 WechatCallerMediaMessageCommonOption 的选项，用于发送图片消息
 type WechatCallerSendImageMessageOption WechatCallerMediaMessageCommonOption
 
-// SendImageMessage 是调用者 Caller 的方法，用于发送图片消息。
+// SendImageMessage 用于发送图片消息。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - option: 发送图片消息选项。
+//
+// 输出参数：
+//   - *SentMessage: 发送的消息对象。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) SendImageMessage(ctx context.Context, option *WechatCallerSendImageMessageOption) (*SentMessage, error) {
 	// 将 Reader 转换为文件，并返回文件句柄和清理函数
 	file, callback, err := ReaderToFile(option.Reader)
@@ -1103,7 +1134,15 @@ func (c *Caller) SendImageMessage(ctx context.Context, option *WechatCallerSendI
 // WechatCallerSendVideoMessageOption 结构体是基于 WechatCallerMediaMessageCommonOption 的选项，用于发送视频消息
 type WechatCallerSendVideoMessageOption WechatCallerMediaMessageCommonOption
 
-// SendVideoMessage 是调用者 Caller 的方法，用于发送视频消息。
+// SendVideoMessage 用于发送视频消息。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - option: 发送视频消息选项。
+//
+// 输出参数：
+//   - *SentMessage: 发送的消息对象。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) SendVideoMessage(ctx context.Context, option *WechatCallerSendVideoMessageOption) (*SentMessage, error) {
 	// 将读取器转换为文件，并获取关闭文件的函数
 	file, callback, err := ReaderToFile(option.Reader)
@@ -1153,7 +1192,15 @@ func (c *Caller) SendVideoMessage(ctx context.Context, option *WechatCallerSendV
 // WechatCallerSendFileMessageOption 结构体是基于 WechatCallerMediaMessageCommonOption 的选项，用于发送文件消息
 type WechatCallerSendFileMessageOption WechatCallerMediaMessageCommonOption
 
-// SendAppMessage 是调用者 Caller 的方法，用于发送文件消息。
+// SendFileMessage 用于发送文件消息。
+//
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - option: 发送文件消息选项。
+//
+// 输出参数：
+//   - *SentMessage: 发送的消息对象。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) SendFileMessage(ctx context.Context, option *WechatCallerSendFileMessageOption) (*SentMessage, error) {
 	// 将读取器转换为文件，并获取关闭文件的函数
 	file, callback, err := ReaderToFile(option.Reader)
@@ -1194,16 +1241,16 @@ func (c *Caller) SendFileMessage(ctx context.Context, option *WechatCallerSendFi
 	return c.SendAppMessage(ctx, message, option.BaseRequest)
 }
 
-// SendVideoMessage 是调用者 Caller 的方法，用于发送应用消息。
+// SendAppMessage 用于发送应用消息。
 //
-// 参数：
-//   - ctx：控制请求的上下文。
-//   - msg：要发送的消息。
-//   - req：基本请求。
+// 输入参数：
+//   - ctx: 上下文信息。
+//   - msg: 发送的消息对象。
+//   - req: 基本请求信息。
 //
-// 返回值：
-//   - *SentMessage：已发送的消息。
-//   - error：错误信息（如果有）。
+// 输出参数：
+//   - *SentMessage: 发送的消息对象。
+//   - error: 操作过程中遇到的错误。
 func (c *Caller) SendAppMessage(ctx context.Context, msg *SendMessage, req *BaseRequest) (*SentMessage, error) {
 	// 调用 WechatClient 的 SendAppMessage 方法发送应用消息
 	res, err := c.WechatClient.SendAppMessage(ctx, msg, req)

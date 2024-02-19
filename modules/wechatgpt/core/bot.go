@@ -43,7 +43,13 @@ type Bot struct {
 
 // ================================================= [函数](全局)私有 =================================================
 
-// _open 在浏览器中打开指定的 URL
+// _open 用于在默认的 Web 浏览器中打开指定的 URL。
+//
+// 入参：
+//   - url：要打开的 URL 地址。
+//
+// 返回值：
+//   - error：如果打开 URL 出现错误，则返回相应的错误信息；否则返回 nil。
 func _open(url string) error {
 	var (
 		cmd  string   // 执行的命令
@@ -67,7 +73,13 @@ func _open(url string) error {
 
 // ================================================= [函数](全局)公开 =================================================
 
-// NewBot 创建一个新的机器人实例(接收外部的 context.Context，用于控制Bot的存活)
+// NewBot 用于创建一个新的 Bot 实例。
+//
+// 入参：
+//   - c：上下文对象，用于控制 Bot 的生命周期。
+//
+// 返回值：
+//   - *Bot：返回一个新的 Bot 实例，其中 Caller 为默认的 Caller，Storage 为一个新的 Session 实例，Serializer 为默认的 JsonSerializer，context 和 cancel 分别为新创建的上下文和取消函数。
 func NewBot(c context.Context) *Bot {
 	// 创建默认的 Caller 实例
 	caller := DefaultCaller()
@@ -90,12 +102,15 @@ func NewBot(c context.Context) *Bot {
 	}
 }
 
-// DefaultBot 默认的Bot的构造方法,
-// mode不传入默认为 core.Selector_NORMAL,详情见mode
+// DefaultBot 用于创建一个默认的 Bot 实例。(mode不传入默认为 core.Selector_NORMAL,详情见mode)
 //
 //	bot := core.DefaultBot(core.Desktop)
 //
-// DefaultBot 创建一个默认的机器人实例
+// 入参：
+//   - prepares：可选的 BotPreparer 函数，用于进行额外的准备工作。
+//
+// 返回值：
+//   - *Bot：返回一个新的 Bot 实例，其中 Caller 和其他属性已经设置为默认值，同时根据参数进行了自定义的准备工作。
 func DefaultBot(prepares ...BotPreparer) *Bot {
 	// 创建一个新的机器人实例
 	bot := NewBot(context.Background())
@@ -126,17 +141,34 @@ func DefaultBot(prepares ...BotPreparer) *Bot {
 	return bot
 }
 
-// DefaultBot 创建一个默认的机器人实例
+// Default 方法用于创建一个默认的 Bot 实例。
+//
+// 入参：
+//   - prepares：可选的 BotPreparer 函数，用于进行额外的准备工作。
+//
+// 返回值：
+//   - *Bot：返回一个新的 Bot 实例，其中 Caller 和其他属性已经设置为默认值，同时根据参数进行了自定义的准备工作。
 func Default(prepares ...BotPreparer) *Bot {
 	return DefaultBot(prepares...)
 }
 
-// QRCodeUrl 根据给定的UUID生成二维码链接
+// QRCodeUrl 用于生成二维码链接。
+//
+// 入参：
+//   - bot：Bot 实例。
+//   - uuid：登录凭证。
+//
+// 返回值：
+//   - string：生成的二维码链接。
 func QRCodeUrl(bot *Bot, uuid string) string {
 	return bot.Caller.WechatClient.Domain.LoginHost() + qrcodePath + uuid
 }
 
-// PrintlnQRCodeUrl 打印二维码链接并在浏览器中打开登录页面
+// PrintlnQRCodeUrl 用于打印二维码链接并在浏览器中打开登录链接。
+//
+// 入参：
+//   - bot：Bot 实例。
+//   - uuid：登录凭证。
 func PrintlnQRCodeUrl(bot *Bot, uuid string) {
 	println("访问下面网址扫描二维码登录")
 
@@ -150,7 +182,13 @@ func PrintlnQRCodeUrl(bot *Bot, uuid string) {
 
 // ================================================= [函数](Bot)私有 =================================================
 
-// _dumpTo 将当前机器人的状态信息保存到指定的 Writer 中(注: 写之前最好先清空之前的数据)
+// _dumpTo 用于将机器人的状态信息序列化到指定的 Writer 中(注: 写之前最好先清空之前的数据)
+//
+// 入参：
+//   - writer：用于写入序列化数据的 io.Writer 接口。
+//
+// 返回值：
+//   - error：操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) _dumpTo(writer io.Writer) error {
 	jar := b.Caller.WechatClient.GetCookieJar() // 获取机器人所使用的 CookieJar
 
@@ -166,7 +204,13 @@ func (b *Bot) _dumpTo(writer io.Writer) error {
 	return b.Serializer.Encode(writer, item) // 将 HotReloadStorageItem 序列化到指定的 Writer 中
 }
 
-// _login 通过指定的登录方式进行机器人登录。
+// _login 用于执行机器人的登录操作。
+//
+// 入参：
+//   - login：登录方式，实现了BotLogin接口的结构体。
+//
+// 返回值：
+//   - error：操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) _login(login BotLogin) (err error) {
 	// 获取登录选项组
 	options := b.loginOptions
@@ -189,7 +233,10 @@ func (b *Bot) _login(login BotLogin) (err error) {
 	return options.OnSuccess(b)
 }
 
-// Init 根据有效凭证获取和初始化联系人信息
+// Init 用于初始化机器人。(根据有效凭证获取和初始化联系人信息)
+//
+// 返回值：
+//   - error：操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) Init() error {
 	req := b.Storage.Request    // 获取存储中的BaseRequest对象
 	info := b.Storage.LoginInfo // 获取存储中的LoginInfo对象
@@ -236,6 +283,7 @@ func (b *Bot) Init() error {
 		if b.MessageErrorHandler == nil {
 			b.MessageErrorHandler = DefaultMessageErrorHandler
 		}
+
 		for {
 			if err = b.SyncCheck(); err != nil {
 				// 判断是否继续，如果不继续则退出
@@ -250,14 +298,20 @@ func (b *Bot) Init() error {
 	return nil
 }
 
-// SyncCheck[轮询请求] 同步检查是否有消息返回(根据状态码判断是否有新的请求)
+// SyncCheck 用于轮询请求同步检查是否有新消息返回。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - error：操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) SyncCheck() error {
 	var (
-		err  error
-		resp *SyncCheckResponse
+		err  error              // 存储可能发生的错误
+		resp *SyncCheckResponse // 存储同步检查的响应数据
 	)
 
-	syncCheckOption := &WechatCallerSyncCheckOption{}
+	syncCheckOption := &WechatCallerSyncCheckOption{} // 创建同步检查的配置选项对象
 
 	// 判断是否存活
 	for b.Alive() {
@@ -302,15 +356,15 @@ func (b *Bot) SyncCheck() error {
 			// todo 将这个错误处理交给联系人
 			_ = b.DumpHotReloadStorage()
 
-			if b.MessageHandler == nil {
-				continue
-			}
-
 			// 遍历所有消息
 			for _, message := range messages {
 				message.Init(b)
-				b.MessageHandler(message)      // 处理消息
+
 				b.GroupMessageHandler(message) // 更新群组信息
+
+				if b.MessageHandler != nil {
+					b.MessageHandler(message) // 处理消息
+				}
 			}
 		}
 	}
@@ -318,7 +372,14 @@ func (b *Bot) SyncCheck() error {
 	return err
 }
 
-// SyncMessage 同步消息
+// SyncMessage 用于同步获取消息列表。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - []*Message: 消息列表。
+//   - error: 操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) SyncMessage() ([]*Message, error) {
 	option := WechatCallerSyncOption{
 		BaseRequest:       b.Storage.Request,   // 设置基本请求参数
@@ -341,7 +402,14 @@ func (b *Bot) SyncMessage() ([]*Message, error) {
 	return resp.AddMsgList, nil
 }
 
-// SyncGroups 更新群组信息
+// GroupMessageHandler 用于处理群组消息的逻辑。
+//
+// 输入参数：
+//   - message: 要处理的消息对象。
+//
+// 输出参数：
+//
+//	无。
 func (b *Bot) GroupMessageHandler(message *Message) {
 	// 判断是否为群组消息
 	if message.IsSendByGroup() {
@@ -375,7 +443,14 @@ func (b *Bot) GroupMessageHandler(message *Message) {
 
 // ================================================= [函数](Bot)公开 =================================================
 
-// Reload 重新加载机器人的状态信息，用于在热重载时恢复机器人的状态
+// Reload 用于重新加载机器人状态信息。(在热重载时恢复机器人的状态)
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) Reload() error {
 	// 如果热重载存储为空则返回错误
 	if b.hotReloadStorage == nil {
@@ -407,7 +482,14 @@ func (b *Bot) Reload() error {
 	return nil
 }
 
-// Block 阻塞机器人运行直到机器人退出(当消息同步发生了错误或者联系人主动在手机上退出，该方法会立即返回，否则会一直阻塞)
+// Block 用于阻塞机器人的运行，并等待其退出。(当消息同步发生了错误或者联系人主动在手机上退出，该方法会立即返回，否则会一直阻塞)
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) Block() error {
 	// 如果机器人未登录，则返回错误
 	if b.self == nil {
@@ -419,7 +501,15 @@ func (b *Bot) Block() error {
 	return b.CrashReason() // 返回机器人退出原因
 }
 
-// Exit 主动退出，让 Block 不在阻塞
+// Exit 用于退出机器人运行。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//
+//	无。
 func (b *Bot) Exit() {
 	b.self = nil // 清空机器人信息
 
@@ -430,19 +520,40 @@ func (b *Bot) Exit() {
 	}
 }
 
-// ExitWith 主动退出并且设置退出原因, 可以通过 `CrashReason` 获取退出原因
+// ExitWith 用于退出机器人运行，并设置错误信息。(可以通过 `CrashReason` 获取退出原因)
+//
+// 输入参数：
+//   - err: 错误信息。
+//
+// 输出参数：
+//
+//	无。
 func (b *Bot) ExitWith(err error) {
 	b.err = err // 设置错误信息
 
 	b.Exit() // 退出机器人
 }
 
-// CrashReason 获取当前Bot崩溃的原因
+// CrashReason 用于获取机器人退出的奔溃信息。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - error: 机器人退出的奔溃信息。
 func (b *Bot) CrashReason() error {
-	return b.err // 返回机器人退出的错误信息
+	return b.err // 返回机器人退出的奔溃信息
 }
 
-// DumpHotReloadStorage 将当前机器人的状态信息保存到热重载存储中
+// DumpHotReloadStorage 用于将当前机器人状态信息保存到热重载存储中。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误，如果没有错误则返回 nil。
 func (b *Bot) DumpHotReloadStorage() error {
 	if b.hotReloadStorage == nil { // 检查热重载存储是否为空
 		return errors.New("HotReloadStorage can not be nil")
@@ -451,17 +562,38 @@ func (b *Bot) DumpHotReloadStorage() error {
 	return b._dumpTo(b.hotReloadStorage) // 将当前机器人状态信息保存到热重载存储中
 }
 
-// UUID 返回机器人的 UUID
+// UUID 用于获取机器人的 UUID。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - string: 机器人的 UUID。
 func (b *Bot) UUID() string {
 	return b.uuid // 直接返回机器人的 UUID
 }
 
-// Context 返回机器人的上下文对象
+// Context 用于获取机器人的上下文对象。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - context.Context: 机器人的上下文对象。
 func (b *Bot) Context() context.Context {
 	return b.context // 直接返回机器人的上下文对象
 }
 
-// Alive 判断当前联系人是否正常在线
+// Alive 用于检查机器人是否处于运行状态。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - bool: true表示机器人处于运行状态，false表示机器人已停止运行。
 func (b *Bot) Alive() bool {
 	// 检查协程的上下文是否已取消，如果取消则表示机器人已停止运行，返回false
 	select {
@@ -473,12 +605,27 @@ func (b *Bot) Alive() bool {
 	}
 }
 
-// IsHot 返回机器人是否处于热重载状态
+// IsHot 用于判断机器人是否处于热重载状态。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - bool: true表示机器人处于热重载状态，false表示机器人不处于热重载状态。
 func (b *Bot) IsHot() bool {
 	return b.hotReloadStorage != nil // 判断热重载存储是否为空，如果不为空则表示机器人处于热重载状态，返回 true；否则返回 false
 }
 
-// CurrentUser 当前登录联系人的信息。
+// CurrentUser 用于获取当前登录联系人的信息。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - *Self: 当前登录联系人的信息。
+//   - error: 操作过程中遇到的错误，如果机器人未登录则返回错误信息。
 func (b *Bot) CurrentUser() (*Self, error) {
 	// 如果机器人未登录，返回错误信息
 	if b.self == nil {
@@ -489,7 +636,14 @@ func (b *Bot) CurrentUser() (*Self, error) {
 	return b.self, nil
 }
 
-// ScanLogin 使用扫码登录方式进行机器人登录。
+// ScanLogin 用于使用扫码登录方式进行机器人登录。
+//
+// 输入参数：
+//
+//	无。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误。
 func (b *Bot) ScanLogin() error {
 	// 创建一个ScanLogin类型的实例，包含机器人登录所需的UUID信息
 	scanLogin := &ScanLogin{UUID: b.loginUUID}
@@ -498,7 +652,14 @@ func (b *Bot) ScanLogin() error {
 	return b._login(scanLogin)
 }
 
-// HotLogin 使用热登录方式进行机器人登录，可以在单位时间内免重复扫码登录(热登录需要先扫码登录一次才可以进行热登录。)
+// HotLogin 用于使用热登录方式进行机器人登录,可以在单位时间内免重复扫码登录(热登录需要先扫码登录一次才可以进行热登录。)
+//
+// 输入参数：
+//   - storage: 热登录所需的存储信息。
+//   - opts: 登录选项组，可用于修改默认行为。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误。
 func (b *Bot) HotLogin(storage HotReloadStorage, opts ...BotLoginOption) error {
 	// 创建一个HotLogin类型的实例，包含热登录所需的存储信息
 	hotLogin := &HotLogin{storage: storage}
@@ -510,7 +671,14 @@ func (b *Bot) HotLogin(storage HotReloadStorage, opts ...BotLoginOption) error {
 	return b._login(hotLogin)
 }
 
-// PushLogin 使用免扫码登录方式进行机器人登录(免扫码登录需要先扫码登录一次才可以进行免扫码登录。)
+// PushLogin 用于使用免扫码登录方式进行机器人登录。(免扫码登录需要先扫码登录一次才可以进行免扫码登录。)
+//
+// 输入参数：
+//   - storage: 免扫码登录所需的存储信息。
+//   - opts: 登录选项组，可用于修改默认行为。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误。
 func (b *Bot) PushLogin(storage HotReloadStorage, opts ...BotLoginOption) error {
 	// 创建一个PushLogin类型的实例，包含免扫码登录所需的存储信息
 	pushLogin := &PushLogin{storage: storage}
@@ -522,7 +690,13 @@ func (b *Bot) PushLogin(storage HotReloadStorage, opts ...BotLoginOption) error 
 	return b._login(pushLogin)
 }
 
-// LoginFromURL 从URL登录机器人
+// LoginFromURL 用于通过URL进行机器人登录。
+//
+// 输入参数：
+//   - path: 登录URL的路径信息。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误。
 func (b *Bot) LoginFromURL(path *url.URL) error {
 	// 获取登录的基本信息
 	info, err := b.Caller.GetLoginInfo(b.Context(), path)
@@ -549,11 +723,14 @@ func (b *Bot) LoginFromURL(path *url.URL) error {
 	// 将构建的BaseRequest存储到storage中以便后续调用
 	b.Storage.Request = request
 
-	// 执行webInit方法进行初始化，并返回执行结果
+	// 执行Init方法进行初始化，并返回执行结果
 	return b.Init()
 }
 
-// Logout 联系人退出
+// Logout 用于机器人退出登录。
+//
+// 输出参数：
+//   - error: 操作过程中遇到的错误。
 func (b *Bot) Logout() error {
 	// 检查机器人是否已登录
 	if b.Alive() {

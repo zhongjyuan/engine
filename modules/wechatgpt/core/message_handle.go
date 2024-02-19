@@ -21,6 +21,9 @@ type MessageContext struct {
 //   - msg：一个指向 Message 结构体的指针，表示要处理的消息。
 type MessageHandler func(message *Message)
 
+// MessageErrorHandler 是处理消息发送、接收等操作中出现的错误的函数类型，该函数接受一个 error 类型的参数，并返回一个 error 类型的值。
+type MessageErrorHandler func(err error) error
+
 // MessageContextHandler 是一个函数类型，用于处理消息上下文的回调函数。
 //
 // 参数：
@@ -91,9 +94,6 @@ type MessageMatchDispatcher struct {
 // 返回值：
 //   - bool：表示联系人是否匹配。
 type MessageMatchSender func(contact *Contact) bool
-
-// MessageErrorHandler 是处理消息发送、接收等操作中出现的错误的函数类型，该函数接受一个 error 类型的参数，并返回一个 error 类型的值。
-type MessageErrorHandler func(err error) error
 
 // ================================================= [函数](全局)公开 =================================================
 
@@ -463,7 +463,7 @@ func (mmd *MessageMatchDispatcher) OnGroup(handlers ...MessageContextHandler) {
 // OnUser 方法用于注册当接收到联系人消息时的消息处理函数。
 //
 // 入参：
-//   - f：一个判断联系人是否符合条件的函数，入参为 *User，返回值为 bool。
+//   - f：一个判断联系人是否符合条件的函数，入参为 *Contact，返回值为 bool。
 //   - handlers：MessageContextHandler 类型的可变参数，表示要注册的消息处理函数。
 func (mmd *MessageMatchDispatcher) OnUser(f func(contact *Contact) bool, handlers ...MessageContextHandler) {
 	// 定义匹配函数

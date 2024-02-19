@@ -36,7 +36,7 @@
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "wechatgpt",
+			"name": "wechatgpt|dev",
 			"program": "${workspaceFolder}\\modules\\wechatgpt\\main.go",
 			"showLog": true,
 			// "env": {

@@ -137,8 +137,15 @@ func WithMode(mode Mode) BotPreparer {
 	return BotPreparerHandler(func(b *Bot) { b.Caller.WechatClient.SetMode(mode) })
 }
 
+// WithDomain 函数用于创建一个 BotPreparer 对象，设置 Bot 的域名。
+//
+// 入参：
+//   - domain string：表示要设置的 Bot 域名。
+//
+// 返回值：
+//   - BotPreparer：返回一个实现了 BotPreparer 接口的对象，用于准备 Bot 对象。
 func WithDomain(domain string) BotPreparer {
-	return BotPreparerHandler(func(b *Bot) { b.Caller.WechatClient.Domain = Domain(domain) })
+	return BotPreparerHandler(func(b *Bot) { b.Caller.WechatClient.SetDomain(domain) })
 }
 
 // WithContextOption 函数用于创建一个 BotPreparer 对象，设置 Bot 的上下文。

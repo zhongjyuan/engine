@@ -366,6 +366,7 @@ func (fs Friends) SendFile(file io.Reader, delay ...time.Duration) error {
 // ================================================= [函数](Friend)公开 =================================================
 
 // String 方法为 Friend 类型对象实现了 Stringer 接口，返回 Friend 对象的字符串表示形式。
+//
 // 返回值：
 //   - string: 字符串表示形式，格式为 "<Friend: 昵称（或备注名）>"。
 func (f *Friend) String() string {
@@ -379,6 +380,7 @@ func (f *Friend) String() string {
 }
 
 // SetRemarkName 方法为 Friend 类型对象设置备注名。
+//
 // 入参：
 //   - name: 要设置的备注名。
 //
@@ -389,6 +391,7 @@ func (f *Friend) SetRemarkName(name string) error {
 }
 
 // AddToGroup 方法将好友加入多个群聊。
+//
 // 入参：
 //   - groups: 要加入的群聊对象，类型为 []*Group。
 //
@@ -399,6 +402,7 @@ func (f *Friend) AddToGroup(groups ...*Group) error {
 }
 
 // SendText 方法向好友发送文本消息。
+//
 // 入参：
 //   - content: 要发送的文本内容。
 //
@@ -410,6 +414,7 @@ func (f *Friend) SendText(content string) (*SentMessage, error) {
 }
 
 // SendImage 方法向好友发送图片消息。
+//
 // 入参：
 //   - file: 要发送的图片文件，类型为 io.Reader。
 //
@@ -421,6 +426,7 @@ func (f *Friend) SendImage(file io.Reader) (*SentMessage, error) {
 }
 
 // SendVideo 方法向好友发送视频消息。
+//
 // 入参：
 //   - file: 要发送的视频文件，类型为 io.Reader。
 //
@@ -432,6 +438,7 @@ func (f *Friend) SendVideo(file io.Reader) (*SentMessage, error) {
 }
 
 // SendFile 方法向好友发送文件消息。
+//
 // 入参：
 //   - file: 要发送的文件，类型为 io.Reader。
 //
@@ -443,23 +450,34 @@ func (f *Friend) SendFile(file io.Reader) (*SentMessage, error) {
 }
 
 // ================================================= [函数](Groups)公开 =================================================
-
-// Count 获取群组数量
+// Count 方法用于获取群组数量。
+//
+// 返回值：
+//   - int：群组数量。
 func (gs Groups) Count() int {
 	return len(gs)
 }
 
-// Sort 对群组进行排序
+// Sort 方法用于对群组进行排序。
+//
+// 返回值：
+//   - Groups：排序后的群组列表。
 func (gs Groups) Sort() Groups {
 	return gs.AsContacts().Sort().Groups()
 }
 
-// Uniq 对群组进行去重
+// Uniq 方法用于对群组进行去重。
+//
+// 返回值：
+//   - Groups：去重后的群组列表。
 func (gs Groups) Uniq() Groups {
 	return gs.AsContacts().Uniq().Groups()
 }
 
-// First 获取第一个群组
+// First 方法用于获取第一个群组。
+//
+// 返回值：
+//   - *Group：第一个群组的指针，如果群组列表为空则返回 nil。
 func (gs Groups) First() *Group {
 	if gs.Count() > 0 {
 		return gs.Sort()[0]
@@ -467,7 +485,10 @@ func (gs Groups) First() *Group {
 	return nil
 }
 
-// Last 获取最后一个群组
+// Last 方法用于获取最后一个群组。
+//
+// 返回值：
+//   - *Group：最后一个群组的指针，如果群组列表为空则返回 nil。
 func (gs Groups) Last() *Group {
 	if gs.Count() > 0 {
 		return gs.Sort()[gs.Count()-1]
@@ -475,7 +496,10 @@ func (gs Groups) Last() *Group {
 	return nil
 }
 
-// AsContacts 将群组列表转换为联系人列表
+// AsContacts 方法将群组列表转换为联系人列表。
+//
+// 返回值：
+//   - Contacts：转换后的联系人列表。
 func (gs Groups) AsContacts() Contacts {
 	var contacts = make(Contacts, 0, gs.Count())
 	for _, group := range gs {
@@ -484,7 +508,14 @@ func (gs Groups) AsContacts() Contacts {
 	return contacts
 }
 
-// Search 根据自定义条件查找群组
+// Search 方法根据自定义条件查找群组。
+//
+// 输入参数：
+//   - limit：最大返回结果数量。
+//   - searchHandlers：自定义条件判断函数列表。
+//
+// 返回值：
+//   - Groups：符合条件的群组列表。
 func (gs Groups) Search(limit int, searchHandlers ...func(group *Group) bool) (results Groups) {
 	return gs.AsContacts().Search(limit, func(contact *Contact) bool {
 		var group = &Group{contact}
@@ -499,32 +530,71 @@ func (gs Groups) Search(limit int, searchHandlers ...func(group *Group) bool) (r
 	}).Groups()
 }
 
-// SearchById 根据ID查找群组
+// SearchById 方法根据ID查找群组。
+//
+// 输入参数：
+//   - id：群组ID。
+//
+// 返回值：
+//   - Groups：符合条件的群组列表。
 func (gs Groups) SearchById(id string) Groups {
 	return gs.Search(1, func(group *Group) bool { return group.Id() == id })
 }
 
-// SearchByUserName 根据联系人名查找群组
+// SearchByUserName 方法根据联系人名查找群组。
+//
+// 输入参数：
+//   - limit：最大返回结果数量。
+//   - username：联系人名。
+//
+// 返回值：
+//   - Groups：符合条件的群组列表。
 func (gs Groups) SearchByUserName(limit int, username string) (results Groups) {
 	return gs.Search(limit, func(group *Group) bool { return group.UserName == username })
 }
 
-// SearchByNickName 根据昵称查找群组
+// SearchByNickName 方法根据昵称查找群组。
+//
+// 输入参数：
+//   - limit：最大返回结果数量。
+//   - nickName：昵称。
+//
+// 返回值：
+//   - Groups：符合条件的群组列表。
 func (gs Groups) SearchByNickName(limit int, nickName string) (results Groups) {
 	return gs.Search(limit, func(group *Group) bool { return group.NickName == nickName })
 }
 
-// GetByUsername 根据username查询一个Group
+// GetByUsername 方法根据username查询一个Group。
+//
+// 输入参数：
+//   - username：用户名。
+//
+// 返回值：
+//   - *Group：符合条件的群组指针，如果找不到则返回 nil。
 func (gs Groups) GetByUsername(username string) *Group {
 	return gs.SearchByUserName(1, username).First()
 }
 
-// GetByNickName 根据nickname查询一个Group
+// GetByNickName 方法根据nickname查询一个Group。
+//
+// 输入参数：
+//   - nickname：昵称。
+//
+// 返回值：
+//   - *Group：符合条件的群组指针，如果找不到则返回 nil。
 func (gs Groups) GetByNickName(nickname string) *Group {
 	return gs.SearchByNickName(1, nickname).First()
 }
 
-// SendText 向群组依次发送文本消息, 支持发送延迟
+// SendText 方法向群组依次发送文本消息，支持发送延迟。
+//
+// 输入参数：
+//   - text：文本消息内容。
+//   - delay：发送延迟时间（可选）。
+//
+// 返回值：
+//   - error：发送过程中出现的错误，如果没有错误则返回 nil。
 func (gs Groups) SendText(text string, delay ...time.Duration) error {
 	if gs.Count() == 0 {
 		return nil
@@ -540,7 +610,14 @@ func (gs Groups) SendText(text string, delay ...time.Duration) error {
 	return self.SendTextToGroups(text, d, gs...)
 }
 
-// SendImage 向群组依次发送图片消息, 支持发送延迟
+// SendImage 方法向群组依次发送图片消息，支持发送延迟。
+//
+// 输入参数：
+//   - file：图片文件的 io.Reader。
+//   - delay：发送延迟时间（可选）。
+//
+// 返回值：
+//   - error：发送过程中出现的错误，如果没有错误则返回 nil。
 func (gs Groups) SendImage(file io.Reader, delay ...time.Duration) error {
 	if gs.Count() == 0 {
 		return nil
@@ -556,7 +633,14 @@ func (gs Groups) SendImage(file io.Reader, delay ...time.Duration) error {
 	return self.SendImageToGroups(file, d, gs...)
 }
 
-// SendVideo 向群组依次发送视频消息, 支持发送延迟
+// SendVideo 方法向群组依次发送视频消息，支持发送延迟。
+//
+// 输入参数：
+//   - file：视频文件的 io.Reader。
+//   - delay：发送延迟时间（可选）。
+//
+// 返回值：
+//   - error：发送过程中出现的错误，如果没有错误则返回 nil。
 func (gs Groups) SendVideo(file io.Reader, delay ...time.Duration) error {
 	if gs.Count() == 0 {
 		return nil
@@ -572,7 +656,14 @@ func (gs Groups) SendVideo(file io.Reader, delay ...time.Duration) error {
 	return self.SendVideoToGroups(file, d, gs...)
 }
 
-// SendFile 向群组依次发送文件消息, 支持发送延迟
+// SendFile 方法向群组依次发送文件消息，支持发送延迟。
+//
+// 输入参数：
+//   - file：文件的 io.Reader。
+//   - delay：发送延迟时间（可选）。
+//
+// 返回值：
+//   - error：发送过程中出现的错误，如果没有错误则返回 nil。
 func (gs Groups) SendFile(file io.Reader, delay ...time.Duration) error {
 	if gs.Count() == 0 {
 		return nil
@@ -589,19 +680,27 @@ func (gs Groups) SendFile(file io.Reader, delay ...time.Duration) error {
 }
 
 // ================================================= [函数](Group)公开 =================================================
-
 // implement fmt.Stringer
 func (g *Group) String() string {
 	return fmt.Sprintf("<Group:%s>", g.NickName)
 }
 
-// Rename 群组重命名
-// Deprecated
+// Rename 用于群组重命名，已废弃。
+//
+// 输入参数：
+//   - name string: 新的群组名称。
+//
+// 输出参数：
+//   - error: 如果重命名过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) Rename(name string) error {
 	return g.Self().RenameGroup(g, name)
 }
 
-// Contacts 获取所有的群成员
+// Contacts 用于获取所有的群成员。
+//
+// 输出参数：
+//   - Contacts: 群组中的所有成员列表。
+//   - error: 如果获取成员列表过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) Contacts() (Contacts, error) {
 	if err := g.Detail(); err != nil {
 		return nil, err
@@ -610,18 +709,37 @@ func (g *Group) Contacts() (Contacts, error) {
 	return g.MemberList, nil
 }
 
-// AddFriends 拉好友入群
+// AddFriends 用于拉好友入群。
+//
+// 输入参数：
+//   - friends ...*Friend: 要拉入群的好友列表。
+//
+// 输出参数：
+//   - error: 如果拉好友过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) AddFriends(friends ...*Friend) error {
 	friends = Friends(friends).Uniq()
 	return g.self.AddFriendsToGroup(g, friends...)
 }
 
-// RemoveContacts 从群聊中移除联系人
+// RemoveContacts 用于从群聊中移除联系人。
+//
+// 输入参数：
+//   - contacts Contacts: 要移除的群成员列表。
+//
+// 输出参数：
+//   - error: 如果移除过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) RemoveContacts(contacts Contacts) error {
 	return g.Self().RemoveContactsFromGroup(g, contacts)
 }
 
-// SearchContactByUsername 根据联系人名查找群成员
+// SearchContactByUsername 用于根据联系人名查找群成员。
+//
+// 输入参数：
+//   - username string: 联系人名。
+//
+// 输出参数：
+//   - *Contact: 符合条件的群成员指针，如果找不到则返回 nil。
+//   - error: 如果查找过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) SearchContactByUsername(username string) (*Contact, error) {
 	if g.MemberList.Count() == 0 {
 		if _, err := g.Contacts(); err != nil {
@@ -643,44 +761,95 @@ func (g *Group) SearchContactByUsername(username string) (*Contact, error) {
 	return contacts.First(), nil
 }
 
-// SendText 发行文本消息给当前的群组
+// SendText 用于在当前的群组发送文本消息。
+//
+// 输入参数：
+//   - content string: 文本消息内容。
+//
+// 输出参数：
+//   - *SentMessage: 发送的文本消息对象指针。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) SendText(content string) (*SentMessage, error) {
 	return g.Self().SendTextToGroup(g, content)
 }
 
-// SendImage 发行图片消息给当前的群组
+// SendImage 用于在当前的群组发送图片消息。
+//
+// 输入参数：
+//   - file io.Reader: 图片文件的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage: 发送的图片消息对象指针。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) SendImage(file io.Reader) (*SentMessage, error) {
 	return g.Self().SendImageToGroup(g, file)
 }
 
-// SendVideo 发行视频消息给当前的群组
+// SendVideo 用于在当前的群组发送视频消息。
+//
+// 输入参数：
+//   - file io.Reader: 视频文件的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage: 发送的视频消息对象指针。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) SendVideo(file io.Reader) (*SentMessage, error) {
 	return g.Self().SendVideoToGroup(g, file)
 }
 
-// SendFile 发送文件给当前的群组
+// SendFile 用于在当前的群组发送文件。
+//
+// 输入参数：
+//   - file io.Reader: 文件的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage: 发送的文件消息对象指针。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (g *Group) SendFile(file io.Reader) (*SentMessage, error) {
 	return g.Self().SendFileToGroup(g, file)
 }
 
 // ================================================= [函数](MPs)公开 =================================================
-
-// Count 数量统计
+// Count 用于统计公众号列表的数量。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - int: 公众号列表的数量。
 func (ms MPs) Count() int {
 	return len(ms)
 }
 
-// Sort 对公众号进行排序
+// Sort 对公众号列表进行排序。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - MPs: 排序后的公众号列表。
 func (ms MPs) Sort() MPs {
 	return ms.AsContacts().Sort().MPs()
 }
 
-// Uniq 对公众号进行去重
+// Uniq 对公众号列表进行去重。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - MPs: 去重后的公众号列表。
 func (ms MPs) Uniq() MPs {
 	return ms.AsContacts().Uniq().MPs()
 }
 
-// First 获取第一个
+// First 获取公众号列表中的第一个公众号。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *MP: 第一个公众号对象指针，如果列表为空则返回 nil。
 func (ms MPs) First() *MP {
 	if ms.Count() > 0 {
 		return ms.Sort()[0]
@@ -688,7 +857,13 @@ func (ms MPs) First() *MP {
 	return nil
 }
 
-// Last 获取最后一个
+// Last 获取公众号列表中的最后一个公众号。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *MP: 最后一个公众号对象指针，如果列表为空则返回 nil。
 func (ms MPs) Last() *MP {
 	if ms.Count() > 0 {
 		return ms.Sort()[ms.Count()-1]
@@ -696,7 +871,13 @@ func (ms MPs) Last() *MP {
 	return nil
 }
 
-// AsContacts 将公众号列表转换为联系人列表
+// AsContacts 将公众号列表转换为联系人列表。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - Contacts: 转换后的联系人列表。
 func (ms MPs) AsContacts() Contacts {
 	var contacts = make(Contacts, 0, ms.Count())
 
@@ -707,7 +888,14 @@ func (ms MPs) AsContacts() Contacts {
 	return contacts
 }
 
-// Search 根据自定义条件查找
+// Search 根据自定义条件在公众号列表中查找符合条件的公众号。
+//
+// 输入参数：
+//   - limit int: 查找结果的限制数量。
+//   - searchHandlers ...func(*MP) bool: 自定义条件判断函数列表。
+//
+// 输出参数：
+//   - MPs: 符合条件的公众号列表。
 func (ms MPs) Search(limit int, searchHandlers ...func(*MP) bool) (results MPs) {
 	return ms.AsContacts().Search(limit, func(contact *Contact) bool {
 		var mp = &MP{contact}
@@ -722,27 +910,60 @@ func (ms MPs) Search(limit int, searchHandlers ...func(*MP) bool) (results MPs) 
 	}).MPs()
 }
 
-// SearchByUserName 根据联系人名查找
+// SearchByUserName 根据用户名在公众号列表中查找公众号。
+//
+// 输入参数：
+//   - limit int: 查找结果的限制数量。
+//   - userName string: 用户名。
+//
+// 输出参数：
+//   - MPs: 符合条件的公众号列表。
 func (ms MPs) SearchByUserName(limit int, userName string) (results MPs) {
 	return ms.Search(limit, func(mp *MP) bool { return mp.UserName == userName })
 }
 
-// SearchByNickName 根据昵称查找
+// SearchByNickName 根据昵称在公众号列表中查找公众号。
+//
+// 输入参数：
+//   - limit int: 查找结果的限制数量。
+//   - nickName string: 昵称。
+//
+// 输出参数：
+//   - MPs: 符合条件的公众号列表。
 func (ms MPs) SearchByNickName(limit int, nickName string) (results MPs) {
 	return ms.Search(limit, func(mp *MP) bool { return mp.NickName == nickName })
 }
 
-// GetByNickName 根据nickname查询一个Mp
+// GetByNickName 根据昵称在公众号列表中获取一个公众号。
+//
+// 输入参数：
+//   - nickname string: 昵称。
+//
+// 输出参数：
+//   - *MP: 符合条件的公众号对象指针，如果找不到则返回 nil。
 func (ms MPs) GetByNickName(nickname string) *MP {
 	return ms.SearchByNickName(1, nickname).First()
 }
 
-// GetByUserName 根据username查询一个Mp
+// GetByUserName 根据用户名在公众号列表中获取一个公众号。
+//
+// 输入参数：
+//   - username string: 用户名。
+//
+// 输出参数：
+//   - *MP: 符合条件的公众号对象指针，如果找不到则返回 nil。
 func (ms MPs) GetByUserName(username string) *MP {
 	return ms.SearchByUserName(1, username).First()
 }
 
-// SendText 向公众号依次发送文本消息, 支持发送延迟
+// SendText 向公众号列表依次发送文本消息，支持设置发送延迟。
+//
+// 输入参数：
+//   - text string: 文本消息内容。
+//   - delay ...time.Duration: 发送延迟时间，可选参数。
+//
+// 输出参数：
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (ms MPs) SendText(text string, delay ...time.Duration) error {
 	if ms.Count() == 0 {
 		return nil
@@ -758,7 +979,14 @@ func (ms MPs) SendText(text string, delay ...time.Duration) error {
 	return self.SendTextToMPs(text, d, ms...)
 }
 
-// SendImage 向公众号依次发送图片消息, 支持发送延迟
+// SendImage 向公众号列表依次发送图片消息，支持设置发送延迟。
+//
+// 输入参数：
+//   - file io.Reader: 图片文件的 io.Reader。
+//   - delay ...time.Duration: 发送延迟时间，可选参数。
+//
+// 输出参数：
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (ms MPs) SendImage(file io.Reader, delay ...time.Duration) error {
 	if ms.Count() == 0 {
 		return nil
@@ -774,7 +1002,14 @@ func (ms MPs) SendImage(file io.Reader, delay ...time.Duration) error {
 	return self.SendImageToMPs(file, d, ms...)
 }
 
-// SendVideo 向公众号依次发送视频消息, 支持发送延迟
+// SendVideo 向公众号列表依次发送视频消息，支持设置发送延迟。
+//
+// 输入参数：
+//   - file io.Reader: 视频文件的 io.Reader。
+//   - delay ...time.Duration: 发送延迟时间，可选参数。
+//
+// 输出参数：
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (ms MPs) SendVideo(file io.Reader, delay ...time.Duration) error {
 	if ms.Count() == 0 {
 		return nil
@@ -790,7 +1025,14 @@ func (ms MPs) SendVideo(file io.Reader, delay ...time.Duration) error {
 	return self.SendVideoToMPs(file, d, ms...)
 }
 
-// SendFile 向公众号依次发送文件消息, 支持发送延迟
+// SendFile 向公众号列表依次发送文件消息，支持设置发送延迟。
+//
+// 输入参数：
+//   - file io.Reader: 文件的 io.Reader。
+//   - delay ...time.Duration: 发送延迟时间，可选参数。
+//
+// 输出参数：
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (ms MPs) SendFile(file io.Reader, delay ...time.Duration) error {
 	if ms.Count() == 0 {
 		return nil
@@ -807,27 +1049,61 @@ func (ms MPs) SendFile(file io.Reader, delay ...time.Duration) error {
 }
 
 // ================================================= [函数](MP)公开 =================================================
-
+// String 方法返回公众号对象的字符串表示。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - string: 公众号对象的字符串表示。
 func (m *MP) String() string {
-	return fmt.Sprintf("<MP:%s>", m.NickName)
+	return fmt.Sprintf("MP:%s", m.NickName)
 }
 
-// SendText 发送文本消息给公众号
+// SendText 向公众号发送文本消息。
+//
+// 输入参数：
+//   - content string: 文本消息内容。
+//
+// 输出参数：
+//   - *SentMessage: 发送成功后返回一个 SentMessage 对象，其中包含了发送消息的信息，如果发送失败则返回 nil。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (m *MP) SendText(content string) (*SentMessage, error) {
 	return m.Self().SendTextToMP(m, content)
 }
 
-// SendImage 发送图片消息给公众号
+// SendImage 向公众号发送图片消息。
+//
+// 输入参数：
+//   - file io.Reader: 图片文件的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage: 发送成功后返回一个 SentMessage 对象，其中包含了发送消息的信息，如果发送失败则返回 nil。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (m *MP) SendImage(file io.Reader) (*SentMessage, error) {
 	return m.Self().SendImageToMP(m, file)
 }
 
-// SendVideo 发送视频消息给公众号
+// SendVideo 向公众号发送视频消息。
+//
+// 输入参数：
+//   - file io.Reader: 视频文件的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage: 发送成功后返回一个 SentMessage 对象，其中包含了发送消息的信息，如果发送失败则返回 nil。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (m *MP) SendVideo(file io.Reader) (*SentMessage, error) {
 	return m.Self().SendVideoToMP(m, file)
 }
 
-// SendFile 发送文件消息给公众号
+// SendFile 向公众号发送文件消息。
+//
+// 输入参数：
+//   - file io.Reader: 文件的 io.Reader。
+//
+// 输出参数：
+//   - *SentMessage: 发送成功后返回一个 SentMessage 对象，其中包含了发送消息的信息，如果发送失败则返回 nil。
+//   - error: 如果发送过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func (m *MP) SendFile(file io.Reader) (*SentMessage, error) {
 	return m.Self().SendFileToMP(m, file)
 }
