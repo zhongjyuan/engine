@@ -1,7 +1,6 @@
 package message
 
 import (
-	"log"
 	"zhongjyuan/wechatgpt/config"
 	"zhongjyuan/wechatgpt/core"
 )
@@ -35,7 +34,7 @@ func (handler *IFriendAddMessageHandler) Handle(message *core.Message) error {
 	if config.LoadConfig().AutoPass {
 		_, err := message.Agree("您好呀!这里是君烛科技AI小助手，您可以向我提问任何问题。")
 		if err != nil {
-			log.Fatalf("add friend agree error : %v", err)
+			message.Bot().Logger().Error("add friend agree error : %v", err)
 			return err
 		}
 	}

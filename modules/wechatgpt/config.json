@@ -1,12 +1,17 @@
 {
+	"log_level": 2,
 	"auto_pass": true,
+	"storage_dir": "",
+
+	"collect_server": "http://47.116.100.195:184",
+
 	"wechat_host": "wx.qq.com",
 	"wechat_storage": true,
 	"wechat_message_storage": true,
 	"wechat_storage_filename": "wechatStorage.json",
 	"wechat_message_storage_filename": "wechatMessageStorage.json",
 	"wechat_message_storage_file_maxsize": 52428800,
-	
+
 	"chatgpt": true,
 	"chatgpt_server": "http://47.116.100.195:188/api",
 	"chatgpt_process_path": "/generateStream",

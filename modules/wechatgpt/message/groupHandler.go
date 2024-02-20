@@ -1,7 +1,6 @@
 package message
 
 import (
-	"log"
 	"strings"
 	"zhongjyuan/wechatgpt/chatgpt"
 	"zhongjyuan/wechatgpt/core"
@@ -40,24 +39,21 @@ func (handler *IGroupMessageHandler) Handle(message *core.Message) error {
 	// 获取消息发送者信息
 	sender, err := message.Sender()
 	if err != nil {
-		log.Printf("get sender in message error :%v \n", err)
+		message.Bot().Logger().Error("message sender unknown error: %v \n", err)
 		return err
 	}
 
 	// 获取@机器人的联系人信息
 	groupSender, err := message.SenderInGroup()
 	if err != nil {
-		log.Printf("get sender in group error :%v \n", err)
+		message.Bot().Logger().Error("message group sender unknown error: %v \n", err)
 		return err
 	}
-
-	// 记录消息日志
-	log.Printf("Received Group %v Text Message : %v", sender.NickName+" - "+groupSender.NickName, message.Content)
 
 	// 获取当前登录用户
 	self, err := message.Bot().CurrentUser()
 	if err != nil {
-		log.Printf("get user in bot error :%v \n", err)
+		message.Bot().Logger().Error("message currentuser unknown error :%v \n", err)
 		return err
 	}
 
@@ -68,7 +64,7 @@ func (handler *IGroupMessageHandler) Handle(message *core.Message) error {
 	// 向ChatGPT发起请求获取回复
 	reply, err := chatgpt.Completions(sender.NickName+"/"+groupSender.NickName, requestText)
 	if err != nil {
-		log.Printf("chatgpt request error: %v \n", err)
+		message.Bot().Logger().Error("chatgpt request error: %v \n", err)
 		message.ReplyText("机器人又奔溃了，我一会发现了就去修。")
 		return err
 	}
@@ -87,7 +83,7 @@ func (handler *IGroupMessageHandler) Handle(message *core.Message) error {
 	// 向群组发送回复消息
 	_, err = message.ReplyText(replyText)
 	if err != nil {
-		log.Printf("group message reply error: %v \n", err)
+		message.Bot().Logger().Error("message reply group error: %v \n", err)
 		return err
 	}
 

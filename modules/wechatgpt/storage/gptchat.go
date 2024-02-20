@@ -4,19 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 	"zhongjyuan/wechatgpt/config"
 )
 
-// GPT会话存储项对象结构
+// GPT会话缓存项对象结构
 type GPTChatStorageItem struct {
 	Network bool   // 是否联网
 	ChatKey string // 会话键
 	Count   int64  // 对话次数
 }
 
-// 会话存储
+// GPT会话缓存Map
 var gptChatStorage map[string]GPTChatStorageItem
 
 // init 函数用于初始化聊天存储。
@@ -43,7 +45,7 @@ func init() {
 	// 打开 gptChatStorage.json 文件
 	file, err := os.Open(cfg.ChatGPTChatStorageFileName)
 	if err != nil {
-		fmt.Println("打开GPT会话缓存文件失败：", err)
+		config.Logger().Warn("打开GPT会话缓存文件失败：", err)
 		return
 	}
 
@@ -53,9 +55,88 @@ func init() {
 	decoder := json.NewDecoder(file)
 	err = decoder.Decode(&gptChatStorage)
 	if err != nil {
-		fmt.Println("解析GPT会话缓存JSON失败：", err)
+		config.Logger().Warn("解析GPT会话缓存JSON失败：", err)
 		return
 	}
+}
+
+// FileSplit 用于将文件拆分为新旧两个文件。
+//
+// 输入参数：
+//   - fileName: 待拆分的文件名，格式为"path/to/file.ext"。
+//
+// 输出参数：
+//   - error: 如果执行过程中出现错误，则返回相应的错误信息；否则返回 nil。
+func FileSplit(fileName string) error {
+	// 获取当前时间戳
+	currentTime := time.Now().Unix()
+
+	// 提取文件名和文件后缀
+	fileNameParts := strings.Split(fileName, "/")
+	fileNameWithExt := fileNameParts[len(fileNameParts)-1]
+	fileNameWithoutExt := strings.TrimSuffix(fileNameWithExt, filepath.Ext(fileNameWithExt))
+
+	// 构造旧文件名
+	messageStorageOldFile := fmt.Sprintf("%s_%s%s", fileNameWithoutExt, strconv.FormatInt(currentTime, 10), filepath.Ext(fileNameWithExt))
+
+	// 关闭原文件
+	err := os.Rename(fileName, messageStorageOldFile) // 将原文件重命名为旧文件
+	if err != nil {
+		return err
+	}
+
+	// 创建新文件
+	file, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close() // 确保函数返回前关闭新文件
+
+	// TODO: 根据需求进行文件切割逻辑
+
+	return nil
+}
+
+// SaveGPTChatStorage 函数用于保存用户的GPT会话存储项到文件中。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - 无。
+func SaveGPTChatStorage() {
+	// 加载配置文件
+	cfg := config.LoadConfig()
+
+	CollectGPTChatData()
+
+	if !cfg.ChatGPTChatStorage {
+		return
+	}
+
+	// 将 gptChatStorage 序列化为 JSON 格式
+	data, err := json.Marshal(gptChatStorage)
+	if err != nil {
+		config.Logger().Warn("GPT会话缓存序列化失败：", err)
+		return
+	}
+
+	// 创建文件
+	file, err := os.Create(cfg.ChatGPTChatStorageFileName)
+	if err != nil {
+		config.Logger().Warn("创建GPT会话缓存文件失败：", err)
+		return
+	}
+
+	defer file.Close()
+
+	// 将 JSON 数据写入文件
+	_, err = file.Write(data)
+	if err != nil {
+		config.Logger().Warn("写入GPT会话缓存文件失败：", err)
+		return
+	}
+
 }
 
 // SetGPTChatStorage 函数用于设置用户的GPT会话存储。
@@ -64,6 +145,7 @@ func init() {
 //   - userId string: 用户ID。
 //   - network ...bool: 可选参数，表示是否使用网络。
 func SetGPTChatStorage(userId string, network ...bool) {
+
 	// 获取当前时间戳
 	currentTime := time.Now().Unix()
 
@@ -122,44 +204,4 @@ func GetGPTChatStorage(userId string) GPTChatStorageItem {
 	SaveGPTChatStorage()
 
 	return item
-}
-
-// SaveGPTChatStorage 函数用于保存用户的GPT会话存储项到文件中。
-//
-// 输入参数：
-//   - 无。
-//
-// 输出参数：
-//   - 无。
-func SaveGPTChatStorage() {
-	// 加载配置文件
-	cfg := config.LoadConfig()
-
-	if !cfg.ChatGPTChatStorage {
-		return
-	}
-
-	// 将 gptChatStorage 序列化为 JSON 格式
-	data, err := json.Marshal(gptChatStorage)
-	if err != nil {
-		fmt.Println("GPT会话缓存序列化失败：", err)
-		return
-	}
-
-	// 创建文件
-	file, err := os.Create(cfg.ChatGPTChatStorageFileName)
-	if err != nil {
-		fmt.Println("创建GPT会话缓存文件失败：", err)
-		return
-	}
-
-	defer file.Close()
-
-	// 将 JSON 数据写入文件
-	_, err = file.Write(data)
-	if err != nil {
-		fmt.Println("写入GPT会话缓存文件失败：", err)
-		return
-	}
-
 }

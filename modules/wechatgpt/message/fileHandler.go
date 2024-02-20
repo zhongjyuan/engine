@@ -1,10 +1,12 @@
 package message
 
 import (
-	"os"
 	"path/filepath"
 	"strings"
+	"time"
+	"zhongjyuan/wechatgpt/config"
 	"zhongjyuan/wechatgpt/core"
+	"zhongjyuan/wechatgpt/storage"
 )
 
 // IFileMessageHandler 文件消息处理
@@ -61,6 +63,14 @@ func (handler *IFileMessageHandler) Handle(message *core.Message) error {
 	// 拼接文件路径
 	var filePath = sender.NickName
 
+	// 判断是否是自己发送的消息
+	if message.IsSendBySelf() {
+		sender, err = message.Sender(message.ToUserName)
+		if err != nil {
+			return err
+		}
+	}
+
 	// 是否来自群消息
 	if message.IsFromGroup() {
 		groupSender, err := message.SenderInGroup()
@@ -71,14 +81,20 @@ func (handler *IFileMessageHandler) Handle(message *core.Message) error {
 		filePath = filepath.Join(sender.NickName, groupSender.NickName)
 	}
 
-	// 获取当前项目路径
-	currentDir, err := os.Getwd()
+	resp, err := message.GetFile()
+	if err == nil {
+		storage.CollectWechatMediaData(filepath.Join(filePath, time.Now().Format("2006-01-02"), fileName), resp)
+	}
+
+	fileName = config.LoadConfig().MediaFileName(filepath.Join(filePath, time.Now().Format("2006-01-02"), fileName))
+
+	message.Bot().Logger().Trace("Received %v File Message : %v", filePath, fileName)
+
+	// 保存文件到本地
+	err = message.SaveFileToLocal(fileName)
 	if err != nil {
 		return err
 	}
-
-	// 保存文件到本地
-	message.SaveFileToLocal(filepath.Join(currentDir, filePath, fileName))
 
 	// 其他类型消息暂不处理，直接返回 nil
 	return nil

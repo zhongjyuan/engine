@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"io"
-	"log"
 	"net/url"
 	"os/exec"
 	"runtime"
@@ -14,8 +13,9 @@ import (
 
 // Bot 是一个聊天机器人的结构体，用于管理聊天机器人的各种功能和回调函数。
 type Bot struct {
-	err  error // 错误信息。
-	self *Self // 自身信息，包含了聊天机器人的基本信息。
+	err    error   // 错误信息。
+	self   *Self   // 自身信息，包含了聊天机器人的基本信息。
+	logger *Logger // 日志对象
 
 	uuid      string // UUID，用于登录和获取二维码。
 	deviceId  string // 设备ID，用于标识设备。
@@ -28,11 +28,12 @@ type Bot struct {
 	Storage    *Session   // 会话存储，用于保存登录状态和其他会话相关信息。
 	Serializer Serializer // 序列化器，用于对数据进行序列化，默认为json。
 
-	UUIDCallback      func(bot *Bot, uuid string)   // 获取UUID的回调函数，用于处理获取到UUID后的操作。
-	ScanCallBack      func(body CheckLoginResponse) // 扫码回调函数，用于获取扫码联系人的头像。
-	LoginCallBack     func(body CheckLoginResponse) // 登录回调函数，用于处理登录成功后的操作。
-	LogoutCallBack    func(bot *Bot)                // 退出回调函数，用于处理退出登录的操作。
-	SyncCheckCallback func(resp SyncCheckResponse)  // 心跳回调函数，用于处理心跳响应后的操作。
+	UUIDCallback      func(bot *Bot, uuid string)     // 获取UUID的回调函数，用于处理获取到UUID后的操作。
+	ScanCallBack      func(body CheckLoginResponse)   // 扫码回调函数，用于获取扫码联系人的头像。
+	LoginCallBack     func(body CheckLoginResponse)   // 登录回调函数，用于处理登录成功后的操作。
+	LogoutCallBack    func(bot *Bot)                  // 退出回调函数，用于处理退出登录的操作。
+	StorageCallback   func(item HotReloadStorageItem) // 缓存回调函数，用于存储机器人状态信息
+	SyncCheckCallback func(resp SyncCheckResponse)    // 心跳回调函数，用于处理心跳响应后的操作。
 
 	loginOptions     BotLoginOptions  // 登录选项组，包含了登录相关的配置选项。
 	hotReloadStorage HotReloadStorage // 热加载存储，用于保存热加载相关信息。
@@ -120,22 +121,27 @@ func DefaultBot(prepares ...BotPreparer) *Bot {
 
 	// 设置扫码回调函数
 	bot.ScanCallBack = func(_ CheckLoginResponse) {
-		log.Println("扫码成功，请在手机上确认登录")
+		bot.logger.Info("扫码成功，请在手机上确认登录")
 	}
 
 	// 设置登录回调函数
 	bot.LoginCallBack = func(_ CheckLoginResponse) {
-		log.Println("登录成功")
+		bot.logger.Info("登录成功")
 	}
 
 	// 设置心跳回调函数，默认行为为打印 SyncCheckResponse 的 RetCode 和 Selector
 	bot.SyncCheckCallback = func(resp SyncCheckResponse) {
-		log.Printf("RetCode:%s  Selector:%s", resp.RetCode, resp.Selector)
+		bot.logger.Trace("RetCode:%s  Selector:%s", resp.RetCode, resp.Selector)
 	}
 
 	// 调用传入的 BotPreparer 函数进行额外的准备工作
 	for _, prepare := range prepares {
 		prepare.Prepare(bot)
+	}
+
+	// 设置日志记录器
+	if bot.logger == nil {
+		bot.logger = NewLogger("", 2)
 	}
 
 	return bot
@@ -170,11 +176,11 @@ func QRCodeUrl(bot *Bot, uuid string) string {
 //   - bot：Bot 实例。
 //   - uuid：登录凭证。
 func PrintlnQRCodeUrl(bot *Bot, uuid string) {
-	println("访问下面网址扫描二维码登录")
+	bot.logger.Info("访问下面网址扫描二维码登录")
 
 	qrcodeUrl := QRCodeUrl(bot, uuid)
 
-	println(qrcodeUrl)
+	bot.logger.Info(qrcodeUrl)
 
 	// 使用 _open 函数在浏览器中打开登录链接
 	_ = _open(qrcodeUrl)
@@ -199,6 +205,10 @@ func (b *Bot) _dumpTo(writer io.Writer) error {
 		SyncKey:     b.Storage.Response.SyncKey,   // 存储机器人的 SyncKey
 		LoginInfo:   b.Storage.LoginInfo,          // 存储机器人登录信息
 		BaseRequest: b.Storage.Request,            // 存储机器人的基本请求信息
+	}
+
+	if b.StorageCallback != nil {
+		b.StorageCallback(item)
 	}
 
 	return b.Serializer.Encode(writer, item) // 将 HotReloadStorageItem 序列化到指定的 Writer 中
@@ -286,7 +296,6 @@ func (b *Bot) Init() error {
 
 		for {
 			if err = b.SyncCheck(); err != nil {
-				// 判断是否继续，如果不继续则退出
 				if err = b.MessageErrorHandler(err); err != nil {
 					b.ExitWith(err)
 					return
@@ -560,6 +569,17 @@ func (b *Bot) DumpHotReloadStorage() error {
 	}
 
 	return b._dumpTo(b.hotReloadStorage) // 将当前机器人状态信息保存到热重载存储中
+}
+
+// Logger 方法返回 Bot 结构体中的日志记录器。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - *Logger: 返回 Bot 结构体中的日志记录器。
+func (b *Bot) Logger() *Logger {
+	return b.logger
 }
 
 // UUID 用于获取机器人的 UUID。

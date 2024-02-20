@@ -3,9 +3,7 @@ package chatgpt
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -30,7 +28,6 @@ type ResponseBody struct {
 //   - string: 生成的回复内容。
 //   - error: 返回生成回复过程中遇到的错误，如果没有错误则返回 nil。
 func Completions(userId string, prompt string) (string, error) {
-	// 加载配置信息
 	cfg := config.LoadConfig()
 
 	if !cfg.ChatGPT {
@@ -66,8 +63,7 @@ func Completions(userId string, prompt string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	log.Printf("request gtp json string : %v", string(requestData))
+	config.Logger().Debug("request gtp json string : %v", string(requestData))
 
 	// 创建 HTTP 请求
 	req, err := http.NewRequest(http.MethodPost, path.String(), bytes.NewBuffer(requestData))
@@ -93,7 +89,7 @@ func Completions(userId string, prompt string) (string, error) {
 	// 读取响应体数据
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+		config.Logger().Error("gtp response read body error: %v", err)
 		return "", err
 	}
 
@@ -106,7 +102,7 @@ func Completions(userId string, prompt string) (string, error) {
 	reply = strings.Replace(reply, "18616222919", "17370115370", -1)
 	reply = strings.Replace(reply, "https://chat18.aichatos.xyz", "http://zhongjyuan.club", -1)
 
-	log.Printf("gpt response text: %s \n", reply)
+	config.Logger().Trace("gpt response text: %s \n", reply)
 
 	// 存储用户消息和生成的回复
 	storage.SetGPTMessageStorage(userId, prompt, reply)

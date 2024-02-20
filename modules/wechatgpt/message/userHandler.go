@@ -1,7 +1,6 @@
 package message
 
 import (
-	"log"
 	"strings"
 	"zhongjyuan/wechatgpt/chatgpt"
 	"zhongjyuan/wechatgpt/core"
@@ -41,12 +40,9 @@ func (handler *IUserMessageHandler) Handle(message *core.Message) error {
 	// 获取消息发送者信息
 	sender, err := message.Sender()
 	if err != nil {
-		log.Printf("get sender in message error :%v \n", err)
+		message.Bot().Logger().Error("message sender unknown error: %v \n", err)
 		return err
 	}
-
-	// 记录消息日志
-	log.Printf("Received User %v Text Message : %v", sender.NickName, message.Content)
 
 	// 向 GPT 发起请求
 	requestText := strings.TrimSpace(message.Content)
@@ -55,7 +51,7 @@ func (handler *IUserMessageHandler) Handle(message *core.Message) error {
 	// 向ChatGPT发起请求获取回复
 	reply, err := chatgpt.Completions(sender.NickName, requestText)
 	if err != nil {
-		log.Printf("chatgpt request error: %v \n", err)
+		message.Bot().Logger().Error("chatgpt request error: %v \n", err)
 		message.ReplyText("机器人奔溃了，我一会发现了就去修。")
 		return err
 	}
@@ -71,7 +67,7 @@ func (handler *IUserMessageHandler) Handle(message *core.Message) error {
 
 	_, err = message.ReplyText(replyText)
 	if err != nil {
-		log.Printf("response user error: %v \n", err)
+		message.Bot().Logger().Error("message reply user error: %v \n", err)
 		return err
 	}
 

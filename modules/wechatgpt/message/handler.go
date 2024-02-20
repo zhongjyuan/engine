@@ -1,7 +1,6 @@
 package message
 
 import (
-	"log"
 	"zhongjyuan/wechatgpt/core"
 	"zhongjyuan/wechatgpt/storage"
 )
@@ -67,7 +66,7 @@ func Handler(message *core.Message) {
 		// 获取消息发送者信息
 		sender, err := message.Sender()
 		if err != nil {
-			log.Printf("message sender unknown error: %v \n", err)
+			message.Bot().Logger().Error("message sender unknown error: %v \n", err)
 			return
 		}
 
@@ -78,7 +77,7 @@ func Handler(message *core.Message) {
 		if message.IsSendBySelf() {
 			sender, err = message.Sender(message.ToUserName)
 			if err != nil {
-				log.Printf("message sender unknown error: %v \n", err)
+				message.Bot().Logger().Error("message sender unknown error: %v \n", err)
 				return
 			}
 		}
@@ -88,7 +87,7 @@ func Handler(message *core.Message) {
 			// 获取群聊发送者信息
 			groupSender, err := message.SenderInGroup()
 			if err != nil {
-				log.Printf("group message sender unknown error: %v \n", err)
+				message.Bot().Logger().Error("group message sender unknown error: %v \n", err)
 				return
 			}
 
@@ -97,7 +96,7 @@ func Handler(message *core.Message) {
 		}
 
 		// 记录接收到的文本消息及发送者信息
-		log.Printf("Received %v Text Message : %v", senderName, message.Content)
+		message.Bot().Logger().Trace("Received %v Text Message : %v", senderName, message.Content)
 
 		// 消息缓存
 		storage.SetWechatMessageStorage(sender.NickName, message.Content, senderName)

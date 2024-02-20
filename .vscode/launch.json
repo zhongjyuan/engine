@@ -44,6 +44,19 @@
 			// 	"GOROOT": "D:/Program Files/Go"
 			// },
 			"args": []
+		},
+		{
+			"type": "go",
+			"mode": "auto",
+			"request": "launch",
+			"name": "collect|dev",
+			"program": "${workspaceFolder}\\modules\\collect\\main.go",
+			"showLog": true,
+			// "env": {
+			// 	"GOPATH": "D:/Program Files/Go_Works",
+			// 	"GOROOT": "D:/Program Files/Go"
+			// },
+			"args": []
 		}
 	]
 }

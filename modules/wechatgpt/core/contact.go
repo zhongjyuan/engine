@@ -392,6 +392,8 @@ func (cs Contacts) Detail() error {
 		}
 	}
 
+	updater.self.bot.logger.Debug("Contacts Detail: %v - %v \n", updater.contacts, updater.updateTime)
+
 	return nil
 }
 

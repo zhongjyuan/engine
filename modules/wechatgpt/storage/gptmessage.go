@@ -2,10 +2,7 @@ package storage
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
-	"strconv"
-	"strings"
 	"time"
 	"zhongjyuan/wechatgpt/config"
 )
@@ -16,19 +13,88 @@ type GPTMessageStorageItem struct {
 	Reply  string // 回复
 }
 
+// GPTMessageStorageDateMap 是一个映射，将日期映射到GPT消息存储项列表
+type GPTMessageStorageDateMap map[string][]GPTMessageStorageItem
+
+// saveGPTMessageStorage 函数用于保存GPT消息存储数据到文件中。
+//
+// 输入参数：
+//   - messageStorage: 包含GPT消息存储数据的映射。
+//
+// 输出参数：
+//   - 无。
+func saveGPTMessageStorage(messageStorage map[string]GPTMessageStorageDateMap) {
+	// 加载配置信息
+	cfg := config.LoadConfig()
+
+	CollectGPTMessageData()
+
+	// 缓存记录是否开启
+	if !cfg.ChatGPTMessageStorage {
+		return
+	}
+
+	// 检查文件是否存在，如果不存在则创建一个新的空白文件
+	if _, err := os.Stat(cfg.ChatGPTMessageStorageFileName); os.IsNotExist(err) {
+		if _, err = os.Create(cfg.ChatGPTMessageStorageFileName); err != nil {
+			config.Logger().Warn("创建GPT消息缓存文件失败：", err)
+			return
+		}
+	}
+
+	// 检查文件大小是否超过阈值（50MB = 50 * 1024 * 1024 字节）
+	fileInfo, err := os.Stat(cfg.ChatGPTMessageStorageFileName)
+	if err != nil {
+		config.Logger().Warn("获取GPT消息缓存文件信息失败：", err)
+		return
+	}
+
+	if fileInfo.Size() >= cfg.ChatGPTMessageStorageFileMaxSize {
+		// 进行文件切割操作
+		err = FileSplit(cfg.ChatGPTMessageStorageFileName)
+		if err != nil {
+			config.Logger().Warn("GPT消息缓存文件切割失败：", err)
+			return
+		}
+	}
+
+	// 将 messageStorage 序列化为 JSON 格式
+	data, err := json.Marshal(messageStorage)
+	if err != nil {
+		config.Logger().Warn("GPT消息缓存序列化失败：", err)
+		return
+	}
+
+	// 创建或截断文件
+	file, err := os.OpenFile(cfg.ChatGPTMessageStorageFileName, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+	if err != nil {
+		config.Logger().Warn("打开GPT消息缓存文件失败：", err)
+		return
+	}
+
+	defer file.Close()
+
+	// 将 JSON 数据写入文件
+	_, err = file.Write(data)
+	if err != nil {
+		config.Logger().Warn("写入GPT消息缓存文件失败：", err)
+		return
+	}
+}
+
 // loadGPTMessageStorage 函数用于加载GPT消息存储数据。
 //
 // 输入参数：
 //   - 无。
 //
 // 输出参数：
-//   - map[string][]GPTMessageStorageItem: 返回消息存储的映射数据。
-func loadGPTMessageStorage() map[string][]GPTMessageStorageItem {
+//   - map[string][]GPTMessageStorageDateMap: 返回消息存储的映射数据。
+func loadGPTMessageStorage() map[string]GPTMessageStorageDateMap {
 	// 加载配置文件
 	cfg := config.LoadConfig()
 
 	// 创建消息存储映射
-	messageStorage := make(map[string][]GPTMessageStorageItem)
+	messageStorage := make(map[string]GPTMessageStorageDateMap)
 
 	// 校验缓存是否开启
 	if !cfg.ChatGPTMessageStorage {
@@ -43,7 +109,7 @@ func loadGPTMessageStorage() map[string][]GPTMessageStorageItem {
 	// 打开 messageStorage.json 文件
 	file, err := os.Open(cfg.ChatGPTMessageStorageFileName)
 	if err != nil {
-		fmt.Println("打开GPT消息缓存文件失败：", err)
+		config.Logger().Warn("打开GPT消息缓存文件失败：", err)
 		return messageStorage
 	}
 	defer file.Close()
@@ -52,7 +118,7 @@ func loadGPTMessageStorage() map[string][]GPTMessageStorageItem {
 	decoder := json.NewDecoder(file)
 	err = decoder.Decode(&messageStorage)
 	if err != nil {
-		fmt.Println("解析GPT消息缓存JSON失败：", err)
+		config.Logger().Warn("解析GPT消息缓存JSON失败：", err)
 		return messageStorage
 	}
 
@@ -75,12 +141,14 @@ func SetGPTMessageStorage(userId string, prompt string, reply string) {
 	// 检查是否存在该用户的消息存储项，如果不存在则创建一个空的列表
 	items, exists := messageStorage[userId]
 	if !exists {
-		items = []GPTMessageStorageItem{}
+		items = make(map[string][]GPTMessageStorageItem)
 	}
 
 	// 创建一条消息存储项并添加到列表中
 	newItem := GPTMessageStorageItem{Prompt: prompt, Reply: reply}
-	items = append(items, newItem)
+
+	date := time.Now().Format("2006-01-02")
+	items[date] = append(items[date], newItem)
 
 	// 更新该用户的消息存储项
 	messageStorage[userId] = items
@@ -96,14 +164,14 @@ func SetGPTMessageStorage(userId string, prompt string, reply string) {
 //
 // 输出参数：
 //   - []GPTMessageStorageItem: 返回指定用户的消息存储项列表。
-func GetGPTMessageStorage(userId string) []GPTMessageStorageItem {
+func GetGPTMessageStorage(userId string) GPTMessageStorageDateMap {
 	// 加载消息存储数据
 	messageStorage := loadGPTMessageStorage()
 
 	// 检查是否存在该用户的消息存储项，如果不存在则创建一个空的列表并保存
 	items, exists := messageStorage[userId]
 	if !exists {
-		items = []GPTMessageStorageItem{}
+		items = make(map[string][]GPTMessageStorageItem)
 		messageStorage[userId] = items
 		saveGPTMessageStorage(messageStorage)
 	}
@@ -111,101 +179,25 @@ func GetGPTMessageStorage(userId string) []GPTMessageStorageItem {
 	return items
 }
 
-// saveGPTMessageStorage 函数用于保存GPT消息存储数据到文件中。
+// GetGPTMessageDateStorage 用于获取指定用户在指定日期的 GPT 消息存储数据。
 //
 // 输入参数：
-//   - messageStorage map[string][]GPTMessageStorageItem: 包含用户消息存储数据的映射。
+//   - userId: 用户标识。
+//   - date: 指定日期，格式为 "2006-01-02"。
 //
 // 输出参数：
-//   - 无。
-func saveGPTMessageStorage(messageStorage map[string][]GPTMessageStorageItem) {
-	// 加载配置信息
-	cfg := config.LoadConfig()
+//   - 返回指定用户在指定日期的 GPT 消息存储数据。
+func GetGPTMessageDateStorage(userId string, date string) []GPTMessageStorageItem {
+	// 加载消息存储数据
+	messageStorage := loadGPTMessageStorage()
 
-	if !cfg.ChatGPTMessageStorage {
-		return
+	// 检查是否存在该用户的消息存储项，如果不存在则创建一个空的列表并保存
+	items, exists := messageStorage[userId]
+	if !exists {
+		items = make(map[string][]GPTMessageStorageItem)
+		messageStorage[userId] = items
+		saveGPTMessageStorage(messageStorage)
 	}
 
-	// 检查文件是否存在，如果不存在则创建一个新的空白文件
-	if _, err := os.Stat(cfg.ChatGPTMessageStorageFileName); os.IsNotExist(err) {
-		if _, err = os.Create(cfg.ChatGPTMessageStorageFileName); err != nil {
-			fmt.Println("创建GPT消息缓存文件失败：", err)
-			return
-		}
-	}
-
-	// 检查文件大小是否超过阈值（50MB = 50 * 1024 * 1024 字节）
-	fileInfo, err := os.Stat(cfg.ChatGPTMessageStorageFileName)
-	if err != nil {
-		fmt.Println("获取GPT消息缓存文件信息失败：", err)
-		return
-	}
-
-	if fileInfo.Size() >= cfg.ChatGPTMessageStorageFileMaxSize {
-		// 进行文件切割操作
-		err = splitGPTMessageStorageFile()
-		if err != nil {
-			fmt.Println("GPT消息缓存文件切割失败：", err)
-			return
-		}
-	}
-
-	// 将 messageStorage 序列化为 JSON 格式
-	data, err := json.Marshal(messageStorage)
-	if err != nil {
-		fmt.Println("GPT消息缓存序列化失败：", err)
-		return
-	}
-
-	// 创建或截断文件
-	file, err := os.OpenFile(cfg.ChatGPTMessageStorageFileName, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
-	if err != nil {
-		fmt.Println("打开GPT消息缓存文件失败：", err)
-		return
-	}
-
-	defer file.Close()
-
-	// 将 JSON 数据写入文件
-	_, err = file.Write(data)
-	if err != nil {
-		fmt.Println("写入GPT消息缓存文件失败：", err)
-		return
-	}
-}
-
-// splitGPTMessageStorageFile 函数用于将GPT消息存储文件切割为多个文件。
-//
-// 输入参数：
-//   - 无。
-//
-// 输出参数：
-//   - error: 返回切割文件过程中遇到的错误，如果没有错误则返回 nil。
-func splitGPTMessageStorageFile() error {
-	// 加载配置信息
-	cfg := config.LoadConfig()
-
-	// 获取当前时间戳
-	currentTime := time.Now().Unix()
-
-	// 构造旧文件名
-	messageStorageOldFile := fmt.Sprintf("%s_%s.json", strings.Split(cfg.ChatGPTMessageStorageFileName, ".")[0], strconv.FormatInt(currentTime, 10))
-
-	// 关闭原文件
-	err := os.Rename(cfg.ChatGPTMessageStorageFileName, messageStorageOldFile)
-	if err != nil {
-		return err
-	}
-
-	// 创建新文件
-	file, err := os.Create(cfg.ChatGPTMessageStorageFileName)
-	if err != nil {
-		return err
-	}
-
-	defer file.Close()
-
-	// TODO: 根据需求进行文件切割逻辑
-
-	return nil
+	return items[date]
 }

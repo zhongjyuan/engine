@@ -148,6 +148,17 @@ func WithDomain(domain string) BotPreparer {
 	return BotPreparerHandler(func(b *Bot) { b.Caller.WechatClient.SetDomain(domain) })
 }
 
+// WithLogger 函数用于设置日志记录器到 Bot 结构体中。
+//
+// 输入参数：
+//   - l *Logger: 日志记录器指针。
+//
+// 输出参数：
+//   - BotPreparer: 返回一个 BotPreparer 类型，用于设置日志记录器。
+func WithLogger(l *Logger) BotPreparer {
+	return BotPreparerHandler(func(b *Bot) { b.logger = l })
+}
+
 // WithContextOption 函数用于创建一个 BotPreparer 对象，设置 Bot 的上下文。
 //
 // 入参：
@@ -493,20 +504,20 @@ func (p *PushLogin) CheckLogin(bot *Bot, uuid string) error {
 //
 // 返回值：
 //   - error：返回一个 error 类型的值，表示登录过程中可能发生的错误。
-func (l *LoginChecker) CheckLogin() error {
+func (checker *LoginChecker) CheckLogin() error {
 	// 获取机器人实例的 UUID
-	uuid := l.Bot.UUID()
+	uuid := checker.Bot.UUID()
 
 	// 如果存在 UUID 回调函数，则执行回调函数
-	if cb := l.UUIDCallback; cb != nil {
-		cb(l.Bot, uuid)
+	if cb := checker.UUIDCallback; cb != nil {
+		cb(checker.Bot, uuid)
 	}
 
 	// 初始化登录提示信息
-	var tip = l.Tip
+	var tip = checker.Tip
 	for {
 		// 发送长轮询请求，检查是否扫码登录
-		resp, err := l.Bot.Caller.CheckLogin(l.Bot.Context(), uuid, tip)
+		resp, err := checker.Bot.Caller.CheckLogin(checker.Bot.Context(), uuid, tip)
 		if err != nil {
 			return err
 		}
@@ -530,18 +541,19 @@ func (l *LoginChecker) CheckLogin() error {
 				return err
 			}
 
-			if err = l.Bot.LoginFromURL(redirectURL); err != nil {
+			checker.Bot.logger.Debug("LoginChecker(CheckLogin) => redirectURL: %v \n", redirectURL)
+			if err = checker.Bot.LoginFromURL(redirectURL); err != nil {
 				return err
 			}
 
-			if cb := l.LoginCallBack; cb != nil {
+			if cb := checker.LoginCallBack; cb != nil {
 				cb(resp)
 			}
 
 			return nil
 		case Scanned:
 			// 扫码成功，执行扫码回调函数
-			if cb := l.ScanCallBack; cb != nil {
+			if cb := checker.ScanCallBack; cb != nil {
 				cb(resp)
 			}
 
