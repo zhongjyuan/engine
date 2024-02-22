@@ -49,8 +49,8 @@
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "collect|dev",
-			"program": "${workspaceFolder}\\modules\\collect\\main.go",
+			"name": "service|dev",
+			"program": "${workspaceFolder}\\modules\\service\\main.go",
 			"showLog": true,
 			// "env": {
 			// 	"GOPATH": "D:/Program Files/Go_Works",
