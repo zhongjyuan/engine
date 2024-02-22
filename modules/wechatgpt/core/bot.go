@@ -11,6 +11,73 @@ import (
 
 // ================================================= [类型](全局)公开 =================================================
 
+// UUIDHandler 是一个函数类型，用于处理获取 UUID 的回调函数。
+//
+// 输入参数：
+//   - bot: 一个指向 Bot 结构体的指针，表示要处理的机器人实例。
+//   - uuid：表示获取到的 UUID。
+type UUIDHandler func(bot *Bot, uuid string)
+
+type AvatarHandler func(bot *Bot, avatar string)
+
+// ScanHandler 是一个函数类型，用于处理扫码登录的回调函数。
+//
+// 输入参数：
+//   - bot: 一个指向 Bot 结构体的指针，表示要处理的机器人实例。
+//   - resp：表示 CheckLogin 返回的结果。
+type ScanHandler func(bot *Bot, resp CheckLoginResponse)
+
+// LoginHandler 是一个函数类型，用于处理登录成功的回调函数。
+//
+// 输入参数：
+//   - bot: 一个指向 Bot 结构体的指针，表示要处理的机器人实例。
+//   - resp：表示 CheckLogin 返回的结果。
+type LoginHandler func(bot *Bot, resp CheckLoginResponse)
+
+// SyncCheckHandler 是一个函数类型，用于处理同步检查的回调函数。
+//
+// 输入参数：
+//   - bot: 一个指向 Bot 结构体的指针，表示要处理的机器人实例。
+//   - resp：表示 SyncCheck 返回的结果。
+type SyncCheckHandler func(bot *Bot, resp SyncCheckResponse)
+
+// HotReloadStorageHandler 是一个函数类型，用于处理热重载存储的回调函数。
+//
+// 输入参数：
+//   - bot: 一个指向 Bot 结构体的指针，表示要处理的机器人实例。
+//   - item：表示 HotReloadStorageItem 结构体。
+type HotReloadStorageHandler func(bot *Bot, item HotReloadStorageItem)
+
+// UpdateContactHandler 是一个函数类型，用于处理联系人更新的回调函数。
+//
+// 输入参数：
+//   - bot: 一个指向 Bot 结构体的指针，表示要处理的机器人实例。
+//   - contacts：表示 Contacts 结构体。
+type UpdateContactHandler func(bot *Bot, contacts Contacts)
+
+type UpdateContactDetailHandler func(bot *Bot, contacts Contacts)
+
+// MessageHandler 是一个函数类型，用于处理消息的回调函数。
+//
+// 输入参数：
+//   - message：一个指向 Message 结构体的指针，表示要处理的消息。
+type MessageHandler func(message *Message)
+
+// MessageErrorHandler 是处理消息发送、接收等操作中出现的错误的函数类型，该函数接受一个 error 类型的参数，并返回一个 error 类型的值。
+//
+// 输入参数：
+//   - err: 表示发生的错误。
+//
+// 输出参数：
+//   - error: 如果处理错误成功，则返回 nil；否则返回 error 类型的错误信息。
+type MessageErrorHandler func(err error) error
+
+// LogoutHandler 是一个函数类型，用于处理登出的回调函数。
+//
+// 输入参数：
+//   - bot：一个指向 Bot 结构体的指针，表示要处理的机器人实例。
+type LogoutHandler func(bot *Bot)
+
 // Bot 是一个聊天机器人的结构体，用于管理聊天机器人的各种功能和回调函数。
 type Bot struct {
 	err    error   // 错误信息。
@@ -28,18 +95,20 @@ type Bot struct {
 	Storage    *Session   // 会话存储，用于保存登录状态和其他会话相关信息。
 	Serializer Serializer // 序列化器，用于对数据进行序列化，默认为json。
 
-	UUIDCallback      func(bot *Bot, uuid string)     // 获取UUID的回调函数，用于处理获取到UUID后的操作。
-	ScanCallBack      func(body CheckLoginResponse)   // 扫码回调函数，用于获取扫码联系人的头像。
-	LoginCallBack     func(body CheckLoginResponse)   // 登录回调函数，用于处理登录成功后的操作。
-	LogoutCallBack    func(bot *Bot)                  // 退出回调函数，用于处理退出登录的操作。
-	StorageCallback   func(item HotReloadStorageItem) // 缓存回调函数，用于存储机器人状态信息
-	SyncCheckCallback func(resp SyncCheckResponse)    // 心跳回调函数，用于处理心跳响应后的操作。
-
 	loginOptions     BotLoginOptions  // 登录选项组，包含了登录相关的配置选项。
 	hotReloadStorage HotReloadStorage // 热加载存储，用于保存热加载相关信息。
 
-	MessageHandler      MessageHandler      // 获取消息成功的处理函数，用于处理接收到的消息。
-	MessageErrorHandler MessageErrorHandler // 获取消息发生错误的处理函数，返回err == nil则尝试继续监听。
+	UUIDHandler                UUIDHandler                // 获取UUID的回调函数，用于处理获取到UUID后的操作。
+	AvatarHandler              AvatarHandler              //
+	ScanHandler                ScanHandler                // 扫码回调函数，用于获取扫码联系人的头像。
+	LoginHandler               LoginHandler               // 登录回调函数，用于处理登录成功后的操作。
+	SyncCheckHandler           SyncCheckHandler           // 心跳回调函数，用于处理心跳响应后的操作。
+	HotReloadStorageHandler    HotReloadStorageHandler    //
+	UpdateContactHandler       UpdateContactHandler       //
+	UpdateContactDetailHandler UpdateContactDetailHandler //
+	MessageHandler             MessageHandler             // 获取消息成功的处理函数，用于处理接收到的消息。
+	MessageErrorHandler        MessageErrorHandler        // 获取消息发生错误的处理函数，返回err == nil则尝试继续监听。
+	LogoutHandler              LogoutHandler              // 退出回调函数，用于处理退出登录的操作。
 }
 
 // ================================================= [函数](全局)私有 =================================================
@@ -117,20 +186,26 @@ func DefaultBot(prepares ...BotPreparer) *Bot {
 	bot := NewBot(context.Background())
 
 	// 设置二维码回调函数为 PrintlnQrcodeUrl，用于打印二维码链接
-	bot.UUIDCallback = PrintlnQRCodeUrl
+	bot.UUIDHandler = PrintlnQRCodeUrl
 
 	// 设置扫码回调函数
-	bot.ScanCallBack = func(_ CheckLoginResponse) {
+	bot.ScanHandler = func(bot *Bot, resp CheckLoginResponse) {
+		if avatar, err := resp.Avatar(); err == nil {
+			bot.logger.Debug("当前用户头像：%v", avatar)
+		}
 		bot.logger.Info("扫码成功，请在手机上确认登录")
 	}
 
 	// 设置登录回调函数
-	bot.LoginCallBack = func(_ CheckLoginResponse) {
+	bot.LoginHandler = func(bot *Bot, resp CheckLoginResponse) {
+		if redirectUrl, err := resp.RedirectURL(); err == nil {
+			bot.logger.Debug("重定向：%v", redirectUrl)
+		}
 		bot.logger.Info("登录成功")
 	}
 
 	// 设置心跳回调函数，默认行为为打印 SyncCheckResponse 的 RetCode 和 Selector
-	bot.SyncCheckCallback = func(resp SyncCheckResponse) {
+	bot.SyncCheckHandler = func(bot *Bot, resp SyncCheckResponse) {
 		bot.logger.Trace("RetCode:%s  Selector:%s", resp.RetCode, resp.Selector)
 	}
 
@@ -207,8 +282,8 @@ func (b *Bot) _dumpTo(writer io.Writer) error {
 		BaseRequest: b.Storage.Request,            // 存储机器人的基本请求信息
 	}
 
-	if b.StorageCallback != nil {
-		b.StorageCallback(item)
+	if b.HotReloadStorageHandler != nil {
+		b.HotReloadStorageHandler(b, item)
 	}
 
 	return b.Serializer.Encode(writer, item) // 将 HotReloadStorageItem 序列化到指定的 Writer 中
@@ -336,8 +411,8 @@ func (b *Bot) SyncCheck() error {
 		}
 
 		// 执行心跳回调
-		if b.SyncCheckCallback != nil {
-			b.SyncCheckCallback(*resp)
+		if b.SyncCheckHandler != nil {
+			b.SyncCheckHandler(b, *resp)
 		}
 
 		// 如果不是正常的状态码返回，发生了错误，直接退出
@@ -372,7 +447,9 @@ func (b *Bot) SyncCheck() error {
 				b.GroupMessageHandler(message) // 更新群组信息
 
 				if b.MessageHandler != nil {
-					b.MessageHandler(message) // 处理消息
+					go func() {
+						b.MessageHandler(message) // 处理消息
+					}()
 				}
 			}
 		}
@@ -524,8 +601,8 @@ func (b *Bot) Exit() {
 
 	b.cancel() // 取消上下文
 
-	if b.LogoutCallBack != nil { // 如果设置了退出回调函数，则执行回调
-		b.LogoutCallBack(b)
+	if b.LogoutHandler != nil { // 如果设置了退出回调函数，则执行回调
+		b.LogoutHandler(b)
 	}
 }
 

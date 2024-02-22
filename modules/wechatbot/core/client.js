@@ -1163,7 +1163,7 @@ export default class WeChatClient {
 	 * @param {string} FileName - 文件名
 	 * @returns {Promise<Object>} - 包含文件数据和类型的对象
 	 */
-	async getDocument(FromUserName, MediaId, FileName) {
+	async getMessageDocument(FromUserName, MediaId, FileName) {
 		try {
 			const params = {
 				sender: FromUserName,

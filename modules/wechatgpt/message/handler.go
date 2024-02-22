@@ -57,7 +57,6 @@ func init() {
 //   - 无。
 func Handler(message *core.Message) {
 	dispatcher := core.NewMessageMatchDispatcher()
-
 	// 文本消息处理
 	dispatcher.OnText(func(ctx *core.MessageContext) {
 		// 获取消息对象
@@ -113,6 +112,8 @@ func Handler(message *core.Message) {
 
 	// 私聊消息处理
 	dispatcher.RegisterHandler(func(message *core.Message) bool { return !message.IsSendByGroup() }, func(ctx *core.MessageContext) { handlers[UserHandler].Handle(ctx.Message) })
+
+	dispatcher.RegisterHandler(func(message *core.Message) bool { return true }, func(ctx *core.MessageContext) { message.Bot().Logger().Trace("Received Message : %v", ctx.Message) })
 
 	dispatcher.Dispatch(message)
 }

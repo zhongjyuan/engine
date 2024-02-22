@@ -12,21 +12,23 @@ import (
 type LogLevel int
 
 const (
-	DebugLevel LogLevel = 0
-	TraceLevel LogLevel = 1
-	InfoLevel  LogLevel = 2
-	WarnLevel  LogLevel = 3
-	ErrorLevel LogLevel = 4
+	CollectLevel LogLevel = -1
+	DebugLevel   LogLevel = 0
+	TraceLevel   LogLevel = 1
+	InfoLevel    LogLevel = 2
+	WarnLevel    LogLevel = 3
+	ErrorLevel   LogLevel = 4
 )
 
 // Logger 结构体定义了日志记录器。
 type Logger struct {
-	debugLogger *log.Logger
-	traceLogger *log.Logger
-	infoLogger  *log.Logger
-	warnLogger  *log.Logger
-	errorLogger *log.Logger
-	logLevel    LogLevel
+	collectLogger *log.Logger
+	debugLogger   *log.Logger
+	traceLogger   *log.Logger
+	infoLogger    *log.Logger
+	warnLogger    *log.Logger
+	errorLogger   *log.Logger
+	logLevel      LogLevel
 }
 
 // NewLogger 函数用于创建新的日志记录器。
@@ -39,12 +41,13 @@ type Logger struct {
 //   - *Logger: 返回新创建的日志记录器。
 func NewLogger(logDir string, logLevel LogLevel) *Logger {
 	logger := &Logger{
-		debugLogger: createLogger(logDir, "debug.log"),
-		traceLogger: createLogger(logDir, "trace.log"),
-		infoLogger:  createLogger(logDir, "info.log"),
-		warnLogger:  createLogger(logDir, "warn.log"),
-		errorLogger: createLogger(logDir, "error.log"),
-		logLevel:    logLevel,
+		collectLogger: createLogger(logDir, "collect.log"),
+		debugLogger:   createLogger(logDir, "debug.log"),
+		traceLogger:   createLogger(logDir, "trace.log"),
+		infoLogger:    createLogger(logDir, "info.log"),
+		warnLogger:    createLogger(logDir, "warn.log"),
+		errorLogger:   createLogger(logDir, "error.log"),
+		logLevel:      logLevel,
 	}
 
 	// 每小时检查一次时间
@@ -53,6 +56,7 @@ func NewLogger(logDir string, logLevel LogLevel) *Logger {
 		for range ticker.C {
 			now := time.Now()
 			if now.Hour() == 0 && now.Minute() == 0 && now.Second() == 0 {
+				logger.collectLogger = createLogger(logDir, "collect.log")
 				logger.debugLogger = createLogger(logDir, "debug.log")
 				logger.traceLogger = createLogger(logDir, "trace.log")
 				logger.infoLogger = createLogger(logDir, "info.log")
@@ -95,6 +99,12 @@ func createLogger(logDir string, filename string) *log.Logger {
 func getLogFilePath(logDir string, filename string) string {
 	today := time.Now().Format("2006-01-02")
 	return filepath.Join(logDir, today+"-"+filename)
+}
+
+func (logger *Logger) Collect(format string, v ...interface{}) {
+	if logger.logLevel <= CollectLevel {
+		logger.debugLogger.Printf("[Collect] "+format, v...)
+	}
 }
 
 // Debug 方法用于记录调试级别的日志信息。

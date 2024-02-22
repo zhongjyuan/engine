@@ -46,11 +46,13 @@ func (handler *IFileMessageHandler) Handle(message *core.Message) error {
 	if !strings.Contains(fileName, ".") {
 		switch {
 		case message.IsPicture():
-			fileName += ".PNG"
+			fileName += ".JPG"
 		case message.IsVideo():
 			fileName += ".MP4"
 		case message.IsVoice():
 			fileName += ".MP3"
+		case message.IsEmoticon():
+			fileName += ".GIF"
 		}
 	}
 

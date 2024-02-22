@@ -15,15 +15,6 @@ type MessageContext struct {
 	handlers   MessageContextHandles // handlers 存储了消息处理函数的切片
 }
 
-// MessageHandler 是一个函数类型，用于处理消息的回调函数。
-//
-// 参数：
-//   - msg：一个指向 Message 结构体的指针，表示要处理的消息。
-type MessageHandler func(message *Message)
-
-// MessageErrorHandler 是处理消息发送、接收等操作中出现的错误的函数类型，该函数接受一个 error 类型的参数，并返回一个 error 类型的值。
-type MessageErrorHandler func(err error) error
-
 // MessageContextHandler 是一个函数类型，用于处理消息上下文的回调函数。
 //
 // 参数：

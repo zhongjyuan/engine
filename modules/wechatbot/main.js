@@ -50,27 +50,27 @@ bot.on("message", (message) => {
             break;
         case bot._config.MSGTYPE_VOICE: // 语音消息
             console.log("语音消息，保存到本地");
-            bot.getVoice(message.MsgId).then((res) => {
+            bot.getMessageVoice(message.MsgId).then((res) => {
                 bot.saveFile("voice", `${message.MsgId}.mp3`, res.data);
             });
             break;
         case bot._config.MSGTYPE_EMOTICON: // 表情消息
             console.log("表情消息，保存到本地");
-            bot.getMsgImg(message.MsgId).then((res) => {
+            bot.getMessageImg(message.MsgId).then((res) => {
                 bot.saveFile("emoticon", `${message.MsgId}.gif`, res.data);
             });
             break;
         case bot._config.MSGTYPE_VIDEO:
         case bot._config.MSGTYPE_MICROVIDEO: // 视频消息
             console.log("视频消息，保存到本地");
-            bot.getVideo(message.MsgId).then((res) => {
+            bot.getMessageVideo(message.MsgId).then((res) => {
                 bot.saveFile("video", `${message.MsgId}.mp4`, res.data);
             });
             break;
         case bot._config.MSGTYPE_APP: // 文件消息
             if (message.AppMsgType == 6) {
                 console.log("文件消息，保存到本地");
-                bot.getDoc(message.FromUserName, message.MediaId, message.FileName).then((res) => {
+                bot.getMessageDocument(message.FromUserName, message.MediaId, message.FileName).then((res) => {
                     bot.saveFile("file", `${message.FileName}`, res.data);
                     console.log(res.type);
                 });

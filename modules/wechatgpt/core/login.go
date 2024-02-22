@@ -111,9 +111,10 @@ type LoginChecker struct {
 	Bot *Bot   // 指向机器人实例的指针
 	Tip string // 登录提示信息
 
-	UUIDCallback  func(bot *Bot, uuid string)   // UUID 回调函数
-	LoginCallBack func(body CheckLoginResponse) // 登录回调函数
-	ScanCallBack  func(body CheckLoginResponse) // 扫码回调函数
+	UUIDHandler   UUIDHandler   // UUID 回调函数
+	ScanHandler   ScanHandler   // 扫码回调函数
+	AvatarHandler AvatarHandler //
+	LoginHandler  LoginHandler  // 登录回调函数
 }
 
 // ================================================= [函数](全局)公开 =================================================
@@ -405,9 +406,10 @@ func (s *ScanLogin) CheckLogin(bot *Bot, uuid string) error {
 		Bot: bot,
 		Tip: "0",
 
-		UUIDCallback:  bot.UUIDCallback,
-		LoginCallBack: bot.LoginCallBack,
-		ScanCallBack:  bot.ScanCallBack,
+		UUIDHandler:   bot.UUIDHandler,
+		ScanHandler:   bot.ScanHandler,
+		AvatarHandler: bot.AvatarHandler,
+		LoginHandler:  bot.LoginHandler,
 	}
 
 	// 调用 CheckLogin 方法进行登录检查
@@ -489,7 +491,7 @@ func (p *PushLogin) CheckLogin(bot *Bot, uuid string) error {
 		Bot: bot,
 		Tip: "1",
 
-		LoginCallBack: bot.LoginCallBack,
+		LoginHandler: bot.LoginHandler,
 	}
 
 	return loginChecker.CheckLogin()
@@ -509,7 +511,7 @@ func (checker *LoginChecker) CheckLogin() error {
 	uuid := checker.Bot.UUID()
 
 	// 如果存在 UUID 回调函数，则执行回调函数
-	if cb := checker.UUIDCallback; cb != nil {
+	if cb := checker.UUIDHandler; cb != nil {
 		cb(checker.Bot, uuid)
 	}
 
@@ -541,22 +543,26 @@ func (checker *LoginChecker) CheckLogin() error {
 				return err
 			}
 
-			checker.Bot.logger.Debug("LoginChecker(CheckLogin) => redirectURL: %v \n", redirectURL)
 			if err = checker.Bot.LoginFromURL(redirectURL); err != nil {
 				return err
 			}
 
-			if cb := checker.LoginCallBack; cb != nil {
-				cb(resp)
+			if cb := checker.LoginHandler; cb != nil {
+				cb(checker.Bot, resp)
 			}
 
 			return nil
 		case Scanned:
 			// 扫码成功，执行扫码回调函数
-			if cb := checker.ScanCallBack; cb != nil {
-				cb(resp)
+			if cb := checker.ScanHandler; cb != nil {
+				cb(checker.Bot, resp)
 			}
 
+			if cb := checker.AvatarHandler; cb != nil {
+				if avatar, err := resp.Avatar(); cb != nil && err == nil {
+					cb(checker.Bot, avatar)
+				}
+			}
 		case Timeout:
 			return Error_LoginTimeout
 		case Wait:

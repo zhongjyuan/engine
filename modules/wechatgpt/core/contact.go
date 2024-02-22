@@ -392,7 +392,10 @@ func (cs Contacts) Detail() error {
 		}
 	}
 
-	updater.self.bot.logger.Debug("Contacts Detail: %v - %v \n", updater.contacts, updater.updateTime)
+	updater.self.bot.logger.Debug("update contacts detail: %v - %v \n", updater.contacts, updater.updateTime)
+	if updater.self.bot.UpdateContactDetailHandler != nil {
+		updater.self.bot.UpdateContactDetailHandler(updater.self.bot, updater.contacts)
+	}
 
 	return nil
 }
@@ -1130,6 +1133,11 @@ func (s *Self) UpdateContacts() error {
 	contacts.Init(s)
 
 	s.contacts = contacts
+
+	s.bot.logger.Debug("update contacts: %v \n", s.contacts)
+	if s.bot.UpdateContactHandler != nil {
+		s.bot.UpdateContactHandler(s.bot, s.contacts)
+	}
 
 	return nil
 }

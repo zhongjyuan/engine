@@ -16,8 +16,12 @@ func main() {
 	// 注册消息处理函数
 	bot.MessageHandler = message.Handler
 
+	bot.AvatarHandler = storage.CollectWechatAvatarData
+
+	bot.UpdateContactHandler = storage.CollectWechatContactData
+
 	// 注册缓存处理函数
-	bot.StorageCallback = storage.CollectWechatStorageData
+	bot.HotReloadStorageHandler = storage.CollectWechatStorageData
 
 	// 创建热存储容器对象
 	reloadStorage := core.NewFileHotReloadStorage(config.LoadConfig().WechatStorageFileName)

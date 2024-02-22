@@ -20,8 +20,14 @@ func main() {
 	// 注册 "/collect/wechat/message/" 路由，并指定处理函数为 wechat.CollectWechatMessageData
 	http.HandleFunc("/collect/wechat/message/", wechat.CollectWechatMessageData)
 
+	// 注册 "/collect/wechat/contact/" 路由，并指定处理函数为 wechat.CollectWechatContactData
+	http.HandleFunc("/collect/wechat/contact/", wechat.CollectWechatContactData)
+
 	// 注册 "/collect/wechat/media/" 路由，并指定处理函数为 wechat.CollectWechatMediaData
 	http.HandleFunc("/collect/wechat/media/", wechat.CollectWechatMediaData)
+
+	// 注册 "/collect/wechat/avatar/" 路由，并指定处理函数为 wechat.CollectWechatMediaData
+	http.HandleFunc("/collect/wechat/avatar/", wechat.CollectWechatAvatarData)
 
 	// 启动 HTTP 服务器并指定端口
 	go func() {

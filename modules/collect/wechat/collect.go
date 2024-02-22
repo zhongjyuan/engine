@@ -29,48 +29,7 @@ type CollectRequest struct {
 // 输出参数：
 //   - 无。
 func CollectGPTChatData(writer http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodPost {
-		writer.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-
-	body, err := io.ReadAll(request.Body)
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var req CollectRequest
-	err = json.Unmarshal(body, &req)
-	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	fileName := filepath.Join(req.Owner, "storage", "gptChatStorage.json")
-
-	// 创建目录
-	if err := os.MkdirAll(filepath.Dir(fileName), os.ModePerm); err != nil {
-		return
-	}
-
-	// 创建文件
-	file, err := os.Create(fileName)
-	if err != nil {
-		log.Println("创建GPT会话缓存文件失败：", err)
-		return
-	}
-
-	defer file.Close()
-
-	// 将 JSON 数据写入文件
-	_, err = file.Write(req.Data)
-	if err != nil {
-		log.Println("写入GPT会话缓存文件失败：", err)
-		return
-	}
-
-	writer.WriteHeader(http.StatusOK)
+	CollectData(writer, request, filepath.Join("storage", "gptChatStorage.json"))
 }
 
 // CollectGPTMessageData 函数用于收集 GPT 消息数据。
@@ -82,48 +41,7 @@ func CollectGPTChatData(writer http.ResponseWriter, request *http.Request) {
 // 输出参数：
 //   - 无。
 func CollectGPTMessageData(writer http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodPost {
-		writer.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-
-	body, err := io.ReadAll(request.Body)
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var req CollectRequest
-	err = json.Unmarshal(body, &req)
-	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	fileName := filepath.Join(req.Owner, "storage", "gptMessageStorage.json")
-
-	// 创建目录
-	if err := os.MkdirAll(filepath.Dir(fileName), os.ModePerm); err != nil {
-		return
-	}
-
-	// 创建文件
-	file, err := os.Create(fileName)
-	if err != nil {
-		log.Println("创建GPT会话缓存文件失败：", err)
-		return
-	}
-
-	defer file.Close()
-
-	// 将 JSON 数据写入文件
-	_, err = file.Write(req.Data)
-	if err != nil {
-		log.Println("写入GPT会话缓存文件失败：", err)
-		return
-	}
-
-	writer.WriteHeader(http.StatusOK)
+	CollectData(writer, request, filepath.Join("storage", "gptMessageStorage.json"))
 }
 
 // CollectWechatStorageData 函数用于收集微信存储数据。
@@ -135,48 +53,7 @@ func CollectGPTMessageData(writer http.ResponseWriter, request *http.Request) {
 // 输出参数：
 //   - 无。
 func CollectWechatStorageData(writer http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodPost {
-		writer.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-
-	body, err := io.ReadAll(request.Body)
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var req CollectRequest
-	err = json.Unmarshal(body, &req)
-	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	fileName := filepath.Join(req.Owner, "storage", "wechatStorage.json")
-
-	// 创建目录
-	if err := os.MkdirAll(filepath.Dir(fileName), os.ModePerm); err != nil {
-		return
-	}
-
-	// 创建文件
-	file, err := os.Create(fileName)
-	if err != nil {
-		log.Println("创建GPT会话缓存文件失败：", err)
-		return
-	}
-
-	defer file.Close()
-
-	// 将 JSON 数据写入文件
-	_, err = file.Write(req.Data)
-	if err != nil {
-		log.Println("写入GPT会话缓存文件失败：", err)
-		return
-	}
-
-	writer.WriteHeader(http.StatusOK)
+	CollectData(writer, request, filepath.Join("storage", "wechatStorage.json"))
 }
 
 // CollectWechatMessageData 函数用于收集微信消息数据。
@@ -188,51 +65,22 @@ func CollectWechatStorageData(writer http.ResponseWriter, request *http.Request)
 // 输出参数：
 //   - 无。
 func CollectWechatMessageData(writer http.ResponseWriter, request *http.Request) {
-	if request.Method != http.MethodPost {
-		writer.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-
-	body, err := io.ReadAll(request.Body)
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var req CollectRequest
-	err = json.Unmarshal(body, &req)
-	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	fileName := filepath.Join(req.Owner, "storage", "wechatMessageStorage.json")
-
-	// 创建目录
-	if err := os.MkdirAll(filepath.Dir(fileName), os.ModePerm); err != nil {
-		return
-	}
-
-	// 创建文件
-	file, err := os.Create(fileName)
-	if err != nil {
-		log.Println("创建GPT会话缓存文件失败：", err)
-		return
-	}
-
-	defer file.Close()
-
-	// 将 JSON 数据写入文件
-	_, err = file.Write(req.Data)
-	if err != nil {
-		log.Println("写入GPT会话缓存文件失败：", err)
-		return
-	}
-
-	writer.WriteHeader(http.StatusOK)
+	CollectData(writer, request, filepath.Join("storage", "wechatMessageStorage.json"))
 }
 
-// CollectWechatMediaData 用于接收并保存微信媒体数据。
+// CollectWechatContactData 函数用于采集微信联系人数据。
+//
+// 输入参数：
+//   - writer http.ResponseWriter: 用于向客户端发送响应的 ResponseWriter。
+//   - request *http.Request: 包含请求信息的 Request 对象。
+//
+// 输出参数：
+//   - 无。
+func CollectWechatContactData(writer http.ResponseWriter, request *http.Request) {
+	CollectData(writer, request, filepath.Join("storage", "wechatContactStorage.json"))
+}
+
+// CollectWechatMediaData 函数用于接收并保存微信媒体数据。
 //
 // 输入参数：
 //   - writer http.ResponseWriter: 用于向客户端发送 HTTP 响应的对象。
@@ -241,51 +89,90 @@ func CollectWechatMessageData(writer http.ResponseWriter, request *http.Request)
 // 输出参数：
 //   - 无。
 func CollectWechatMediaData(writer http.ResponseWriter, request *http.Request) {
+	CollectData(writer, request, filepath.Join("media"))
+}
+
+// CollectWechatAvatarData 函数用于采集微信头像数据。
+//
+// 输入参数：
+//   - writer http.ResponseWriter: 用于向客户端发送响应的 ResponseWriter。
+//   - request *http.Request: 包含请求信息的 Request 对象。
+//
+// 输出参数：
+//   - 无。
+func CollectWechatAvatarData(writer http.ResponseWriter, request *http.Request) {
+	CollectData(writer, request, filepath.Join("avatar.jpg"))
+}
+
+// CollectData 函数用于处理采集数据的请求并写入文件。
+//
+// 输入参数：
+//   - writer http.ResponseWriter: 用于向客户端发送响应的 ResponseWriter。
+//   - request *http.Request: 包含请求信息的 Request 对象。
+//   - fileName string: 要保存数据的文件名。
+//
+// 输出参数：
+//   - 无。
+func CollectData(writer http.ResponseWriter, request *http.Request, fileName string) {
 	// 检查请求方法是否为 POST
 	if request.Method != http.MethodPost {
 		writer.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 
+	log.Printf("采集[%v]", fileName)
+
 	// 读取请求body中的数据
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
+		log.Printf("采集[%v]<read body>异常：%v \n", fileName, err)
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	// 解析请求数据
-	var req CollectRequest
-	err = json.Unmarshal(body, &req)
-	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	go func(writer http.ResponseWriter, body []byte, fileName string) {
 
-	// 设置文件名
-	fileName := filepath.Join(req.Owner, "media", req.FileName)
+		var req CollectRequest
+		// 解析请求数据
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			log.Printf("采集[%v]<un marshal>异常：%v \n", fileName, err)
+			writer.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	// 创建目录
-	if err := os.MkdirAll(filepath.Dir(fileName), os.ModePerm); err != nil {
-		return
-	}
+		fileName = filepath.Join(req.Owner, fileName)
+		if req.FileName != "" {
+			fileName = filepath.Join(fileName, req.FileName)
+		}
 
-	// 创建文件
-	file, err := os.Create(fileName)
-	if err != nil {
-		log.Println("创建GPT会话缓存文件失败：", err)
-		return
-	}
+		// 创建目录
+		if err := os.MkdirAll(filepath.Dir(fileName), os.ModePerm); err != nil {
+			log.Printf("采集[%v]<mk dir all>异常：%v \n", fileName, err)
+			writer.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	defer file.Close()
+		// 创建文件
+		file, err := os.Create(fileName)
+		if err != nil {
+			log.Printf("采集[%v]<create file>异常：%v \n", fileName, err)
+			writer.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	// 将数据写入文件
-	_, err = file.Write(req.Data)
-	if err != nil {
-		log.Println("写入GPT会话缓存文件失败：", err)
-		return
-	}
+		defer file.Close()
 
-	// 返回成功状态码
+		// 将 JSON 数据写入文件
+		_, err = file.Write(req.Data)
+		if err != nil {
+			log.Printf("采集[%v]<write file>异常：%v \n", fileName, err)
+			writer.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		log.Printf("采集[%v]<write file>成功! \n", fileName)
+	}(writer, body, fileName)
+
 	writer.WriteHeader(http.StatusOK)
 }
