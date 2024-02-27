@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
-	"zhongjyuan/server/chat"
-	"zhongjyuan/server/collect"
+	"zhongjyuan/service/chat"
+	"zhongjyuan/service/collect"
 )
 
 func main() {

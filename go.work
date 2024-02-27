@@ -1,6 +1,9 @@
 go 1.21.6
 
 use (
+	./modules/logger
+	./modules/qqbot
 	./modules/service
-	./modules/wechatgpt
+	./modules/wechatbot_golang
+	./modules/wechatgpt_golang
 )

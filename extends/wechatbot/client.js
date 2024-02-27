@@ -1954,7 +1954,7 @@ var WeChatClient = function () {
    */
 
 	}, {
-		key: "getDocument",
+		key: "getMessageDocument",
 		value: function () {
 			var _ref21 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(FromUserName, MediaId, FileName) {
 				var params, res;
@@ -2009,11 +2009,11 @@ var WeChatClient = function () {
 				}, _callee21, this, [[0, 10]]);
 			}));
 
-			function getDocument(_x28, _x29, _x30) {
+			function getMessageDocument(_x28, _x29, _x30) {
 				return _ref21.apply(this, arguments);
 			}
 
-			return getDocument;
+			return getMessageDocument;
 		}()
 
 		/**

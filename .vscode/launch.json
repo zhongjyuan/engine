@@ -7,37 +7,37 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "server|dev",
+			"name": "[node] server|dev",
 			"skipFiles": ["<node_internals>/**"],
 			"program": "${workspaceFolder}\\server.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "server|pro",
+			"name": "[node] server|pro",
 			"skipFiles": ["<node_internals>/**"],
 			"program": "${workspaceFolder}\\dist\\server.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "wechatbot|dev",
+			"name": "[node] wechatgpt|dev",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\modules\\wechatbot\\main.js"
+			"program": "${workspaceFolder}\\modules\\wechatgpt_node\\main.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "wechatbot|pro",
+			"name": "[node] wechatgpt|pro",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\dist\\wechatbot.js"
+			"program": "${workspaceFolder}\\dist\\wechatgpt.js"
 		},
 		{
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "wechatgpt|dev",
-			"program": "${workspaceFolder}\\modules\\wechatgpt\\main.go",
+			"name": "[golang] wechatgpt|dev",
+			"program": "${workspaceFolder}\\modules\\wechatgpt_golang\\main.go",
 			"showLog": true,
 			// "env": {
 			// 	"GOPATH": "D:/Program Files/Go_Works",
@@ -49,7 +49,20 @@
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "service|dev",
+			"name": "[golang] qqbot|dev",
+			"program": "${workspaceFolder}\\modules\\qqbot\\main.go",
+			"showLog": true,
+			// "env": {
+			// 	"GOPATH": "D:/Program Files/Go_Works",
+			// 	"GOROOT": "D:/Program Files/Go"
+			// },
+			"args": []
+		},
+		{
+			"type": "go",
+			"mode": "auto",
+			"request": "launch",
+			"name": "[golang] service|dev",
 			"program": "${workspaceFolder}\\modules\\service\\main.go",
 			"showLog": true,
 			// "env": {

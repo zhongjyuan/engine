@@ -1,0 +1,3 @@
+module zhongjyuan/wechatbot
+
+go 1.21.6
