@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"time"
-	"zhongjyuan/log"
-	"zhongjyuan/qqbot/global"
+	"zhongjyuan/qqbot/config"
 	"zhongjyuan/qqbot/handle"
+	"zhongjyuan/qqbot/task"
 
 	"github.com/tencent-connect/botgo"
 	"github.com/tencent-connect/botgo/dto"
@@ -13,29 +13,26 @@ import (
 	"github.com/tencent-connect/botgo/websocket"
 )
 
-var processor global.Processor
-
 func main() {
 	ctx := context.Background()
 
-	processor = global.Processor{Log: log.NewFileLogger("logs", log.SysLevel)}
+	cfg := config.GetConfig()
 
 	// 把新的 logger 设置到 sdk 上，替换掉老的控制台 logger
-	botgo.SetLogger(processor.Log)
+	botgo.SetLogger(cfg.Logger)
 
 	// 加载 appid 和 token
-	botToken := token.New(token.TypeBot)
-	if err := botToken.LoadFromConfig("config.yaml"); err != nil {
-		processor.Log.Error(err)
-	}
-
-	processor.Api = botgo.NewSandboxOpenAPI(botToken).WithTimeout(3 * time.Second) // 使用NewSandboxOpenAPI创建沙箱环境的实例
+	botToken := token.BotToken(uint64(cfg.AppID), cfg.Token)
+	api := botgo.NewSandboxOpenAPI(botToken).WithTimeout(3 * time.Second) // 使用NewSandboxOpenAPI创建沙箱环境的实例
 
 	// 获取 websocket 信息
-	wsInfo, err := processor.Api.WS(ctx, nil, "")
+	wsInfo, err := api.WS(ctx, nil, "")
 	if err != nil {
-		processor.Log.Errorf("%+v, err:%v", wsInfo, err)
+		cfg.Logger.Errorf("%+v, err:%v", wsInfo, err)
 	}
+
+	processor := handle.Processor{Log: cfg.Logger, Api: api, WSInfo: wsInfo, Context: ctx}
+	handle.SetProcessor(&processor)
 
 	// 根据不同的回调，生成 intents
 	intent := websocket.RegisterHandlers(
@@ -61,14 +58,16 @@ func main() {
 		handle.InteractionEventHandler(processor),
 	)
 
-	me, err := processor.Api.Me(ctx)
-	processor.Log.Infof("%+v err: %v", me, err)
+	task.WeatherTask()
 
-	guilds, err := processor.Api.MeGuilds(ctx, &dto.GuildPager{})
-	processor.Log.Infof("%+v err: %v", guilds, err)
+	me, err := api.Me(ctx)
+	cfg.Logger.Infof("%+v err: %v", me, err)
+
+	guilds, err := api.MeGuilds(ctx, &dto.GuildPager{})
+	cfg.Logger.Infof("%+v err: %v", guilds, err)
 
 	// 启动 session manager 进行 ws 连接的管理，如果接口返回需要启动多个 shard 的连接，这里也会自动启动多个
 	if err = botgo.NewSessionManager().Start(wsInfo, botToken, &intent); err != nil {
-		processor.Log.Error(err)
+		cfg.Logger.Error(err)
 	}
 }

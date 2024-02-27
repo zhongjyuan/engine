@@ -1,0 +1,16 @@
+{
+	"appid": 102096950,
+	"token": "IuCxDu2RNiRrpdUVfLxoiRGntvjfEl8Y",
+	"nowapi_appkey": 72180,
+	"nowapi_sign": "12e180ec3b1dc0a0faaa00baaaeebc4a",
+
+	"log_level": -2,
+
+	"guild_create_event": "GUILD_CREATE",
+
+	"direct_weather_message_cmd": "/私信天气",
+	"today_weather_message_cmd": "/当前天气",
+	"future_weather_message_cmd": "/未来天气",
+	"dressing_index_message_cmd": "/穿衣指数",
+	"air_quality_message_cmd": "/空气质量"
+}
