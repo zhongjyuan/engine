@@ -21,12 +21,13 @@ func authHelper(c *gin.Context, minRole int) {
 	// 获取会话
 	session := sessions.Default(c)
 
-	// 获取会话中的用户信息
-	username := session.Get("username")
-	role := session.Get("role")
-	id := session.Get("id")
-	status := session.Get("status")
 	authByToken := false
+
+	// 获取会话中的用户信息
+	id := session.Get("id")
+	role := session.Get("role")
+	status := session.Get("status")
+	username := session.Get("username")
 
 	// 如果用户名为空，尝试使用 token 进行验证
 	if username == nil {
@@ -43,12 +44,11 @@ func authHelper(c *gin.Context, minRole int) {
 
 		// 验证用户 token
 		user := model.ValidateUserToken(token)
-		if user != nil && user.Username != "" {
-			// Token 有效，设置用户信息
-			username = user.Username
-			role = user.Role
+		if user != nil && user.Username != "" { // Token 有效，设置用户信息
 			id = user.Id
+			role = user.Role
 			status = user.Status
+			username = user.Username
 		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
@@ -57,6 +57,7 @@ func authHelper(c *gin.Context, minRole int) {
 			c.Abort()
 			return
 		}
+
 		authByToken = true
 	}
 
@@ -81,9 +82,9 @@ func authHelper(c *gin.Context, minRole int) {
 	}
 
 	// 将用户信息设置到 Gin 上下文中，并继续处理请求
-	c.Set("username", username)
-	c.Set("role", role)
 	c.Set("id", id)
+	c.Set("role", role)
+	c.Set("username", username)
 	c.Set("authByToken", authByToken)
 	c.Next()
 }
@@ -154,14 +155,14 @@ func NoTokenAuth() func(c *gin.Context) {
 	}
 }
 
-// TokenOnlyAuth 返回一个中间件函数，用于确保接口仅支持使用 token 进行验证。
+// OnlyTokenAuth 返回一个中间件函数，用于确保接口仅支持使用 token 进行验证。
 //
 // 输入参数：
 //   - c (*gin.Context): Gin 上下文对象。
 //
 // 输出参数：
 //   - 无。
-func TokenOnlyAuth() func(c *gin.Context) {
+func OnlyTokenAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		// 从上下文中获取 authByToken 标志
 		authByToken := c.GetBool("authByToken")

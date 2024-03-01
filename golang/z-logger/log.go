@@ -8,6 +8,11 @@ func SetLogger(logger Logger) {
 	DefaultLogger = logger
 }
 
+// Trace log.Trace
+func Trace(v ...interface{}) {
+	DefaultLogger.Trace(v...)
+}
+
 // Debug log.Debug
 func Debug(v ...interface{}) {
 	DefaultLogger.Debug(v...)
@@ -26,6 +31,11 @@ func Warn(v ...interface{}) {
 // Error log.Error
 func Error(v ...interface{}) {
 	DefaultLogger.Error(v...)
+}
+
+// Tracef log.Tracef
+func Tracef(format string, v ...interface{}) {
+	DefaultLogger.Tracef(format, v...)
 }
 
 // Debugf log.Debugf

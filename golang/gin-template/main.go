@@ -16,7 +16,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//go:embed web/build/*
+//go:embed web/build/**/*
 var buildFS embed.FS // buildFS 是一个 embed.FS 类型的变量，用于访问嵌入在二进制文件中的静态资源文件。(go:embed web/build)
 
 // main 函数是程序的入口。
@@ -74,7 +74,7 @@ func main() {
 	// server.Use(gzip.Gzip(gzip.DefaultCompression))
 	server.Use(middleware.RequestId())
 
-	server.Use(middleware.CORS())
+	server.Use(middleware.Cors())
 
 	middleware.SetUpLogger(server)
 
@@ -94,7 +94,7 @@ func main() {
 	// 获取端口号
 	var port = os.Getenv("PORT")
 	if port == "" {
-		port = strconv.Itoa(*common.Port)
+		port = strconv.Itoa(*common.ListenPort)
 	}
 
 	// 启动HTTP服务器

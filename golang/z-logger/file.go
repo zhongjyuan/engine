@@ -15,8 +15,8 @@ import (
 type FileLogger struct {
 	logLevel    LogLevel
 	sysLogger   *log.Logger
-	debugLogger *log.Logger
 	traceLogger *log.Logger
+	debugLogger *log.Logger
 	infoLogger  *log.Logger
 	warnLogger  *log.Logger
 	errorLogger *log.Logger
@@ -79,8 +79,8 @@ func NewFileLogger(logDir string, logLevel LogLevel) *FileLogger {
 	logger := &FileLogger{
 		logLevel:    logLevel,
 		sysLogger:   createLogger(logDir, "system.log"),
-		debugLogger: createLogger(logDir, "debug.log"),
 		traceLogger: createLogger(logDir, "trace.log"),
+		debugLogger: createLogger(logDir, "debug.log"),
 		infoLogger:  createLogger(logDir, "info.log"),
 		warnLogger:  createLogger(logDir, "warn.log"),
 		errorLogger: createLogger(logDir, "error.log"),
@@ -93,8 +93,8 @@ func NewFileLogger(logDir string, logLevel LogLevel) *FileLogger {
 			now := time.Now()
 			if now.Hour() == 0 && now.Minute() == 0 && now.Second() == 0 {
 				logger.sysLogger = createLogger(logDir, "system.log")
-				logger.debugLogger = createLogger(logDir, "debug.log")
 				logger.traceLogger = createLogger(logDir, "trace.log")
+				logger.debugLogger = createLogger(logDir, "debug.log")
 				logger.infoLogger = createLogger(logDir, "info.log")
 				logger.warnLogger = createLogger(logDir, "warn.log")
 				logger.errorLogger = createLogger(logDir, "error.log")
@@ -115,16 +115,16 @@ func (logger FileLogger) Sys(v ...interface{}) {
 	}
 }
 
+func (logger FileLogger) Trace(v ...interface{}) {
+	if logger.logLevel <= TraceLevel {
+		logger.traceLogger.Printf(printf(v...))
+	}
+}
+
 // Debug logs a message at DebugLevel. The message includes any fields passed
 func (logger FileLogger) Debug(v ...interface{}) {
 	if logger.logLevel <= DebugLevel {
 		logger.debugLogger.Printf(printf(v...))
-	}
-}
-
-func (logger FileLogger) Trace(v ...interface{}) {
-	if logger.logLevel <= TraceLevel {
-		logger.traceLogger.Printf(printf(v...))
 	}
 }
 
@@ -155,16 +155,16 @@ func (logger FileLogger) Sysf(format string, v ...interface{}) {
 	}
 }
 
+func (logger FileLogger) Tracef(format string, v ...interface{}) {
+	if logger.logLevel <= TraceLevel {
+		logger.traceLogger.Printf(printf(fmt.Sprintf(format, v...)))
+	}
+}
+
 // Debugf logs a message at DebugLevel. The message includes any fields passed
 func (logger FileLogger) Debugf(format string, v ...interface{}) {
 	if logger.logLevel <= DebugLevel {
 		logger.debugLogger.Printf(printf(fmt.Sprintf(format, v...)))
-	}
-}
-
-func (logger FileLogger) Tracef(format string, v ...interface{}) {
-	if logger.logLevel <= TraceLevel {
-		logger.traceLogger.Printf(printf(fmt.Sprintf(format, v...)))
 	}
 }
 

@@ -1,12 +1,14 @@
 package common
 
 import (
+	"os"
 	"sync"
 	"time"
 
 	"github.com/google/uuid"
 )
 
+// Version 版本信息
 var Version = "v0.0.0"
 
 // StartTime 存储程序启动时的 Unix 时间戳
@@ -28,25 +30,30 @@ var Footer = ""
 var HomePageLink = ""
 
 // Theme 主题信息
-var Theme = "default"
+var Theme = GetOrDefaultEnvString("THEME", "default")
 
 // RootUserEmail root用户邮箱信息
 var RootUserEmail = "zhongjyuan@outlook.com"
 
+// UploadPath 文件上传目录
 var UploadPath = "upload"
 
-var IsMasterNode = true
+// IsMasterNode 是否主节点
+var IsMasterNode = os.Getenv("NODE_TYPE") != "slave"
 
 // SessionSecret 使用 UUID 生成一个唯一会话密钥
 var SessionSecret = uuid.New().String()
 
+// UsingSQLite 启用SQLite
 var UsingSQLite = false
 
+// UsingPostgreSQL 启用PostgreSQL
 var UsingPostgreSQL = false
 
 // SQLitePath 存储到 SQLite 数据库的路径
 var SQLitePath = "gin-template.db"
 
+// SQLiteBusyTimeout 表示SQLite数据库的忙碌超时时间（毫秒）。
 var SQLiteBusyTimeout = 3000
 
 // OptionMap 存储选项的映射
@@ -59,7 +66,7 @@ var OptionMapRWMutex sync.RWMutex
 var ItemsPerPage = 10
 
 // DebugEnabled 表示Debug模式是否启用
-var DebugEnabled = false
+var DebugEnabled = os.Getenv("DEBUG") == "true"
 
 // RedisEnabled 表示 Redis 是否启用
 var RedisEnabled = true
@@ -131,21 +138,17 @@ var RateLimitKeyExpirationDuration = 20 * time.Minute
 
 // 全局速率限制配置
 var (
-	GlobalApiRateLimitNum            = 60
-	GlobalApiRateLimitDuration int64 = 3 * 60
+	GlobalApiRateLimitNum            = GetOrDefaultEnvInt("GLOBAL_API_RATE_LIMIT", 180) // GlobalApiRateLimitNum 表示全局API速率限制的数量限制。
+	GlobalApiRateLimitDuration int64 = 3 * 60                                           // GlobalApiRateLimitDuration 表示全局API速率限制的时间段（秒）。
+	GlobalWebRateLimitNum            = GetOrDefaultEnvInt("GLOBAL_WEB_RATE_LIMIT", 60)  // GlobalWebRateLimitNum 表示全局Web请求速率限制的数量限制。
+	GlobalWebRateLimitDuration int64 = 3 * 60                                           // GlobalWebRateLimitDuration 表示全局Web请求速率限制的时间段（秒）。
 
-	GlobalWebRateLimitNum            = 60
-	GlobalWebRateLimitDuration int64 = 3 * 60
+	UploadRateLimitNum              = GetOrDefaultEnvInt("UPLOAD_RATE_LIMIT", 10)   // UploadRateLimitNum 表示上传速率限制的数量限制。
+	UploadRateLimitDuration   int64 = 60                                            // UploadRateLimitDuration 表示上传速率限制的时间段（秒）。
+	DownloadRateLimitNum            = GetOrDefaultEnvInt("DOWNLOAD_RATE_LIMIT", 10) // DownloadRateLimitNum 表示下载速率限制的数量限制。
+	DownloadRateLimitDuration int64 = 60                                            // DownloadRateLimitDuration 表示下载速率限制的时间段（秒）。
 
-	UploadRateLimitNum            = 10
-	UploadRateLimitDuration int64 = 60
+	CriticalRateLimitNum            = GetOrDefaultEnvInt("CRITICAL_RATE_LIMIT", 20) // CriticalRateLimitNum 表示临界情况下的速率限制的数量限制。
+	CriticalRateLimitDuration int64 = 20 * 60                                       // CriticalRateLimitDuration 表示临界情况下的速率限制的时间段（秒）。
 
-	DownloadRateLimitNum            = 10
-	DownloadRateLimitDuration int64 = 60
-
-	CriticalRateLimitNum            = 20
-	CriticalRateLimitDuration int64 = 20 * 60
 )
-
-// 有效主题
-var ValidThemes = map[string]bool{"default": true}

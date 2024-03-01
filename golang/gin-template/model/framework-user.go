@@ -282,14 +282,18 @@ func ValidateUserToken(token string) (user *User) {
 	if token == "" {
 		return nil
 	}
+
 	// 剥离令牌前缀
 	token = strings.Replace(token, "Bearer ", "", 1)
+
 	// 创建 User 实例
 	user = &User{}
+
 	// 使用 GORM 根据令牌查询用户信息
 	if DB.Where("token = ?", token).First(user).RowsAffected == 1 {
 		return user
 	}
+
 	return nil
 }
 

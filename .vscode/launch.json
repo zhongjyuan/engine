@@ -7,37 +7,37 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "[node] server|dev",
+			"name": "[node] tool-site-service|dev",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\server.js"
+			"program": "${workspaceFolder}\\tool-site\\server.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "[node] server|pro",
+			"name": "[node] tool-site-service|pro",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\dist\\server.js"
+			"program": "${workspaceFolder}\\tool-site\\dist\\server.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "[node] wechatgpt|dev",
+			"name": "[node] wechat-robot-service|dev",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\modules\\wechatgpt_node\\main.js"
+			"program": "${workspaceFolder}\\node\\z-wechat-robot-server\\index.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "[node] wechatgpt|pro",
+			"name": "[node] wechat-robot-service|pro",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}\\dist\\wechatgpt.js"
+			"program": "${workspaceFolder}\\node\\dist\\server.js"
 		},
 		{
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "[golang] wechatgpt|dev",
-			"program": "${workspaceFolder}\\modules\\wechatgpt_golang\\main.go",
+			"name": "[go] wechat-robot-service|dev",
+			"program": "${workspaceFolder}\\golang\\z-wechat-robot-server\\main.go",
 			"showLog": true,
 			// "env": {
 			// 	"GOPATH": "D:/Program Files/Go_Works",
@@ -49,8 +49,8 @@
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "[golang] qqbot|dev",
-			"program": "${workspaceFolder}\\modules\\qqbot\\main.go",
+			"name": "[go] qq-robot-service|dev",
+			"program": "${workspaceFolder}\\golang\\z-qq-robot-server\\main.go",
 			"showLog": true,
 			// "env": {
 			// 	"GOPATH": "D:/Program Files/Go_Works",
@@ -62,13 +62,38 @@
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "[golang] service|dev",
-			"program": "${workspaceFolder}\\modules\\service\\main.go",
+			"name": "[go] collect-service|dev",
+			"program": "${workspaceFolder}\\golang\\z-collect-server\\main.go",
 			"showLog": true,
 			// "env": {
 			// 	"GOPATH": "D:/Program Files/Go_Works",
 			// 	"GOROOT": "D:/Program Files/Go"
 			// },
+			"args": []
+		},
+		{
+			"type": "go",
+			"mode": "auto",
+			"request": "launch",
+			"name": "[go] demo-service|dev",
+			"program": "${workspaceFolder}\\golang\\z-demo-server\\main.go",
+			"showLog": true,
+			// "env": {
+			// 	"GOPATH": "D:/Program Files/Go_Works",
+			// 	"GOROOT": "D:/Program Files/Go"
+			// },
+			"args": []
+		},
+		{
+			"type": "go",
+			"mode": "auto",
+			"request": "launch",
+			"name": "[go] gin-template-site|dev",
+			"program": "${workspaceFolder}\\golang\\gin-template\\main.go",
+			"showLog": true,
+			"env": {
+				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-template?charset=utf8"
+			},
 			"args": []
 		}
 	]

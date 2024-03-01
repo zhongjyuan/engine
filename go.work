@@ -1,9 +1,12 @@
 go 1.21.6
 
 use (
-	./modules/logger
-	./modules/qqbot
-	./modules/service
-	./modules/wechatbot_golang
-	./modules/wechatgpt_golang
+	./golang/z-demo-server
+	./golang/z-logger
+	./golang/z-wechat-robot
+	./golang/z-collect-server
+	./golang/z-qq-robot-server
+	./golang/z-wechat-robot-server
+
+	./golang/gin-template
 )

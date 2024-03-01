@@ -14,11 +14,6 @@ type verificationValue struct {
 	time time.Time // 记录生成时间的 Time 对象
 }
 
-const (
-	EmailVerificationPurpose = "v" // EmailVerificationPurpose 表示邮箱验证目的
-	PasswordResetPurpose     = "r" // PasswordResetPurpose 表示密码重置目的
-)
-
 var (
 	verificationMutex        sync.Mutex                   // verificationMutex 是用于控制验证码操作并发访问的互斥锁。
 	verificationMap          map[string]verificationValue // verificationMap 是存储验证码键值对的映射，键为验证码目的和键名的组合，值为 verificationValue 结构体。

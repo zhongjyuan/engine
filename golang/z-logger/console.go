@@ -24,14 +24,14 @@ func (consoleLogger) Sys(v ...interface{}) {
 	output("Sys", fmt.Sprint(v...))
 }
 
-// Debug 日志
-func (consoleLogger) Debug(v ...interface{}) {
-	output("Debug", fmt.Sprint(v...))
-}
-
 // Trace 日志
 func (consoleLogger) Trace(v ...interface{}) {
 	output("Trace", fmt.Sprint(v...))
+}
+
+// Debug 日志
+func (consoleLogger) Debug(v ...interface{}) {
+	output("Debug", fmt.Sprint(v...))
 }
 
 // Info 日志
@@ -52,14 +52,14 @@ func (consoleLogger) Sysf(format string, v ...interface{}) {
 	output("Sys", fmt.Sprintf(format, v...))
 }
 
-// Debugf Debug Format 日志
-func (consoleLogger) Debugf(format string, v ...interface{}) {
-	output("Debug", fmt.Sprintf(format, v...))
-}
-
 // Tracef Trace Format 日志
 func (consoleLogger) Tracef(format string, v ...interface{}) {
 	output("Trace", fmt.Sprintf(format, v...))
+}
+
+// Debugf Debug Format 日志
+func (consoleLogger) Debugf(format string, v ...interface{}) {
+	output("Debug", fmt.Sprintf(format, v...))
 }
 
 // Infof Info Format 日志

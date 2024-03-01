@@ -10,9 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var timeFormat = "2006-01-02T15:04:05.000Z"
-
-var inMemoryRateLimiter common.InMemoryRateLimiter
+var timeFormat = "2006-01-02T15:04:05.000Z"        // timeFormat 用于定义时间格式字符串为 "2006-01-02T15:04:05.000Z"
+var inMemoryRateLimiter common.InMemoryRateLimiter // inMemoryRateLimiter 是 common 包中的 InMemoryRateLimiter 结构体实例，用于内存限流器
 
 // redisRateLimiter 是一个基于 Redis 的速率限制器函数，用于限制客户端请求的频率。
 //
@@ -107,7 +106,7 @@ func redisRateLimiter(c *gin.Context, maxRequestNum int, duration int64, mark st
 //   - 无。
 func memoryRateLimiter(c *gin.Context, maxRequestNum int, duration int64, mark string) {
 	// 构建键名
-	key := mark + c.ClientIP()
+	key := "rateLimit:" + mark + c.ClientIP()
 
 	// 调用内存速率限制器的请求函数
 	if !inMemoryRateLimiter.Request(key, maxRequestNum, duration) {

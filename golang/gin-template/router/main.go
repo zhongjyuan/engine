@@ -21,7 +21,7 @@ import (
 //   - 无。
 func SetRouter(router *gin.Engine, buildFS embed.FS) {
 	// 设置API路由
-	SetApiRouter(router)
+	setFrameworkApiRouter(router)
 
 	frontendBaseUrl := os.Getenv("FRONTEND_BASE_URL")
 	if common.IsMasterNode && frontendBaseUrl != "" {
@@ -30,7 +30,7 @@ func SetRouter(router *gin.Engine, buildFS embed.FS) {
 	}
 
 	if frontendBaseUrl == "" {
-		setWebRouter(router, buildFS)
+		setFrameworkWebRouter(router, buildFS)
 	} else {
 		frontendBaseUrl = strings.TrimSuffix(frontendBaseUrl, "/")
 		router.NoRoute(func(c *gin.Context) {

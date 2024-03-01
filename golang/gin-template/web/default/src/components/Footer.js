@@ -25,7 +25,7 @@ const Footer = () => {
             </a>
             由{' '}
             <a href='https://github.com/zhongjyuan' target='_blank'>
-              JustSong
+              ZHOINGJYUAN
             </a>{' '}
             构建，源代码遵循{' '}
             <a href='https://opensource.org/licenses/mit-license.php'>
