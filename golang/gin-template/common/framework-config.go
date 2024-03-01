@@ -35,9 +35,6 @@ var Theme = GetOrDefaultEnvString("THEME", "default")
 // RootUserEmail root用户邮箱信息
 var RootUserEmail = "zhongjyuan@outlook.com"
 
-// UploadPath 文件上传目录
-var UploadPath = "upload"
-
 // IsMasterNode 是否主节点
 var IsMasterNode = os.Getenv("NODE_TYPE") != "slave"
 

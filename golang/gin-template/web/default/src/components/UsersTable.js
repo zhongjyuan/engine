@@ -67,10 +67,10 @@ const UsersTable = () => {
       });
   }, []);
 
-  const manageUser = (username, action, idx) => {
+  const manageUser = (userName, action, idx) => {
     (async () => {
       const res = await API.post('/api/user/manage', {
-        username,
+        userName,
         action,
       });
       const { success, message } = res.data;

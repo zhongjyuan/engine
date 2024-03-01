@@ -23,10 +23,10 @@ func setFrameworkApiRouter(router *gin.Engine) *gin.RouterGroup {
 		apiRouter.GET("/notice", controller.GetNotice)
 		apiRouter.GET("/about", controller.GetAbout)
 		apiRouter.GET("/verification", middleware.CriticalRateLimit(), middleware.TurnstileCheck(), controller.SendEmailVerification)
-		apiRouter.GET("/reset_password", middleware.CriticalRateLimit(), middleware.TurnstileCheck(), controller.SendPasswordResetEmail)
+		apiRouter.GET("/reset_password", middleware.CriticalRateLimit(), middleware.TurnstileCheck(), controller.SendEmailResetPassword)
 		apiRouter.POST("/user/reset", middleware.CriticalRateLimit(), controller.ResetPassword)
 		apiRouter.GET("/oauth/github", middleware.CriticalRateLimit(), controller.GitHubOAuth)
-		apiRouter.GET("/oauth/wechat", middleware.CriticalRateLimit(), controller.WeChatAuth)
+		apiRouter.GET("/oauth/wechat", middleware.CriticalRateLimit(), controller.WeChatOAuth)
 		apiRouter.GET("/oauth/wechat/bind", middleware.CriticalRateLimit(), middleware.UserAuth(), controller.WeChatBind)
 		apiRouter.GET("/oauth/email/bind", middleware.CriticalRateLimit(), middleware.UserAuth(), controller.EmailBind)
 
@@ -66,7 +66,7 @@ func setFrameworkApiRouter(router *gin.Engine) *gin.RouterGroup {
 		optionRoute := apiRouter.Group("/option")
 		optionRoute.Use(middleware.RootAuth(), middleware.NoTokenAuth())
 		{
-			optionRoute.GET("/", controller.GetOptions)
+			optionRoute.GET("/", controller.GetAllOptions)
 			optionRoute.PUT("/", controller.UpdateOption)
 		}
 
@@ -74,7 +74,7 @@ func setFrameworkApiRouter(router *gin.Engine) *gin.RouterGroup {
 		fileRoute := apiRouter.Group("/file")
 		fileRoute.Use(middleware.AdminAuth()) // 文件相关路由需要管理员权限
 		{
-			fileRoute.GET("/", controller.GetAllFiles)
+			fileRoute.GET("/", controller.GetPageFiles)
 			fileRoute.GET("/search", controller.SearchFiles)
 			fileRoute.POST("/", middleware.UploadRateLimit(), controller.UploadFile)
 			fileRoute.DELETE("/:id", controller.DeleteFile)
@@ -106,7 +106,7 @@ func setFrameworkWebRouter(router *gin.Engine, buildFS embed.FS) {
 
 	// 创建文件下载路由组
 	fileDownloadRoute := router.Group("/")
-	fileDownloadRoute.GET("/upload/:file", middleware.DownloadRateLimit(), controller.DownloadFile)
+	fileDownloadRoute.GET("/download/:id", middleware.DownloadRateLimit(), controller.DownloadFile)
 
 	// 静态文件服务
 	router.Use(static.Serve("/", common.EmbedFolder(buildFS, fmt.Sprintf("web/build/%s", common.Theme))))

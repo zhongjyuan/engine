@@ -27,33 +27,27 @@ func authHelper(c *gin.Context, minRole int) {
 	id := session.Get("id")
 	role := session.Get("role")
 	status := session.Get("status")
-	username := session.Get("username")
+	userName := session.Get("userName")
 
 	// 如果用户名为空，尝试使用 token 进行验证
-	if username == nil {
+	if userName == nil {
 		// 检查 token
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"success": false,
-				"message": "无权进行此操作，未登录或 token 无效",
-			})
+			common.SendJSONResponse(c, http.StatusUnauthorized, false, "无权进行此操作，未登录或 token 无效")
 			c.Abort()
 			return
 		}
 
 		// 验证用户 token
-		user := model.ValidateUserToken(token)
-		if user != nil && user.Username != "" { // Token 有效，设置用户信息
+		user, _ := model.GetUserByToken(token, true)
+		if user != nil && user.UserName != "" { // Token 有效，设置用户信息
 			id = user.Id
 			role = user.Role
 			status = user.Status
-			username = user.Username
+			userName = user.UserName
 		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"success": false,
-				"message": "无权进行此操作，token 无效",
-			})
+			common.SendJSONResponse(c, http.StatusUnauthorized, false, "无权进行此操作，token 无效")
 			c.Abort()
 			return
 		}
@@ -63,20 +57,14 @@ func authHelper(c *gin.Context, minRole int) {
 
 	// 检查用户状态是否被封禁
 	if status.(int) == common.UserStatusDisabled {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "用户已被封禁",
-		})
+		common.SendFailureJSONResponse(c, "用户已被封禁")
 		c.Abort()
 		return
 	}
 
 	// 检查用户角色是否满足最低权限要求
 	if role.(int) < minRole {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "无权进行此操作，权限不足",
-		})
+		common.SendFailureJSONResponse(c, "无权进行此操作，权限不足")
 		c.Abort()
 		return
 	}
@@ -84,7 +72,7 @@ func authHelper(c *gin.Context, minRole int) {
 	// 将用户信息设置到 Gin 上下文中，并继续处理请求
 	c.Set("id", id)
 	c.Set("role", role)
-	c.Set("username", username)
+	c.Set("userName", userName)
 	c.Set("authByToken", authByToken)
 	c.Next()
 }
@@ -142,10 +130,7 @@ func NoTokenAuth() func(c *gin.Context) {
 
 		// 如果 authByToken 为 true，则返回 JSON 错误消息并中止请求
 		if authByToken {
-			c.JSON(http.StatusOK, gin.H{
-				"success": false,
-				"message": "本接口不支持使用 token 进行验证",
-			})
+			common.SendFailureJSONResponse(c, "本接口不支持使用 token 进行验证")
 			c.Abort()
 			return
 		}
@@ -169,10 +154,7 @@ func OnlyTokenAuth() func(c *gin.Context) {
 
 		// 如果 authByToken 为 false，则返回 JSON 错误消息并中止请求
 		if !authByToken {
-			c.JSON(http.StatusOK, gin.H{
-				"success": false,
-				"message": "本接口仅支持使用 token 进行验证",
-			})
+			common.SendFailureJSONResponse(c, "本接口仅支持使用 token 进行验证")
 			c.Abort()
 			return
 		}

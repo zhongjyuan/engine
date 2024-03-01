@@ -31,6 +31,7 @@ var (
 func GenerateVerificationCode(length int) string {
 	// 生成一个 UUID 字符串作为初始验证码
 	code := uuid.New().String()
+
 	// 去除 UUID 字符串中的连字符，以便得到纯数字和字母组合的验证码
 	code = strings.Replace(code, "-", "", -1)
 

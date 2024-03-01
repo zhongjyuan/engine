@@ -14,13 +14,13 @@ import Turnstile from 'react-turnstile';
 
 const RegisterForm = () => {
   const [inputs, setInputs] = useState({
-    username: '',
+    userName: '',
     password: '',
     password2: '',
     email: '',
     verification_code: '',
   });
-  const { username, password, password2 } = inputs;
+  const { userName, password, password2 } = inputs;
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [turnstileEnabled, setTurnstileEnabled] = useState(false);
   const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
@@ -56,7 +56,7 @@ const RegisterForm = () => {
       showInfo('两次输入的密码不一致');
       return;
     }
-    if (username && password) {
+    if (userName && password) {
       if (turnstileEnabled && turnstileToken === '') {
         showInfo('请稍后几秒重试，Turnstile 正在检查用户环境！');
         return;
@@ -110,7 +110,7 @@ const RegisterForm = () => {
               iconPosition='left'
               placeholder='输入用户名，最长 12 位'
               onChange={handleChange}
-              name='username'
+              name='userName'
             />
             <Form.Input
               fluid

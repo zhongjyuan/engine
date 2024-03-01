@@ -9,10 +9,11 @@ import (
 )
 
 var (
-	ListenPort   = flag.Int("port", 3000, "the listening port")                  // 监听端口号，默认为 3000
-	ShowHelp     = flag.Bool("help", false, "print help and exit")               // 是否打印帮助信息并退出
-	ShowVersion  = flag.Bool("version", false, "print version and exit")         // 是否打印版本信息并退出
-	LogDirectory = flag.String("log-dir", "./logs", "specify the log directory") // 指定日志目录
+	ListenPort      = flag.Int("port", 3000, "the listening port")                                    // 监听端口号，默认为 3000
+	ShowHelp        = flag.Bool("help", false, "print help and exit")                                 // 是否打印帮助信息并退出
+	ShowVersion     = flag.Bool("version", false, "print version and exit")                           // 是否打印版本信息并退出
+	LogDirectory    = flag.String("log-dir", "./appData/logs", "specify the log directory")           // 指定日志记录目录
+	UploadDirectory = flag.String("upload-dir", "./appData/attachments", "specify the log directory") // 指定文件上传目录
 )
 
 // printHelp 函数用于打印帮助信息。
@@ -56,10 +57,6 @@ func init() {
 		SQLitePath = os.Getenv("SQLITE_PATH")
 	}
 
-	if os.Getenv("UPLOAD_PATH") != "" { // 获取环境变量中的 UPLOAD_PATH
-		UploadPath = os.Getenv("UPLOAD_PATH")
-	}
-
 	if *LogDirectory != "" { // 如果指定了日志目录
 		var err error
 
@@ -69,14 +66,14 @@ func init() {
 		}
 
 		if _, err := os.Stat(*LogDirectory); os.IsNotExist(err) { // 检查日志目录是否存在
-			err = os.Mkdir(*LogDirectory, 0777) // 创建日志目录
+			err = os.MkdirAll(*LogDirectory, 0777) // 创建日志目录
 			if err != nil {
 				log.Fatal(err)
 			}
 		}
 	}
 
-	if _, err := os.Stat(UploadPath); os.IsNotExist(err) { // 检查上传路径是否存在
-		_ = os.Mkdir(UploadPath, 0777) // 创建上传路径
+	if _, err := os.Stat(*UploadDirectory); os.IsNotExist(err) { // 检查上传路径是否存在
+		_ = os.MkdirAll(*UploadDirectory, 0777) // 创建上传路径
 	}
 }

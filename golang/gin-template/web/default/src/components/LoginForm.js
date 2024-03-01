@@ -16,13 +16,13 @@ import { API, showError, showSuccess } from '../helpers';
 
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
-    username: '',
+    userName: '',
     password: '',
     wechat_verification_code: '',
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const [submitted, setSubmitted] = useState(false);
-  const { username, password } = inputs;
+  const { userName, password } = inputs;
   const [userState, userDispatch] = useContext(UserContext);
   let navigate = useNavigate();
 
@@ -74,9 +74,9 @@ const LoginForm = () => {
 
   async function handleSubmit(e) {
     setSubmitted(true);
-    if (username && password) {
+    if (userName && password) {
       const res = await API.post('/api/user/login', {
-        username,
+        userName,
         password,
       });
       const { success, message, data } = res.data;
@@ -104,8 +104,8 @@ const LoginForm = () => {
               icon="user"
               iconPosition="left"
               placeholder="用户名"
-              name="username"
-              value={username}
+              name="userName"
+              value={userName}
               onChange={handleChange}
             />
             <Form.Input

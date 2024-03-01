@@ -10,10 +10,142 @@ import (
 	"zhongjyuan/gin-template/common"
 	"zhongjyuan/gin-template/model"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
-// wechatLoginResponse 结构定义了微信登录响应的结构体。
+// WeChatBind 函数处理微信绑定操作。
+//
+// 输入参数：
+//   - c *gin.Context: Gin 上下文对象，包含请求和响应信息。
+//
+// 输出参数：
+//   - 无。
+func WeChatBind(c *gin.Context) {
+	// 检查管理员是否开启了通过微信登录以及注册功能
+	if !common.WeChatAuthEnabled {
+		common.SendFailureJSONResponse(c, "管理员未开启通过微信登录以及注册")
+		return
+	}
+
+	// 从查询参数中获取微信授权码
+	code := c.Query("code")
+
+	// 使用授权码获取微信用户ID
+	wechatId, err := getWeChatIdByCode(code)
+	if err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	// 检查微信ID是否已被绑定
+	if model.IsWeChatIdAlreadyTaken(wechatId) {
+		common.SendFailureJSONResponse(c, "该微信账号已被绑定")
+		return
+	}
+
+	// 从上下文中获取用户ID
+	id := c.GetInt("id")
+
+	// 创建用户结构体并填充ID属性
+	user := model.User{
+		Id: id,
+	}
+
+	// 根据ID填充用户信息
+	if err := user.GetById(); err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	// 更新用户微信ID信息
+	user.WeChatId = wechatId
+
+	// 更新用户信息
+	if err := user.Update(false); err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	// 返回成功消息
+	common.SendSuccessJSONResponse(c, "绑定成功", nil)
+}
+
+// WeChatOAuth 函数处理微信认证操作。
+//
+// 输入参数：
+//   - c *gin.Context: Gin 上下文对象，包含请求和响应信息。
+//
+// 输出参数：
+//   - 无。
+func WeChatOAuth(c *gin.Context) {
+	// 从会话中获取用户名
+	session := sessions.Default(c)
+	userName := session.Get("userName")
+
+	// 如果用户名不为空，则执行 WeChat 绑定流程
+	if userName != nil {
+		WeChatBind(c)
+		return
+	}
+
+	// 检查管理员是否开启了通过微信登录以及注册功能
+	if !common.WeChatAuthEnabled {
+		common.SendFailureJSONResponse(c, "管理员未开启通过微信登录以及注册")
+		return
+	}
+
+	// 从查询参数中获取微信授权码
+	code := c.Query("code")
+
+	// 通过微信授权码获取微信用户唯一标识
+	wechatId, err := getWeChatIdByCode(code)
+	if err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	// 创建用户结构体并填充微信用户唯一标识
+	user := model.User{
+		WeChatId: wechatId,
+	}
+
+	// 检查微信用户唯一标识是否已被使用
+	if model.IsWeChatIdAlreadyTaken(wechatId) {
+		// 若已被使用，则根据微信用户唯一标识填充用户信息
+		if err := user.GetByWeChatId(); err != nil {
+			common.SendFailureJSONResponse(c, err.Error())
+			return
+		}
+	} else {
+		if common.RegisterEnabled { // 若未被使用且管理员允许注册新用户，则创建新用户
+			user.UserName = "wechat_" + strconv.Itoa(model.GetMaxUserId()+1)
+			user.DisplayName = "WeChat User"
+			user.Role = common.RoleCommonUser
+			user.Status = common.UserStatusEnabled
+
+			// 插入用户到数据库中
+			if err := user.Insert(); err != nil {
+				common.SendFailureJSONResponse(c, err.Error())
+				return
+			}
+		} else { // 若管理员关闭了新用户注册，则返回错误消息
+			common.SendFailureJSONResponse(c, "管理员关闭了新用户注册")
+			return
+		}
+	}
+
+	// 检查用户状态，若已被封禁则返回错误消息
+	if user.Status != common.UserStatusEnabled {
+		common.SendFailureJSONResponse(c, "用户已被封禁")
+		return
+	}
+
+	// 执行登录设置
+	setupLogin(&user, c)
+}
+
+// WechatOAuthResponse 结构定义了微信登录响应的结构体。
 //
 // 输入参数：
 //   - 无。
@@ -22,7 +154,7 @@ import (
 //   - bool: 请求是否成功。
 //   - string: 返回的消息。
 //   - string: 返回的数据。
-type wechatLoginResponse struct {
+type WechatOAuthResponse struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
 	Data    string `json:"data"`
@@ -45,6 +177,7 @@ func getWeChatIdByCode(code string) (string, error) {
 	// 构建HTTP请求
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/wechat/user?code=%s", common.WeChatServerAddress, code), nil)
 	if err != nil {
+		common.SysLog(err.Error())
 		return "", err
 	}
 
@@ -55,21 +188,24 @@ func getWeChatIdByCode(code string) (string, error) {
 	client := http.Client{
 		Timeout: 5 * time.Second,
 	}
+
 	httpResponse, err := client.Do(req)
 	if err != nil {
+		common.SysLog(err.Error())
 		return "", err
 	}
 	defer httpResponse.Body.Close()
 
 	// 解析响应体中的JSON数据
-	var res wechatLoginResponse
-	err = json.NewDecoder(httpResponse.Body).Decode(&res)
-	if err != nil {
+	var res WechatOAuthResponse
+	if err := json.NewDecoder(httpResponse.Body).Decode(&res); err != nil {
+		common.SysLog(err.Error())
 		return "", err
 	}
 
 	// 检查响应是否成功
 	if !res.Success {
+		common.SysLog(res.Message)
 		return "", errors.New(res.Message)
 	}
 
@@ -80,166 +216,4 @@ func getWeChatIdByCode(code string) (string, error) {
 
 	// 返回用户ID
 	return res.Data, nil
-}
-
-// WeChatAuth 函数处理微信认证操作。
-//
-// 输入参数：
-//   - c *gin.Context: Gin 上下文对象，包含请求和响应信息。
-//
-// 输出参数：
-//   - 无。
-func WeChatAuth(c *gin.Context) {
-	// 检查管理员是否开启了通过微信登录以及注册功能
-	if !common.WeChatAuthEnabled {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "管理员未开启通过微信登录以及注册",
-			"success": false,
-		})
-		return
-	}
-
-	// 从查询参数中获取微信授权码
-	code := c.Query("code")
-
-	// 通过微信授权码获取微信用户唯一标识
-	wechatId, err := getWeChatIdByCode(code)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"message": err.Error(),
-			"success": false,
-		})
-		return
-	}
-
-	// 创建用户结构体并填充微信用户唯一标识
-	user := model.User{
-		WeChatId: wechatId,
-	}
-
-	// 检查微信用户唯一标识是否已被使用
-	if model.IsWeChatIdAlreadyTaken(wechatId) {
-		// 若已被使用，则根据微信用户唯一标识填充用户信息
-		err := user.FillUserByWeChatId()
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"success": false,
-				"message": err.Error(),
-			})
-			return
-		}
-	} else {
-		// 若未被使用且管理员允许注册新用户，则创建新用户
-		if common.RegisterEnabled {
-			user.Username = "wechat_" + strconv.Itoa(model.GetMaxUserId()+1)
-			user.DisplayName = "WeChat User"
-			user.Role = common.RoleCommonUser
-			user.Status = common.UserStatusEnabled
-
-			// 插入用户到数据库中
-			if err := user.Insert(); err != nil {
-				c.JSON(http.StatusOK, gin.H{
-					"success": false,
-					"message": err.Error(),
-				})
-				return
-			}
-		} else {
-			// 若管理员关闭了新用户注册，则返回错误消息
-			c.JSON(http.StatusOK, gin.H{
-				"success": false,
-				"message": "管理员关闭了新用户注册",
-			})
-			return
-		}
-	}
-
-	// 检查用户状态，若已被封禁则返回错误消息
-	if user.Status != common.UserStatusEnabled {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "用户已被封禁",
-			"success": false,
-		})
-		return
-	}
-
-	// 执行登录设置
-	setupLogin(&user, c)
-}
-
-// WeChatBind 函数处理微信绑定操作。
-//
-// 输入参数：
-//   - c *gin.Context: Gin 上下文对象，包含请求和响应信息。
-//
-// 输出参数：
-//   - 无。
-func WeChatBind(c *gin.Context) {
-	// 检查管理员是否开启了通过微信登录以及注册功能
-	if !common.WeChatAuthEnabled {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "管理员未开启通过微信登录以及注册",
-			"success": false,
-		})
-		return
-	}
-
-	// 从查询参数中获取微信授权码
-	code := c.Query("code")
-
-	// 使用授权码获取微信用户ID
-	wechatId, err := getWeChatIdByCode(code)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"message": err.Error(),
-			"success": false,
-		})
-		return
-	}
-
-	// 检查微信ID是否已被绑定
-	if model.IsWeChatIdAlreadyTaken(wechatId) {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "该微信账号已被绑定",
-		})
-		return
-	}
-
-	// 从上下文中获取用户ID
-	id := c.GetInt("id")
-
-	// 创建用户结构体并填充ID属性
-	user := model.User{
-		Id: id,
-	}
-
-	// 根据ID填充用户信息
-	err = user.FillUserById()
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-
-	// 更新用户微信ID信息
-	user.WeChatId = wechatId
-
-	// 更新用户信息
-	err = user.Update(false)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-
-	// 返回成功消息
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-	})
 }

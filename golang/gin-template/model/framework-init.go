@@ -34,7 +34,7 @@ func createRootAccountIfNeed() error {
 
 		// 创建根用户对象
 		rootUser := User{
-			Username:    "root",
+			UserName:    "root",
 			Password:    hashedPassword,
 			Role:        common.RoleRootUser,
 			Status:      common.UserStatusEnabled,

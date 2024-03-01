@@ -59,15 +59,15 @@ const FilesTable = () => {
       });
   }, []);
 
-  const downloadFile = (link, filename) => {
+  const downloadFile = (id, filename) => {
     let linkElement = document.createElement('a');
     linkElement.download = filename;
-    linkElement.href = '/upload/' + link;
+    linkElement.href = '/download/' + id;
     linkElement.click();
   };
 
-  const copyLink = (link) => {
-    let url = window.location.origin + '/upload/' + link;
+  const copyLink = (id) => {
+    let url = window.location.origin + '/download/' + id;
     copy(url).then();
     showSuccess('链接已复制到剪贴板');
   };
@@ -198,7 +198,7 @@ const FilesTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortFile('filename');
+                sortFile('name');
               }}
             >
               文件名
@@ -206,7 +206,15 @@ const FilesTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortFile('uploader_id');
+                sortFile('size');
+              }}
+            >
+              文件大小
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                sortFile('creator_id');
               }}
             >
               上传者
@@ -214,7 +222,7 @@ const FilesTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortFile('email');
+                sortFile('create_time');
               }}
             >
               上传时间
@@ -230,26 +238,27 @@ const FilesTable = () => {
               activePage * ITEMS_PER_PAGE
             )
             .map((file, idx) => {
-              if (file.deleted) return <></>;
+              if (file.is_deleted) return <></>;
               return (
                 <Table.Row key={file.id}>
                   <Table.Cell>
-                    <a href={'/upload/' + file.link} target='_blank'>
-                      {file.filename}
+                    <a href={'/download/' + file.id} target='_blank'>
+                      {file.name}
                     </a>
                   </Table.Cell>
+                  <Table.Cell>{file.size}</Table.Cell>
                   <Popup
-                    content={'上传者 ID：' + file.uploader_id}
-                    trigger={<Table.Cell>{file.uploader}</Table.Cell>}
+                    content={'上传者 ID：' + file.creator_id}
+                    trigger={<Table.Cell>{file.creator_name}</Table.Cell>}
                   />
-                  <Table.Cell>{file.upload_time}</Table.Cell>
+                  <Table.Cell>{file.create_time}</Table.Cell>
                   <Table.Cell>
                     <div>
                       <Button
                         size={'small'}
                         positive
                         onClick={() => {
-                          downloadFile(file.link, file.filename);
+                          downloadFile(file.id, file.name);
                         }}
                       >
                         下载
@@ -266,7 +275,7 @@ const FilesTable = () => {
                       <Button
                         size={'small'}
                         onClick={() => {
-                          copyLink(file.link);
+                          copyLink(file.id);
                         }}
                       >
                         复制链接

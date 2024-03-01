@@ -9,6 +9,47 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SendJSONResponse 发送 JSON 格式的响应。
+// 输入参数：
+//   - c *gin.Context: Gin 上下文对象，用于处理 HTTP 请求和响应。
+//   - code int: HTTP 状态码。
+//   - success bool: 请求是否成功。
+//   - message string: 响应消息。
+func SendJSONResponse(c *gin.Context, code int, success bool, message string) {
+	c.JSON(code, gin.H{
+		"success": success,
+		"message": message,
+		"data":    nil,
+	})
+}
+
+// SendFailureJSONResponse 发送失败的 JSON 响应。
+//
+// 输入参数：
+//   - c *gin.Context: Gin 上下文对象，用于处理 HTTP 请求和响应。
+//   - message string: 失败消息内容。
+func SendFailureJSONResponse(c *gin.Context, message string) {
+	c.JSON(200, gin.H{
+		"success": false,
+		"message": message,
+		"data":    nil,
+	})
+}
+
+// SendSuccessJSONResponse 发送成功的 JSON 响应。
+//
+// 输入参数：
+//   - c *gin.Context: Gin 上下文对象，用于处理 HTTP 请求和响应。
+//   - message string: 成功消息内容。
+//   - data interface{}: 响应数据。
+func SendSuccessJSONResponse(c *gin.Context, message string, data any) {
+	c.JSON(200, gin.H{
+		"success": true,
+		"message": message,
+		"data":    data,
+	})
+}
+
 // SetEventStreamHeaders 用于设置事件流响应的头部信息。
 //
 // 输入参数：

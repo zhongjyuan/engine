@@ -126,10 +126,10 @@ func Bytes2Size(num int64) string {
 		numStr = fmt.Sprintf("%.2f", float64(num)/float64(SizeGB))
 		unit = "GB"
 	} else if num/int64(SizeMB) > 1 {
-		numStr = fmt.Sprintf("%d", int(float64(num)/float64(SizeMB)))
+		numStr = fmt.Sprintf("%.2f", float64(num)/float64(SizeMB))
 		unit = "MB"
 	} else if num/int64(SizeKB) > 1 {
-		numStr = fmt.Sprintf("%d", int(float64(num)/float64(SizeKB)))
+		numStr = fmt.Sprintf("%.2f", float64(num)/float64(SizeKB))
 		unit = "KB"
 	} else {
 		numStr = fmt.Sprintf("%d", num)
