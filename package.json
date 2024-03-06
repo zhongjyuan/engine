@@ -44,7 +44,19 @@
 		"build:gin-template:service": "cd golang/gin-template && go build -ldflags=\"-X main.version=1.0.0\" -o template-service.exe -a main.go && cd ../../",
 		"dev:gin-template:service": "go run golang/gin-template/main.go",
 		"start:gin-template:web:default": "cd golang/gin-template/web/default && npm run start && cd ../../../../",
-		"start:gin-template:service": "nohup ./golang/gin-template/template-service > console.log 2>&1 &"
+		"start:gin-template:service": "nohup ./golang/gin-template/template-service > console.log 2>&1 &",
+		"init:gin-one-api": "npm run init:gin-one-api:web:default && npm run init:gin-one-api:web:berry && npm run init:gin-one-api:service",
+		"init:gin-one-api:web:default": "cd golang/gin-one-api/web/default && npm install && cd ../../../../",
+		"init:gin-one-api:web:berry": "cd golang/gin-one-api/web/berry && npm install && cd ../../../../",
+		"init:gin-one-api:service": "cd golang/gin-one-api && go mod download && go mod tidy && cd ../../",
+		"build:gin-one-api": "npm run build:gin-one-api:web:default && npm run build:gin-one-api:web:berry && npm run build:gin-one-api:service",
+		"build:gin-one-api:web:default": "cd golang/gin-one-api/web/default && npm run build && cd ../../../../",
+		"build:gin-one-api:web:berry": "cd golang/gin-one-api/web/berry && npm run build && cd ../../../../",
+		"build:gin-one-api:service": "cd golang/gin-one-api && go build -ldflags=\"-X main.version=1.0.0\" -o one-api-service.exe -a main.go && cd ../../",
+		"dev:gin-one-api:service": "go run golang/gin-one-api/main.go",
+		"start:gin-one-api:web:default": "cd golang/gin-one-api/web/default && npm run start && cd ../../../../",
+		"start:gin-one-api:web:berry": "cd golang/gin-one-api/web/berry && npm run start && cd ../../../../",
+		"start:gin-one-api:service": "nohup ./golang/gin-one-api/one-api-service > console.log 2>&1 &"
 	},
 	"keywords": [
 		"zhongjyuan",

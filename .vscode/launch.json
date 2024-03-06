@@ -95,6 +95,18 @@
 				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-template?charset=utf8"
 			},
 			"args": []
+		},
+		{
+			"type": "go",
+			"mode": "auto",
+			"request": "launch",
+			"name": "[go] gin-one-api-site|dev",
+			"program": "${workspaceFolder}\\golang\\gin-one-api\\main.go",
+			"showLog": true,
+			"env": {
+				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-one-api?charset=utf8"
+			},
+			"args": []
 		}
 	]
 }

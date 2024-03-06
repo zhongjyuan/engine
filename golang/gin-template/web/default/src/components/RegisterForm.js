@@ -18,7 +18,7 @@ const RegisterForm = () => {
     password: '',
     password2: '',
     email: '',
-    verification_code: '',
+    verificationCode: '',
   });
   const { userName, password, password2 } = inputs;
   const [showEmailVerification, setShowEmailVerification] = useState(false);
@@ -152,7 +152,7 @@ const RegisterForm = () => {
                   iconPosition='left'
                   placeholder='输入验证码'
                   onChange={handleChange}
-                  name='verification_code'
+                  name='verificationCode'
                 />
               </>
             ) : (

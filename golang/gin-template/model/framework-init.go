@@ -21,7 +21,7 @@ var DB *gorm.DB
 // 输出参数：
 //   - error: 如果创建根账户过程中出现错误，则返回相应的错误信息；否则返回 nil。
 func createRootAccountIfNeed() error {
-	var user User // 声明一个 User 类型的变量 user
+	var user UserEntity // 声明一个 UserEntity 类型的变量 user
 
 	// 检查数据库中是否已存在用户
 	if err := DB.First(&user).Error; err != nil { // 查询数据库中的第一个用户
@@ -33,7 +33,7 @@ func createRootAccountIfNeed() error {
 		}
 
 		// 创建根用户对象
-		rootUser := User{
+		rootUser := UserEntity{
 			UserName:    "root",
 			Password:    hashedPassword,
 			Role:        common.RoleRootUser,
@@ -41,7 +41,11 @@ func createRootAccountIfNeed() error {
 			DisplayName: "Root User",
 		}
 
-		DB.Create(&rootUser) // 将根用户对象保存到数据库中
+		// 将根用户对象保存到数据库中
+		err = DB.Create(&rootUser).Error
+		if err == nil {
+			DB.Create(&UserProfileEntity{Id: user.Id})
+		}
 	}
 
 	return nil // 返回 nil 表示创建根账户成功
@@ -87,22 +91,20 @@ func InitDB() (err error) {
 		DB = db // 将数据库连接赋值给全局变量 DB
 
 		// 执行数据表迁移操作
-		err := db.AutoMigrate(&File{})
-		if err != nil {
+		if err := db.AutoMigrate(&FileEntity{}); err != nil {
 			return err
 		}
-		err = db.AutoMigrate(&User{})
-		if err != nil {
+
+		if err := db.AutoMigrate(&UserEntity{}, &UserProfileEntity{}); err != nil {
 			return err
 		}
-		err = db.AutoMigrate(&Option{})
-		if err != nil {
+
+		if err := db.AutoMigrate(&OptionEntity{}); err != nil {
 			return err
 		}
 
 		// 创建根账户
-		err = createRootAccountIfNeed()
-		return err
+		return createRootAccountIfNeed()
 	} else {
 		common.FatalLog(err) // 记录致命错误日志
 	}
@@ -122,6 +124,6 @@ func CloseDB() error {
 	if err != nil {
 		return err
 	}
-	err = sqlDB.Close() // 关闭数据库连接
-	return err
+
+	return sqlDB.Close() // 关闭数据库连接
 }

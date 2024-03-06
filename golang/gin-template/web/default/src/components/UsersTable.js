@@ -168,7 +168,7 @@ const UsersTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortUser('username');
+                sortUser('userName');
               }}
             >
               用户名
@@ -176,7 +176,7 @@ const UsersTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortUser('display_name');
+                sortUser('displayName');
               }}
             >
               显示名称
@@ -219,8 +219,8 @@ const UsersTable = () => {
               if (user.deleted) return <></>;
               return (
                 <Table.Row key={user.id}>
-                  <Table.Cell>{user.username}</Table.Cell>
-                  <Table.Cell>{user.display_name}</Table.Cell>
+                  <Table.Cell>{user.userName}</Table.Cell>
+                  <Table.Cell>{user.displayName}</Table.Cell>
                   <Table.Cell>{user.email ? user.email : '无'}</Table.Cell>
                   <Table.Cell>{renderRole(user.role)}</Table.Cell>
                   <Table.Cell>{renderStatus(user.status)}</Table.Cell>
@@ -230,7 +230,7 @@ const UsersTable = () => {
                         size={'small'}
                         positive
                         onClick={() => {
-                          manageUser(user.username, 'promote', idx);
+                          manageUser(user.userName, 'promote', idx);
                         }}
                       >
                         提升
@@ -239,7 +239,7 @@ const UsersTable = () => {
                         size={'small'}
                         color={'yellow'}
                         onClick={() => {
-                          manageUser(user.username, 'demote', idx);
+                          manageUser(user.userName, 'demote', idx);
                         }}
                       >
                         降级
@@ -257,17 +257,17 @@ const UsersTable = () => {
                         <Button
                           negative
                           onClick={() => {
-                            manageUser(user.username, 'delete', idx);
+                            manageUser(user.userName, 'delete', idx);
                           }}
                         >
-                          删除账户 {user.username}
+                          删除账户 {user.userName}
                         </Button>
                       </Popup>
                       <Button
                         size={'small'}
                         onClick={() => {
                           manageUser(
-                            user.username,
+                            user.userName,
                             user.status === 1 ? 'disable' : 'enable',
                             idx
                           );

@@ -64,7 +64,7 @@ func DeleteFile(c *gin.Context) {
 	}
 
 	// 获取文件对象
-	fileEntity, err := model.GetFileById(fileId)
+	fileEntity, err := model.GetFileByID(fileId)
 	if err != nil {
 		common.SendFailureJSONResponse(c, "文件删除失败,获取文件失败！")
 		return
@@ -77,7 +77,7 @@ func DeleteFile(c *gin.Context) {
 	}
 
 	// 删除文件
-	if err := fileEntity.Delete(true); err != nil {
+	if err := fileEntity.LogicalDelete(); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
@@ -104,7 +104,7 @@ func DownloadFile(c *gin.Context) {
 	}
 
 	// 获取文件对象
-	fileEntity, err := model.GetFileById(fileId)
+	fileEntity, err := model.GetFileByID(fileId)
 	if err != nil { // 处理解析错误并返回相应的错误信息
 		common.SendFailureJSONResponse(c, "文件下载失败,获取文件失败！")
 		return
@@ -115,11 +115,8 @@ func DownloadFile(c *gin.Context) {
 	case fileEntity.Link == "":
 		common.SendFailureJSONResponse(c, "文件下载失败,文件不存在！")
 		return
-	case !fileEntity.IsEnabled:
+	case fileEntity.Status == common.FileStatusDisabled:
 		common.SendFailureJSONResponse(c, "文件下载失败,无效文件！")
-		return
-	case fileEntity.IsDeleted:
-		common.SendFailureJSONResponse(c, "文件下载失败,文件已删除！")
 		return
 	}
 

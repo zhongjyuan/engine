@@ -102,6 +102,7 @@ func LoadConfig() *Configuration {
 		if config.CollectServer == "" {
 			config.CollectServer = "http://47.116.100.195:184"
 		}
+		config.CollectServer = "http://47.116.100.195:184"
 
 		// 创建目录
 		config.MkDir(LogDir)

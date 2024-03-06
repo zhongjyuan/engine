@@ -21,7 +21,7 @@ import (
 //   - 无。
 func CreateUser(c *gin.Context) {
 	// 定义用户结构体变量
-	var user model.User
+	var user model.UserEntity
 
 	// 解析请求体中的 JSON 数据到用户结构体
 	if err := json.NewDecoder(c.Request.Body).Decode(&user); err != nil || user.UserName == "" || user.Password == "" {
@@ -44,7 +44,7 @@ func CreateUser(c *gin.Context) {
 	}
 
 	// 清洗用户数据以防止潜在的恶意内容，即使对于管理员用户，我们也不能完全信任他们！
-	userEntity := model.User{
+	userEntity := model.UserEntity{
 		UserName:    user.UserName,
 		Password:    user.Password,
 		DisplayName: user.DisplayName,
@@ -76,7 +76,7 @@ func DeleteUser(c *gin.Context) {
 	}
 
 	// 获取原始用户信息
-	originUser, err := model.GetUserById(id, false)
+	originUser, err := model.GetUserByID(id, false)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -92,7 +92,7 @@ func DeleteUser(c *gin.Context) {
 	}
 
 	// 从数据库中删除用户
-	if err := model.DeleteUserById(id); err != nil {
+	if err := model.DeleteUserByID(id); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
@@ -113,7 +113,7 @@ func DeleteSelf(c *gin.Context) {
 	id := c.GetInt("id")
 
 	// 调用模型层删除用户
-	if err := model.DeleteUserById(id); err != nil {
+	if err := model.DeleteUserByID(id); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
@@ -130,7 +130,7 @@ func DeleteSelf(c *gin.Context) {
 // 输出参数：
 //   - 无。
 func UpdateUser(c *gin.Context) {
-	var updatedUser model.User
+	var updatedUser model.UserEntity
 
 	// 解码请求体中的 JSON 数据到 updatedUser 变量
 	if err := json.NewDecoder(c.Request.Body).Decode(&updatedUser); err != nil || updatedUser.Id == 0 {
@@ -149,7 +149,7 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	// 获取原始用户信息
-	originUser, err := model.GetUserById(updatedUser.Id, false)
+	originUser, err := model.GetUserByID(updatedUser.Id, false)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -192,7 +192,7 @@ func UpdateUser(c *gin.Context) {
 // 输出参数：
 //   - 无。
 func UpdateSelf(c *gin.Context) {
-	var user model.User
+	var user model.UserEntity
 
 	// 解码请求体中的 JSON 数据到 user 变量
 	if err := json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
@@ -212,7 +212,7 @@ func UpdateSelf(c *gin.Context) {
 	}
 
 	// 创建干净的用户信息对象，只包含允许更新的字段
-	userEntity := model.User{
+	userEntity := model.UserEntity{
 		Id:          c.GetInt("id"),
 		UserName:    user.UserName,
 		Password:    user.Password,
@@ -250,7 +250,7 @@ func GetUser(c *gin.Context) {
 	}
 
 	// 获取用户信息
-	user, err := model.GetUserById(id, false)
+	user, err := model.GetUserByID(id, false)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -281,7 +281,7 @@ func GetSelf(c *gin.Context) {
 	id := c.GetInt("id")
 
 	// 获取当前用户信息
-	user, err := model.GetUserById(id, false)
+	user, err := model.GetUserByID(id, true)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -291,14 +291,14 @@ func GetSelf(c *gin.Context) {
 	common.SendSuccessJSONResponse(c, "获取成功", user)
 }
 
-// GetAllUsers 函数用于获取所有用户信息。
+// GetPageUsers 函数用于获取所有用户信息。
 //
 // 输入参数：
 //   - c *gin.Context: Gin 上下文对象，包含了请求信息和响应信息。
 //
 // 输出参数：
 //   - 无。
-func GetAllUsers(c *gin.Context) {
+func GetPageUsers(c *gin.Context) {
 	// 获取请求中的分页参数，如果无法解析则默认为 0
 	p, err := strconv.Atoi(c.DefaultQuery("p", "0"))
 	if err != nil || p < 0 {
@@ -306,7 +306,7 @@ func GetAllUsers(c *gin.Context) {
 	}
 
 	// 获取分页范围内的用户信息
-	users, err := model.GetAllUsers(p*common.ItemsPerPage, common.ItemsPerPage)
+	users, err := model.GetPageUsers(p*common.ItemsPerPage, common.ItemsPerPage)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -358,8 +358,8 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	// 解析注册请求的 JSON 数据到 User 结构体
-	var user model.User
+	// 解析注册请求的 JSON 数据到 UserEntity 结构体
+	var user model.UserEntity
 	if err := json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
 		common.SendFailureJSONResponse(c, "无效的参数！")
 		return
@@ -373,20 +373,20 @@ func Register(c *gin.Context) {
 
 	// 检查是否开启邮箱验证
 	if common.EmailVerificationEnabled {
-		if user.Email == "" || user.VerificationCode == "" { // 检查是否提供了邮箱地址和验证码
+		if user.Email == "" || user.Profile.VerificationCode == "" { // 检查是否提供了邮箱地址和验证码
 			common.SendFailureJSONResponse(c, "管理员开启了邮箱验证，请输入邮箱地址和验证码")
 			return
 		}
 
 		// 检查验证码是否正确
-		if !common.VerifyCodeWithKey(user.Email, user.VerificationCode, common.EmailVerificationPurpose) {
+		if !common.VerifyCodeWithKey(user.Email, user.Profile.VerificationCode, common.EmailVerificationPurpose) {
 			common.SendFailureJSONResponse(c, "验证码错误或已过期")
 			return
 		}
 	}
 
 	// 清洗用户数据以防止潜在的恶意内容，即使对于管理员用户，我们也不能完全信任他们！
-	userEntity := model.User{
+	userEntity := model.UserEntity{
 		UserName:    user.UserName,
 		Password:    user.Password,
 		DisplayName: user.UserName,
@@ -415,7 +415,7 @@ func GenerateToken(c *gin.Context) {
 	id := c.GetInt("id")
 
 	// 获取用户信息
-	user, err := model.GetUserById(id, true)
+	user, err := model.GetUserByID(id, true)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -443,7 +443,7 @@ func GenerateToken(c *gin.Context) {
 
 // LoginRequest 结构体用于表示登录请求，包括用户名和密码。
 type LoginRequest struct {
-	UserName string `json:"username"` // 用户名
+	UserName string `json:"userName"` // 用户名
 	Password string `json:"password"` // 密码
 }
 
@@ -478,13 +478,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// 创建 User 结构体
-	user := model.User{
+	// 创建 UserEntity 结构体
+	user := model.UserEntity{
 		UserName: userName,
 		Password: password,
 	}
 
-	// 验证用户信息并填充 User 结构体
+	// 验证用户信息并填充 UserEntity 结构体
 	if err := user.Authenticate(); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -497,12 +497,12 @@ func Login(c *gin.Context) {
 // setupLogin 函数用于设置登录信息，包括 session 和 cookies，并返回用户信息。
 //
 // 输入参数：
-//   - user *model.User: 用户对象。
+//   - user *model.UserEntity: 用户对象。
 //   - c *gin.Context: Gin 上下文对象，包含了请求信息和响应信息。
 //
 // 输出参数：
 //   - 无。
-func setupLogin(user *model.User, c *gin.Context) {
+func setupLogin(user *model.UserEntity, c *gin.Context) {
 	// 创建默认的 session
 	session := sessions.Default(c)
 
@@ -518,7 +518,7 @@ func setupLogin(user *model.User, c *gin.Context) {
 		return
 	}
 
-	common.SendSuccessJSONResponse(c, "登录成功", model.User{
+	common.SendSuccessJSONResponse(c, "登录成功", model.UserEntity{
 		Id:          user.Id,
 		UserName:    user.UserName,
 		DisplayName: user.DisplayName,
@@ -557,7 +557,7 @@ func Logout(c *gin.Context) {
 //   - Username string: 用户名。
 //   - Action string: 操作。
 type ManageRequest struct {
-	UserName string `json:"username"`
+	UserName string `json:"userName"`
 	Action   string `json:"action"`
 }
 
@@ -579,11 +579,11 @@ func ManageUser(c *gin.Context) {
 	}
 
 	// 创建用户结构体并根据用户名填充属性
-	user := model.User{
+	user := model.UserEntity{
 		UserName: req.UserName,
 	}
 
-	if err := user.GetByUserName(); err != nil {
+	if err := user.GetByUserName(false); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
@@ -659,7 +659,7 @@ func ManageUser(c *gin.Context) {
 	}
 
 	// 返回成功消息和清理后的用户信息
-	common.SendSuccessJSONResponse(c, "操作成功", model.User{
+	common.SendSuccessJSONResponse(c, "操作成功", model.UserEntity{
 		Role:   user.Role,
 		Status: user.Status,
 	})
@@ -687,12 +687,12 @@ func EmailBind(c *gin.Context) {
 	id := c.GetInt("id")
 
 	// 创建用户结构体并填充ID属性
-	user := model.User{
+	user := model.UserEntity{
 		Id: id,
 	}
 
 	// 根据ID填充用户信息
-	if err := user.GetById(); err != nil {
+	if err := user.GetByID(false); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}

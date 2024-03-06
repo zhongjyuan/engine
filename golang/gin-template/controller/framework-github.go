@@ -40,12 +40,14 @@ func GitHubBind(c *gin.Context) {
 	}
 
 	// 创建用户对象
-	user := model.User{
-		GitHubId: githubUser.Login,
+	user := model.UserEntity{
+		Profile: model.UserProfileEntity{
+			GitHubId: githubUser.Login,
+		},
 	}
 
 	// 检查是否 GitHub ID 已被绑定
-	if model.IsGitHubIdAlreadyTaken(user.GitHubId) {
+	if model.IsGitHubIdAlreadyTaken(githubUser.Login) {
 		common.SendFailureJSONResponse(c, "该 GitHub 账户已被绑定")
 		return
 	}
@@ -56,13 +58,13 @@ func GitHubBind(c *gin.Context) {
 	user.Id = id.(int)
 
 	// 通过用户 ID 填充用户信息
-	if err := user.GetById(); err != nil {
+	if err := user.GetByID(false); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
 
 	// 更新用户的 GitHub ID
-	user.GitHubId = githubUser.Login
+	user.Profile.GitHubId = githubUser.Login
 	if err := user.Update(false); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -106,14 +108,16 @@ func GitHubOAuth(c *gin.Context) {
 		return
 	}
 
-	// 创建 User 对象并填充 GitHub 用户信息
-	user := model.User{
-		GitHubId: githubUser.Login,
+	// 创建 UserEntity 对象并填充 GitHub 用户信息
+	user := &model.UserEntity{
+		Profile: model.UserProfileEntity{
+			GitHubId: githubUser.Login,
+		},
 	}
 
 	// 如果 GitHub ID 已被注册，则填充用户信息
-	if model.IsGitHubIdAlreadyTaken(user.GitHubId) {
-		if err := user.GetByGitHubId(); err != nil {
+	if model.IsGitHubIdAlreadyTaken(githubUser.Login) {
+		if _, err = user.Profile.GetUserByGitHubID(false); err != nil {
 			common.SendFailureJSONResponse(c, err.Error())
 			return
 		}
@@ -149,7 +153,7 @@ func GitHubOAuth(c *gin.Context) {
 	}
 
 	// 执行登录设置并返回相应成功信息
-	setupLogin(&user, c)
+	setupLogin(user, c)
 }
 
 // GitHubOAuthResponse 结构体用于表示 GitHub OAuth 响应的结构。

@@ -8,15 +8,22 @@ const EditUser = () => {
   const userId = params.id;
   const [loading, setLoading] = useState(true);
   const [inputs, setInputs] = useState({
-    username: '',
-    display_name: '',
+    userName: '',
+    displayName: '',
     password: '',
-    github_id: '',
-    wechat_id: '',
     email: '',
+    profile: {
+      githubId: '',
+      wechatId: '',
+    },
   });
-  const { username, display_name, password, github_id, wechat_id, email } =
-    inputs;
+  const {
+    userName,
+    displayName,
+    password,
+    email,
+    profile: { githubId, wechatId },
+  } = inputs;
   const handleInputChange = (e, { name, value }) => {
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
@@ -64,10 +71,10 @@ const EditUser = () => {
           <Form.Field>
             <Form.Input
               label='用户名'
-              name='username'
+              name='userName'
               placeholder={'请输入新的用户名'}
               onChange={handleInputChange}
-              value={username}
+              value={userName}
               autoComplete='new-password'
             />
           </Form.Field>
@@ -85,18 +92,18 @@ const EditUser = () => {
           <Form.Field>
             <Form.Input
               label='显示名称'
-              name='display_name'
+              name='displayName'
               placeholder={'请输入新的显示名称'}
               onChange={handleInputChange}
-              value={display_name}
+              value={displayName}
               autoComplete='new-password'
             />
           </Form.Field>
           <Form.Field>
             <Form.Input
               label='已绑定的 GitHub 账户'
-              name='github_id'
-              value={github_id}
+              name='githubId'
+              value={githubId}
               autoComplete='new-password'
               placeholder='此项只读，需要用户通过个人设置页面的相关绑定按钮进行绑定，不可直接修改'
               readOnly
@@ -105,8 +112,8 @@ const EditUser = () => {
           <Form.Field>
             <Form.Input
               label='已绑定的微信账户'
-              name='wechat_id'
-              value={wechat_id}
+              name='wechatId'
+              value={wechatId}
               autoComplete='new-password'
               placeholder='此项只读，需要用户通过个人设置页面的相关绑定按钮进行绑定，不可直接修改'
               readOnly

@@ -48,18 +48,18 @@ func WeChatBind(c *gin.Context) {
 	id := c.GetInt("id")
 
 	// 创建用户结构体并填充ID属性
-	user := model.User{
+	user := model.UserEntity{
 		Id: id,
 	}
 
 	// 根据ID填充用户信息
-	if err := user.GetById(); err != nil {
+	if err := user.GetByID(false); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
 
 	// 更新用户微信ID信息
-	user.WeChatId = wechatId
+	user.Profile.WeChatId = wechatId
 
 	// 更新用户信息
 	if err := user.Update(false); err != nil {
@@ -106,21 +106,23 @@ func WeChatOAuth(c *gin.Context) {
 	}
 
 	// 创建用户结构体并填充微信用户唯一标识
-	user := model.User{
-		WeChatId: wechatId,
+	user := &model.UserEntity{
+		Profile: model.UserProfileEntity{
+			WeChatId: wechatId,
+		},
 	}
 
 	// 检查微信用户唯一标识是否已被使用
 	if model.IsWeChatIdAlreadyTaken(wechatId) {
 		// 若已被使用，则根据微信用户唯一标识填充用户信息
-		if err := user.GetByWeChatId(); err != nil {
+		if _, err := user.Profile.GetUserByWeChatID(false); err != nil {
 			common.SendFailureJSONResponse(c, err.Error())
 			return
 		}
 	} else {
 		if common.RegisterEnabled { // 若未被使用且管理员允许注册新用户，则创建新用户
 			user.UserName = "wechat_" + strconv.Itoa(model.GetMaxUserId()+1)
-			user.DisplayName = "WeChat User"
+			user.DisplayName = "WeChat UserEntity"
 			user.Role = common.RoleCommonUser
 			user.Status = common.UserStatusEnabled
 
@@ -142,7 +144,7 @@ func WeChatOAuth(c *gin.Context) {
 	}
 
 	// 执行登录设置
-	setupLogin(&user, c)
+	setupLogin(user, c)
 }
 
 // WechatOAuthResponse 结构定义了微信登录响应的结构体。

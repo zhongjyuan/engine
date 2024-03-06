@@ -9,4 +9,5 @@ use (
 	./golang/z-wechat-robot-server
 
 	./golang/gin-template
+	./golang/gin-one-api
 )

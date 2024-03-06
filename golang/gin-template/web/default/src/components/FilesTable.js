@@ -214,7 +214,7 @@ const FilesTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortFile('creator_id');
+                sortFile('creatorId');
               }}
             >
               上传者
@@ -222,7 +222,7 @@ const FilesTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortFile('create_time');
+                sortFile('createTime');
               }}
             >
               上传时间
@@ -248,10 +248,10 @@ const FilesTable = () => {
                   </Table.Cell>
                   <Table.Cell>{file.size}</Table.Cell>
                   <Popup
-                    content={'上传者 ID：' + file.creator_id}
-                    trigger={<Table.Cell>{file.creator_name}</Table.Cell>}
+                    content={'上传者 ID：' + file.creatorId}
+                    trigger={<Table.Cell>{file.creatorName}</Table.Cell>}
                   />
-                  <Table.Cell>{file.create_time}</Table.Cell>
+                  <Table.Cell>{file.createTime}</Table.Cell>
                   <Table.Cell>
                     <div>
                       <Button

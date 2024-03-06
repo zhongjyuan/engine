@@ -18,8 +18,8 @@ import (
 //   - saveFile func(savePath string): 保存文件的函数。
 //
 // 输出参数：
-//   - *model.File: 返回生成的文件实体对象。
-func Upload2FileEntity(c *gin.Context, file *multipart.FileHeader, saveFile func(savePath string)) *model.File {
+//   - *model.FileEntity: 返回生成的文件实体对象。
+func Upload2FileEntity(c *gin.Context, file *multipart.FileHeader, saveFile func(savePath string)) *model.FileEntity {
 	// 获取上传者信息
 	uploader := "访客用户" // 默认为访客用户
 	if val, exists := c.Get("userName"); exists {
@@ -38,15 +38,14 @@ func Upload2FileEntity(c *gin.Context, file *multipart.FileHeader, saveFile func
 	}
 
 	// 构建文件实体对象
-	fileEntity := &model.File{
+	fileEntity := &model.FileEntity{
 		Name:          filepath.Base(file.Filename),
 		Size:          common.Bytes2Size(file.Size),
 		Extension:     filepath.Ext(file.Filename),
 		Link:          common.GetUUID() + filepath.Ext(file.Filename),
 		DownloadCount: 0,
 		Description:   description,
-		IsEnabled:     true,
-		IsDeleted:     false,
+		Status:        1,
 		CreatorId:     uploaderId,
 		CreatorName:   uploader,
 		CreateTime:    time.Now().Format("2006-01-02 15:04:05"),

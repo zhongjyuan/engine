@@ -4,19 +4,19 @@ import { API, showError, showSuccess } from '../../helpers';
 
 const AddUser = () => {
   const originInputs = {
-    username: '',
-    display_name: '',
+    userName: '',
+    displayName: '',
     password: '',
   };
   const [inputs, setInputs] = useState(originInputs);
-  const { username, display_name, password } = inputs;
+  const { userName, displayName, password } = inputs;
 
   const handleInputChange = (e, { name, value }) => {
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
 
   const submit = async () => {
-    if (inputs.username === '' || inputs.password === '') return;
+    if (inputs.userName === '' || inputs.password === '') return;
     const res = await API.post(`/api/user/`, inputs);
     const { success, message } = res.data;
     if (success) {
@@ -35,10 +35,10 @@ const AddUser = () => {
           <Form.Field>
             <Form.Input
               label="用户名"
-              name="username"
+              name="userName"
               placeholder={'请输入用户名'}
               onChange={handleInputChange}
-              value={username}
+              value={userName}
               autoComplete="off"
               required
             />
@@ -46,10 +46,10 @@ const AddUser = () => {
           <Form.Field>
             <Form.Input
               label="显示名称"
-              name="display_name"
+              name="displayName"
               placeholder={'请输入显示名称'}
               onChange={handleInputChange}
-              value={display_name}
+              value={displayName}
               autoComplete="off"
             />
           </Form.Field>

@@ -174,7 +174,7 @@ const Header = () => {
           <Menu.Menu position='right'>
             {userState.user ? (
               <Dropdown
-                text={userState.user.username}
+                text={userState.user.userName}
                 pointing
                 className='link item'
               >

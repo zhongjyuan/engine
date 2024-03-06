@@ -18,7 +18,7 @@ import (
 // 输出参数：
 //   - 无。
 func UpdateOption(c *gin.Context) {
-	var option model.Option // 创建选项对象
+	var option model.OptionEntity // 创建选项对象
 
 	// 解析请求体中的 JSON 数据到选项对象
 	if err := json.NewDecoder(c.Request.Body).Decode(&option); err != nil {
@@ -62,7 +62,7 @@ func UpdateOption(c *gin.Context) {
 // 输出参数：
 //   - 无。
 func GetAllOptions(c *gin.Context) {
-	var options []*model.Option // 创建选项列表
+	var options []*model.OptionEntity // 创建选项列表
 
 	common.OptionMapRWMutex.Lock() // 加写锁以保证并发安全
 
@@ -74,7 +74,7 @@ func GetAllOptions(c *gin.Context) {
 		}
 
 		// 添加非敏感选项到选项列表中
-		options = append(options, &model.Option{
+		options = append(options, &model.OptionEntity{
 			Key:   k,
 			Value: common.Interface2String(v),
 		})
