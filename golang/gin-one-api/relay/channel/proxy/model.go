@@ -1,7 +1,7 @@
 package channel_proxy
 
 type LibraryRequest struct {
-	Model     string `json:"relayModel"`
+	Model     string `json:"relaymodel"`
 	Query     string `json:"query"`
 	LibraryId string `json:"libraryId"`
 	Stream    bool   `json:"stream"`
@@ -27,6 +27,6 @@ type LibraryResponse struct {
 type LibraryStreamResponse struct {
 	Content   string            `json:"content"`
 	Finish    bool              `json:"finish"`
-	Model     string            `json:"relayModel"`
+	Model     string            `json:"relaymodel"`
 	Documents []LibraryDocument `json:"documents"`
 }

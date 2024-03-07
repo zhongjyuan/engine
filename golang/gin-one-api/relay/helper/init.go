@@ -1,4 +1,4 @@
-package relayHelper
+package relayhelper
 
 import (
 	"net/http"

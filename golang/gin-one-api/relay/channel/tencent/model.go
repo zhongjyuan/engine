@@ -1,13 +1,13 @@
 package channel_tencent
 
-import relayModel "zhongjyuan/gin-one-api/relay/model"
+import relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
 }
 
-type ChatRequest struct {
+type AIChatRequest struct {
 	AppId    int64  `json:"app_id"`    // 腾讯云账号的 APPID
 	SecretId string `json:"secret_id"` // 官网 SecretId
 	// Timestamp当前 UNIX 时间戳，单位为秒，可记录发起 API 请求的时间。
@@ -54,7 +54,7 @@ type ChatResponse struct {
 	Choices []ResponseChoices `json:"choices,omitempty"` // 结果
 	Created string            `json:"created,omitempty"` // unix 时间戳的字符串
 	Id      string            `json:"id,omitempty"`      // 会话 id
-	Usage   relayModel.Usage  `json:"usage,omitempty"`   // token 数量
+	Usage   relaymodel.Usage  `json:"usage,omitempty"`   // token 数量
 	Error   Error             `json:"error,omitempty"`   // 错误信息 注意：此字段可能返回 null，表示取不到有效值
 	Note    string            `json:"note,omitempty"`    // 注释
 	ReqID   string            `json:"req_id,omitempty"`  // 唯一请求 Id，每次请求都会返回。用于反馈接口入参

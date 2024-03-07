@@ -1,4 +1,4 @@
-package channel_openai
+package relaymodel
 
 import (
 	"errors"
@@ -6,7 +6,6 @@ import (
 	"math"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/pkoukk/tiktoken-go"
 )
@@ -29,13 +28,13 @@ func InitTokenEncoders() {
 	gpt4TokenEncoder := initTokenEncoderForModel("gpt-4")
 
 	// 遍历常用模型比例中的模型名称，为每个模型设置相应的 token 编码器
-	for relayModel := range common.ModelRatio {
-		if strings.HasPrefix(relayModel, "gpt-3.5") {
-			tokenEncoderMap[relayModel] = defaultTokenEncoder
-		} else if strings.HasPrefix(relayModel, "gpt-4") {
-			tokenEncoderMap[relayModel] = gpt4TokenEncoder
+	for relaymodel := range common.ModelRatio {
+		if strings.HasPrefix(relaymodel, "gpt-3.5") {
+			tokenEncoderMap[relaymodel] = defaultTokenEncoder
+		} else if strings.HasPrefix(relaymodel, "gpt-4") {
+			tokenEncoderMap[relaymodel] = gpt4TokenEncoder
 		} else {
-			tokenEncoderMap[relayModel] = nil
+			tokenEncoderMap[relaymodel] = nil
 		}
 	}
 
@@ -73,7 +72,7 @@ func getTokenEncoderForModel(modelName string) *tiktoken.Tiktoken {
 	// 获取指定模型的 token 编码器，如果获取失败，则使用 gpt-3.5-turbo 模型的编码器
 	tokenEncoder, err := tiktoken.EncodingForModel(modelName)
 	if err != nil {
-		common.SysError(fmt.Sprintf("failed to get token encoder for relayModel %s: %s, using encoder for gpt-3.5-turbo", modelName, err.Error()))
+		common.SysError(fmt.Sprintf("failed to get token encoder for relaymodel %s: %s, using encoder for gpt-3.5-turbo", modelName, err.Error()))
 		tokenEncoder = defaultTokenEncoder
 	}
 	tokenEncoderMap[modelName] = tokenEncoder
@@ -102,12 +101,12 @@ func getTokenCount(tokenEncoder *tiktoken.Tiktoken, text string) int {
 // CalculateMessageTokens 用于计算消息列表中各消息的 token 数量总和。
 //
 // 输入参数：
-//   - messages []relayModel.Message: 消息列表。
+//   - messages []relaymodel.Message: 消息列表。
 //   - modelName string: 模型名称。
 //
 // 输出参数：
 //   - int: 返回消息列表中各消息的 token 数量总和。
-func CalculateMessageTokens(messages []relayModel.Message, modelName string) int {
+func CalculateMessageTokens(messages []AIMessage, modelName string) int {
 	tokenEncoder := getTokenEncoderForModel(modelName)
 
 	// 每条消息格式为 <|im_start|>{role/name}\n{content}<|end|>\n
@@ -221,22 +220,22 @@ func CalculateImageTokens(url string, detail string) (_ int, err error) {
 //
 // 输入参数：
 //   - input any: 输入数据，可以是 string 类型或 []string 类型。
-//   - relayModel string: 中继模型名称。
+//   - relaymodel string: 中继模型名称。
 //
 // 输出参数：
 //   - int: 返回输入数据的 token 数量。
-func CalculateInputTokens(input any, relayModel string) int {
+func CalculateInputTokens(input any, relaymodel string) int {
 	switch v := input.(type) {
 	case string:
 		// 如果输入数据为字符串类型，则调用 CalculateTextTokens 函数计算 token 数量
-		return CalculateTextTokens(v, relayModel)
+		return CalculateTextTokens(v, relaymodel)
 	case []string:
 		// 如果输入数据为字符串数组类型，则将数组中的所有字符串连接起来后再计算 token 数量
 		text := ""
 		for _, s := range v {
 			text += s
 		}
-		return CalculateTextTokens(text, relayModel)
+		return CalculateTextTokens(text, relaymodel)
 	}
 	return 0
 }
@@ -245,13 +244,13 @@ func CalculateInputTokens(input any, relayModel string) int {
 //
 // 输入参数：
 //   - text string: 要计算的文本内容。
-//   - relayModel string: 中继模型名称。
+//   - relaymodel string: 中继模型名称。
 //
 // 输出参数：
 //   - int: 返回文本的 token 数量。
-func CalculateTextTokens(text string, relayModel string) int {
+func CalculateTextTokens(text string, relaymodel string) int {
 	// 获取与中继模型对应的 token 编码器
-	tokenEncoder := getTokenEncoderForModel(relayModel)
+	tokenEncoder := getTokenEncoderForModel(relaymodel)
 
 	// 调用 getTokenCount 函数计算文本的 token 数量
 	return getTokenCount(tokenEncoder, text)

@@ -1,43 +1,49 @@
-package relayCommon
+package relaycommon
 
 import "zhongjyuan/gin-one-api/common"
 
 const (
-	APITypeOpenAI = iota
-	APITypeAnthropic
-	APITypePaLM
-	APITypeBaidu
-	APITypeZhipu
-	APITypeAli
-	APITypeXunfei
-	APITypeAIProxyLibrary
-	APITypeTencent
-	APITypeGemini
+	APITypeOpenAI         = iota // APITypeOpenAI 表示 API 类型为 OpenAI。
+	APITypeAnthropic             // APITypeAnthropic 表示 API 类型为 Anthropic。
+	APITypePaLM                  // APITypePaLM 表示 API 类型为 PaLM。
+	APITypeBaidu                 // APITypeBaidu 表示 API 类型为 Baidu。
+	APITypeZhipu                 // APITypeZhipu 表示 API 类型为 Zhipu。
+	APITypeAli                   // APITypeAli 表示 API 类型为 Ali。
+	APITypeXunfei                // APITypeXunfei 表示 API 类型为 Xunfei。
+	APITypeAIProxyLibrary        // APITypeAIProxyLibrary 表示 API 类型为 AIProxyLibrary。
+	APITypeTencent               // APITypeTencent 表示 API 类型为 Tencent。
+	APITypeGemini                // APITypeGemini 表示 API 类型为 Gemini。
 
-	APITypeDummy // this one is only for count, do not add any channel after this
+	APITypeDummy // APITypeDummy 仅用于计数，不要在此之后添加任何通道。
 )
 
-func ChannelType2APIType(channelType int) int {
-	apiType := APITypeOpenAI
+// GetApiTypeByChannelType 根据渠道类型获取对应的 API 类型。
+//
+// 输入参数：
+//   - channelType int: 渠道类型。
+// 输出参数：
+//   - int: 对应的 API 类型。
+func GetApiTypeByChannelType(channelType int) int {
 	switch channelType {
 	case common.ChannelTypeAnthropic:
-		apiType = APITypeAnthropic
+		return APITypeAnthropic // 返回 Anthropic API 类型
 	case common.ChannelTypeBaidu:
-		apiType = APITypeBaidu
+		return APITypeBaidu // 返回 Baidu API 类型
 	case common.ChannelTypePaLM:
-		apiType = APITypePaLM
+		return APITypePaLM // 返回 PaLM API 类型
 	case common.ChannelTypeZhipu:
-		apiType = APITypeZhipu
+		return APITypeZhipu // 返回 Zhipu API 类型
 	case common.ChannelTypeAli:
-		apiType = APITypeAli
+		return APITypeAli // 返回 Ali API 类型
 	case common.ChannelTypeXunfei:
-		apiType = APITypeXunfei
+		return APITypeXunfei // 返回 Xunfei API 类型
 	case common.ChannelTypeAIProxyLibrary:
-		apiType = APITypeAIProxyLibrary
+		return APITypeAIProxyLibrary // 返回 AIProxyLibrary API 类型
 	case common.ChannelTypeTencent:
-		apiType = APITypeTencent
+		return APITypeTencent // 返回 Tencent API 类型
 	case common.ChannelTypeGemini:
-		apiType = APITypeGemini
+		return APITypeGemini // 返回 Gemini API 类型
+	default:
+		return APITypeOpenAI // 默认返回 OpenAI API 类型
 	}
-	return apiType
 }

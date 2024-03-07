@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"zhongjyuan/gin-one-api/common"
 	"zhongjyuan/gin-one-api/model"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -50,7 +50,7 @@ func GetSubscriptionInfo(c *gin.Context) {
 
 	// 处理可能的错误
 	if err != nil {
-		common.SendJSONResponse(c, http.StatusOK, false, "upstream_error", relayModel.Error{Message: err.Error(), Type: "upstream_error"}) // 发送错误响应
+		common.SendJSONResponse(c, http.StatusOK, false, "upstream_error", relaymodel.Error{Message: err.Error(), Type: "upstream_error"}) // 发送错误响应
 		return
 	}
 
@@ -69,7 +69,7 @@ func GetSubscriptionInfo(c *gin.Context) {
 	}
 
 	// 构造订阅信息响应对象
-	subscription := OpenAISubscriptionResponse{
+	subscription := relaymodel.AISubscribeResponse{
 		Object:             "billing_subscription",
 		HasPaymentMethod:   true,
 		SoftLimitUSD:       amount,
@@ -96,7 +96,7 @@ func GetUsageInfo(c *gin.Context) {
 
 	// 根据配置获取配额信息
 	if common.DisplayTokenStatEnabled {
-		tokenId := c.GetInt("token_id")          // 获取token_id参数
+		tokenId := c.GetInt("tokenId")           // 获取token_id参数
 		token, err = model.GetTokenByID(tokenId) // 根据token_id获取token信息
 		quota = token.UsedQuota                  // 获取已使用配额
 	} else {
@@ -118,7 +118,7 @@ func GetUsageInfo(c *gin.Context) {
 	}
 
 	// 构造使用情况响应对象
-	usage := OpenAIUsageResponse{
+	usage := relaymodel.AIUsageResponse{
 		Object:     "list",
 		TotalUsage: amount * 100,
 	}

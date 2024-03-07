@@ -1,24 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Grid, Header, Segment } from 'semantic-ui-react';
-import { API, showError, showNotice, timestamp2string } from '../../helpers';
-import { StatusContext } from '../../context/Status';
 import { marked } from 'marked';
 
+import { API, showError, showNotice, timestamp2string } from '../../helpers';
+import { StatusContext } from '../../context/Status';
+
 const Home = () => {
-  const [statusState, statusDispatch] = useContext(StatusContext);
-  const [homePageContentLoaded, setHomePageContentLoaded] = useState(false);
   const [homePageContent, setHomePageContent] = useState('');
+  const [homePageContentLoaded, setHomePageContentLoaded] = useState(false);
+
+  const [statusState, statusDispatch] = useContext(StatusContext);
 
   const displayNotice = async () => {
     const res = await API.get('/api/notice');
     const { success, message, data } = res.data;
     if (success) {
       let oldNotice = localStorage.getItem('notice');
-        if (data !== oldNotice && data !== '') {
-            const htmlNotice = marked(data);
-            showNotice(htmlNotice, true);
-            localStorage.setItem('notice', data);
-        }
+      if (data !== oldNotice && data !== '') {
+        const htmlNotice = marked(data);
+        showNotice(htmlNotice, true);
+        localStorage.setItem('notice', data);
+      }
     } else {
       showError(message);
     }
@@ -51,10 +53,11 @@ const Home = () => {
     displayNotice().then();
     displayHomePageContent().then();
   }, []);
+
   return (
     <>
-      {
-        homePageContentLoaded && homePageContent === '' ? <>
+      {homePageContentLoaded && homePageContent === '' ? (
+        <>
           <Segment>
             <Header as='h3'>系统状况</Header>
             <Grid columns={2} stackable>
@@ -65,14 +68,19 @@ const Home = () => {
                     <Card.Meta>系统信息总览</Card.Meta>
                     <Card.Description>
                       <p>名称：{statusState?.status?.system_name}</p>
-                      <p>版本：{statusState?.status?.version ? statusState?.status?.version : "unknown"}</p>
+                      <p>
+                        版本：
+                        {statusState?.status?.version
+                          ? statusState?.status?.version
+                          : 'unknown'}
+                      </p>
                       <p>
                         源码：
                         <a
-                          href='https://github.com/songquanpeng/one-api'
+                          href='https://gitee.com/zhongjyuan/one-api'
                           target='_blank'
                         >
-                          https://github.com/songquanpeng/one-api
+                          https://gitee.com/zhongjyuan/one-api
                         </a>
                       </p>
                       <p>启动时间：{getStartTimeString()}</p>
@@ -116,16 +124,22 @@ const Home = () => {
               </Grid.Column>
             </Grid>
           </Segment>
-        </> : <>
-          {
-            homePageContent.startsWith('https://') ? <iframe
+        </>
+      ) : (
+        <>
+          {homePageContent.startsWith('https://') ? (
+            <iframe
               src={homePageContent}
               style={{ width: '100%', height: '100vh', border: 'none' }}
-            /> : <div style={{ fontSize: 'larger' }} dangerouslySetInnerHTML={{ __html: homePageContent }}></div>
-          }
+            />
+          ) : (
+            <div
+              style={{ fontSize: 'larger' }}
+              dangerouslySetInnerHTML={{ __html: homePageContent }}
+            ></div>
+          )}
         </>
-      }
-
+      )}
     </>
   );
 };

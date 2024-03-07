@@ -1,27 +1,49 @@
-package relayHelper
+package relayhelper
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"strconv"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
 
+// MapModelName 根据映射表将模型名称映射为新的名称。
+//
+// 输入参数：
+//   - originalName string: 原始模型名称。
+//   - mapping map[string]string: 模型名称的映射表。
+//
+// 输出参数：
+//   - string: 映射后的模型名称。
+//   - bool: 表示是否成功找到映射后的模型名称。
+func MapModelName(originalName string, mapping map[string]string) (string, bool) {
+	// 如果映射表为空或原始名称不存在于映射表中，则直接返回原始名称和false
+	if mapping == nil {
+		return originalName, false
+	}
+
+	// 在映射表中查找是否有对应的映射名称
+	mappedName, found := mapping[originalName]
+
+	// 如果找到了映射后的名称，则返回该名称和true；否则返回原始名称和false
+	if found {
+		return mappedName, true
+	}
+	return originalName, false
+}
+
 // ShouldDisableChannel 用于判断是否应禁用渠道。
 //
 // 输入参数：
-//   - err *relayModel.Error: 错误对象。
+//   - err *relaymodel.Error: 错误对象。
 //   - statusCode int: HTTP状态码。
 //
 // 输出参数：
 //   - bool: 如果应该禁用渠道，则返回 true；否则返回 false。
-func ShouldDisableChannel(err *relayModel.Error, statusCode int) bool {
+func ShouldDisableChannel(err *relaymodel.Error, statusCode int) bool {
 	// 检查自动禁用渠道是否已启用
 	if !common.AutomaticDisableChannelEnabled {
 		return false
@@ -48,11 +70,11 @@ func ShouldDisableChannel(err *relayModel.Error, statusCode int) bool {
 //
 // 输入参数：
 //   - err error: 一般错误对象。
-//   - openAIErr *relayModel.Error: 开放API错误对象。
+//   - openAIErr *relaymodel.Error: 开放API错误对象。
 //
 // 输出参数：
 //   - bool: 如果应该启用渠道，则返回 true；否则返回 false。
-func ShouldEnableChannel(err error, openAIErr *relayModel.Error) bool {
+func ShouldEnableChannel(err error, openAIErr *relaymodel.Error) bool {
 	// 检查自动启用渠道是否已启用
 	if !common.AutomaticEnableChannelEnabled {
 		return false
@@ -70,57 +92,6 @@ func ShouldEnableChannel(err error, openAIErr *relayModel.Error) bool {
 
 	// 默认情况下启用渠道
 	return true
-}
-
-// RelayErrorHandler 用于处理Relay请求的错误响应。
-//
-// 输入参数：
-//   - resp *http.Response: HTTP响应对象。
-//
-// 输出参数：
-//   - errorWithStatusCode *relayModel.ErrorWithStatusCode: 包含错误状态码的Relay错误对象。
-func RelayErrorHandler(resp *http.Response) (errorWithStatusCode *relayModel.ErrorWithStatusCode) {
-	// 初始化errorWithStatusCode对象
-	errorWithStatusCode = &relayModel.ErrorWithStatusCode{
-		StatusCode: resp.StatusCode,
-		Error: relayModel.Error{
-			Message: "",
-			Type:    "upstream_error",
-			Code:    "bad_response_status_code",
-			Param:   strconv.Itoa(resp.StatusCode),
-		},
-	}
-
-	// 确保在函数返回前关闭resp.Body
-	defer func() {
-		_ = resp.Body.Close()
-	}()
-
-	// 读取响应体
-	responseBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	// 解析错误响应
-	var errResponse relayModel.GeneralErrorResponse
-	if err := json.Unmarshal(responseBody, &errResponse); err != nil {
-		return
-	}
-
-	// 检查是否为OpenAI格式的错误响应，如果是，则覆盖默认的错误对象
-	if errResponse.Error.Message != "" {
-		errorWithStatusCode.Error = errResponse.Error
-	} else {
-		errorWithStatusCode.Error.Message = errResponse.ToMessage()
-	}
-
-	// 如果错误消息为空，则设置默认错误消息
-	if errorWithStatusCode.Error.Message == "" {
-		errorWithStatusCode.Error.Message = fmt.Sprintf("bad response status code %d", resp.StatusCode)
-	}
-
-	return
 }
 
 // GetFullRequestURL 用于构建完整的请求URL。

@@ -8,33 +8,12 @@ import (
 	"net/http"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
-
-// ErrorWrapper 用于包装错误信息并生成带有状态码的错误对象。
-//
-// 输入参数：
-//   - err error: 错误对象。
-//   - code string: 错误代码。
-//   - statusCode int: HTTP 状态码。
-//
-// 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 包装后的错误对象。
-func ErrorWrapper(err error, code string, statusCode int) *relayModel.ErrorWithStatusCode {
-	// 创建包装后的错误对象
-	Error := relayModel.Error{
-		Message: err.Error(),
-		Type:    "one_api_error",
-		Code:    code,
-	}
-	return &relayModel.ErrorWithStatusCode{
-		Error:      Error,
-		StatusCode: statusCode,
-	}
-}
 
 // ResponseText2Usage 将文本响应转换为使用情况对象。
 //
@@ -44,13 +23,13 @@ func ErrorWrapper(err error, code string, statusCode int) *relayModel.ErrorWithS
 //   - promptTokens int: 提示词令牌数。
 //
 // 输出参数：
-//   - *relayModel.Usage: 使用情况对象，包含生成的令牌信息。
-func ResponseText2Usage(responseText string, modeName string, promptTokens int) *relayModel.Usage {
+//   - *relaymodel.Usage: 使用情况对象，包含生成的令牌信息。
+func ResponseText2Usage(responseText string, modeName string, promptTokens int) *relaymodel.Usage {
 	// 创建使用情况对象并设置提示词令牌数
-	return &relayModel.Usage{
+	return &relaymodel.Usage{
 		PromptTokens:     promptTokens,
-		CompletionTokens: CalculateTextTokens(responseText, modeName),
-		TotalTokens:      promptTokens + CalculateTextTokens(responseText, modeName),
+		CompletionTokens: relaymodel.CalculateTextTokens(responseText, modeName),
+		TotalTokens:      promptTokens + relaymodel.CalculateTextTokens(responseText, modeName),
 	}
 }
 
@@ -91,8 +70,8 @@ func splitFunc(data []byte, atEOF bool) (advance int, token []byte, err error) {
 //   - 无。
 func processStreamResponse(relayMode int, data string, responseText *string) {
 	switch relayMode {
-	case relayCommon.RelayModeChatCompletions:
-		var streamResponse ChatCompletionsStreamResponse
+	case relaycommon.RelayModeChatCompletions:
+		var streamResponse relaymodel.AIChatCompletionsStreamResponse
 		if err := json.Unmarshal([]byte(data), &streamResponse); err != nil {
 			common.SysError("error unmarshalling stream response: " + err.Error())
 			return // 忽略错误
@@ -101,8 +80,8 @@ func processStreamResponse(relayMode int, data string, responseText *string) {
 		for _, choice := range streamResponse.Choices {
 			*responseText += choice.Delta.Content
 		}
-	case relayCommon.RelayModeCompletions:
-		var streamResponse CompletionsStreamResponse
+	case relaycommon.RelayModeCompletions:
+		var streamResponse relaymodel.AICompletionsStreamResponse
 		if err := json.Unmarshal([]byte(data), &streamResponse); err != nil {
 			common.SysError("error unmarshalling stream response: " + err.Error())
 			return // 忽略错误
@@ -139,9 +118,9 @@ func handleData(c *gin.Context, data string) {
 //   - relayMode int: 中继模式。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 错误对象，如果有错误发生。
+//   - *relaymodel.HTTPError: 错误对象，如果有错误发生。
 //   - string: 生成的响应文本。
-func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relayModel.ErrorWithStatusCode, string) {
+func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relaymodel.HTTPError, string) {
 	responseText := "" // 初始化响应文本
 
 	// 创建一个 scanner 对象来扫描 HTTP 响应体
@@ -184,7 +163,7 @@ func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relayMo
 	})
 
 	if err := resp.Body.Close(); err != nil { // 关闭响应体
-		return ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), "" // 返回关闭响应体失败的错误
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), "" // 返回关闭响应体失败的错误
 	}
 
 	return nil, responseText // 返回响应文本和空错误
@@ -199,30 +178,30 @@ func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relayMo
 //   - modelName string: 模型名称。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 错误对象，如果有错误发生。
-//   - *relayModel.Usage: 使用情况对象。
-func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
-	var textResponse SlimTextResponse // 定义 SlimTextResponse 结构体变量
+//   - *relaymodel.HTTPError: 错误对象，如果有错误发生。
+//   - *relaymodel.Usage: 使用情况对象。
+func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relaymodel.HTTPError, *relaymodel.Usage) {
+	var textResponse relaymodel.AISlimTextResponse // 定义 AISlimTextResponse 结构体变量
 
 	// 读取响应体数据
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil // 返回读取响应体失败的错误
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil // 返回读取响应体失败的错误
 	}
 
 	// 关闭响应体
 	if err = resp.Body.Close(); err != nil {
-		return ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil // 返回关闭响应体失败的错误
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil // 返回关闭响应体失败的错误
 	}
 
-	// 解析响应体数据为 SlimTextResponse 结构体
+	// 解析响应体数据为 AISlimTextResponse 结构体
 	if err = json.Unmarshal(responseBody, &textResponse); err != nil {
-		return ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil // 返回解析响应体失败的错误
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil // 返回解析响应体失败的错误
 	}
 
 	// 如果存在错误类型，则返回错误对象和空的使用情况对象
 	if textResponse.Error.Type != "" {
-		return &relayModel.ErrorWithStatusCode{
+		return &relaymodel.HTTPError{
 			Error:      textResponse.Error,
 			StatusCode: resp.StatusCode,
 		}, nil
@@ -238,21 +217,21 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 
 	// 复制响应体到 Gin 的响应 Writer 中
 	if _, err = io.Copy(c.Writer, resp.Body); err != nil {
-		return ErrorWrapper(err, "copy_response_body_failed", http.StatusInternalServerError), nil // 返回复制响应体失败的错误
+		return relayhelper.WrapHTTPError(err, "copy_response_body_failed", http.StatusInternalServerError), nil // 返回复制响应体失败的错误
 	}
 
 	// 再次关闭响应体
 	if err = resp.Body.Close(); err != nil {
-		return ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil // 返回关闭响应体失败的错误
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil // 返回关闭响应体失败的错误
 	}
 
 	// 计算使用情况中的总令牌数
 	if textResponse.Usage.TotalTokens == 0 {
 		completionTokens := 0
 		for _, choice := range textResponse.Choices {
-			completionTokens += CalculateTextTokens(choice.Message.StringContent(), modelName) // 计算完成文本的令牌数
+			completionTokens += relaymodel.CalculateTextTokens(choice.AIMessage.StringContent(), modelName) // 计算完成文本的令牌数
 		}
-		textResponse.Usage = relayModel.Usage{
+		textResponse.Usage = relaymodel.Usage{
 			PromptTokens:     promptTokens,
 			CompletionTokens: completionTokens,
 			TotalTokens:      promptTokens + completionTokens,

@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,8 +16,8 @@ import (
 // https://developers.generativeai.google/api/rest/generativelanguage/models/generateMessage#request-body
 // https://developers.generativeai.google/api/rest/generativelanguage/models/generateMessage#response-body
 
-func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *ChatRequest {
-	palmRequest := ChatRequest{
+func ConvertRequest(textRequest relaymodel.AIRequest) *AIChatRequest {
+	palmRequest := AIChatRequest{
 		Prompt: Prompt{
 			Messages: make([]ChatMessage, 0, len(textRequest.Messages)),
 		},
@@ -40,14 +40,14 @@ func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *ChatRequest {
 	return &palmRequest
 }
 
-func responsePaLM2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
-	fullTextResponse := channel_openai.TextResponse{
-		Choices: make([]channel_openai.TextResponseChoice, 0, len(response.Candidates)),
+func responsePaLM2OpenAI(response *ChatResponse) *relaymodel.AITextResponse {
+	fullTextResponse := relaymodel.AITextResponse{
+		Choices: make([]relaymodel.AITextResponseChoice, 0, len(response.Candidates)),
 	}
 	for i, candidate := range response.Candidates {
-		choice := channel_openai.TextResponseChoice{
+		choice := relaymodel.AITextResponseChoice{
 			Index: i,
-			Message: relayModel.Message{
+			AIMessage: relaymodel.AIMessage{
 				Role:    "assistant",
 				Content: candidate.Content,
 			},
@@ -58,20 +58,20 @@ func responsePaLM2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
 	return &fullTextResponse
 }
 
-func streamResponsePaLM2OpenAI(palmResponse *ChatResponse) *channel_openai.ChatCompletionsStreamResponse {
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+func streamResponsePaLM2OpenAI(palmResponse *ChatResponse) *relaymodel.AIChatCompletionsStreamResponse {
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	if len(palmResponse.Candidates) > 0 {
 		choice.Delta.Content = palmResponse.Candidates[0].Content
 	}
-	choice.FinishReason = &relayCommon.StopFinishReason
-	var response channel_openai.ChatCompletionsStreamResponse
+	choice.FinishReason = &relaycommon.StopFinishReason
+	var response relaymodel.AIChatCompletionsStreamResponse
 	response.Object = "chat.completion.chunk"
 	response.Model = "palm2"
-	response.Choices = []channel_openai.ChatCompletionsStreamResponseChoice{choice}
+	response.Choices = []relaymodel.AIChatCompletionsStreamResponseChoice{choice}
 	return &response
 }
 
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, string) {
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, string) {
 	responseText := ""
 	responseId := fmt.Sprintf("chatcmpl-%s", common.GetUUID())
 	createdTime := common.GetTimestamp()
@@ -125,28 +125,28 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 	})
 	err := resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), ""
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), ""
 	}
 	return nil, responseText
 }
 
-func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	var palmResponse ChatResponse
 	err = json.Unmarshal(responseBody, &palmResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	if palmResponse.Error.Code != 0 || len(palmResponse.Candidates) == 0 {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: palmResponse.Error.Message,
 				Type:    palmResponse.Error.Status,
 				Param:   "",
@@ -157,8 +157,8 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 	}
 	fullTextResponse := responsePaLM2OpenAI(&palmResponse)
 	fullTextResponse.Model = modelName
-	completionTokens := channel_openai.CalculateTextTokens(palmResponse.Candidates[0].Content, modelName)
-	usage := relayModel.Usage{
+	completionTokens := relaymodel.CalculateTextTokens(palmResponse.Candidates[0].Content, modelName)
+	usage := relaymodel.Usage{
 		PromptTokens:     promptTokens,
 		CompletionTokens: completionTokens,
 		TotalTokens:      promptTokens + completionTokens,
@@ -166,10 +166,10 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 	fullTextResponse.Usage = usage
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)
-	_, err = c.Writer.Write(jsonResponse)
+	_, _ = c.Writer.Write(jsonResponse)
 	return nil, &usage
 }

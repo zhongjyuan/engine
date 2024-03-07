@@ -17,8 +17,8 @@ type LogEntity struct {
 	Content          string `json:"content" gorm:"column:content;primaryKey;unique"`                                                // 日志内容，唯一主键
 	UserId           int    `json:"userId" gorm:"column:user_id;index"`                                                             // 用户ID，索引
 	UserName         string `json:"userName" gorm:"column:user_name;index:index_username_model_name,priority:2;default:''"`         // 用户名，索引
-	TokenName        string `json:"tokenName" gorm:"column:token_name;index;default:''"`                                            // 令牌名称，索引
-	ChannelId        int    `json:"channelId" gorm:"column:channel_id;index"`                                                       // 渠道ID，索引
+	TokenName        string `json:"tokenName" gorm:"column:tokenName;index;default:''"`                                             // 令牌名称，索引
+	ChannelId        int    `json:"channelId" gorm:"column:channelId;index"`                                                        // 渠道ID，索引
 	ModelName        string `json:"modelName" gorm:"column:model_name;index;index:index_username_model_name,priority:1;default:''"` // 模型名称，索引
 	Quota            int    `json:"quota" gorm:"column:quota;default:0"`                                                            // 配额，默认值为 0
 	PromptTokens     int    `json:"promptTokens" gorm:"column:prompt_tokens;default:0"`                                             // 提示令牌数量，默认值为 0
@@ -102,11 +102,11 @@ func GetPageLogs(logType int, startTimestamp int64, endTimestamp int64, modelNam
 	}
 
 	if tokenName != "" {
-		tx = tx.Where("token_name = ?", tokenName)
+		tx = tx.Where("tokenName = ?", tokenName)
 	}
 
 	if channelId != 0 {
-		tx = tx.Where("channel_id = ?", channelId)
+		tx = tx.Where("channelId = ?", channelId)
 	}
 
 	if modelName != "" {
@@ -136,7 +136,7 @@ func GetPageUserLogs(userId int, logType int, startTimestamp int64, endTimestamp
 	}
 
 	if tokenName != "" {
-		tx = tx.Where("token_name = ?", tokenName)
+		tx = tx.Where("tokenName = ?", tokenName)
 	}
 
 	if modelName != "" {
@@ -173,7 +173,7 @@ func SumUsedQuota(logType int, startTimestamp int64, endTimestamp int64, modelNa
 	}
 
 	if tokenName != "" {
-		tx = tx.Where("token_name = ?", tokenName)
+		tx = tx.Where("tokenName = ?", tokenName)
 	}
 
 	if startTimestamp != 0 {
@@ -189,7 +189,7 @@ func SumUsedQuota(logType int, startTimestamp int64, endTimestamp int64, modelNa
 	}
 
 	if channelId != 0 {
-		tx = tx.Where("channel_id = ?", channelId)
+		tx = tx.Where("channelId = ?", channelId)
 	}
 
 	tx.Where("type = ?", common.LogTypeConsume).Scan(&quota)
@@ -203,7 +203,7 @@ func SumUsedToken(logType int, startTimestamp int64, endTimestamp int64, modelNa
 		tx = tx.Where("user_name = ?", userName)
 	}
 	if tokenName != "" {
-		tx = tx.Where("token_name = ?", tokenName)
+		tx = tx.Where("tokenName = ?", tokenName)
 	}
 	if startTimestamp != 0 {
 		tx = tx.Where("create_time >= ?", startTimestamp)

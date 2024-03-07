@@ -46,7 +46,7 @@ func setFrameworkApiRouter(router *gin.Engine) {
 				selfRoute.GET("/self", controller.GetSelf)
 				selfRoute.PUT("/self", controller.UpdateSelf)
 				selfRoute.DELETE("/self", controller.DeleteSelf)
-				selfRoute.GET("/token", controller.GenerateToken)
+				selfRoute.GET("/token", controller.GenerateAccessToken)
 			}
 
 			// 管理员操作用户路由组

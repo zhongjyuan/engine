@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	relayChannel "zhongjyuan/gin-one-api/relay/channel"
+	relaychannel "zhongjyuan/gin-one-api/relay/channel"
 	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayHelper "zhongjyuan/gin-one-api/relay/helper"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,19 +15,19 @@ import (
 type Adaptor struct {
 }
 
-func (a *Adaptor) Init(meta *relayHelper.RelayMeta) {
+func (a *Adaptor) Init(meta *relaymodel.AIRelayMeta) {
 
 }
 
 // GetRequestURL 方法用于获取请求的URL地址。
 //
 // 输入参数：
-//   - meta *relayHelper.RelayMeta: 包含中继元数据的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含中继元数据的指针。
 //
 // 输出参数：
 //   - string: 请求的URL地址。
 //   - error: 错误信息（如果有）。
-func (a *Adaptor) GetRequestURL(meta *relayHelper.RelayMeta) (string, error) {
+func (a *Adaptor) GetRequestURL(meta *relaymodel.AIRelayMeta) (string, error) {
 	return fmt.Sprintf("%s/v1/complete", meta.BaseURL), nil
 }
 
@@ -37,13 +36,13 @@ func (a *Adaptor) GetRequestURL(meta *relayHelper.RelayMeta) (string, error) {
 // 输入参数：
 //   - c *gin.Context: Gin框架的上下文对象。
 //   - req *http.Request: HTTP请求对象。
-//   - meta *relayHelper.RelayMeta: 包含中继元数据的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含中继元数据的指针。
 //
 // 输出参数：
 //   - error: 错误信息（如果有）。
-func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *relayHelper.RelayMeta) error {
+func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *relaymodel.AIRelayMeta) error {
 	// 设置通用请求头部信息
-	relayChannel.SetupCommonRequestHeader(c, req, meta)
+	relaychannel.SetupCommonRequestHeader(c, req, meta)
 
 	// 设置 x-api-key 头部信息
 	req.Header.Set("x-api-key", meta.APIKey)
@@ -63,12 +62,12 @@ func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *re
 // 输入参数：
 //   - c *gin.Context: Gin框架的上下文对象。
 //   - relayMode int: 中继模式。
-//   - request *relayModel.GeneralOpenAIRequest: 包含通用OpenAI请求信息的指针。
+//   - request *relaymodel.AIRequest: 包含通用OpenAI请求信息的指针。
 //
 // 输出参数：
 //   - any: 任意类型的数据。
 //   - error: 错误信息（如果有）。
-func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relayModel.GeneralOpenAIRequest) (any, error) {
+func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relaymodel.AIRequest) (any, error) {
 	// 检查请求是否为空
 	if request == nil {
 		return nil, errors.New("request is nil")
@@ -78,8 +77,8 @@ func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relayMo
 	return ConvertRequest(*request), nil
 }
 
-func (a *Adaptor) DoRequest(c *gin.Context, meta *relayHelper.RelayMeta, requestBody io.Reader) (*http.Response, error) {
-	return relayChannel.DoRequestHelper(a, c, meta, requestBody)
+func (a *Adaptor) DoRequest(c *gin.Context, meta *relaymodel.AIRelayMeta, requestBody io.Reader) (*http.Response, error) {
+	return relaychannel.DoRequestHelper(a, c, meta, requestBody)
 }
 
 // DoResponse 方法用于处理响应。
@@ -87,12 +86,12 @@ func (a *Adaptor) DoRequest(c *gin.Context, meta *relayHelper.RelayMeta, request
 // 输入参数：
 //   - c *gin.Context: Gin框架的上下文对象。
 //   - resp *http.Response: HTTP响应对象。
-//   - meta *relayHelper.RelayMeta: 包含中继元数据的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含中继元数据的指针。
 //
 // 输出参数：
-//   - usage *relayModel.Usage: 使用情况信息。
-//   - err *relayModel.ErrorWithStatusCode: 带有状态码的错误信息。
-func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relayHelper.RelayMeta) (usage *relayModel.Usage, err *relayModel.ErrorWithStatusCode) {
+//   - usage *relaymodel.Usage: 使用情况信息。
+//   - err *relaymodel.HTTPError: 带有状态码的错误信息。
+func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relaymodel.AIRelayMeta) (usage *relaymodel.Usage, err *relaymodel.HTTPError) {
 	if meta.IsStream {
 		var responseText string
 		err, responseText = StreamHandler(c, resp)

@@ -1,6 +1,6 @@
 package channel_palm
 
-import relayModel "zhongjyuan/gin-one-api/relay/model"
+import relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 type ChatMessage struct {
 	Author  string `json:"author"`
@@ -16,7 +16,7 @@ type Prompt struct {
 	Messages []ChatMessage `json:"messages"`
 }
 
-type ChatRequest struct {
+type AIChatRequest struct {
 	Prompt         Prompt  `json:"prompt"`
 	Temperature    float64 `json:"temperature,omitempty"`
 	CandidateCount int     `json:"candidateCount,omitempty"`
@@ -31,8 +31,8 @@ type Error struct {
 }
 
 type ChatResponse struct {
-	Candidates []ChatMessage        `json:"candidates"`
-	Messages   []relayModel.Message `json:"messages"`
-	Filters    []Filter             `json:"filters"`
-	Error      Error                `json:"error"`
+	Candidates []ChatMessage          `json:"candidates"`
+	Messages   []relaymodel.AIMessage `json:"messages"`
+	Filters    []Filter               `json:"filters"`
+	Error      Error                  `json:"error"`
 }

@@ -10,16 +10,16 @@ const OptionTableName = "plat_option"
 
 // OptionEntity 结构体用于表示选项，包含键值对。
 type OptionEntity struct {
-	Key         string `json:"key" gorm:"column:key;size:50;primaryKey"`             // Key 字段表示选项的键。
-	Value       string `json:"value" gorm:"column:value;size:100"`                   // Value 字段表示选项的值。
-	Description string `json:"description" gorm:"column:description;size:200"`       // 文件描述
-	Status      int    `json:"status" gorm:"column:status;type:int;default:1"`       // 状态，默认为1（enabled or disabled）
-	CreatorId   int    `json:"creatorId" gorm:"column:creator_id;index"`             // 创建者ID，并在数据库中创建索引
-	CreatorName string `json:"creatorName" gorm:"column:creator_name;size:50;index"` // 创建者ID，并在数据库中创建索引
-	CreateTime  string `json:"createTime" gorm:"column:create_time;index"`           // 创建时间
-	UpdatorId   int    `json:"updatorId" gorm:"column:updator_id;index"`             // 更新者ID，并在数据库中创建索引
-	UpdatorName string `json:"updatorName" gorm:"column:updator_name;size:50;index"` // 更新者ID，并在数据库中创建索引
-	UpdateTime  string `json:"updateTime" gorm:"column:update_time;index"`           // 更新时间
+	Key         string `json:"key" gorm:"column:key;size:50;primaryKey"`   // Key 字段表示选项的键。
+	Value       string `json:"value" gorm:"column:value;size:100"`         // Value 字段表示选项的值。
+	Description string `json:"-" gorm:"column:description;size:200"`       // 文件描述
+	Status      int    `json:"-" gorm:"column:status;type:int;default:1"`  // 状态，默认为1（enabled or disabled）
+	CreatorId   int    `json:"-" gorm:"column:creator_id;index"`           // 创建者ID，并在数据库中创建索引
+	CreatorName string `json:"-" gorm:"column:creator_name;size:50;index"` // 创建者ID，并在数据库中创建索引
+	CreateTime  string `json:"-" gorm:"column:create_time;index"`          // 创建时间
+	UpdatorId   int    `json:"-" gorm:"column:updator_id;index"`           // 更新者ID，并在数据库中创建索引
+	UpdatorName string `json:"-" gorm:"column:updator_name;size:50;index"` // 更新者ID，并在数据库中创建索引
+	UpdateTime  string `json:"-" gorm:"column:update_time;index"`          // 更新时间
 }
 
 func (OptionEntity) TableName() string {

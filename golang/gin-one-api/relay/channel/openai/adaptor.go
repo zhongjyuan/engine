@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	relayChannel "zhongjyuan/gin-one-api/relay/channel"
+	relaychannel "zhongjyuan/gin-one-api/relay/channel"
 	channel_360 "zhongjyuan/gin-one-api/relay/channel/360"
 	channel_moonshot "zhongjyuan/gin-one-api/relay/channel/moonshot"
-	relayHelper "zhongjyuan/gin-one-api/relay/helper"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,25 +23,25 @@ type Adaptor struct {
 // Init 用于初始化适配器信息。
 //
 // 输入参数：
-//   - meta *relayHelper.RelayMeta: 包含通道类型等元信息的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含通道类型等元信息的指针。
 //
 // 输出参数：
 //   - 无。
-func (a *Adaptor) Init(meta *relayHelper.RelayMeta) {
+func (a *Adaptor) Init(meta *relaymodel.AIRelayMeta) {
 	a.ChannelType = meta.ChannelType
 }
 
 // GetRequestURL 根据元信息获取请求的完整 URL。
 //
 // 输入参数：
-//   - meta *relayHelper.RelayMeta: 包含通道类型、请求路径、API 版本、模型名称等元信息的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含通道类型、请求路径、API 版本、模型名称等元信息的指针。
 //
 // 输出参数：
 //   - string: 返回完整的请求 URL 字符串。
 //   - error: 如果在处理过程中发生错误，则返回相应的错误信息。
-func (a *Adaptor) GetRequestURL(meta *relayHelper.RelayMeta) (string, error) {
+func (a *Adaptor) GetRequestURL(meta *relaymodel.AIRelayMeta) (string, error) {
 	if meta.ChannelType != common.ChannelTypeAzure {
-		return relayHelper.GetFullRequestURL(meta.BaseURL, meta.RequestURLPath, meta.ChannelType), nil
+		return relayhelper.GetFullRequestURL(meta.BaseURL, meta.RequestURLPath, meta.ChannelType), nil
 	}
 
 	baseURL := meta.BaseURL
@@ -58,7 +58,7 @@ func (a *Adaptor) GetRequestURL(meta *relayHelper.RelayMeta) (string, error) {
 
 	// 构建最终请求 URL 并返回
 	requestURL = fmt.Sprintf("/openai/deployments/%s/%s", model, task)
-	return relayHelper.GetFullRequestURL(baseURL, requestURL, meta.ChannelType), nil
+	return relayhelper.GetFullRequestURL(baseURL, requestURL, meta.ChannelType), nil
 }
 
 // SetupRequestHeader 设置请求的头部信息。
@@ -66,13 +66,13 @@ func (a *Adaptor) GetRequestURL(meta *relayHelper.RelayMeta) (string, error) {
 // 输入参数：
 //   - c *gin.Context: Gin 上下文对象。
 //   - req *http.Request: HTTP 请求对象。
-//   - meta *relayHelper.RelayMeta: 包含通道类型、API Key 等元信息的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含通道类型、API Key 等元信息的指针。
 //
 // 输出参数：
 //   - error: 如果在设置过程中发生错误，则返回相应的错误信息；否则返回 nil。
-func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *relayHelper.RelayMeta) error {
+func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *relaymodel.AIRelayMeta) error {
 	// 设置公共请求头部信息
-	relayChannel.SetupCommonRequestHeader(c, req, meta)
+	relaychannel.SetupCommonRequestHeader(c, req, meta)
 
 	switch meta.ChannelType {
 	case common.ChannelTypeAzure:
@@ -96,12 +96,12 @@ func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *re
 //   - a *Adaptor: 适配器对象。
 //   - c *gin.Context: Gin 上下文对象。
 //   - relayMode int: 中继模式。
-//   - request *relayModel.GeneralOpenAIRequest: 通用的 OpenAI 请求对象。
+//   - request *relaymodel.AIRequest: 通用的 OpenAI 请求对象。
 //
 // 输出参数：
 //   - any: 返回转换后的请求对象，类型为任意类型。
 //   - error: 如果在转换过程中发生错误，则返回相应的错误信息；否则返回 nil。
-func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relayModel.GeneralOpenAIRequest) (any, error) {
+func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relaymodel.AIRequest) (any, error) {
 	// 检查请求是否为空
 	if request == nil {
 		return nil, errors.New("request is nil")
@@ -115,15 +115,15 @@ func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relayMo
 // 输入参数：
 //   - a *Adaptor: 适配器对象。
 //   - c *gin.Context: Gin 上下文对象。
-//   - meta *relayHelper.RelayMeta: 包含通道类型、API Key 等元信息的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含通道类型、API Key 等元信息的指针。
 //   - requestBody io.Reader: 请求体的 io.Reader。
 //
 // 输出参数：
 //   - *http.Response: 返回一个 HTTP 响应对象指针。
 //   - error: 如果在执行请求过程中发生错误，则返回相应的错误信息；否则返回 nil。
-func (a *Adaptor) DoRequest(c *gin.Context, meta *relayHelper.RelayMeta, requestBody io.Reader) (*http.Response, error) {
+func (a *Adaptor) DoRequest(c *gin.Context, meta *relaymodel.AIRelayMeta, requestBody io.Reader) (*http.Response, error) {
 	// 调用 DoRequestHelper 辅助函数执行请求
-	return relayChannel.DoRequestHelper(a, c, meta, requestBody)
+	return relaychannel.DoRequestHelper(a, c, meta, requestBody)
 }
 
 // DoResponse 处理响应。
@@ -132,12 +132,12 @@ func (a *Adaptor) DoRequest(c *gin.Context, meta *relayHelper.RelayMeta, request
 //   - a *Adaptor: 适配器对象。
 //   - c *gin.Context: Gin 上下文对象。
 //   - resp *http.Response: HTTP 响应对象指针。
-//   - meta *relayHelper.RelayMeta: 包含通道类型、API Key 等元信息的指针。
+//   - meta *relaymodel.AIRelayMeta: 包含通道类型、API Key 等元信息的指针。
 //
 // 输出参数：
-//   - usage *relayModel.Usage: 返回处理后的用法对象指针。
-//   - err *relayModel.ErrorWithStatusCode: 返回带有状态码的错误对象指针。
-func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relayHelper.RelayMeta) (usage *relayModel.Usage, err *relayModel.ErrorWithStatusCode) {
+//   - usage *relaymodel.Usage: 返回处理后的用法对象指针。
+//   - err *relaymodel.HTTPError: 返回带有状态码的错误对象指针。
+func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relaymodel.AIRelayMeta) (usage *relaymodel.Usage, err *relaymodel.HTTPError) {
 	if meta.IsStream {
 		var responseText string
 		err, responseText = StreamHandler(c, resp, meta.Mode)

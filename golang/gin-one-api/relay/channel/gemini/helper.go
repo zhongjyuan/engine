@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,8 +22,8 @@ const (
 )
 
 // Setting safety to the lowest possible values since Gemini is already powerless enough
-func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *ChatRequest {
-	geminiRequest := ChatRequest{
+func ConvertRequest(textRequest relaymodel.AIRequest) *AIChatRequest {
+	geminiRequest := AIChatRequest{
 		Contents: make([]ChatContent, 0, len(textRequest.Messages)),
 		SafetySettings: []ChatSafetySettings{
 			{
@@ -70,11 +70,11 @@ func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *ChatRequest {
 		var parts []Part
 		imageNum := 0
 		for _, part := range openaiContent {
-			if part.Type == relayCommon.ContentTypeText {
+			if part.Type == relaycommon.ContentTypeText {
 				parts = append(parts, Part{
 					Text: part.Text,
 				})
-			} else if part.Type == relayCommon.ContentTypeImageURL {
+			} else if part.Type == relaycommon.ContentTypeImageURL {
 				imageNum += 1
 				if imageNum > VisionMaxImageNum {
 					continue
@@ -90,9 +90,9 @@ func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *ChatRequest {
 		}
 		content.Parts = parts
 
-		// there's no assistant role in gemini and API shall vomit if Role is not user or relayModel
+		// there's no assistant role in gemini and API shall vomit if Role is not user or relaymodel
 		if content.Role == "assistant" {
-			content.Role = "relayModel"
+			content.Role = "relaymodel"
 		}
 		// Converting system prompt to prompt from user for the same reason
 		if content.Role == "system" {
@@ -101,10 +101,10 @@ func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *ChatRequest {
 		}
 		geminiRequest.Contents = append(geminiRequest.Contents, content)
 
-		// If a system message is the last message, we need to add a dummy relayModel message to make gemini happy
+		// If a system message is the last message, we need to add a dummy relaymodel message to make gemini happy
 		if shouldAddDummyModelMessage {
 			geminiRequest.Contents = append(geminiRequest.Contents, ChatContent{
-				Role: "relayModel",
+				Role: "relaymodel",
 				Parts: []Part{
 					{
 						Text: "Okay",
@@ -149,42 +149,42 @@ type ChatPromptFeedback struct {
 	SafetyRatings []ChatSafetyRating `json:"safetyRatings"`
 }
 
-func responseGeminiChat2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
-	fullTextResponse := channel_openai.TextResponse{
+func responseGeminiChat2OpenAI(response *ChatResponse) *relaymodel.AITextResponse {
+	fullTextResponse := relaymodel.AITextResponse{
 		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion",
 		Created: common.GetTimestamp(),
-		Choices: make([]channel_openai.TextResponseChoice, 0, len(response.Candidates)),
+		Choices: make([]relaymodel.AITextResponseChoice, 0, len(response.Candidates)),
 	}
 	for i, candidate := range response.Candidates {
-		choice := channel_openai.TextResponseChoice{
+		choice := relaymodel.AITextResponseChoice{
 			Index: i,
-			Message: relayModel.Message{
+			AIMessage: relaymodel.AIMessage{
 				Role:    "assistant",
 				Content: "",
 			},
-			FinishReason: relayCommon.StopFinishReason,
+			FinishReason: relaycommon.StopFinishReason,
 		}
 		if len(candidate.Content.Parts) > 0 {
-			choice.Message.Content = candidate.Content.Parts[0].Text
+			choice.AIMessage.Content = candidate.Content.Parts[0].Text
 		}
 		fullTextResponse.Choices = append(fullTextResponse.Choices, choice)
 	}
 	return &fullTextResponse
 }
 
-func streamResponseGeminiChat2OpenAI(geminiResponse *ChatResponse) *channel_openai.ChatCompletionsStreamResponse {
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+func streamResponseGeminiChat2OpenAI(geminiResponse *ChatResponse) *relaymodel.AIChatCompletionsStreamResponse {
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = geminiResponse.GetResponseText()
-	choice.FinishReason = &relayCommon.StopFinishReason
-	var response channel_openai.ChatCompletionsStreamResponse
+	choice.FinishReason = &relaycommon.StopFinishReason
+	var response relaymodel.AIChatCompletionsStreamResponse
 	response.Object = "chat.completion.chunk"
 	response.Model = "gemini"
-	response.Choices = []channel_openai.ChatCompletionsStreamResponseChoice{choice}
+	response.Choices = []relaymodel.AIChatCompletionsStreamResponseChoice{choice}
 	return &response
 }
 
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, string) {
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, string) {
 	responseText := ""
 	dataChan := make(chan string)
 	stopChan := make(chan bool)
@@ -226,14 +226,14 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 			var dummy dummyStruct
 			err := json.Unmarshal([]byte(data), &dummy)
 			responseText += dummy.Content
-			var choice channel_openai.ChatCompletionsStreamResponseChoice
+			var choice relaymodel.AIChatCompletionsStreamResponseChoice
 			choice.Delta.Content = dummy.Content
-			response := channel_openai.ChatCompletionsStreamResponse{
+			response := relaymodel.AIChatCompletionsStreamResponse{
 				Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 				Object:  "chat.completion.chunk",
 				Created: common.GetTimestamp(),
 				Model:   "gemini-pro",
-				Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+				Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 			}
 			jsonResponse, err := json.Marshal(response)
 			if err != nil {
@@ -249,28 +249,28 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 	})
 	err := resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), ""
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), ""
 	}
 	return nil, responseText
 }
 
-func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	var geminiResponse ChatResponse
 	err = json.Unmarshal(responseBody, &geminiResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	if len(geminiResponse.Candidates) == 0 {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: "No candidates returned",
 				Type:    "server_error",
 				Param:   "",
@@ -281,8 +281,8 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 	}
 	fullTextResponse := responseGeminiChat2OpenAI(&geminiResponse)
 	fullTextResponse.Model = modelName
-	completionTokens := channel_openai.CalculateTextTokens(geminiResponse.GetResponseText(), modelName)
-	usage := relayModel.Usage{
+	completionTokens := relaymodel.CalculateTextTokens(geminiResponse.GetResponseText(), modelName)
+	usage := relaymodel.Usage{
 		PromptTokens:     promptTokens,
 		CompletionTokens: completionTokens,
 		TotalTokens:      promptTokens + completionTokens,
@@ -290,7 +290,7 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 	fullTextResponse.Usage = usage
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)

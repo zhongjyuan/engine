@@ -1,13 +1,13 @@
 package channel_xunfei
 
-import relayModel "zhongjyuan/gin-one-api/relay/model"
+import relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
 }
 
-type ChatRequest struct {
+type AIChatRequest struct {
 	Header struct {
 		AppId string `json:"app_id"`
 	} `json:"header"`
@@ -47,7 +47,7 @@ type ChatResponse struct {
 			Text   []ChatResponseTextItem `json:"text"`
 		} `json:"choices"`
 		Usage struct {
-			Text relayModel.Usage `json:"text"`
+			Text relaymodel.Usage `json:"text"`
 		} `json:"usage"`
 	} `json:"payload"`
 }

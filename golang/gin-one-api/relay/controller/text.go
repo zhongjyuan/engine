@@ -1,4 +1,4 @@
-package controller
+package relaycontroller
 
 import (
 	"bytes"
@@ -9,56 +9,68 @@ import (
 	"strings"
 	"zhongjyuan/gin-one-api/common"
 	"zhongjyuan/gin-one-api/relay"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayHelper "zhongjyuan/gin-one-api/relay/helper"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
 
-func RelayTextHelper(c *gin.Context) *relayModel.ErrorWithStatusCode {
+// RelayText 是处理文本转发请求的函数。
+//
+// 输入参数：
+//   - c *gin.Context: Gin 上下文对象。
+//
+// 输出参数：
+//   - *relaymodel.HTTPError: 如果出现错误，返回 HTTP 错误信息；否则返回 nil。
+func RelayText(c *gin.Context) *relaymodel.HTTPError {
+	// 获取上下文对象
 	ctx := c.Request.Context()
-	meta := relayHelper.NewRelayMeta(c)
-	// get & validate textRequest
-	textRequest, err := getAndValidateTextRequest(c, meta.Mode)
+	// 创建 AI 转发元数据
+	meta := relayhelper.NewAIRelayMeta(c)
+
+	// 获取并验证文本请求
+	textRequest, err := ValidateAndExtractTextRequest(c, meta.Mode)
 	if err != nil {
-		common.Errorf(ctx, "getAndValidateTextRequest failed: %s", err.Error())
-		return channel_openai.ErrorWrapper(err, "invalid_text_request", http.StatusBadRequest)
+		common.Errorf(ctx, "ValidateAndExtractTextRequest failed: %s", err.Error())
+		return relayhelper.WrapHTTPError(err, "invalid_text_request", http.StatusBadRequest)
 	}
 	meta.IsStream = textRequest.Stream
 
-	// map model name
+	// 映射模型名称
 	var isModelMapped bool
 	meta.OriginModelName = textRequest.Model
-	textRequest.Model, isModelMapped = relayHelper.MapModelName(textRequest.Model, meta.ModelMapping)
+	textRequest.Model, isModelMapped = relayhelper.MapModelName(textRequest.Model, meta.ModelMapping)
 	meta.ActualModelName = textRequest.Model
-	// get model ratio & group ratio
-	modelRatio := common.GetModelRatio(textRequest.Model)
-	groupRatio := common.GetGroupRatio(meta.Group)
+
+	// 获取模型比例和组比例
+	modelRatio := common.RetrieveModelRatio(textRequest.Model)
+	groupRatio := common.RetrieveGroupRatio(meta.Group)
 	ratio := modelRatio * groupRatio
-	// pre-consume quota
-	promptTokens := getPromptTokens(textRequest, meta.Mode)
+
+	// 预消耗配额
+	promptTokens := CalculateInputTokens(textRequest, meta.Mode)
 	meta.PromptTokens = promptTokens
-	preConsumedQuota, bizErr := preConsumeQuota(ctx, textRequest, promptTokens, ratio, meta)
+	preConsumedQuota, bizErr := PreConsumeQuota(ctx, textRequest, promptTokens, ratio, meta)
 	if bizErr != nil {
-		common.Warnf(ctx, "preConsumeQuota failed: %+v", *bizErr)
+		common.Warnf(ctx, "PreConsumeQuota failed: %+v", *bizErr)
 		return bizErr
 	}
 
+	// 获取适配器
 	adaptor := relay.GetAdaptor(meta.APIType)
 	if adaptor == nil {
-		return channel_openai.ErrorWrapper(fmt.Errorf("invalid api type: %d", meta.APIType), "invalid_api_type", http.StatusBadRequest)
+		return relayhelper.WrapHTTPError(fmt.Errorf("invalid api type: %d", meta.APIType), "invalid_api_type", http.StatusBadRequest)
 	}
 
-	// get request body
+	// 获取请求体
 	var requestBody io.Reader
-	if meta.APIType == relayCommon.APITypeOpenAI {
-		// no need to convert request for openai
+	if meta.APIType == relaycommon.APITypeOpenAI {
+		// 对于 OpenAI 不需要转换请求
 		if isModelMapped {
 			jsonStr, err := json.Marshal(textRequest)
 			if err != nil {
-				return channel_openai.ErrorWrapper(err, "json_marshal_failed", http.StatusInternalServerError)
+				return relayhelper.WrapHTTPError(err, "json_marshal_failed", http.StatusInternalServerError)
 			}
 			requestBody = bytes.NewBuffer(jsonStr)
 		} else {
@@ -67,35 +79,39 @@ func RelayTextHelper(c *gin.Context) *relayModel.ErrorWithStatusCode {
 	} else {
 		convertedRequest, err := adaptor.ConvertRequest(c, meta.Mode, textRequest)
 		if err != nil {
-			return channel_openai.ErrorWrapper(err, "convert_request_failed", http.StatusInternalServerError)
+			return relayhelper.WrapHTTPError(err, "convert_request_failed", http.StatusInternalServerError)
 		}
 		jsonData, err := json.Marshal(convertedRequest)
 		if err != nil {
-			return channel_openai.ErrorWrapper(err, "json_marshal_failed", http.StatusInternalServerError)
+			return relayhelper.WrapHTTPError(err, "json_marshal_failed", http.StatusInternalServerError)
 		}
 		requestBody = bytes.NewBuffer(jsonData)
 	}
 
-	// do request
+	// 发起请求
 	resp, err := adaptor.DoRequest(c, meta, requestBody)
 	if err != nil {
 		common.Errorf(ctx, "DoRequest failed: %s", err.Error())
-		return channel_openai.ErrorWrapper(err, "do_request_failed", http.StatusInternalServerError)
-	}
-	meta.IsStream = meta.IsStream || strings.HasPrefix(resp.Header.Get("Content-Type"), "text/event-stream")
-	if resp.StatusCode != http.StatusOK {
-		relayHelper.ReturnPreConsumedQuota(ctx, preConsumedQuota, meta.TokenId)
-		return relayHelper.RelayErrorHandler(resp)
+		return relayhelper.WrapHTTPError(err, "do_request_failed", http.StatusInternalServerError)
 	}
 
-	// do response
+	meta.IsStream = meta.IsStream || strings.HasPrefix(resp.Header.Get("Content-Type"), "text/event-stream")
+
+	if resp.StatusCode != http.StatusOK {
+		relayhelper.ReturnPreConsumedQuota(ctx, preConsumedQuota, meta.TokenId)
+		return relayhelper.NewHTTPError(resp)
+	}
+
+	// 处理响应
 	usage, respErr := adaptor.DoResponse(c, resp, meta)
 	if respErr != nil {
 		common.Errorf(ctx, "respErr is not nil: %+v", respErr)
-		relayHelper.ReturnPreConsumedQuota(ctx, preConsumedQuota, meta.TokenId)
+		relayhelper.ReturnPreConsumedQuota(ctx, preConsumedQuota, meta.TokenId)
 		return respErr
 	}
-	// post-consume quota
-	go postConsumeQuota(ctx, usage, meta, textRequest, ratio, preConsumedQuota, modelRatio, groupRatio)
+
+	// 后消耗配额
+	go PostConsumeQuota(ctx, usage, meta, textRequest, ratio, preConsumedQuota, modelRatio, groupRatio)
+
 	return nil
 }

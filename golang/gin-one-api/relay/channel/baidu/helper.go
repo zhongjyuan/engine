@@ -11,10 +11,9 @@ import (
 	"sync"
 	"time"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayHelper "zhongjyuan/gin-one-api/relay/helper"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,14 +22,14 @@ import (
 
 var baiduTokenStore sync.Map
 
-// ConvertRequest 将通用的 OpenAI 请求转换为 ChatRequest 对象。
+// ConvertRequest 将通用的 OpenAI 请求转换为 AIChatRequest 对象。
 //
 // 输入参数：
 //   - request: 通用的 OpenAI 请求对象。
 //
 // 输出参数：
-//   - *ChatRequest: 转换后的 ChatRequest 对象。
-func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
+//   - *AIChatRequest: 转换后的 AIChatRequest 对象。
+func ConvertRequest(request relaymodel.AIRequest) *AIChatRequest {
 	// 初始化一个空的消息数组
 	messages := make([]Message, 0, len(request.Messages))
 
@@ -55,67 +54,67 @@ func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
 		}
 	}
 
-	// 构建并返回 ChatRequest 对象
-	return &ChatRequest{
+	// 构建并返回 AIChatRequest 对象
+	return &AIChatRequest{
 		Messages: messages,
 		Stream:   request.Stream,
 	}
 }
 
-// responseBaidu2OpenAI 将 ChatResponse 转换为 channel_openai.TextResponse 对象。
+// responseBaidu2OpenAI 将 ChatResponse 转换为 relaymodel.AITextResponse 对象。
 //
 // 输入参数：
 //   - response: 要转换的 ChatResponse 对象。
 //
 // 输出参数：
-//   - *channel_openai.TextResponse: 转换后的 channel_openai.TextResponse 对象。
-func responseBaidu2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
-	// 创建 TextResponseChoice 对象
-	choice := channel_openai.TextResponseChoice{
+//   - *relaymodel.AITextResponse: 转换后的 relaymodel.AITextResponse 对象。
+func responseBaidu2OpenAI(response *ChatResponse) *relaymodel.AITextResponse {
+	// 创建 AITextResponseChoice 对象
+	choice := relaymodel.AITextResponseChoice{
 		Index: 0,
-		Message: relayModel.Message{
+		AIMessage: relaymodel.AIMessage{
 			Role:    "assistant",
 			Content: response.Result,
 		},
 		FinishReason: "stop", // 设置完成原因为停止
 	}
 
-	// 创建完整的 TextResponse 对象
-	fullTextResponse := channel_openai.TextResponse{
+	// 创建完整的 AITextResponse 对象
+	fullTextResponse := relaymodel.AITextResponse{
 		Id:      response.Id,
 		Object:  "chat.completion",
 		Created: response.Created,
-		Choices: []channel_openai.TextResponseChoice{choice},
+		Choices: []relaymodel.AITextResponseChoice{choice},
 		Usage:   response.Usage,
 	}
 
 	return &fullTextResponse
 }
 
-// streamResponseBaidu2OpenAI 将 ChatStreamResponse 转换为 channel_openai.ChatCompletionsStreamResponse 对象。
+// streamResponseBaidu2OpenAI 将 ChatStreamResponse 转换为 relaymodel.AIChatCompletionsStreamResponse 对象。
 //
 // 输入参数：
 //   - baiduResponse: 要转换的 ChatStreamResponse 对象。
 //
 // 输出参数：
-//   - *channel_openai.ChatCompletionsStreamResponse: 转换后的 channel_openai.ChatCompletionsStreamResponse 对象。
-func streamResponseBaidu2OpenAI(baiduResponse *ChatStreamResponse) *channel_openai.ChatCompletionsStreamResponse {
-	// 创建 ChatCompletionsStreamResponseChoice 对象
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+//   - *relaymodel.AIChatCompletionsStreamResponse: 转换后的 relaymodel.AIChatCompletionsStreamResponse 对象。
+func streamResponseBaidu2OpenAI(baiduResponse *ChatStreamResponse) *relaymodel.AIChatCompletionsStreamResponse {
+	// 创建 AIChatCompletionsStreamResponseChoice 对象
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = baiduResponse.Result
 
 	// 判断是否结束并设置完成原因
 	if baiduResponse.IsEnd {
-		choice.FinishReason = &relayCommon.StopFinishReason
+		choice.FinishReason = &relaycommon.StopFinishReason
 	}
 
-	// 创建完整的 ChatCompletionsStreamResponse 对象
-	response := channel_openai.ChatCompletionsStreamResponse{
+	// 创建完整的 AIChatCompletionsStreamResponse 对象
+	response := relaymodel.AIChatCompletionsStreamResponse{
 		Id:      baiduResponse.Id,
 		Object:  "chat.completion.chunk",
 		Created: baiduResponse.Created,
 		Model:   "ernie-bot",
-		Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+		Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 	}
 
 	return &response
@@ -128,32 +127,32 @@ func streamResponseBaidu2OpenAI(baiduResponse *ChatStreamResponse) *channel_open
 //
 // 输出参数：
 //   - *EmbeddingRequest: 转换后的 EmbeddingRequest 对象。
-func ConvertEmbeddingRequest(request relayModel.GeneralOpenAIRequest) *EmbeddingRequest {
+func ConvertEmbeddingRequest(request relaymodel.AIRequest) *EmbeddingRequest {
 	// 解析输入内容并构建 EmbeddingRequest 对象
 	return &EmbeddingRequest{
-		Input: request.ParseInput(),
+		Input: request.ParseInputToStrings(),
 	}
 }
 
-// embeddingResponseBaidu2OpenAI 将 EmbeddingResponse 转换为 channel_openai.EmbeddingResponse 对象。
+// embeddingResponseBaidu2OpenAI 将 AIEmbeddingResponse 转换为 relaymodel.AIEmbeddingResponse 对象。
 //
 // 输入参数：
-//   - response: 要转换的 EmbeddingResponse 对象。
+//   - response: 要转换的 AIEmbeddingResponse 对象。
 //
 // 输出参数：
-//   - *channel_openai.EmbeddingResponse: 转换后的 channel_openai.EmbeddingResponse 对象。
-func embeddingResponseBaidu2OpenAI(response *EmbeddingResponse) *channel_openai.EmbeddingResponse {
-	// 创建 OpenAI EmbeddingResponse 对象
-	openAIEmbeddingResponse := channel_openai.EmbeddingResponse{
+//   - *relaymodel.AIEmbeddingResponse: 转换后的 relaymodel.AIEmbeddingResponse 对象。
+func embeddingResponseBaidu2OpenAI(response *AIEmbeddingResponse) *relaymodel.AIEmbeddingResponse {
+	// 创建 OpenAI AIEmbeddingResponse 对象
+	openAIEmbeddingResponse := relaymodel.AIEmbeddingResponse{
 		Object: "list",
-		Data:   make([]channel_openai.EmbeddingResponseItem, 0, len(response.Data)),
+		Data:   make([]relaymodel.AIEmbeddingResponseItem, 0, len(response.Data)),
 		Model:  "baidu-embedding",
 		Usage:  response.Usage,
 	}
 
-	// 遍历 response 中的每个项并添加到 OpenAI EmbeddingResponse 中
+	// 遍历 response 中的每个项并添加到 OpenAI AIEmbeddingResponse 中
 	for _, item := range response.Data {
-		openAIEmbeddingResponse.Data = append(openAIEmbeddingResponse.Data, channel_openai.EmbeddingResponseItem{
+		openAIEmbeddingResponse.Data = append(openAIEmbeddingResponse.Data, relaymodel.AIEmbeddingResponseItem{
 			Object:    item.Object,
 			Index:     item.Index,
 			Embedding: item.Embedding,
@@ -170,10 +169,10 @@ func embeddingResponseBaidu2OpenAI(response *EmbeddingResponse) *channel_openai.
 //   - resp: HTTP 响应对象。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 错误及状态码信息。
-//   - *relayModel.Usage: 使用情况信息。
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
-	var usage relayModel.Usage
+//   - *relaymodel.HTTPError: 错误及状态码信息。
+//   - *relaymodel.Usage: 使用情况信息。
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
+	var usage relaymodel.Usage
 	scanner := bufio.NewScanner(resp.Body)
 	// 自定义分隔符函数，用于按行读取数据
 	scanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
@@ -246,29 +245,29 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 	// 关闭响应体
 	err := resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	return nil, &usage
 }
 
-func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func Handler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	var baiduResponse ChatResponse
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = json.Unmarshal(responseBody, &baiduResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	if baiduResponse.ErrorMsg != "" {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: baiduResponse.ErrorMsg,
 				Type:    "baidu_error",
 				Param:   "",
@@ -281,7 +280,7 @@ func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCo
 	fullTextResponse.Model = "ernie-bot"
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)
@@ -289,23 +288,23 @@ func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCo
 	return nil, &fullTextResponse.Usage
 }
 
-func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
-	var baiduResponse EmbeddingResponse
+func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
+	var baiduResponse AIEmbeddingResponse
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = json.Unmarshal(responseBody, &baiduResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	if baiduResponse.ErrorMsg != "" {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: baiduResponse.ErrorMsg,
 				Type:    "baidu_error",
 				Param:   "",
@@ -317,7 +316,7 @@ func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWit
 	fullTextResponse := embeddingResponseBaidu2OpenAI(&baiduResponse)
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)
@@ -360,7 +359,7 @@ func getBaiduAccessTokenHelper(apiKey string) (*AccessToken, error) {
 	}
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
-	res, err := relayHelper.ImpatientHTTPClient.Do(req)
+	res, err := relayhelper.ImpatientHTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

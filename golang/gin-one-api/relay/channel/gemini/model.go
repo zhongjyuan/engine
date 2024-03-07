@@ -1,6 +1,6 @@
 package channel_gemini
 
-type ChatRequest struct {
+type AIChatRequest struct {
 	Contents         []ChatContent        `json:"contents"`
 	SafetySettings   []ChatSafetySettings `json:"safety_settings,omitempty"`
 	GenerationConfig ChatGenerationConfig `json:"generation_config,omitempty"`

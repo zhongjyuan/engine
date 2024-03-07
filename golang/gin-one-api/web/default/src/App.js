@@ -1,20 +1,24 @@
 import React, { lazy, Suspense, useContext, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+
+import { API, getLogo, getSystemName, showError, showNotice } from './helpers';
+
+import { UserContext } from './context/User';
+import { StatusContext } from './context/Status';
+
 import Loading from './components/Loading';
-import User from './pages/User';
 import { PrivateRoute } from './components/PrivateRoute';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
+import GitHubOAuth from './components/GitHubOAuth';
+import PasswordResetForm from './components/PasswordResetForm';
+import PasswordResetConfirm from './components/PasswordResetConfirm';
+
+import User from './pages/User';
 import NotFound from './pages/NotFound';
 import Setting from './pages/Setting';
-import EditUser from './pages/User/EditUser';
 import AddUser from './pages/User/AddUser';
-import { API, getLogo, getSystemName, showError, showNotice } from './helpers';
-import PasswordResetForm from './components/PasswordResetForm';
-import GitHubOAuth from './components/GitHubOAuth';
-import PasswordResetConfirm from './components/PasswordResetConfirm';
-import { UserContext } from './context/User';
-import { StatusContext } from './context/Status';
+import EditUser from './pages/User/EditUser';
 import Channel from './pages/Channel';
 import Token from './pages/Token';
 import EditToken from './pages/Token/EditToken';
@@ -39,6 +43,7 @@ function App() {
       userDispatch({ type: 'login', payload: data });
     }
   };
+
   const loadStatus = async () => {
     const res = await API.get('/api/status');
     const { success, data } = res.data;
@@ -252,11 +257,11 @@ function App() {
       <Route
         path='/topup'
         element={
-        <PrivateRoute>
-          <Suspense fallback={<Loading></Loading>}>
-            <TopUp />
-          </Suspense>
-        </PrivateRoute>
+          <PrivateRoute>
+            <Suspense fallback={<Loading></Loading>}>
+              <TopUp />
+            </Suspense>
+          </PrivateRoute>
         }
       />
       <Route
@@ -283,9 +288,7 @@ function App() {
           </Suspense>
         }
       />
-      <Route path='*' element={
-          <NotFound />
-      } />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 }

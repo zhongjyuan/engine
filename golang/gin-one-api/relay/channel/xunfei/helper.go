@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -23,7 +23,7 @@ import (
 // https://console.xfyun.cn/services/cbm
 // https://www.xfyun.cn/doc/spark/Web.html
 
-func requestOpenAI2Xunfei(request relayModel.GeneralOpenAIRequest, xunfeiAppId string, domain string) *ChatRequest {
+func requestOpenAI2Xunfei(request relaymodel.AIRequest, xunfeiAppId string, domain string) *AIChatRequest {
 	messages := make([]Message, 0, len(request.Messages))
 	for _, message := range request.Messages {
 		if message.Role == "system" {
@@ -42,7 +42,7 @@ func requestOpenAI2Xunfei(request relayModel.GeneralOpenAIRequest, xunfeiAppId s
 			})
 		}
 	}
-	xunfeiRequest := ChatRequest{}
+	xunfeiRequest := AIChatRequest{}
 	xunfeiRequest.Header.AppId = xunfeiAppId
 	xunfeiRequest.Parameter.Chat.Domain = domain
 	xunfeiRequest.Parameter.Chat.Temperature = request.Temperature
@@ -52,7 +52,7 @@ func requestOpenAI2Xunfei(request relayModel.GeneralOpenAIRequest, xunfeiAppId s
 	return &xunfeiRequest
 }
 
-func responseXunfei2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
+func responseXunfei2OpenAI(response *ChatResponse) *relaymodel.AITextResponse {
 	if len(response.Payload.Choices.Text) == 0 {
 		response.Payload.Choices.Text = []ChatResponseTextItem{
 			{
@@ -60,25 +60,25 @@ func responseXunfei2OpenAI(response *ChatResponse) *channel_openai.TextResponse 
 			},
 		}
 	}
-	choice := channel_openai.TextResponseChoice{
+	choice := relaymodel.AITextResponseChoice{
 		Index: 0,
-		Message: relayModel.Message{
+		AIMessage: relaymodel.AIMessage{
 			Role:    "assistant",
 			Content: response.Payload.Choices.Text[0].Content,
 		},
-		FinishReason: relayCommon.StopFinishReason,
+		FinishReason: relaycommon.StopFinishReason,
 	}
-	fullTextResponse := channel_openai.TextResponse{
+	fullTextResponse := relaymodel.AITextResponse{
 		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion",
 		Created: common.GetTimestamp(),
-		Choices: []channel_openai.TextResponseChoice{choice},
+		Choices: []relaymodel.AITextResponseChoice{choice},
 		Usage:   response.Payload.Usage.Text,
 	}
 	return &fullTextResponse
 }
 
-func streamResponseXunfei2OpenAI(xunfeiResponse *ChatResponse) *channel_openai.ChatCompletionsStreamResponse {
+func streamResponseXunfei2OpenAI(xunfeiResponse *ChatResponse) *relaymodel.AIChatCompletionsStreamResponse {
 	if len(xunfeiResponse.Payload.Choices.Text) == 0 {
 		xunfeiResponse.Payload.Choices.Text = []ChatResponseTextItem{
 			{
@@ -86,17 +86,17 @@ func streamResponseXunfei2OpenAI(xunfeiResponse *ChatResponse) *channel_openai.C
 			},
 		}
 	}
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = xunfeiResponse.Payload.Choices.Text[0].Content
 	if xunfeiResponse.Payload.Choices.Status == 2 {
-		choice.FinishReason = &relayCommon.StopFinishReason
+		choice.FinishReason = &relaycommon.StopFinishReason
 	}
-	response := channel_openai.ChatCompletionsStreamResponse{
+	response := relaymodel.AIChatCompletionsStreamResponse{
 		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   "SparkDesk",
-		Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+		Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 	}
 	return &response
 }
@@ -127,14 +127,14 @@ func buildXunfeiAuthUrl(hostUrl string, apiKey, apiSecret string) string {
 	return callUrl
 }
 
-func StreamHandler(c *gin.Context, textRequest relayModel.GeneralOpenAIRequest, appId string, apiSecret string, apiKey string) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func StreamHandler(c *gin.Context, textRequest relaymodel.AIRequest, appId string, apiSecret string, apiKey string) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	domain, authUrl := getXunfeiAuthUrl(c, apiKey, apiSecret, textRequest.Model)
 	dataChan, stopChan, err := xunfeiMakeRequest(textRequest, domain, authUrl, appId)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "make xunfei request err", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "make xunfei request err", http.StatusInternalServerError), nil
 	}
 	common.SetEventStreamHeaders(c)
-	var usage relayModel.Usage
+	var usage relaymodel.Usage
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case xunfeiResponse := <-dataChan:
@@ -157,13 +157,13 @@ func StreamHandler(c *gin.Context, textRequest relayModel.GeneralOpenAIRequest, 
 	return nil, &usage
 }
 
-func Handler(c *gin.Context, textRequest relayModel.GeneralOpenAIRequest, appId string, apiSecret string, apiKey string) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func Handler(c *gin.Context, textRequest relaymodel.AIRequest, appId string, apiSecret string, apiKey string) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	domain, authUrl := getXunfeiAuthUrl(c, apiKey, apiSecret, textRequest.Model)
 	dataChan, stopChan, err := xunfeiMakeRequest(textRequest, domain, authUrl, appId)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "make xunfei request err", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "make xunfei request err", http.StatusInternalServerError), nil
 	}
-	var usage relayModel.Usage
+	var usage relaymodel.Usage
 	var content string
 	var xunfeiResponse ChatResponse
 	stop := false
@@ -192,14 +192,14 @@ func Handler(c *gin.Context, textRequest relayModel.GeneralOpenAIRequest, appId 
 	response := responseXunfei2OpenAI(&xunfeiResponse)
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	_, _ = c.Writer.Write(jsonResponse)
 	return nil, &usage
 }
 
-func xunfeiMakeRequest(textRequest relayModel.GeneralOpenAIRequest, domain, authUrl, appId string) (chan ChatResponse, chan bool, error) {
+func xunfeiMakeRequest(textRequest relaymodel.AIRequest, domain, authUrl, appId string) (chan ChatResponse, chan bool, error) {
 	d := websocket.Dialer{
 		HandshakeTimeout: 5 * time.Second,
 	}

@@ -11,7 +11,7 @@ const AbilityTableName = "one_api_ability"
 type AbilityEntity struct {
 	Group     string `json:"group" gorm:"column:group;type:varchar(32);primaryKey;autoIncrement:false"` // 分组，作为主键，不自增
 	Model     string `json:"model" gorm:"column:model;primaryKey;autoIncrement:false"`                  // 模型，作为主键，不自增
-	ChannelId int    `json:"channelId" gorm:"column:channel_id;primaryKey;autoIncrement:false;index"`   // 渠道ID，作为主键，不自增，创建索引
+	ChannelId int    `json:"channelId" gorm:"column:channelId;primaryKey;autoIncrement:false;index"`    // 渠道ID，作为主键，不自增，创建索引
 	Priority  *int64 `json:"priority" gorm:"column:priority;bigint;default:0;index"`                    // 优先级，整型，默认值为 0，创建索引
 	Enabled   bool   `json:"enabled" gorm:"column:enabled"`                                             // 是否启用
 }
@@ -57,7 +57,7 @@ func BatchInsertAbilitiesForChannel(channel *ChannelEntity) error {
 // 输出参数：
 //   - error: 如果出现错误，则返回相应的错误信息；否则返回 nil。
 func DeleteAbilityByChannelID(channelID int) error {
-	return DB.Where("channel_id = ?", channelID).Delete(&AbilityEntity{}).Error
+	return DB.Where("channelId = ?", channelID).Delete(&AbilityEntity{}).Error
 }
 
 // BatchUpdateAbilitiesByChannel 批量更新渠道的能力信息。
@@ -84,7 +84,7 @@ func BatchUpdateAbilitiesByChannel(channel *ChannelEntity) error {
 // 输出参数：
 //   - error: 如果出现错误，则返回相应的错误信息；否则返回 nil。
 func UpdateAbilityStatusByChannelID(channelID int, status bool) error {
-	return DB.Model(&AbilityEntity{}).Where("channel_id = ?", channelID).Select("enabled").Update("enabled", status).Error
+	return DB.Model(&AbilityEntity{}).Where("channelId = ?", channelID).Select("enabled").Update("enabled", status).Error
 }
 
 // GetRandomChannel   从数据库中随机获取满足条件的渠道信息。

@@ -28,7 +28,7 @@ func GetAffCode(c *gin.Context) {
 	// 如果用户的推广码为空，则生成一个随机码并更新用户信息
 	if user.Profile.AffCode == "" {
 		user.Profile.AffCode = common.GetRandomString(4)
-		if err := user.Update(false); err != nil {
+		if err := user.Update(false, true); err != nil {
 			common.SendFailureJSONResponse(c, err.Error())
 			return
 		}

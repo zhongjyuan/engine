@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,7 +39,7 @@ func stopReasonClaude2OpenAI(reason string) string {
 //
 // 输出参数：
 //   - 构建好的提示字符串。
-func buildPrompt(messages []relayModel.Message) string {
+func buildPrompt(messages []relaymodel.AIMessage) string {
 	prompt := ""
 	for _, message := range messages {
 		switch message.Role {
@@ -64,7 +64,7 @@ func buildPrompt(messages []relayModel.Message) string {
 //
 // 输出参数：
 //   - 转换后的Request对象指针。
-func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *Request {
+func ConvertRequest(textRequest relaymodel.AIRequest) *Request {
 	claudeRequest := Request{
 		Model:             textRequest.Model,
 		Prompt:            "",
@@ -92,9 +92,9 @@ func ConvertRequest(textRequest relayModel.GeneralOpenAIRequest) *Request {
 //
 // 输出参数：
 //   - 转换后的OpenAI的ChatCompletionsStreamResponse对象指针。
-func streamResponseClaude2OpenAI(claudeResponse *Response) *channel_openai.ChatCompletionsStreamResponse {
+func streamResponseClaude2OpenAI(claudeResponse *Response) *relaymodel.AIChatCompletionsStreamResponse {
 	// 创建一个新的ChatCompletionsStreamResponseChoice对象
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	// 将Claude的Completion赋值给Delta的Content字段
 	choice.Delta.Content = claudeResponse.Completion
 
@@ -106,10 +106,10 @@ func streamResponseClaude2OpenAI(claudeResponse *Response) *channel_openai.ChatC
 	}
 
 	// 创建一个新的ChatCompletionsStreamResponse对象
-	var response channel_openai.ChatCompletionsStreamResponse
+	var response relaymodel.AIChatCompletionsStreamResponse
 	response.Object = "chat.completion.chunk"
 	response.Model = claudeResponse.Model
-	response.Choices = []channel_openai.ChatCompletionsStreamResponseChoice{choice}
+	response.Choices = []relaymodel.AIChatCompletionsStreamResponseChoice{choice}
 
 	return &response
 }
@@ -121,11 +121,11 @@ func streamResponseClaude2OpenAI(claudeResponse *Response) *channel_openai.ChatC
 //
 // 输出参数：
 //   - 转换后的OpenAI的TextResponse对象指针。
-func responseClaude2OpenAI(claudeResponse *Response) *channel_openai.TextResponse {
+func responseClaude2OpenAI(claudeResponse *Response) *relaymodel.AITextResponse {
 	// 创建一个新的TextResponseChoice对象
-	choice := channel_openai.TextResponseChoice{
+	choice := relaymodel.AITextResponseChoice{
 		Index: 0,
-		Message: relayModel.Message{
+		AIMessage: relaymodel.AIMessage{
 			Role:    "assistant",
 			Content: strings.TrimPrefix(claudeResponse.Completion, " "),
 			Name:    nil,
@@ -134,11 +134,11 @@ func responseClaude2OpenAI(claudeResponse *Response) *channel_openai.TextRespons
 	}
 
 	// 创建一个新的TextResponse对象
-	fullTextResponse := channel_openai.TextResponse{
+	fullTextResponse := relaymodel.AITextResponse{
 		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion",
 		Created: common.GetTimestamp(),
-		Choices: []channel_openai.TextResponseChoice{choice},
+		Choices: []relaymodel.AITextResponseChoice{choice},
 	}
 
 	return &fullTextResponse
@@ -200,9 +200,9 @@ func readStreamData(scanner *bufio.Scanner, dataChan chan<- string, stopChan cha
 //   - resp: HTTP响应对象指针。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 错误对象和HTTP状态码。
+//   - *relaymodel.HTTPError: 错误对象和HTTP状态码。
 //   - string: 响应文本字符串。
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, string) {
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, string) {
 	responseText := ""
 	responseId := fmt.Sprintf("chatcmpl-%s", common.GetUUID()) // 生成响应ID
 	createdTime := common.GetTimestamp()                       // 获取当前时间戳
@@ -229,7 +229,7 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 
 	err := resp.Body.Close() // 关闭响应体
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), "" // 返回错误信息
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), "" // 返回错误信息
 	}
 
 	return nil, responseText // 返回响应文本字符串
@@ -244,13 +244,13 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 //   - modelName: 模型名称。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 错误对象和HTTP状态码。
-//   - *relayModel.Usage: 使用情况对象。
-func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+//   - *relaymodel.HTTPError: 错误对象和HTTP状态码。
+//   - *relaymodel.Usage: 使用情况对象。
+func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName string) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	// 读取响应体数据
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	defer resp.Body.Close()
 
@@ -258,13 +258,13 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 	var claudeResponse Response
 	err = json.Unmarshal(responseBody, &claudeResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	// 检查是否有错误信息并返回相应的错误对象
 	if claudeResponse.Error.Type != "" {
-		errResponse := &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		errResponse := &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: claudeResponse.Error.Message,
 				Type:    claudeResponse.Error.Type,
 				Param:   "",
@@ -280,10 +280,10 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 	fullTextResponse.Model = modelName
 
 	// 计算完成文本的标记数量
-	completionTokens := channel_openai.CalculateTextTokens(claudeResponse.Completion, modelName)
+	completionTokens := relaymodel.CalculateTextTokens(claudeResponse.Completion, modelName)
 
 	// 构建使用情况对象
-	usage := &relayModel.Usage{
+	usage := &relaymodel.Usage{
 		PromptTokens:     promptTokens,
 		CompletionTokens: completionTokens,
 		TotalTokens:      promptTokens + completionTokens,
@@ -293,7 +293,7 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 	// 将TextResponse对象转换为JSON字符串
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	// 设置HTTP响应头并写入响应数据

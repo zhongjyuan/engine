@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Label, Pagination, Popup, Table } from 'semantic-ui-react';
+import {
+  Button,
+  Form,
+  Label,
+  Pagination,
+  Popup,
+  Table,
+} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+
 import { API, showError, showSuccess } from '../helpers';
+import {
+  renderGroup,
+  renderNumber,
+  renderQuota,
+  renderText,
+} from '../helpers/render';
 
 import { ITEMS_PER_PAGE } from '../constants';
-import { renderGroup, renderNumber, renderQuota, renderText } from '../helpers/render';
 
 function renderRole(role) {
   switch (role) {
@@ -20,11 +33,11 @@ function renderRole(role) {
 }
 
 const UsersTable = () => {
-  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
   const [activePage, setActivePage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [searching, setSearching] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const loadUsers = async (startIdx) => {
     const res = await API.get(`/api/user/?p=${startIdx}`);
@@ -65,7 +78,7 @@ const UsersTable = () => {
     (async () => {
       const res = await API.post('/api/user/manage', {
         userName,
-        action
+        action,
       });
       const { success, message } = res.data;
       if (success) {
@@ -184,7 +197,7 @@ const UsersTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortUser('group');
+                sortUser('profile.group');
               }}
             >
               分组
@@ -192,7 +205,7 @@ const UsersTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortUser('quota');
+                sortUser('profile.quota');
               }}
             >
               统计信息
@@ -232,19 +245,37 @@ const UsersTable = () => {
                     <Popup
                       content={user.email ? user.email : '未绑定邮箱地址'}
                       key={user.userName}
-                      header={user.displayName ? user.displayName : user.userName}
+                      header={
+                        user.displayName ? user.displayName : user.userName
+                      }
                       trigger={<span>{renderText(user.userName, 15)}</span>}
                       hoverable
                     />
                   </Table.Cell>
-                  <Table.Cell>{renderGroup(user.group)}</Table.Cell>
-                  {/*<Table.Cell>*/}
-                  {/*  {user.email ? <Popup hoverable content={user.email} trigger={<span>{renderText(user.email, 24)}</span>} /> : '无'}*/}
-                  {/*</Table.Cell>*/}
+                  <Table.Cell>{renderGroup(user.profile.group)}</Table.Cell>
                   <Table.Cell>
-                    <Popup content='剩余额度' trigger={<Label basic>{renderQuota(user.quota)}</Label>} />
-                    <Popup content='已用额度' trigger={<Label basic>{renderQuota(user.usedQuota)}</Label>} />
-                    <Popup content='请求次数' trigger={<Label basic>{renderNumber(user.requestCount)}</Label>} />
+                    <Popup
+                      content='剩余额度'
+                      trigger={
+                        <Label basic>{renderQuota(user.profile.quota)}</Label>
+                      }
+                    />
+                    <Popup
+                      content='已用额度'
+                      trigger={
+                        <Label basic>
+                          {renderQuota(user.profile.usedQuota)}
+                        </Label>
+                      }
+                    />
+                    <Popup
+                      content='请求次数'
+                      trigger={
+                        <Label basic>
+                          {renderNumber(user.profile.requestCount)}
+                        </Label>
+                      }
+                    />
                   </Table.Cell>
                   <Table.Cell>{renderRole(user.role)}</Table.Cell>
                   <Table.Cell>{renderStatus(user.status)}</Table.Cell>
@@ -272,7 +303,11 @@ const UsersTable = () => {
                       </Button>
                       <Popup
                         trigger={
-                          <Button size='small' negative disabled={user.role === 100}>
+                          <Button
+                            size='small'
+                            negative
+                            disabled={user.role === 100}
+                          >
                             删除
                           </Button>
                         }

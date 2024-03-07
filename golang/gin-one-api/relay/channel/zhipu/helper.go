@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -19,8 +19,8 @@ import (
 
 // https://open.bigmodel.cn/doc/api#chatglm_std
 // chatglm_std, chatglm_lite
-// https://open.bigmodel.cn/api/paas/v3/relayModel-api/chatglm_std/invoke
-// https://open.bigmodel.cn/api/paas/v3/relayModel-api/chatglm_std/sse-invoke
+// https://open.bigmodel.cn/api/paas/v3/relaymodel-api/chatglm_std/invoke
+// https://open.bigmodel.cn/api/paas/v3/relaymodel-api/chatglm_std/sse-invoke
 
 var zhipuTokens sync.Map
 var expSeconds int64 = 24 * 3600
@@ -72,7 +72,7 @@ func GetToken(apikey string) string {
 	return tokenString
 }
 
-func ConvertRequest(request relayModel.GeneralOpenAIRequest) *Request {
+func ConvertRequest(request relaymodel.AIRequest) *Request {
 	messages := make([]Message, 0, len(request.Messages))
 	for _, message := range request.Messages {
 		if message.Role == "system" {
@@ -99,18 +99,18 @@ func ConvertRequest(request relayModel.GeneralOpenAIRequest) *Request {
 	}
 }
 
-func responseZhipu2OpenAI(response *Response) *channel_openai.TextResponse {
-	fullTextResponse := channel_openai.TextResponse{
+func responseZhipu2OpenAI(response *Response) *relaymodel.AITextResponse {
+	fullTextResponse := relaymodel.AITextResponse{
 		Id:      response.Data.TaskId,
 		Object:  "chat.completion",
 		Created: common.GetTimestamp(),
-		Choices: make([]channel_openai.TextResponseChoice, 0, len(response.Data.Choices)),
+		Choices: make([]relaymodel.AITextResponseChoice, 0, len(response.Data.Choices)),
 		Usage:   response.Data.Usage,
 	}
 	for i, choice := range response.Data.Choices {
-		openaiChoice := channel_openai.TextResponseChoice{
+		openaiChoice := relaymodel.AITextResponseChoice{
 			Index: i,
-			Message: relayModel.Message{
+			AIMessage: relaymodel.AIMessage{
 				Role:    choice.Role,
 				Content: strings.Trim(choice.Content, "\""),
 			},
@@ -124,34 +124,34 @@ func responseZhipu2OpenAI(response *Response) *channel_openai.TextResponse {
 	return &fullTextResponse
 }
 
-func streamResponseZhipu2OpenAI(zhipuResponse string) *channel_openai.ChatCompletionsStreamResponse {
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+func streamResponseZhipu2OpenAI(zhipuResponse string) *relaymodel.AIChatCompletionsStreamResponse {
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = zhipuResponse
-	response := channel_openai.ChatCompletionsStreamResponse{
+	response := relaymodel.AIChatCompletionsStreamResponse{
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   "chatglm",
-		Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+		Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 	}
 	return &response
 }
 
-func streamMetaResponseZhipu2OpenAI(zhipuResponse *StreamMetaResponse) (*channel_openai.ChatCompletionsStreamResponse, *relayModel.Usage) {
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+func streamMetaResponseZhipu2OpenAI(zhipuResponse *StreamMetaResponse) (*relaymodel.AIChatCompletionsStreamResponse, *relaymodel.Usage) {
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = ""
-	choice.FinishReason = &relayCommon.StopFinishReason
-	response := channel_openai.ChatCompletionsStreamResponse{
+	choice.FinishReason = &relaycommon.StopFinishReason
+	response := relaymodel.AIChatCompletionsStreamResponse{
 		Id:      zhipuResponse.RequestId,
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   "chatglm",
-		Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+		Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 	}
 	return &response, &zhipuResponse.Usage
 }
 
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
-	var usage *relayModel.Usage
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
+	var usage *relaymodel.Usage
 	scanner := bufio.NewScanner(resp.Body)
 	scanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
 		if atEOF && len(data) == 0 {
@@ -223,28 +223,28 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 	})
 	err := resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	return nil, usage
 }
 
-func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func Handler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	var zhipuResponse Response
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = json.Unmarshal(responseBody, &zhipuResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	if !zhipuResponse.Success {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: zhipuResponse.Msg,
 				Type:    "zhipu_error",
 				Param:   "",
@@ -257,7 +257,7 @@ func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCo
 	fullTextResponse.Model = "chatglm"
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)

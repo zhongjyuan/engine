@@ -15,21 +15,21 @@ import (
 	"zhongjyuan/gin-one-api/common"
 	"zhongjyuan/gin-one-api/model"
 	"zhongjyuan/gin-one-api/relay"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayHelper "zhongjyuan/gin-one-api/relay/helper"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
 
 // NewTestRequest 构建一个测试请求对象，并返回该对象。
-func NewTestRequest() *relayModel.GeneralOpenAIRequest {
+func NewTestRequest() *relaymodel.AIRequest {
 	// 创建测试请求对象
-	return &relayModel.GeneralOpenAIRequest{
+	return &relaymodel.AIRequest{
 		MaxTokens: 1,
 		Stream:    false,
 		Model:     "gpt-3.5-turbo",
-		Messages: []relayModel.Message{
+		Messages: []relaymodel.AIMessage{
 			{
 				Role:    "user",
 				Content: "hi",
@@ -44,9 +44,9 @@ func NewTestRequest() *relayModel.GeneralOpenAIRequest {
 //   - channel (*model.ChannelEntity): 要测试的通道实体。
 //
 // 输出参数：
-//   - *relayModel.Error: OpenAI 返回的错误信息。
+//   - *relaymodel.Error: OpenAI 返回的错误信息。
 //   - error: 函数执行过程中遇到的错误。
-func testChannel(channel *model.ChannelEntity) (*relayModel.Error, error) {
+func testChannel(channel *model.ChannelEntity) (*relaymodel.Error, error) {
 	// 创建 HTTP 测试记录器
 	recorder := httptest.NewRecorder()
 	context, _ := gin.CreateTestContext(recorder)
@@ -59,13 +59,13 @@ func testChannel(channel *model.ChannelEntity) (*relayModel.Error, error) {
 	context.Request.Header.Set("Authorization", "Bearer "+channel.Key)
 	context.Request.Header.Set("Content-Type", "application/json")
 	context.Set("channel", channel.Type)
-	context.Set("base_url", channel.GetBaseURL())
+	context.Set("baseUrl", channel.GetBaseURL())
 
-	// 创建 RelayMeta 对象
-	meta := relayHelper.NewRelayMeta(context)
+	// 创建 AIRelayMeta 对象
+	meta := relayhelper.NewAIRelayMeta(context)
 
 	// 获取适配器并初始化
-	apiType := relayCommon.ChannelType2APIType(channel.Type)
+	apiType := relaycommon.GetApiTypeByChannelType(channel.Type)
 	adaptor := relay.GetAdaptor(apiType)
 	if adaptor == nil {
 		return nil, fmt.Errorf("invalid api type: %d, adaptor is nil", apiType)
@@ -77,7 +77,7 @@ func testChannel(channel *model.ChannelEntity) (*relayModel.Error, error) {
 	testRequest := NewTestRequest()
 	testRequest.Model = modelName
 	meta.OriginModelName, meta.ActualModelName = modelName, modelName
-	convertedRequest, err := adaptor.ConvertRequest(context, relayCommon.RelayModeChatCompletions, testRequest)
+	convertedRequest, err := adaptor.ConvertRequest(context, relaycommon.RelayModeChatCompletions, testRequest)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func testChannel(channel *model.ChannelEntity) (*relayModel.Error, error) {
 
 	// 检查响应状态码
 	if response.StatusCode != http.StatusOK {
-		err := relayHelper.RelayErrorHandler(response)
+		err := relayhelper.NewHTTPError(response)
 		return &err.Error, fmt.Errorf("status code %d: %s", response.StatusCode, err.Error.Message)
 	}
 
@@ -277,11 +277,11 @@ func testAllChannels(notify bool) error {
 			}
 
 			// 根据错误情况禁用或启用通道
-			if isChannelEnabled && relayHelper.ShouldDisableChannel(openaiErr, -1) {
+			if isChannelEnabled && relayhelper.ShouldDisableChannel(openaiErr, -1) {
 				disableChannel(channel.Id, channel.Name, err.Error())
 			}
 
-			if !isChannelEnabled && relayHelper.ShouldEnableChannel(err, openaiErr) {
+			if !isChannelEnabled && relayhelper.ShouldEnableChannel(err, openaiErr) {
 				enableChannel(channel.Id, channel.Name)
 			}
 

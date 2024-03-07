@@ -7,7 +7,7 @@ type Metadata struct {
 
 // Request 结构体用于表示请求数据结构。
 type Request struct {
-	Model             string   `json:"relayModel"`               // 模型名称
+	Model             string   `json:"relaymodel"`               // 模型名称
 	Prompt            string   `json:"prompt"`                   // 输入提示文本
 	MaxTokensToSample int      `json:"max_tokens_to_sample"`     // 最大标记数样本
 	StopSequences     []string `json:"stop_sequences,omitempty"` // 停止序列
@@ -27,6 +27,6 @@ type Error struct {
 type Response struct {
 	Completion string `json:"completion"`  // 完成的文本
 	StopReason string `json:"stop_reason"` // 停止原因
-	Model      string `json:"relayModel"`  // 模型名称
+	Model      string `json:"relaymodel"`  // 模型名称
 	Error      Error  `json:"error"`       // 错误信息
 }

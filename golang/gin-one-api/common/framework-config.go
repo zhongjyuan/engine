@@ -92,16 +92,16 @@ var TurnstileCheckEnabled = false
 var RegisterEnabled = true
 
 // SMTPServer 存储 SMTP 服务器地址
-var SMTPServer = ""
+var SMTPServer = "smtp.qq.com"
 
 // SMTPPort 存储 SMTP 服务器端口
 var SMTPPort = 587
 
 // SMTPAccount 存储 SMTP 帐户信息
-var SMTPAccount = ""
+var SMTPAccount = "zhongjyuan@foxmail.com"
 
 // SMTPToken 存储 SMTP 令牌
-var SMTPToken = ""
+var SMTPToken = "xlasteuyqhfjbeid"
 
 // GitHubClientId 存储 GitHub 客户端 ID
 var GitHubClientId = ""

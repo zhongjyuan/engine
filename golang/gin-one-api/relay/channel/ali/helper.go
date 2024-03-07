@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,11 +19,11 @@ import (
 // ConvertRequest 将GeneralOpenAIRequest转换为ChatRequest对象。
 //
 // 输入参数：
-//   - request relayModel.GeneralOpenAIRequest: 要转换的通用OpenAI请求对象。
+//   - request relaymodel.AIRequest: 要转换的通用OpenAI请求对象。
 //
 // 输出参数：
-//   - *ChatRequest: 转换后的ChatRequest对象指针。
-func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
+//   - *AIChatRequest: 转换后的ChatRequest对象指针。
+func ConvertRequest(request relaymodel.AIRequest) *AIChatRequest {
 	// 初始化消息数组
 	messages := make([]Message, len(request.Messages))
 	// 遍历原始消息并转换为新格式的消息
@@ -39,7 +39,7 @@ func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
 	// 如果启用了搜索，去除模型名称中的搜索后缀
 	aliModel := strings.TrimSuffix(request.Model, EnableSearchModelSuffix)
 
-	return &ChatRequest{
+	return &AIChatRequest{
 		Model: aliModel, // 设置模型名称
 		Input: Input{
 			Messages: messages, // 设置消息数组
@@ -55,18 +55,18 @@ func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
 // ConvertEmbeddingRequest 将GeneralOpenAIRequest转换为EmbeddingRequest对象。
 //
 // 输入参数：
-//   - request relayModel.GeneralOpenAIRequest: 要转换的通用OpenAI请求对象。
+//   - request relaymodel.AIRequest: 要转换的通用OpenAI请求对象。
 //
 // 输出参数：
 //   - *EmbeddingRequest: 转换后的EmbeddingRequest对象指针。
-func ConvertEmbeddingRequest(request relayModel.GeneralOpenAIRequest) *EmbeddingRequest {
+func ConvertEmbeddingRequest(request relaymodel.AIRequest) *EmbeddingRequest {
 	// 创建并返回EmbeddingRequest对象
 	return &EmbeddingRequest{
 		Model: "text-embedding-v1", // 设置模型名称为文本嵌入模型
 		Input: struct {
 			Texts []string `json:"texts"` // 定义结构体字段Texts，用于存放文本数据
 		}{
-			Texts: request.ParseInput(), // 将输入解析为文本数据并赋值给Texts字段
+			Texts: request.ParseInputToStrings(), // 将输入解析为文本数据并赋值给Texts字段
 		},
 	}
 }
@@ -78,21 +78,21 @@ func ConvertEmbeddingRequest(request relayModel.GeneralOpenAIRequest) *Embedding
 //   - resp *http.Response: HTTP响应对象，包含来自模型的响应。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 如果在处理过程中发生错误，则返回包含错误信息和HTTP状态码的对象。
-//   - *relayModel.Usage: 返回模型使用情况的对象指针。
-func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
-	var aliResponse EmbeddingResponse // 初始化EmbeddingResponse变量
-	defer resp.Body.Close()           // 延迟关闭响应体，确保在函数返回时关闭
+//   - *relaymodel.HTTPError: 如果在处理过程中发生错误，则返回包含错误信息和HTTP状态码的对象。
+//   - *relaymodel.Usage: 返回模型使用情况的对象指针。
+func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
+	var aliResponse AIEmbeddingResponse // 初始化EmbeddingResponse变量
+	defer resp.Body.Close()             // 延迟关闭响应体，确保在函数返回时关闭
 
 	// 解析模型响应并存储到aliResponse变量中
 	if err := json.NewDecoder(resp.Body).Decode(&aliResponse); err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	if aliResponse.Code != "" {
 		// 如果模型响应中存在错误代码，则构造ErrorWithStatusCode对象返回错误信息和HTTP状态码
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: aliResponse.Message,
 				Type:    aliResponse.Code,
 				Param:   aliResponse.RequestId,
@@ -108,7 +108,7 @@ func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWit
 	// 将OpenAI响应对象转换为JSON字符串
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	c.Header("Content-Type", "application/json") // 设置HTTP响应头的Content-Type为application/json
@@ -116,7 +116,7 @@ func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWit
 
 	// 将JSON响应写入HTTP响应体
 	if _, err = c.Writer.Write(jsonResponse); err != nil {
-		return channel_openai.ErrorWrapper(err, "write_response_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "write_response_failed", http.StatusInternalServerError), nil
 	}
 
 	return nil, &fullTextResponse.Usage // 返回nil和模型使用情况对象指针
@@ -125,22 +125,22 @@ func EmbeddingHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWit
 // embeddingResponseAli2OpenAI 将阿里响应转换为OpenAI响应格式。
 //
 // 输入参数：
-//   - response *EmbeddingResponse: 阿里响应对象指针。
+//   - response *AIEmbeddingResponse: 阿里响应对象指针。
 //
 // 输出参数：
-//   - *channel_openai.EmbeddingResponse: 返回转换后的OpenAI响应对象指针。
-func embeddingResponseAli2OpenAI(response *EmbeddingResponse) *channel_openai.EmbeddingResponse {
+//   - *relaymodel.AIEmbeddingResponse: 返回转换后的OpenAI响应对象指针。
+func embeddingResponseAli2OpenAI(response *AIEmbeddingResponse) *relaymodel.AIEmbeddingResponse {
 	// 初始化OpenAI响应对象
-	openAIEmbeddingResponse := channel_openai.EmbeddingResponse{
+	openAIEmbeddingResponse := relaymodel.AIEmbeddingResponse{
 		Object: "list",
-		Data:   make([]channel_openai.EmbeddingResponseItem, 0, len(response.Output.Embeddings)),
+		Data:   make([]relaymodel.AIEmbeddingResponseItem, 0, len(response.Output.Embeddings)),
 		Model:  "text-embedding-v1",
-		Usage:  relayModel.Usage{TotalTokens: response.Usage.TotalTokens},
+		Usage:  relaymodel.Usage{TotalTokens: response.Usage.TotalTokens},
 	}
 
 	// 遍历阿里响应中的嵌入项，转换为OpenAI格式并添加到Data字段中
 	for _, item := range response.Output.Embeddings {
-		openAIEmbeddingResponse.Data = append(openAIEmbeddingResponse.Data, channel_openai.EmbeddingResponseItem{
+		openAIEmbeddingResponse.Data = append(openAIEmbeddingResponse.Data, relaymodel.AIEmbeddingResponseItem{
 			Object:    `embedding`,
 			Index:     item.TextIndex,
 			Embedding: item.Embedding,
@@ -149,18 +149,18 @@ func embeddingResponseAli2OpenAI(response *EmbeddingResponse) *channel_openai.Em
 	return &openAIEmbeddingResponse // 返回转换后的OpenAI响应对象指针
 }
 
-// responseAli2OpenAI 将阿里响应转换为OpenAI TextResponse 格式。
+// responseAli2OpenAI 将阿里响应转换为OpenAI AITextResponse 格式。
 //
 // 输入参数：
 //   - response *ChatResponse: 阿里响应对象指针。
 //
 // 输出参数：
-//   - *channel_openai.TextResponse: 返回转换后的OpenAI TextResponse 对象指针。
-func responseAli2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
+//   - *relaymodel.AITextResponse: 返回转换后的OpenAI AITextResponse 对象指针。
+func responseAli2OpenAI(response *ChatResponse) *relaymodel.AITextResponse {
 	// 创建TextResponseChoice对象
-	choice := channel_openai.TextResponseChoice{
+	choice := relaymodel.AITextResponseChoice{
 		Index: 0,
-		Message: relayModel.Message{
+		AIMessage: relaymodel.AIMessage{
 			Role:    "assistant",
 			Content: response.Output.Text,
 		},
@@ -168,31 +168,31 @@ func responseAli2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
 	}
 
 	// 创建TextResponse对象
-	fullTextResponse := &channel_openai.TextResponse{
+	fullTextResponse := &relaymodel.AITextResponse{
 		Id:      response.RequestId,
 		Object:  "chat.completion",
 		Created: common.GetTimestamp(),
-		Choices: []channel_openai.TextResponseChoice{choice},
-		Usage: relayModel.Usage{
+		Choices: []relaymodel.AITextResponseChoice{choice},
+		Usage: relaymodel.Usage{
 			PromptTokens:     response.Usage.InputTokens,
 			CompletionTokens: response.Usage.OutputTokens,
 			TotalTokens:      response.Usage.InputTokens + response.Usage.OutputTokens,
 		},
 	}
 
-	return fullTextResponse // 返回转换后的OpenAI TextResponse 对象指针
+	return fullTextResponse // 返回转换后的OpenAI AITextResponse 对象指针
 }
 
-// streamResponseAli2OpenAI 将阿里响应转换为OpenAI ChatCompletionsStreamResponse 格式。
+// streamResponseAli2OpenAI 将阿里响应转换为OpenAI AIChatCompletionsStreamResponse 格式。
 //
 // 输入参数：
 //   - aliResponse *ChatResponse: 阿里响应对象指针。
 //
 // 输出参数：
-//   - *channel_openai.ChatCompletionsStreamResponse: 返回转换后的OpenAI ChatCompletionsStreamResponse 对象指针。
-func streamResponseAli2OpenAI(aliResponse *ChatResponse) *channel_openai.ChatCompletionsStreamResponse {
+//   - *relaymodel.AIChatCompletionsStreamResponse: 返回转换后的OpenAI AIChatCompletionsStreamResponse 对象指针。
+func streamResponseAli2OpenAI(aliResponse *ChatResponse) *relaymodel.AIChatCompletionsStreamResponse {
 	// 创建ChatCompletionsStreamResponseChoice对象
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = aliResponse.Output.Text
 	if aliResponse.Output.FinishReason != "null" {
 		finishReason := aliResponse.Output.FinishReason
@@ -200,15 +200,15 @@ func streamResponseAli2OpenAI(aliResponse *ChatResponse) *channel_openai.ChatCom
 	}
 
 	// 创建ChatCompletionsStreamResponse对象
-	response := &channel_openai.ChatCompletionsStreamResponse{
+	response := &relaymodel.AIChatCompletionsStreamResponse{
 		Id:      aliResponse.RequestId,
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   "qwen",
-		Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+		Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 	}
 
-	return response // 返回转换后的OpenAI ChatCompletionsStreamResponse 对象指针
+	return response // 返回转换后的OpenAI AIChatCompletionsStreamResponse 对象指针
 }
 
 // splitFunc 用于自定义Scanner的分割函数
@@ -242,7 +242,7 @@ func readResponseData(scanner *bufio.Scanner, dataChan chan string, stopChan cha
 }
 
 // processDataStream 用于处理数据流
-func processDataStream(c *gin.Context, dataChan chan string, stopChan chan bool, usage *relayModel.Usage) {
+func processDataStream(c *gin.Context, dataChan chan string, stopChan chan bool, usage *relaymodel.Usage) {
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case data := <-dataChan:
@@ -279,10 +279,10 @@ func processDataStream(c *gin.Context, dataChan chan string, stopChan chan bool,
 //   - resp *http.Response: HTTP响应对象指针。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 返回带有错误状态码的错误对象指针。
-//   - *relayModel.Usage: 返回用量信息对象指针。
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
-	var usage relayModel.Usage
+//   - *relaymodel.HTTPError: 返回带有错误状态码的错误对象指针。
+//   - *relaymodel.Usage: 返回用量信息对象指针。
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
+	var usage relaymodel.Usage
 
 	// 创建Scanner对象，用于读取响应体数据
 	scanner := bufio.NewScanner(resp.Body)
@@ -304,7 +304,7 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 	// 关闭响应体
 	err := resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	return nil, &usage
@@ -317,31 +317,31 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 //   - resp *http.Response: HTTP响应对象指针。
 //
 // 输出参数：
-//   - *relayModel.ErrorWithStatusCode: 返回带有错误状态码的错误对象指针。
-//   - *relayModel.Usage: 返回用量信息对象指针。
-func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+//   - *relaymodel.HTTPError: 返回带有错误状态码的错误对象指针。
+//   - *relaymodel.Usage: 返回用量信息对象指针。
+func Handler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	var aliResponse ChatResponse
 
 	// 读取响应体数据
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	// 关闭响应体
 	if err := resp.Body.Close(); err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	// 反序列化响应体数据
 	if err := json.Unmarshal(responseBody, &aliResponse); err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	// 检查是否返回错误信息
 	if aliResponse.Code != "" {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: aliResponse.Message,
 				Type:    aliResponse.Code,
 				Param:   aliResponse.RequestId,
@@ -356,14 +356,14 @@ func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCo
 	fullTextResponse.Model = "qwen"
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 
 	// 设置响应头并写入响应数据
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)
 	if _, err := c.Writer.Write(jsonResponse); err != nil {
-		return channel_openai.ErrorWrapper(err, "write_response_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "write_response_failed", http.StatusInternalServerError), nil
 	}
 
 	return nil, &fullTextResponse.Usage

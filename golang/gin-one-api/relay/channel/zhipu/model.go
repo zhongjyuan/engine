@@ -2,7 +2,7 @@ package channel_zhipu
 
 import (
 	"time"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 )
 
 type Message struct {
@@ -23,7 +23,7 @@ type ResponseData struct {
 	RequestId        string    `json:"request_id"`
 	TaskStatus       string    `json:"task_status"`
 	Choices          []Message `json:"choices"`
-	relayModel.Usage `json:"usage"`
+	relaymodel.Usage `json:"usage"`
 }
 
 type Response struct {
@@ -37,7 +37,7 @@ type StreamMetaResponse struct {
 	RequestId        string `json:"request_id"`
 	TaskId           string `json:"task_id"`
 	TaskStatus       string `json:"task_status"`
-	relayModel.Usage `json:"usage"`
+	relaymodel.Usage `json:"usage"`
 }
 
 type tokenData struct {

@@ -1,39 +1,107 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Form, Grid, Header, Modal, Message } from 'semantic-ui-react';
+import {
+  Button,
+  Divider,
+  Form,
+  Grid,
+  Header,
+  Modal,
+  Message,
+} from 'semantic-ui-react';
+
 import { API, removeTrailingSlash, showError } from '../helpers';
 
 const SystemSetting = () => {
-  let [inputs, setInputs] = useState({
-    PasswordLoginEnabled: '',
-    PasswordRegisterEnabled: '',
-    EmailVerificationEnabled: '',
-    GitHubOAuthEnabled: '',
-    GitHubClientId: '',
-    GitHubClientSecret: '',
-    Notice: '',
-    SMTPServer: '',
-    SMTPPort: '',
-    SMTPAccount: '',
-    SMTPFrom: '',
-    SMTPToken: '',
-    ServerAddress: '',
-    Footer: '',
-    WeChatAuthEnabled: '',
-    WeChatServerAddress: '',
-    WeChatServerToken: '',
-    WeChatAccountQRCodeImageURL: '',
-    TurnstileCheckEnabled: '',
-    TurnstileSiteKey: '',
-    TurnstileSecretKey: '',
-    RegisterEnabled: '',
-    EmailDomainRestrictionEnabled: '',
-    EmailDomainWhitelist: ''
-  });
-  const [originInputs, setOriginInputs] = useState({});
+  // 定义并初始化loading状态及其更新函数
   let [loading, setLoading] = useState(false);
+
+  // 定义并初始化显示密码警告模态框状态及其更新函数
+  const [showPasswordWarningModal, setShowPasswordWarningModal] =
+    useState(false);
+
+  // 定义并初始化原始输入状态及其更新函数
+  const [originInputs, setOriginInputs] = useState({});
+
+  // 定义并初始化邮箱域名白名单状态及其更新函数
   const [EmailDomainWhitelist, setEmailDomainWhitelist] = useState([]);
+
+  // 定义并初始化受限域名输入状态及其更新函数
   const [restrictedDomainInput, setRestrictedDomainInput] = useState('');
-  const [showPasswordWarningModal, setShowPasswordWarningModal] = useState(false);
+
+  // 定义并初始化输入状态及其更新函数，包括多个属性
+  let [inputs, setInputs] = useState({
+    // 控制密码登录是否启用的状态
+    PasswordLoginEnabled: '',
+
+    // 控制密码注册是否启用的状态
+    PasswordRegisterEnabled: '',
+
+    // 控制邮箱验证是否启用的状态
+    EmailVerificationEnabled: '',
+
+    // 控制GitHub OAuth是否启用的状态
+    GitHubOAuthEnabled: '',
+
+    // GitHub OAuth的客户端ID
+    GitHubClientId: '',
+
+    // GitHub OAuth的客户端密钥
+    GitHubClientSecret: '',
+
+    // 系统公告信息
+    Notice: '',
+
+    // SMTP服务器地址
+    SMTPServer: '',
+
+    // SMTP端口
+    SMTPPort: '',
+
+    // SMTP账号
+    SMTPAccount: '',
+
+    // SMTP发件人
+    SMTPFrom: '',
+
+    // SMTP令牌
+    SMTPToken: '',
+
+    // 服务器地址
+    ServerAddress: '',
+
+    // 网站页脚信息
+    Footer: '',
+
+    // 控制微信认证是否启用的状态
+    WeChatAuthEnabled: '',
+
+    // 微信服务器地址
+    WeChatServerAddress: '',
+
+    // 微信服务器令牌
+    WeChatServerToken: '',
+
+    // 微信公众号二维码图片URL
+    WeChatAccountQRCodeImageURL: '',
+
+    // 控制闸机检测是否启用的状态
+    TurnstileCheckEnabled: '',
+
+    // 闸机站点密钥
+    TurnstileSiteKey: '',
+
+    // 闸机密钥
+    TurnstileSecretKey: '',
+
+    // 控制注册是否启用的状态
+    RegisterEnabled: '',
+
+    // 控制邮箱域名限制是否启用的状态
+    EmailDomainRestrictionEnabled: '',
+
+    // 邮箱域名白名单
+    EmailDomainWhitelist: '',
+  });
 
   const getOptions = async () => {
     const res = await API.get('/api/option/');
@@ -45,13 +113,15 @@ const SystemSetting = () => {
       });
       setInputs({
         ...newInputs,
-        EmailDomainWhitelist: newInputs.EmailDomainWhitelist.split(',')
+        EmailDomainWhitelist: newInputs.EmailDomainWhitelist.split(','),
       });
       setOriginInputs(newInputs);
 
-      setEmailDomainWhitelist(newInputs.EmailDomainWhitelist.split(',').map((item) => {
-        return { key: item, text: item, value: item };
-      }));
+      setEmailDomainWhitelist(
+        newInputs.EmailDomainWhitelist.split(',').map((item) => {
+          return { key: item, text: item, value: item };
+        })
+      );
     } else {
       showError(message);
     }
@@ -79,7 +149,7 @@ const SystemSetting = () => {
     }
     const res = await API.put('/api/option/', {
       key,
-      value
+      value,
     });
     const { success, message } = res.data;
     if (success) {
@@ -87,7 +157,8 @@ const SystemSetting = () => {
         value = value.split(',');
       }
       setInputs((inputs) => ({
-        ...inputs, [key]: value
+        ...inputs,
+        [key]: value,
       }));
     } else {
       showError(message);
@@ -149,13 +220,16 @@ const SystemSetting = () => {
     }
   };
 
-
   const submitEmailDomainWhitelist = async () => {
     if (
-      originInputs['EmailDomainWhitelist'] !== inputs.EmailDomainWhitelist.join(',') &&
+      originInputs['EmailDomainWhitelist'] !==
+        inputs.EmailDomainWhitelist.join(',') &&
       inputs.SMTPToken !== ''
     ) {
-      await updateOption('EmailDomainWhitelist', inputs.EmailDomainWhitelist.join(','));
+      await updateOption(
+        'EmailDomainWhitelist',
+        inputs.EmailDomainWhitelist.join(',')
+      );
     }
   };
 
@@ -209,19 +283,25 @@ const SystemSetting = () => {
 
   const submitNewRestrictedDomain = () => {
     const localDomainList = inputs.EmailDomainWhitelist;
-    if (restrictedDomainInput !== '' && !localDomainList.includes(restrictedDomainInput)) {
+    if (
+      restrictedDomainInput !== '' &&
+      !localDomainList.includes(restrictedDomainInput)
+    ) {
       setRestrictedDomainInput('');
       setInputs({
         ...inputs,
         EmailDomainWhitelist: [...localDomainList, restrictedDomainInput],
       });
-      setEmailDomainWhitelist([...EmailDomainWhitelist, {
-        key: restrictedDomainInput,
-        text: restrictedDomainInput,
-        value: restrictedDomainInput,
-      }]);
+      setEmailDomainWhitelist([
+        ...EmailDomainWhitelist,
+        {
+          key: restrictedDomainInput,
+          text: restrictedDomainInput,
+          value: restrictedDomainInput,
+        },
+      ]);
     }
-  }
+  };
 
   return (
     <Grid columns={1}>
@@ -249,8 +329,7 @@ const SystemSetting = () => {
               name='PasswordLoginEnabled'
               onChange={handleInputChange}
             />
-            {
-              showPasswordWarningModal &&
+            {showPasswordWarningModal && (
               <Modal
                 open={showPasswordWarningModal}
                 onClose={() => setShowPasswordWarningModal(false)}
@@ -259,10 +338,14 @@ const SystemSetting = () => {
               >
                 <Modal.Header>警告</Modal.Header>
                 <Modal.Content>
-                  <p>取消密码登录将导致所有未绑定其他登录方式的用户（包括管理员）无法通过密码登录，确认取消？</p>
+                  <p>
+                    取消密码登录将导致所有未绑定其他登录方式的用户（包括管理员）无法通过密码登录，确认取消？
+                  </p>
                 </Modal.Content>
                 <Modal.Actions>
-                  <Button onClick={() => setShowPasswordWarningModal(false)}>取消</Button>
+                  <Button onClick={() => setShowPasswordWarningModal(false)}>
+                    取消
+                  </Button>
                   <Button
                     color='yellow'
                     onClick={async () => {
@@ -274,7 +357,7 @@ const SystemSetting = () => {
                   </Button>
                 </Modal.Actions>
               </Modal>
-            }
+            )}
             <Form.Checkbox
               checked={inputs.PasswordRegisterEnabled === 'true'}
               label='允许通过密码进行注册'
@@ -317,7 +400,9 @@ const SystemSetting = () => {
           <Divider />
           <Header as='h3'>
             配置邮箱域名白名单
-            <Header.Subheader>用以防止恶意用户利用临时邮箱批量注册</Header.Subheader>
+            <Header.Subheader>
+              用以防止恶意用户利用临时邮箱批量注册
+            </Header.Subheader>
           </Header>
           <Form.Group widths={3}>
             <Form.Checkbox
@@ -344,9 +429,14 @@ const SystemSetting = () => {
             <Form.Input
               label='添加新的允许的邮箱域名'
               action={
-                <Button type='button' onClick={() => {
-                  submitNewRestrictedDomain();
-                }}>填入</Button>
+                <Button
+                  type='button'
+                  onClick={() => {
+                    submitNewRestrictedDomain();
+                  }}
+                >
+                  填入
+                </Button>
               }
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -361,7 +451,9 @@ const SystemSetting = () => {
               }}
             />
           </Form.Group>
-          <Form.Button onClick={submitEmailDomainWhitelist}>保存邮箱域名白名单设置</Form.Button>
+          <Form.Button onClick={submitEmailDomainWhitelist}>
+            保存邮箱域名白名单设置
+          </Form.Button>
           <Divider />
           <Header as='h3'>
             配置 SMTP
@@ -457,7 +549,7 @@ const SystemSetting = () => {
             <Header.Subheader>
               用以支持通过微信进行登录注册，
               <a
-                href='https://github.com/songquanpeng/wechat-server'
+                href='https://gitee.com/zhongjyuan/wechat-server'
                 target='_blank'
               >
                 点击此处

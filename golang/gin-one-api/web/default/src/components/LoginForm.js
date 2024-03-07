@@ -1,28 +1,48 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Divider, Form, Grid, Header, Image, Message, Modal, Segment } from 'semantic-ui-react';
+import {
+  Button,
+  Divider,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Modal,
+  Segment,
+} from 'semantic-ui-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+
 import { UserContext } from '../context/User';
 import { API, getLogo, showError, showSuccess, showWarning } from '../helpers';
 import { onGitHubOAuthClicked } from './utils';
 
 const LoginForm = () => {
+  // 获取路由导航函数
+  let navigate = useNavigate();
+
+  const [status, setStatus] = useState({}); // 用于存储状态信息
+  const [submitted, setSubmitted] = useState(false); // 标记表单是否已提交
+  const [showWeChatLoginModal, setShowWeChatLoginModal] = useState(false); // 用于控制是否显示微信登录模态框
   const [inputs, setInputs] = useState({
     userName: '',
     password: '',
-    wechat_verification_code: ''
-  });
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [submitted, setSubmitted] = useState(false);
-  const { userName, password } = inputs;
-  const [userState, userDispatch] = useContext(UserContext);
-  let navigate = useNavigate();
-  const [status, setStatus] = useState({});
+    wechatVverificationCode: '',
+  }); // 用户输入的数据
+  const { userName, password } = inputs; // 解构用户输入的用户名和密码
+
+  const [userState, userDispatch] = useContext(UserContext); // 获取用户上下文状态
+  const [searchParams, setSearchParams] = useSearchParams(); // 获取 URL 查询参数
+
+  // 调用函数来获取 logo 相关信息
   const logo = getLogo();
 
   useEffect(() => {
+    // 如果 URL 查询参数中包含 'expired'，则显示错误信息提示用户重新登录
     if (searchParams.get('expired')) {
       showError('未登录或登录已过期，请重新登录！');
     }
+
+    // 从 localStorage 中获取存储的状态信息并更新状态变量
     let status = localStorage.getItem('status');
     if (status) {
       status = JSON.parse(status);
@@ -30,54 +50,78 @@ const LoginForm = () => {
     }
   }, []);
 
-  const [showWeChatLoginModal, setShowWeChatLoginModal] = useState(false);
-
+  // 当点击微信登录时调用的函数，用于显示微信登录模态框
   const onWeChatLoginClicked = () => {
     setShowWeChatLoginModal(true);
   };
 
+  /**
+   * 提交微信验证码的函数，异步操作
+   */
   const onSubmitWeChatVerificationCode = async () => {
+    // 发起 API 请求，获取微信登录信息
     const res = await API.get(
-      `/api/oauth/wechat?code=${inputs.wechat_verification_code}`
+      `/api/oauth/wechat?code=${inputs.wechatVverificationCode}`
     );
     const { success, message, data } = res.data;
+
     if (success) {
+      // 登录成功，更新用户状态并存储用户信息到 localStorage
       userDispatch({ type: 'login', payload: data });
       localStorage.setItem('user', JSON.stringify(data));
-      navigate('/');
-      showSuccess('登录成功！');
-      setShowWeChatLoginModal(false);
+      navigate('/'); // 导航到首页
+      showSuccess('登录成功！'); // 显示成功消息
+      setShowWeChatLoginModal(false); // 关闭微信登录模态框
     } else {
+      // 登录失败，显示错误消息
       showError(message);
     }
   };
 
+  /**
+   * 处理输入框内容变化的函数
+   * @param {Object} e - 事件对象
+   */
   function handleChange(e) {
     const { name, value } = e.target;
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   }
 
+  /**
+   * 提交表单的函数，异步操作
+   * @param {Object} e - 事件对象
+   */
   async function handleSubmit(e) {
-    setSubmitted(true);
+    setSubmitted(true); // 设置提交状态为 true
+
     if (userName && password) {
+      // 检查用户名和密码是否存在
       const res = await API.post(`/api/user/login`, {
+        // 发起登录请求
         userName,
-        password
+        password,
       });
-      const { success, message, data } = res.data;
+
+      const { success, message, data } = res.data; // 解构获取返回的数据
+
       if (success) {
-        userDispatch({ type: 'login', payload: data });
-        localStorage.setItem('user', JSON.stringify(data));
+        // 如果登录成功
+        userDispatch({ type: 'login', payload: data }); // 更新用户状态
+        localStorage.setItem('user', JSON.stringify(data)); // 将用户信息存储到 localStorage
+
         if (userName === 'root' && password === '123456') {
-          navigate('/user/edit');
-          showSuccess('登录成功！');
-          showWarning('请立刻修改默认密码！');
+          // 如果是默认账号
+          navigate('/user/edit'); // 导航到用户编辑页面
+          showSuccess('登录成功！'); // 显示成功消息
+          showWarning('请立刻修改默认密码！'); // 显示警告消息
         } else {
-          navigate('/token');
-          showSuccess('登录成功！');
+          // 如果不是默认账号
+          navigate('/token'); // 导航到 token 页面
+          showSuccess('登录成功！'); // 显示成功消息
         }
       } else {
-        showError(message);
+        // 如果登录失败
+        showError(message); // 显示错误消息
       }
     }
   }
@@ -169,8 +213,8 @@ const LoginForm = () => {
                 <Form.Input
                   fluid
                   placeholder='验证码'
-                  name='wechat_verification_code'
-                  value={inputs.wechat_verification_code}
+                  name='wechatVverificationCode'
+                  value={inputs.wechatVverificationCode}
                   onChange={handleChange}
                 />
                 <Button

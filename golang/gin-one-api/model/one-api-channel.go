@@ -12,24 +12,24 @@ const ChannelTableName = "one_api_channel"
 
 // ChannelEntity 结构体定义了渠道的数据模型。
 type ChannelEntity struct {
-	Id                int     `json:"id" gorm:"column:id"`                                                    // 渠道ID
-	Key               string  `json:"key" gorm:"column:key;not null;index"`                                   // 渠道关键字，非空，索引
-	Name              string  `json:"name" gorm:"column:name;index"`                                          // 渠道名称，索引
-	Type              int     `json:"type" gorm:"column:type;default:0"`                                      // 渠道类型，默认值为 0
-	Group             string  `json:"group" gorm:"column:group;type:varchar(32);default:'default'"`           // 渠道分组，默认值为 "default"
-	Weight            *uint   `json:"weight" gorm:"column:weight;default:0"`                                  // 权重，默认值为 0
-	Models            string  `json:"models" gorm:"column:models"`                                            // 模型列表
-	ModelMapping      *string `json:"modelMapping" gorm:"column:model_mapping;type:varchar(1024);default:''"` // 模型映射
-	BaseURL           *string `json:"baseUrl" gorm:"column:base_url;default:''"`                              // 基础URL，默认为空字符串
-	Balance           float64 `json:"balance" gorm:"column:balance"`                                          // 余额，以美元计算
-	BalanceUpdateTime int64   `json:"balanceUpdateTime" gorm:"column:balance_update_time;bigint"`             // 余额更新时间，整型
-	UsedQuota         int64   `json:"usedQuota" gorm:"column:used_quota;bigint;default:0"`                    // 已使用配额，默认值为 0
-	Status            int     `json:"status" gorm:"column:status;default:1"`                                  // 渠道状态，默认值为 1
-	Config            string  `json:"config" gorm:"column:config"`                                            // 配置信息
-	Priority          *int64  `json:"priority" gorm:"column:priority;bigint;default:0"`                       // 优先级，默认值为 0
-	TestTime          int64   `json:"testTime" gorm:"column:test_time;bigint"`                                // 测试时间，整型
-	CreateTime        int64   `json:"createTime" gorm:"column:create_time;bigint"`                            // 创建时间，整型
-	ResponseTime      int     `json:"responseTime" gorm:"column:response_time"`                               // 响应时间，毫秒
+	Id                int     `json:"id" gorm:"column:id"`                                                   // 渠道ID
+	Key               string  `json:"key" gorm:"column:key;not null;index"`                                  // 渠道关键字，非空，索引
+	Name              string  `json:"name" gorm:"column:name;index"`                                         // 渠道名称，索引
+	Type              int     `json:"type" gorm:"column:type;default:0"`                                     // 渠道类型，默认值为 0
+	Group             string  `json:"group" gorm:"column:group;type:varchar(32);default:'default'"`          // 渠道分组，默认值为 "default"
+	Weight            *uint   `json:"weight" gorm:"column:weight;default:0"`                                 // 权重，默认值为 0
+	Models            string  `json:"models" gorm:"column:models"`                                           // 模型列表
+	ModelMapping      *string `json:"modelMapping" gorm:"column:modelMapping;type:varchar(1024);default:''"` // 模型映射
+	BaseURL           *string `json:"baseUrl" gorm:"column:baseUrl;default:''"`                              // 基础URL，默认为空字符串
+	Balance           float64 `json:"balance" gorm:"column:balance"`                                         // 余额，以美元计算
+	BalanceUpdateTime int64   `json:"balanceUpdateTime" gorm:"column:balance_update_time;bigint"`            // 余额更新时间，整型
+	UsedQuota         int64   `json:"usedQuota" gorm:"column:used_quota;bigint;default:0"`                   // 已使用配额，默认值为 0
+	Status            int     `json:"status" gorm:"column:status;default:1"`                                 // 渠道状态，默认值为 1
+	Config            string  `json:"config" gorm:"column:config"`                                           // 配置信息
+	Priority          *int64  `json:"priority" gorm:"column:priority;bigint;default:0"`                      // 优先级，默认值为 0
+	TestTime          int64   `json:"testTime" gorm:"column:test_time;bigint"`                               // 测试时间，整型
+	CreateTime        int64   `json:"createTime" gorm:"column:create_time;bigint"`                           // 创建时间，整型
+	ResponseTime      int     `json:"responseTime" gorm:"column:response_time"`                              // 响应时间，毫秒
 }
 
 func (ChannelEntity) TableName() string {

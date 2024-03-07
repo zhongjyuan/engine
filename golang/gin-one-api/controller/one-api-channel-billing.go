@@ -10,83 +10,11 @@ import (
 	"time"
 	"zhongjyuan/gin-one-api/common"
 	"zhongjyuan/gin-one-api/model"
-	relayHelper "zhongjyuan/gin-one-api/relay/helper"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
-
-// OpenAISubscriptionResponse 用于表示 OpenAI 的订阅信息响应结构体。
-type OpenAISubscriptionResponse struct {
-	Object             string  `json:"object"`                // 对象类型
-	HasPaymentMethod   bool    `json:"has_payment_method"`    // 是否有支付方式
-	SoftLimitUSD       float64 `json:"soft_limit_usd"`        // 软限额（美元）
-	HardLimitUSD       float64 `json:"hard_limit_usd"`        // 硬限额（美元）
-	SystemHardLimitUSD float64 `json:"system_hard_limit_usd"` // 系统硬限额（美元）
-	AccessUntil        int64   `json:"access_until"`          // 访问截止时间
-}
-
-// OpenAIDailyCostLineItem 表示每日消费明细结构体。
-type OpenAIDailyCostLineItem struct {
-	Name string  `json:"name"` // 明细名称
-	Cost float64 `json:"cost"` // 消费金额
-}
-
-// OpenAIUsageDailyCost 用于表示 OpenAI 的每日使用成本结构体。
-type OpenAIUsageDailyCost struct {
-	Timestamp float64                   `json:"timestamp"` // 时间戳
-	LineItems []OpenAIDailyCostLineItem // 每日消费明细列表
-}
-
-// OpenAICreditGrants 用于表示 OpenAI 的信用额度授予结构体。
-type OpenAICreditGrants struct {
-	Object         string  `json:"object"`          // 对象类型
-	TotalGranted   float64 `json:"total_granted"`   // 总共授予的额度
-	TotalUsed      float64 `json:"total_used"`      // 已使用的额度
-	TotalAvailable float64 `json:"total_available"` // 可用的额度
-}
-
-// OpenAIUsageResponse 用于表示 OpenAI 的使用情况响应结构体。
-type OpenAIUsageResponse struct {
-	Object     string  `json:"object"`      // 对象类型
-	TotalUsage float64 `json:"total_usage"` // 总使用量（单位：0.01 美元）
-}
-
-// OpenAISBUsageData 用于表示 OpenAI 的SB使用情况数据结构体。
-type OpenAISBUsageData struct {
-	Credit string `json:"credit"` // SB余额
-}
-
-// OpenAISBUsageResponse 用于表示 OpenAI 的SB使用情况响应结构体。
-type OpenAISBUsageResponse struct {
-	Msg  string             `json:"msg"`  // 消息
-	Data *OpenAISBUsageData `json:"data"` // 数据
-}
-
-// AIProxyUserOverviewResponse 用于表示 AI 代理用户概览响应结构体。
-type AIProxyUserOverviewResponse struct {
-	Success   bool   `json:"success"`    // 是否成功
-	Message   string `json:"message"`    // 消息
-	ErrorCode int    `json:"error_code"` // 错误码
-	Data      struct {
-		TotalPoints float64 `json:"totalPoints"` // 总积分
-	} `json:"data"` // 数据
-}
-
-// API2GPTUsageResponse 用于表示 API2GPT 使用情况响应结构体。
-type API2GPTUsageResponse struct {
-	Object         string  `json:"object"`          // 对象类型
-	TotalGranted   float64 `json:"total_granted"`   // 总授予量
-	TotalUsed      float64 `json:"total_used"`      // 总使用量
-	TotalRemaining float64 `json:"total_remaining"` // 剩余量
-}
-
-// APGC2DGPTUsageResponse 用于表示 APGC2DGPT 使用情况响应结构体。
-type APGC2DGPTUsageResponse struct {
-	Object         string  `json:"object"`          // 对象类型
-	TotalAvailable float64 `json:"total_available"` // 总可用量
-	TotalGranted   float64 `json:"total_granted"`   // 总授予量
-	TotalUsed      float64 `json:"total_used"`      // 总使用量
-}
 
 // NewAuthHeader 用于生成包含身份验证头部的 HTTP 头部。
 //
@@ -127,7 +55,7 @@ func FetchHTTPResponse(method, url string, channel *model.ChannelEntity, headers
 	}
 
 	// 发起 HTTP 请求并获取响应
-	res, err := relayHelper.HTTPClient.Do(req)
+	res, err := relayhelper.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +94,7 @@ func updateChannelCloseAIBalance(channel *model.ChannelEntity) (float64, error) 
 	}
 
 	// 解析 JSON 响应体到结构体
-	response := OpenAICreditGrants{}
+	response := relaymodel.AICreditGrants{}
 	if err = json.Unmarshal(body, &response); err != nil {
 		return 0, err
 	}
@@ -195,7 +123,7 @@ func updateChannelOpenAISBBalance(channel *model.ChannelEntity) (float64, error)
 	}
 
 	// 解析 JSON 响应体到结构体
-	response := OpenAISBUsageResponse{}
+	response := relaymodel.AISBUsageResponse{}
 	if err = json.Unmarshal(body, &response); err != nil {
 		return 0, err
 	}
@@ -236,7 +164,7 @@ func updateChannelAIProxyBalance(channel *model.ChannelEntity) (float64, error) 
 	}
 
 	// 解析 JSON 响应体到结构体
-	response := AIProxyUserOverviewResponse{}
+	response := relaymodel.AIProxyUserOverviewResponse{}
 	if err = json.Unmarshal(body, &response); err != nil {
 		return 0, err
 	}
@@ -270,7 +198,7 @@ func updateChannelAPI2GPTBalance(channel *model.ChannelEntity) (float64, error) 
 	}
 
 	// 解析 JSON 响应体到结构体
-	response := API2GPTUsageResponse{}
+	response := relaymodel.AIGPTAPIUsageResponse{}
 	if err = json.Unmarshal(body, &response); err != nil {
 		return 0, err
 	}
@@ -299,7 +227,7 @@ func updateChannelAIGC2DBalance(channel *model.ChannelEntity) (float64, error) {
 	}
 
 	// 解析 JSON 响应体到结构体
-	response := APGC2DGPTUsageResponse{}
+	response := relaymodel.AIGPTAPGCUsageResponse{}
 	if err = json.Unmarshal(body, &response); err != nil {
 		return 0, err
 	}
@@ -309,34 +237,34 @@ func updateChannelAIGC2DBalance(channel *model.ChannelEntity) (float64, error) {
 	return response.TotalAvailable, nil
 }
 
-// updateChannelBalance 用于更新频道的余额信息并返回更新后的余额数。
+// updateChannelBalance 用于更新渠道的余额信息并返回更新后的余额数。
 //
 // 输入参数：
-//   - channel *model.ChannelEntity: 要更新的频道实体对象。
+//   - channel *model.ChannelEntity: 要更新的渠道实体对象。
 //
 // 输出参数：
 //   - float64: 更新后的总可用余额。
 //   - error: 执行过程中遇到的任何错误。
 func updateChannelBalance(channel *model.ChannelEntity) (float64, error) {
-	// 获取频道类型对应的基本URL
+	// 获取渠道类型对应的基本URL
 	baseURL := common.ChannelBaseURLs[channel.Type]
 
-	// 如果频道没有设置基本URL，则使用默认的基本URL
+	// 如果渠道没有设置基本URL，则使用默认的基本URL
 	if channel.GetBaseURL() == "" {
 		channel.BaseURL = &baseURL
 	}
 
-	// 根据频道类型处理不同的逻辑
+	// 根据渠道类型处理不同的逻辑
 	switch channel.Type {
 	case common.ChannelTypeOpenAI:
-		// 如果频道已经设置了基本URL，则使用频道自定义的基本URL
+		// 如果渠道已经设置了基本URL，则使用渠道自定义的基本URL
 		if channel.GetBaseURL() != "" {
 			baseURL = channel.GetBaseURL()
 		}
 	case common.ChannelTypeAzure:
 		return 0, errors.New("尚未实现")
 	case common.ChannelTypeCustom:
-		// 使用频道自定义的基本URL
+		// 使用渠道自定义的基本URL
 		baseURL = channel.GetBaseURL()
 	case common.ChannelTypeCloseAI:
 		return updateChannelCloseAIBalance(channel)
@@ -362,7 +290,7 @@ func updateChannelBalance(channel *model.ChannelEntity) (float64, error) {
 	}
 
 	// 解析 JSON 响应体到结构体
-	subscription := OpenAISubscriptionResponse{}
+	subscription := relaymodel.AISubscribeResponse{}
 	if err = json.Unmarshal(body, &subscription); err != nil {
 		return 0, err
 	}
@@ -389,7 +317,7 @@ func updateChannelBalance(channel *model.ChannelEntity) (float64, error) {
 	}
 
 	// 解析 JSON 响应体到结构体
-	usage := OpenAIUsageResponse{}
+	usage := relaymodel.AIUsageResponse{}
 	if err = json.Unmarshal(body, &usage); err != nil {
 		return 0, err
 	}
@@ -397,12 +325,12 @@ func updateChannelBalance(channel *model.ChannelEntity) (float64, error) {
 	// 计算余额
 	balance := subscription.HardLimitUSD - usage.TotalUsage/100
 
-	// 更新频道余额，并返回更新后的余额数
+	// 更新渠道余额，并返回更新后的余额数
 	channel.UpdateBalance(balance)
 	return balance, nil
 }
 
-// UpdateChannelBalance 用于更新频道余额信息并返回更新后的余额数。
+// UpdateChannelBalance 用于更新渠道余额信息并返回更新后的余额数。
 //
 // 输入参数：
 //   - c *gin.Context: Gin 上下文对象。
@@ -410,21 +338,21 @@ func updateChannelBalance(channel *model.ChannelEntity) (float64, error) {
 // 输出参数：
 //   - 无。
 func UpdateChannelBalance(c *gin.Context) {
-	// 从 URL 参数中获取频道 ID
+	// 从 URL 参数中获取渠道 ID
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
 
-	// 根据频道 ID 获取频道实体对象
+	// 根据渠道 ID 获取渠道实体对象
 	channel, err := model.GetChannelByID(id, true)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
 
-	// 调用更新频道余额函数
+	// 调用更新渠道余额函数
 	balance, err := updateChannelBalance(channel)
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
@@ -435,20 +363,20 @@ func UpdateChannelBalance(c *gin.Context) {
 	common.SendSuccessJSONResponse(c, "更新完成", balance)
 }
 
-// updateAllChannelsBalance 用于更新所有频道的余额信息。
+// updateAllChannelsBalance 用于更新所有渠道的余额信息。
 //
 // 输出参数：
 //   - error: 执行过程中遇到的任何错误。
 func updateAllChannelsBalance() error {
-	// 获取所有频道信息
+	// 获取所有渠道信息
 	channels, err := model.GetPageChannels(0, 0, true)
 	if err != nil {
 		return err
 	}
 
-	// 遍历所有频道并更新余额信息
+	// 遍历所有渠道并更新余额信息
 	for _, channel := range channels {
-		// 如果频道状态不是已启用，则跳过
+		// 如果渠道状态不是已启用，则跳过
 		if channel.Status != common.ChannelStatusEnabled {
 			continue
 		}
@@ -458,12 +386,12 @@ func updateAllChannelsBalance() error {
 			continue
 		}
 
-		// 更新频道余额
+		// 更新渠道余额
 		balance, err := updateChannelBalance(channel)
 		if err != nil {
 			continue
 		} else {
-			// 如果没有错误且余额小于等于 0，表示配额已用完，禁用该频道
+			// 如果没有错误且余额小于等于 0，表示配额已用完，禁用该渠道
 			if balance <= 0 {
 				disableChannel(channel.Id, channel.Name, "余额不足")
 			}
@@ -473,7 +401,7 @@ func updateAllChannelsBalance() error {
 	return nil
 }
 
-// UpdateAllChannelsBalance 用于更新所有频道的余额信息并返回更新结果。
+// UpdateAllChannelsBalance 用于更新所有渠道的余额信息并返回更新结果。
 //
 // 输入参数：
 //   - c *gin.Context: Gin 上下文对象。
@@ -481,7 +409,7 @@ func updateAllChannelsBalance() error {
 // 输出参数：
 //   - 无。
 func UpdateAllChannelsBalance(c *gin.Context) {
-	// 调用更新所有频道余额函数
+	// 调用更新所有渠道余额函数
 	if err := updateAllChannelsBalance(); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
@@ -491,7 +419,7 @@ func UpdateAllChannelsBalance(c *gin.Context) {
 	common.SendSuccessJSONResponse(c, "更新完成", nil)
 }
 
-// AutomaticallyUpdateChannels 用于定时自动更新所有频道的余额信息。
+// AutomaticallyUpdateChannels 用于定时自动更新所有渠道的余额信息。
 //
 // 输入参数：
 //   - frequency int: 更新频率，以分钟为单位。

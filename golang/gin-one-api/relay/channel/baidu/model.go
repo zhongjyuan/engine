@@ -2,7 +2,7 @@ package channel_baidu
 
 import (
 	"time"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 )
 
 type TokenResponse struct {
@@ -15,7 +15,7 @@ type Message struct {
 	Content string `json:"content"`
 }
 
-type ChatRequest struct {
+type AIChatRequest struct {
 	Messages []Message `json:"messages"`
 	Stream   bool      `json:"stream"`
 	UserId   string    `json:"user_id,omitempty"`
@@ -33,7 +33,7 @@ type ChatResponse struct {
 	Result           string           `json:"result"`
 	IsTruncated      bool             `json:"is_truncated"`
 	NeedClearHistory bool             `json:"need_clear_history"`
-	Usage            relayModel.Usage `json:"usage"`
+	Usage            relaymodel.Usage `json:"usage"`
 	Error
 }
 
@@ -53,12 +53,12 @@ type EmbeddingData struct {
 	Index     int       `json:"index"`
 }
 
-type EmbeddingResponse struct {
+type AIEmbeddingResponse struct {
 	Id      string           `json:"id"`
 	Object  string           `json:"object"`
 	Created int64            `json:"created"`
 	Data    []EmbeddingData  `json:"data"`
-	Usage   relayModel.Usage `json:"usage"`
+	Usage   relaymodel.Usage `json:"usage"`
 	Error
 }
 

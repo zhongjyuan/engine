@@ -140,12 +140,12 @@ func Distribute() func(c *gin.Context) {
 func SetChannelContext(c *gin.Context, channel *model.ChannelEntity, modelName string) {
 	// 设置渠道相关信息到 Gin 上下文
 	contextKeys := map[string]interface{}{
-		"channel":        channel.Type,
-		"channel_id":     channel.Id,
-		"channel_name":   channel.Name,
-		"model_mapping":  channel.GetModelMapping(),
-		"original_model": modelName,
-		"base_url":       channel.GetBaseURL(),
+		"channel":       channel.Type,
+		"channelId":     channel.Id,
+		"channelName":   channel.Name,
+		"modelMapping":  channel.GetModelMapping(),
+		"originalModel": modelName,
+		"baseUrl":       channel.GetBaseURL(),
 	}
 
 	// 设置 Authorization 头部信息

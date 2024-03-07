@@ -65,7 +65,7 @@ func GitHubBind(c *gin.Context) {
 
 	// 更新用户的 GitHub ID
 	user.Profile.GitHubId = githubUser.Login
-	if err := user.Update(false); err != nil {
+	if err := user.Update(false, true); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}

@@ -20,16 +20,16 @@ type Parameters struct {
 	IncrementalOutput bool    `json:"incremental_output,omitempty"` // 是否增量输出
 }
 
-// ChatRequest 结构体定义了聊天请求的数据结构。
-type ChatRequest struct {
-	Model      string     `json:"relayModel"`           // 请求的模型名称
+// AIChatRequest 结构体定义了聊天请求的数据结构。
+type AIChatRequest struct {
+	Model      string     `json:"relaymodel"`           // 请求的模型名称
 	Input      Input      `json:"input"`                // 聊天请求的输入参数
 	Parameters Parameters `json:"parameters,omitempty"` // 聊天请求的可选参数
 }
 
 // EmbeddingRequest 结构体定义了嵌入向量请求的数据结构。
 type EmbeddingRequest struct {
-	Model string `json:"relayModel"` // 请求的模型名称
+	Model string `json:"relaymodel"` // 请求的模型名称
 	Input struct {
 		Texts []string `json:"texts"` // 文本列表
 	} `json:"input"` // 嵌入向量请求的输入参数
@@ -44,8 +44,8 @@ type Embedding struct {
 	TextIndex int       `json:"text_index"` // 文本索引
 }
 
-// EmbeddingResponse 结构体定义了嵌入向量响应的数据结构。
-type EmbeddingResponse struct {
+// AIEmbeddingResponse 结构体定义了嵌入向量响应的数据结构。
+type AIEmbeddingResponse struct {
 	Output struct {
 		Embeddings []Embedding `json:"embeddings"` // 嵌入向量列表
 	} `json:"output"` // 嵌入向量响应的输出参数

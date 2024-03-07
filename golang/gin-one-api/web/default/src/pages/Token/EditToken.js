@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Header, Message, Segment } from 'semantic-ui-react';
 import { useParams, useNavigate } from 'react-router-dom';
+
 import { API, showError, showSuccess, timestamp2string } from '../../helpers';
 import { renderQuota, renderQuotaWithPrompt } from '../../helpers/render';
 
 const EditToken = () => {
   const params = useParams();
+  const navigate = useNavigate();
+
   const tokenId = params.id;
   const isEdit = tokenId !== undefined;
+
   const [loading, setLoading] = useState(isEdit);
   const originInputs = {
     name: '',
     remainQuota: isEdit ? 0 : 500000,
     expireTime: -1,
-    unlimitedQuota: false
+    unlimitedQuota: false,
   };
   const [inputs, setInputs] = useState(originInputs);
   const { name, remainQuota, expireTime, unlimitedQuota } = inputs;
-  const navigate = useNavigate();
+
   const handleInputChange = (e, { name, value }) => {
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
+
   const handleCancel = () => {
-    navigate("/token");
-  }
+    navigate('/token');
+  };
+
   const setExpiredTime = (month, day, hour, minute) => {
     let now = new Date();
     let timestamp = now.getTime() / 1000;
@@ -56,6 +62,7 @@ const EditToken = () => {
     }
     setLoading(false);
   };
+
   useEffect(() => {
     if (isEdit) {
       loadToken().then();
@@ -76,7 +83,10 @@ const EditToken = () => {
     }
     let res;
     if (isEdit) {
-      res = await API.put(`/api/token/`, { ...localInputs, id: parseInt(tokenId) });
+      res = await API.put(`/api/token/`, {
+        ...localInputs,
+        id: parseInt(tokenId),
+      });
     } else {
       res = await API.post(`/api/token/`, localInputs);
     }
@@ -113,7 +123,9 @@ const EditToken = () => {
             <Form.Input
               label='过期时间'
               name='expireTime'
-              placeholder={'请输入过期时间，格式为 yyyy-MM-dd HH:mm:ss，-1 表示无限制'}
+              placeholder={
+                '请输入过期时间，格式为 yyyy-MM-dd HH:mm:ss，-1 表示无限制'
+              }
               onChange={handleInputChange}
               value={expireTime}
               autoComplete='new-password'
@@ -121,23 +133,50 @@ const EditToken = () => {
             />
           </Form.Field>
           <div style={{ lineHeight: '40px' }}>
-            <Button type={'button'} onClick={() => {
-              setExpiredTime(0, 0, 0, 0);
-            }}>永不过期</Button>
-            <Button type={'button'} onClick={() => {
-              setExpiredTime(1, 0, 0, 0);
-            }}>一个月后过期</Button>
-            <Button type={'button'} onClick={() => {
-              setExpiredTime(0, 1, 0, 0);
-            }}>一天后过期</Button>
-            <Button type={'button'} onClick={() => {
-              setExpiredTime(0, 0, 1, 0);
-            }}>一小时后过期</Button>
-            <Button type={'button'} onClick={() => {
-              setExpiredTime(0, 0, 0, 1);
-            }}>一分钟后过期</Button>
+            <Button
+              type={'button'}
+              onClick={() => {
+                setExpiredTime(0, 0, 0, 0);
+              }}
+            >
+              永不过期
+            </Button>
+            <Button
+              type={'button'}
+              onClick={() => {
+                setExpiredTime(1, 0, 0, 0);
+              }}
+            >
+              一个月后过期
+            </Button>
+            <Button
+              type={'button'}
+              onClick={() => {
+                setExpiredTime(0, 1, 0, 0);
+              }}
+            >
+              一天后过期
+            </Button>
+            <Button
+              type={'button'}
+              onClick={() => {
+                setExpiredTime(0, 0, 1, 0);
+              }}
+            >
+              一小时后过期
+            </Button>
+            <Button
+              type={'button'}
+              onClick={() => {
+                setExpiredTime(0, 0, 0, 1);
+              }}
+            >
+              一分钟后过期
+            </Button>
           </div>
-          <Message>注意，令牌的额度仅用于限制令牌本身的最大额度使用量，实际的使用受到账户的剩余额度限制。</Message>
+          <Message>
+            注意，令牌的额度仅用于限制令牌本身的最大额度使用量，实际的使用受到账户的剩余额度限制。
+          </Message>
           <Form.Field>
             <Form.Input
               label={`额度${renderQuotaWithPrompt(remainQuota)}`}
@@ -150,11 +189,20 @@ const EditToken = () => {
               disabled={unlimitedQuota}
             />
           </Form.Field>
-          <Button type={'button'} onClick={() => {
-            setUnlimitedQuota();
-          }}>{unlimitedQuota ? '取消无限额度' : '设为无限额度'}</Button>
-          <Button floated='right' positive onClick={submit}>提交</Button>
-          <Button floated='right' onClick={handleCancel}>取消</Button>
+          <Button
+            type={'button'}
+            onClick={() => {
+              setUnlimitedQuota();
+            }}
+          >
+            {unlimitedQuota ? '取消无限额度' : '设为无限额度'}
+          </Button>
+          <Button floated='right' positive onClick={submit}>
+            提交
+          </Button>
+          <Button floated='right' onClick={handleCancel}>
+            取消
+          </Button>
         </Form>
       </Segment>
     </>

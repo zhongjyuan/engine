@@ -69,26 +69,22 @@ func (user *UserEntity) Delete() error {
 	return err
 }
 
-func (user *UserEntity) Update(updatePassword ...bool) error {
-	var isUpdatePassword bool
-	if len(updatePassword) > 0 {
-		isUpdatePassword = updatePassword[0]
-	} else {
-		isUpdatePassword = true // 默认为逻辑删除
-	}
-
+func (user *UserEntity) Update(updatePassword bool, updateProfile bool) error {
 	var err error
 
 	// 如果需要更新密码，则对密码进行哈希处理
-	if isUpdatePassword {
+	if updatePassword {
 		user.Password, err = common.Password2Hash(user.Password)
 		if err != nil {
 			return err
 		}
 	}
 
-	// 调用 GORM 的 Model 方法更新用户信息，并返回可能出现的错误
-	err = DB.Model(user).Updates(user).Error
+	if updateProfile {
+		err = DB.Model(user.Profile).Updates(user.Profile).Error
+	} else {
+		err = DB.Model(user).Updates(user).Error
+	}
 
 	return err
 }
@@ -104,6 +100,10 @@ func (user *UserEntity) UpdatePassword() error {
 	return DB.Model(&UserEntity{}).Where("id = ?", user.Id).UpdateColumn("password", user.Password).Error
 }
 
+func (user *UserEntity) UpdateProfile() error {
+	return DB.Model(user.Profile).Updates(user.Profile).Error
+}
+
 func (user *UserEntity) GetByID(selectAll bool) error {
 	// 如果用户ID为空，则返回错误信息
 	if user.Id == 0 {
@@ -114,7 +114,7 @@ func (user *UserEntity) GetByID(selectAll bool) error {
 		// 使用 GORM 根据用户ID查询用户信息并填充字段，同时预加载 UserProfileEntity 别名为 "Profile"
 		return DB.Preload("Profile").Where(UserEntity{Id: user.Id}).First(user).Error
 	} else {
-		return DB.Where(UserEntity{Id: user.Id}).First(user).Error
+		return DB.Omit("password").Where(UserEntity{Id: user.Id}).First(user).Error
 	}
 }
 
@@ -128,7 +128,7 @@ func (user *UserEntity) GetByUserName(selectAll bool) error {
 		// 使用 GORM 根据用户ID查询用户信息并填充字段，同时预加载 UserProfileEntity 别名为 "Profile"
 		return DB.Preload("Profile").Where(UserEntity{UserName: user.UserName}).First(user).Error
 	} else {
-		return DB.Where(UserEntity{Id: user.Id}).First(user).Error
+		return DB.Omit("password").Where(UserEntity{UserName: user.UserName}).First(user).Error
 	}
 }
 
@@ -142,7 +142,7 @@ func (user *UserEntity) GetByEmail(selectAll bool) error {
 		// 使用 GORM 根据用户ID查询用户信息并填充字段，同时预加载 UserProfileEntity 别名为 "Profile"
 		return DB.Preload("Profile").Where(UserEntity{Email: user.Email}).First(user).Error
 	} else {
-		return DB.Where(UserEntity{Id: user.Id}).First(user).Error
+		return DB.Omit("password").Where(UserEntity{Email: user.Email}).First(user).Error
 	}
 }
 
@@ -159,7 +159,7 @@ func (user *UserEntity) GetByToken(selectAll bool) error {
 		// 使用 GORM 根据用户ID查询用户信息并填充字段，同时预加载 UserProfileEntity 别名为 "Profile"
 		return DB.Preload("Profile").Where("token = ?", token).First(user).Error
 	} else {
-		return DB.Where(UserEntity{Id: user.Id}).First(user).Error
+		return DB.Omit("password").Where(UserEntity{Token: user.Token}).First(user).Error
 	}
 }
 
@@ -216,11 +216,15 @@ func DeleteUserByID(id int) (err error) {
 }
 
 func UpdateUser(user *UserEntity) error {
-	return user.Update()
+	return user.Update(false, false)
 }
 
 func UpdateUserPassword(user *UserEntity) error {
 	return user.UpdatePassword()
+}
+
+func UpdateUserProfile(user *UserEntity) error {
+	return user.UpdateProfile()
 }
 
 func GetMaxUserId() int {

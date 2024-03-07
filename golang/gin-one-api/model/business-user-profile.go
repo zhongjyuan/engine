@@ -181,6 +181,17 @@ func GetUserUsedQuotaByID(userId int) (usedQuota int, err error) {
 	return usedQuota, err
 }
 
+func IsCanGenerateAccessToken(accessToken string) bool {
+	// 如果access token为空，则返回错误信息
+	if accessToken == "" {
+		return false
+	}
+
+	accessToken = strings.Replace(accessToken, "Bearer ", "", 1)
+
+	return DB.Where(UserProfileEntity{AccessToken: accessToken}).RowsAffected == 0
+}
+
 // IsWeChatIdAlreadyTaken 方法用于检查WeChat ID是否已被注册。
 //
 // 输入参数：

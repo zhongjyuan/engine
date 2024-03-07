@@ -62,7 +62,7 @@ func WeChatBind(c *gin.Context) {
 	user.Profile.WeChatId = wechatId
 
 	// 更新用户信息
-	if err := user.Update(false); err != nil {
+	if err := user.Update(false, true); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}

@@ -14,16 +14,16 @@ import (
 	"strconv"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
 
 // https://cloud.tencent.com/document/product/1729/97732
 
-func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
+func ConvertRequest(request relaymodel.AIRequest) *AIChatRequest {
 	messages := make([]Message, 0, len(request.Messages))
 	for i := 0; i < len(request.Messages); i++ {
 		message := request.Messages[i]
@@ -47,7 +47,7 @@ func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
 	if request.Stream {
 		stream = 1
 	}
-	return &ChatRequest{
+	return &AIChatRequest{
 		Timestamp:   common.GetTimestamp(),
 		Expired:     common.GetTimestamp() + 24*60*60,
 		QueryID:     common.GetUUID(),
@@ -58,16 +58,16 @@ func ConvertRequest(request relayModel.GeneralOpenAIRequest) *ChatRequest {
 	}
 }
 
-func responseTencent2OpenAI(response *ChatResponse) *channel_openai.TextResponse {
-	fullTextResponse := channel_openai.TextResponse{
+func responseTencent2OpenAI(response *ChatResponse) *relaymodel.AITextResponse {
+	fullTextResponse := relaymodel.AITextResponse{
 		Object:  "chat.completion",
 		Created: common.GetTimestamp(),
 		Usage:   response.Usage,
 	}
 	if len(response.Choices) > 0 {
-		choice := channel_openai.TextResponseChoice{
+		choice := relaymodel.AITextResponseChoice{
 			Index: 0,
-			Message: relayModel.Message{
+			AIMessage: relaymodel.AIMessage{
 				Role:    "assistant",
 				Content: response.Choices[0].Messages.Content,
 			},
@@ -78,24 +78,24 @@ func responseTencent2OpenAI(response *ChatResponse) *channel_openai.TextResponse
 	return &fullTextResponse
 }
 
-func streamResponseTencent2OpenAI(TencentResponse *ChatResponse) *channel_openai.ChatCompletionsStreamResponse {
-	response := channel_openai.ChatCompletionsStreamResponse{
+func streamResponseTencent2OpenAI(TencentResponse *ChatResponse) *relaymodel.AIChatCompletionsStreamResponse {
+	response := relaymodel.AIChatCompletionsStreamResponse{
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   "tencent-hunyuan",
 	}
 	if len(TencentResponse.Choices) > 0 {
-		var choice channel_openai.ChatCompletionsStreamResponseChoice
+		var choice relaymodel.AIChatCompletionsStreamResponseChoice
 		choice.Delta.Content = TencentResponse.Choices[0].Delta.Content
 		if TencentResponse.Choices[0].FinishReason == "stop" {
-			choice.FinishReason = &relayCommon.StopFinishReason
+			choice.FinishReason = &relaycommon.StopFinishReason
 		}
 		response.Choices = append(response.Choices, choice)
 	}
 	return &response
 }
 
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, string) {
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, string) {
 	var responseText string
 	scanner := bufio.NewScanner(resp.Body)
 	scanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
@@ -154,28 +154,28 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 	})
 	err := resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), ""
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), ""
 	}
 	return nil, responseText
 }
 
-func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func Handler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	var TencentResponse ChatResponse
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = json.Unmarshal(responseBody, &TencentResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	if TencentResponse.Error.Code != 0 {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: TencentResponse.Error.Message,
 				Code:    TencentResponse.Error.Code,
 			},
@@ -186,13 +186,13 @@ func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCo
 	fullTextResponse.Model = "hunyuan"
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)
 	_, err = c.Writer.Write(jsonResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "write_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "write_response_body_failed", http.StatusInternalServerError), nil
 	}
 	return nil, &fullTextResponse.Usage
 }
@@ -209,7 +209,7 @@ func ParseConfig(config string) (appId int64, secretId string, secretKey string,
 	return
 }
 
-func GetSign(req ChatRequest, secretKey string) string {
+func GetSign(req AIChatRequest, secretKey string) string {
 	params := make([]string, 0)
 	params = append(params, "app_id="+strconv.FormatInt(req.AppId, 10))
 	params = append(params, "secret_id="+req.SecretId)

@@ -5,33 +5,32 @@ import (
 	"io"
 	"net/http"
 	"strings"
-	relayChannel "zhongjyuan/gin-one-api/relay/channel"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayHelper "zhongjyuan/gin-one-api/relay/helper"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaychannel "zhongjyuan/gin-one-api/relay/channel"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Adaptor struct {
-	request *relayModel.GeneralOpenAIRequest
+	request *relaymodel.AIRequest
 }
 
-func (a *Adaptor) Init(meta *relayHelper.RelayMeta) {
+func (a *Adaptor) Init(meta *relaymodel.AIRelayMeta) {
 
 }
 
-func (a *Adaptor) GetRequestURL(meta *relayHelper.RelayMeta) (string, error) {
+func (a *Adaptor) GetRequestURL(meta *relaymodel.AIRelayMeta) (string, error) {
 	return "", nil
 }
 
-func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *relayHelper.RelayMeta) error {
-	relayChannel.SetupCommonRequestHeader(c, req, meta)
+func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *relaymodel.AIRelayMeta) error {
+	relaychannel.SetupCommonRequestHeader(c, req, meta)
 	// check DoResponse for auth part
 	return nil
 }
 
-func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relayModel.GeneralOpenAIRequest) (any, error) {
+func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relaymodel.AIRequest) (any, error) {
 	if request == nil {
 		return nil, errors.New("request is nil")
 	}
@@ -39,20 +38,20 @@ func (a *Adaptor) ConvertRequest(c *gin.Context, relayMode int, request *relayMo
 	return nil, nil
 }
 
-func (a *Adaptor) DoRequest(c *gin.Context, meta *relayHelper.RelayMeta, requestBody io.Reader) (*http.Response, error) {
+func (a *Adaptor) DoRequest(c *gin.Context, meta *relaymodel.AIRelayMeta, requestBody io.Reader) (*http.Response, error) {
 	// xunfei's request is not http request, so we don't need to do anything here
 	dummyResp := &http.Response{}
 	dummyResp.StatusCode = http.StatusOK
 	return dummyResp, nil
 }
 
-func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relayHelper.RelayMeta) (usage *relayModel.Usage, err *relayModel.ErrorWithStatusCode) {
+func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relaymodel.AIRelayMeta) (usage *relaymodel.Usage, err *relaymodel.HTTPError) {
 	splits := strings.Split(meta.APIKey, "|")
 	if len(splits) != 3 {
-		return nil, channel_openai.ErrorWrapper(errors.New("invalid auth"), "invalid_auth", http.StatusBadRequest)
+		return nil, relayhelper.WrapHTTPError(errors.New("invalid auth"), "invalid_auth", http.StatusBadRequest)
 	}
 	if a.request == nil {
-		return nil, channel_openai.ErrorWrapper(errors.New("request is nil"), "request_is_nil", http.StatusBadRequest)
+		return nil, relayhelper.WrapHTTPError(errors.New("request is nil"), "request_is_nil", http.StatusBadRequest)
 	}
 	if meta.IsStream {
 		err, usage = StreamHandler(c, *a.request, splits[0], splits[1], splits[2])

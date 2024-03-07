@@ -28,94 +28,94 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Box, Avatar } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import shapeAvatar from 'assets/images/icons/shape-avatar.svg';
-import coverAvatar from 'assets/images/invite/cover.jpg';
-import userAvatar from 'assets/images/users/user-round.svg';
-import SvgColor from 'ui-component/SvgColor';
+import { Box, Avatar } from "@mui/material";
+import { alpha } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import shapeAvatar from "assets/images/icons/shape-avatar.svg";
+import coverAvatar from "assets/images/invite/cover.jpg";
+import userAvatar from "assets/images/users/user-round.svg";
+import SvgColor from "ui-component/SvgColor";
 
-import React from 'react';
+import React from "react";
 
 export default function UserCard({ children }) {
-  const renderShape = (
-    <SvgColor
-      color="paper"
-      src={shapeAvatar}
-      sx={{
-        width: '100%',
-        height: 62,
-        zIndex: 10,
-        bottom: -26,
-        position: 'absolute',
-        color: 'background.paper'
-      }}
-    />
-  );
+	const renderShape = (
+		<SvgColor
+			color="paper"
+			src={shapeAvatar}
+			sx={{
+				width: "100%",
+				height: 62,
+				zIndex: 10,
+				bottom: -26,
+				position: "absolute",
+				color: "background.paper",
+			}}
+		/>
+	);
 
-  const renderAvatar = (
-    <Avatar
-      src={userAvatar}
-      sx={{
-        zIndex: 11,
-        width: 64,
-        height: 64,
-        position: 'absolute',
-        alignItems: 'center',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        left: 0,
-        right: 0,
-        bottom: (theme) => theme.spacing(-4)
-      }}
-    />
-  );
+	const renderAvatar = (
+		<Avatar
+			src={userAvatar}
+			sx={{
+				zIndex: 11,
+				width: 64,
+				height: 64,
+				position: "absolute",
+				alignItems: "center",
+				marginLeft: "auto",
+				marginRight: "auto",
+				left: 0,
+				right: 0,
+				bottom: (theme) => theme.spacing(-4),
+			}}
+		/>
+	);
 
-  const renderCover = (
-    <Box
-      component="img"
-      src={coverAvatar}
-      sx={{
-        top: 0,
-        width: 1,
-        height: 1,
-        objectFit: 'cover',
-        position: 'absolute'
-      }}
-    />
-  );
+	const renderCover = (
+		<Box
+			component="img"
+			src={coverAvatar}
+			sx={{
+				top: 0,
+				width: 1,
+				height: 1,
+				objectFit: "cover",
+				position: "absolute",
+			}}
+		/>
+	);
 
-  return (
-    <Card>
-      <Box
-        sx={{
-          position: 'relative',
-          '&:after': {
-            top: 0,
-            content: "''",
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.42)
-          },
-          pt: {
-            xs: 'calc(100% / 3)',
-            sm: 'calc(100% / 4.66)'
-          }
-        }}
-      >
-        {renderShape}
-        {renderAvatar}
-        {renderCover}
-      </Box>
-      <Box
-        sx={{
-          p: (theme) => theme.spacing(4, 3, 3, 3)
-        }}
-      >
-        {children}
-      </Box>
-    </Card>
-  );
+	return (
+		<Card>
+			<Box
+				sx={{
+					position: "relative",
+					"&:after": {
+						top: 0,
+						content: "''",
+						width: "100%",
+						height: "100%",
+						position: "absolute",
+						bgcolor: (theme) => alpha(theme.palette.primary.main, 0.42),
+					},
+					pt: {
+						xs: "calc(100% / 3)",
+						sm: "calc(100% / 4.66)",
+					},
+				}}
+			>
+				{renderShape}
+				{renderAvatar}
+				{renderCover}
+			</Box>
+			<Box
+				sx={{
+					p: (theme) => theme.spacing(4, 3, 3, 3),
+				}}
+			>
+				{children}
+			</Box>
+		</Card>
+	);
 }

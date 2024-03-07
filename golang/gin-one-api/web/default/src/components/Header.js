@@ -1,96 +1,145 @@
 import React, { useContext, useState } from 'react';
+import {
+  Button,
+  Container,
+  Dropdown,
+  Icon,
+  Menu,
+  Segment,
+} from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import {
+  API,
+  getLogo,
+  getSystemName,
+  isAdmin,
+  isMobile,
+  showSuccess,
+} from '../helpers';
 import { UserContext } from '../context/User';
 
-import { Button, Container, Dropdown, Icon, Menu, Segment } from 'semantic-ui-react';
-import { API, getLogo, getSystemName, isAdmin, isMobile, showSuccess } from '../helpers';
 import '../index.css';
 
-// Header Buttons
+// Header Buttons// 导航栏按钮配置数组
 let headerButtons = [
   {
     name: '首页',
     to: '/',
-    icon: 'home'
+    icon: 'home',
   },
   {
     name: '渠道',
     to: '/channel',
     icon: 'sitemap',
-    admin: true
+    admin: true, // 仅管理员可见
   },
   {
     name: '令牌',
     to: '/token',
-    icon: 'key'
+    icon: 'key',
   },
   {
     name: '兑换',
     to: '/redemption',
     icon: 'dollar sign',
-    admin: true
+    admin: true, // 仅管理员可见
   },
   {
     name: '充值',
     to: '/topup',
-    icon: 'cart'
+    icon: 'cart',
   },
   {
     name: '用户',
     to: '/user',
     icon: 'user',
-    admin: true
+    admin: true, // 仅管理员可见
   },
   {
     name: '日志',
     to: '/log',
-    icon: 'book'
+    icon: 'book',
   },
   {
     name: '设置',
     to: '/setting',
-    icon: 'setting'
+    icon: 'setting',
   },
   {
     name: '关于',
     to: '/about',
-    icon: 'info circle'
-  }
+    icon: 'info circle',
+  },
 ];
 
+// 检查本地存储中是否存在 'chat_link'
 if (localStorage.getItem('chat_link')) {
+  // 如果存在 'chat_link'，则向 headerButtons 数组的第二个位置插入一个新的按钮对象
   headerButtons.splice(1, 0, {
     name: '聊天',
     to: '/chat',
-    icon: 'comments'
+    icon: 'comments',
   });
 }
 
 const Header = () => {
-  const [userState, userDispatch] = useContext(UserContext);
+  // 引入 useNavigate Hook 用于页面导航
   let navigate = useNavigate();
 
+  // 使用 useState Hook 定义一个名为 showSidebar 的状态变量，并提供修改该状态的函数 setShowSidebar
   const [showSidebar, setShowSidebar] = useState(false);
-  const systemName = getSystemName();
-  const logo = getLogo();
 
+  // 使用 useContext Hook 获取 UserContext 的状态和派发函数
+  const [userState, userDispatch] = useContext(UserContext);
+
+  // 调用 getLogo() 和 getSystemName() 函数分别获取 logo 图片和系统名称
+  const logo = getLogo();
+  const systemName = getSystemName();
+
+  /**
+   * 执行用户注销操作
+   */
   async function logout() {
+    // 关闭侧边栏
     setShowSidebar(false);
+
+    // 发送注销请求到后端API
     await API.get('/api/user/logout');
+
+    // 显示注销成功提示
     showSuccess('注销成功!');
+
+    // 触发用户注销动作，更新用户状态
     userDispatch({ type: 'logout' });
+
+    // 移除本地存储中的用户信息
     localStorage.removeItem('user');
+
+    // 导航至登录页面
     navigate('/login');
   }
 
+  /**
+   * 切换侧边栏的显示状态
+   */
   const toggleSidebar = () => {
+    // 取反操作，修改 showSidebar 的状态
     setShowSidebar(!showSidebar);
   };
 
+  /**
+   * 根据 isMobile 参数渲染不同类型的按钮
+   * @param {boolean} isMobile - 是否移动设备
+   * @returns {Array} 包含按钮元素的数组
+   */
   const renderButtons = (isMobile) => {
     return headerButtons.map((button) => {
+      // 如果按钮需要管理员权限且当前用户不是管理员，则不渲染该按钮
       if (button.admin && !isAdmin()) return <></>;
+
       if (isMobile) {
+        // 在移动设备上，点击按钮时导航到指定页面，并关闭侧边栏
         return (
           <Menu.Item
             onClick={() => {
@@ -101,13 +150,15 @@ const Header = () => {
             {button.name}
           </Menu.Item>
         );
+      } else {
+        // 在非移动设备上，生成带链接的按钮项
+        return (
+          <Menu.Item key={button.name} as={Link} to={button.to}>
+            <Icon name={button.icon} />
+            {button.name}
+          </Menu.Item>
+        );
       }
-      return (
-        <Menu.Item key={button.name} as={Link} to={button.to}>
-          <Icon name={button.icon} />
-          {button.name}
-        </Menu.Item>
-      );
     });
   };
 
@@ -120,21 +171,17 @@ const Header = () => {
           style={
             showSidebar
               ? {
-                borderBottom: 'none',
-                marginBottom: '0',
-                borderTop: 'none',
-                height: '51px'
-              }
+                  borderBottom: 'none',
+                  marginBottom: '0',
+                  borderTop: 'none',
+                  height: '51px',
+                }
               : { borderTop: 'none', height: '52px' }
           }
         >
           <Container>
             <Menu.Item as={Link} to='/'>
-              <img
-                src={logo}
-                alt='logo'
-                style={{ marginRight: '0.75em' }}
-              />
+              <img src={logo} alt='logo' style={{ marginRight: '0.75em' }} />
               <div style={{ fontSize: '20px' }}>
                 <b>{systemName}</b>
               </div>

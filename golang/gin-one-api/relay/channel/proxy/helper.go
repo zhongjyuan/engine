@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 	"zhongjyuan/gin-one-api/common"
-	channel_openai "zhongjyuan/gin-one-api/relay/channel/openai"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relayhelper "zhongjyuan/gin-one-api/relay/helper"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +27,7 @@ func aiProxyDocuments2Markdown(documents []LibraryDocument) string {
 	return content
 }
 
-func ConvertRequest(request relayModel.GeneralOpenAIRequest) *LibraryRequest {
+func ConvertRequest(request relaymodel.AIRequest) *LibraryRequest {
 	query := ""
 	if len(request.Messages) != 0 {
 		query = request.Messages[len(request.Messages)-1].StringContent()
@@ -39,52 +39,52 @@ func ConvertRequest(request relayModel.GeneralOpenAIRequest) *LibraryRequest {
 	}
 }
 
-func responseAIProxyLibrary2OpenAI(response *LibraryResponse) *channel_openai.TextResponse {
+func responseAIProxyLibrary2OpenAI(response *LibraryResponse) *relaymodel.AITextResponse {
 	content := response.Answer + aiProxyDocuments2Markdown(response.Documents)
-	choice := channel_openai.TextResponseChoice{
+	choice := relaymodel.AITextResponseChoice{
 		Index: 0,
-		Message: relayModel.Message{
+		AIMessage: relaymodel.AIMessage{
 			Role:    "assistant",
 			Content: content,
 		},
 		FinishReason: "stop",
 	}
-	fullTextResponse := channel_openai.TextResponse{
+	fullTextResponse := relaymodel.AITextResponse{
 		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion",
 		Created: common.GetTimestamp(),
-		Choices: []channel_openai.TextResponseChoice{choice},
+		Choices: []relaymodel.AITextResponseChoice{choice},
 	}
 	return &fullTextResponse
 }
 
-func documentsAIProxyLibrary(documents []LibraryDocument) *channel_openai.ChatCompletionsStreamResponse {
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+func documentsAIProxyLibrary(documents []LibraryDocument) *relaymodel.AIChatCompletionsStreamResponse {
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = aiProxyDocuments2Markdown(documents)
-	choice.FinishReason = &relayCommon.StopFinishReason
-	return &channel_openai.ChatCompletionsStreamResponse{
+	choice.FinishReason = &relaycommon.StopFinishReason
+	return &relaymodel.AIChatCompletionsStreamResponse{
 		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   "",
-		Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+		Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 	}
 }
 
-func streamResponseAIProxyLibrary2OpenAI(response *LibraryStreamResponse) *channel_openai.ChatCompletionsStreamResponse {
-	var choice channel_openai.ChatCompletionsStreamResponseChoice
+func streamResponseAIProxyLibrary2OpenAI(response *LibraryStreamResponse) *relaymodel.AIChatCompletionsStreamResponse {
+	var choice relaymodel.AIChatCompletionsStreamResponseChoice
 	choice.Delta.Content = response.Content
-	return &channel_openai.ChatCompletionsStreamResponse{
+	return &relaymodel.AIChatCompletionsStreamResponse{
 		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   response.Model,
-		Choices: []channel_openai.ChatCompletionsStreamResponseChoice{choice},
+		Choices: []relaymodel.AIChatCompletionsStreamResponseChoice{choice},
 	}
 }
 
-func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
-	var usage relayModel.Usage
+func StreamHandler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
+	var usage relaymodel.Usage
 	scanner := bufio.NewScanner(resp.Body)
 	scanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
 		if atEOF && len(data) == 0 {
@@ -150,28 +150,28 @@ func StreamHandler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithSt
 	})
 	err := resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	return nil, &usage
 }
 
-func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCode, *relayModel.Usage) {
+func Handler(c *gin.Context, resp *http.Response) (*relaymodel.HTTPError, *relaymodel.Usage) {
 	var AIProxyLibraryResponse LibraryResponse
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "read_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "read_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = resp.Body.Close()
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "close_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), nil
 	}
 	err = json.Unmarshal(responseBody, &AIProxyLibraryResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "unmarshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	if AIProxyLibraryResponse.ErrCode != 0 {
-		return &relayModel.ErrorWithStatusCode{
-			Error: relayModel.Error{
+		return &relaymodel.HTTPError{
+			Error: relaymodel.Error{
 				Message: AIProxyLibraryResponse.Message,
 				Type:    strconv.Itoa(AIProxyLibraryResponse.ErrCode),
 				Code:    AIProxyLibraryResponse.ErrCode,
@@ -182,13 +182,13 @@ func Handler(c *gin.Context, resp *http.Response) (*relayModel.ErrorWithStatusCo
 	fullTextResponse := responseAIProxyLibrary2OpenAI(&AIProxyLibraryResponse)
 	jsonResponse, err := json.Marshal(fullTextResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "marshal_response_body_failed", http.StatusInternalServerError), nil
 	}
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.WriteHeader(resp.StatusCode)
 	_, err = c.Writer.Write(jsonResponse)
 	if err != nil {
-		return channel_openai.ErrorWrapper(err, "write_response_body_failed", http.StatusInternalServerError), nil
+		return relayhelper.WrapHTTPError(err, "write_response_body_failed", http.StatusInternalServerError), nil
 	}
 	return nil, &fullTextResponse.Usage
 }

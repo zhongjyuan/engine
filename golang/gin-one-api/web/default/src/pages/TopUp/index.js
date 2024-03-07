@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Grid, Header, Segment, Statistic } from 'semantic-ui-react';
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Segment,
+  Statistic,
+} from 'semantic-ui-react';
+
 import { API, showError, showInfo, showSuccess } from '../../helpers';
 import { renderQuota } from '../../helpers/render';
 
 const TopUp = () => {
-  const [redemptionCode, setRedemptionCode] = useState('');
   const [topUpLink, setTopUpLink] = useState('');
   const [userQuota, setUserQuota] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [redemptionCode, setRedemptionCode] = useState('');
 
   const topUp = async () => {
     if (redemptionCode === '') {
-      showInfo('请输入充值码！')
+      showInfo('请输入充值码！');
       return;
     }
     setIsSubmitting(true);
     try {
       const res = await API.post('/api/user/topup', {
-        key: redemptionCode
+        key: redemptionCode,
       });
       const { success, message, data } = res.data;
       if (success) {
@@ -32,7 +40,7 @@ const TopUp = () => {
     } catch (err) {
       showError('请求失败');
     } finally {
-      setIsSubmitting(false); 
+      setIsSubmitting(false);
     }
   };
 
@@ -44,15 +52,15 @@ const TopUp = () => {
     window.open(topUpLink, '_blank');
   };
 
-  const getUserQuota = async ()=>{
-    let res  = await API.get(`/api/user/self`);
-    const {success, message, data} = res.data;
+  const getUserQuota = async () => {
+    let res = await API.get(`/api/user/self`);
+    const { success, message, data } = res.data;
     if (success) {
       setUserQuota(data.quota);
     } else {
       showError(message);
     }
-  }
+  };
 
   useEffect(() => {
     let status = localStorage.getItem('status');
@@ -83,7 +91,7 @@ const TopUp = () => {
               获取兑换码
             </Button>
             <Button color='yellow' onClick={topUp} disabled={isSubmitting}>
-                {isSubmitting ? '兑换中...' : '兑换'}
+              {isSubmitting ? '兑换中...' : '兑换'}
             </Button>
           </Form>
         </Grid.Column>

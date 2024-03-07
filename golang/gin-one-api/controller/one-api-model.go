@@ -5,8 +5,8 @@ import (
 	"zhongjyuan/gin-one-api/relay"
 	channel_360 "zhongjyuan/gin-one-api/relay/channel/360"
 	channel_moonshot "zhongjyuan/gin-one-api/relay/channel/moonshot"
-	relayCommon "zhongjyuan/gin-one-api/relay/common"
-	relayModel "zhongjyuan/gin-one-api/relay/model"
+	relaycommon "zhongjyuan/gin-one-api/relay/common"
+	relaymodel "zhongjyuan/gin-one-api/relay/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -58,8 +58,8 @@ func init() {
 		IsBlocking:         false,
 	})
 	// https://platform.openai.com/docs/models/model-endpoint-compatibility
-	for i := 0; i < relayCommon.APITypeDummy; i++ {
-		if i == relayCommon.APITypeAIProxyLibrary {
+	for i := 0; i < relaycommon.APITypeDummy; i++ {
+		if i == relaycommon.APITypeAIProxyLibrary {
 			continue
 		}
 		adaptor := relay.GetAdaptor(i)
@@ -117,7 +117,7 @@ func RetrieveModel(c *gin.Context) {
 	if model, ok := openAIModelsMap[modelId]; ok {
 		c.JSON(200, model)
 	} else {
-		Error := relayModel.Error{
+		Error := relaymodel.Error{
 			Message: fmt.Sprintf("The model '%s' does not exist", modelId),
 			Type:    "invalid_request_error",
 			Param:   "model",
