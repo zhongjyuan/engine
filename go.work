@@ -9,6 +9,6 @@ use (
 	./golang/z-wechat-robot-server
 
 	./golang/gin-template
+	./golang/gin-ai-server
 	./golang/gin-wechat-server
-	./golang/gin-one-api
 )

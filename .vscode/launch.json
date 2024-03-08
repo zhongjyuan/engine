@@ -100,11 +100,11 @@
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "[go] gin-wechat-site|dev",
-			"program": "${workspaceFolder}\\golang\\gin-wechat-server\\main.go",
+			"name": "[go] gin-ai-site|dev",
+			"program": "${workspaceFolder}\\golang\\gin-ai-server\\main.go",
 			"showLog": true,
 			"env": {
-				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-wechat-server?charset=utf8"
+				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-ai-server?charset=utf8"
 			},
 			"args": []
 		},
@@ -112,11 +112,11 @@
 			"type": "go",
 			"mode": "auto",
 			"request": "launch",
-			"name": "[go] gin-one-api-site|dev",
-			"program": "${workspaceFolder}\\golang\\gin-one-api\\main.go",
+			"name": "[go] gin-wechat-site|dev",
+			"program": "${workspaceFolder}\\golang\\gin-wechat-server\\main.go",
 			"showLog": true,
 			"env": {
-				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-one-api?charset=utf8"
+				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-wechat-server?charset=utf8"
 			},
 			"args": []
 		}
