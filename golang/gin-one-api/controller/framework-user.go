@@ -403,14 +403,14 @@ func Register(c *gin.Context) {
 	common.SendSuccessJSONResponse(c, "注册成功", nil)
 }
 
-// GenerateAccessToken 函数用于生成用户的访问令牌。
+// GenerateToken 函数用于生成用户的访问令牌。
 //
 // 输入参数：
 //   - c *gin.Context: Gin 上下文对象，包含了请求信息和响应信息。
 //
 // 输出参数：
 //   - 无。
-func GenerateAccessToken(c *gin.Context) {
+func GenerateToken(c *gin.Context) {
 	// 获取当前用户 ID
 	id := c.GetInt("id")
 
@@ -422,23 +422,23 @@ func GenerateAccessToken(c *gin.Context) {
 	}
 
 	// 生成 UUID 作为访问令牌
-	user.Profile.AccessToken = uuid.New().String()
-	user.Profile.AccessToken = strings.Replace(user.Profile.AccessToken, "-", "", -1)
+	user.Token = uuid.New().String()
+	user.Token = strings.Replace(user.Token, "-", "", -1)
 
 	// 检查是否存在重复的令牌
-	if !model.IsCanGenerateAccessToken(user.Profile.AccessToken) {
+	if existingUser, err := model.GetUserByToken(user.Token, false); err != nil || existingUser != nil {
 		common.SendFailureJSONResponse(c, "请重试，系统生成的 UUID 竟然重复了！")
 		return
 	}
 
 	// 更新用户信息
-	if err := user.Update(false, true); err != nil {
+	if err := user.Update(false, false); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
 
 	// 返回生成令牌成功的响应
-	common.SendSuccessJSONResponse(c, "生成成功", user.Profile.AccessToken)
+	common.SendSuccessJSONResponse(c, "生成成功", user.Token)
 }
 
 // LoginRequest 结构体用于表示登录请求，包括用户名和密码。

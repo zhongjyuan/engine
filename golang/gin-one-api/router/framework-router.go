@@ -46,7 +46,7 @@ func setFrameworkApiRouter(router *gin.Engine) {
 				selfRoute.GET("/self", controller.GetSelf)
 				selfRoute.PUT("/self", controller.UpdateSelf)
 				selfRoute.DELETE("/self", controller.DeleteSelf)
-				selfRoute.GET("/token", controller.GenerateAccessToken)
+				// selfRoute.GET("/token", controller.GenerateToken)
 			}
 
 			// 管理员操作用户路由组
@@ -75,9 +75,10 @@ func setFrameworkApiRouter(router *gin.Engine) {
 		fileRoute := apiRouter.Group("/file")
 		fileRoute.Use(middleware.AdminAuth()) // 文件相关路由需要管理员权限
 		{
+			fileRoute.GET("/:id", middleware.DownloadRateLimit(), controller.DownloadFile)
 			fileRoute.GET("/", controller.GetPageFiles)
 			fileRoute.GET("/search", controller.SearchFiles)
-			fileRoute.POST("/", middleware.UploadRateLimit(), controller.UploadFile)
+			fileRoute.POST("/", middleware.UserAuth(), middleware.UploadRateLimit(), controller.UploadFile)
 			fileRoute.DELETE("/:id", controller.DeleteFile)
 		}
 	}

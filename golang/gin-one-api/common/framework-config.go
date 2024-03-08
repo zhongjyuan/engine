@@ -15,7 +15,7 @@ var Version = "v0.0.0"
 var StartTime = time.Now().Unix() // 单位：秒
 
 // SystemName 存储系统的名称
-var SystemName = "项目模板"
+var SystemName = "One API"
 
 // ServerAddress 存储服务器地址
 var ServerAddress = "http://localhost:3000"

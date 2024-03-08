@@ -1,0 +1,65 @@
+{
+	"name": "chatgpt-server",
+	"private": false,
+	"version": "1.0.0",
+	"description": "ChatGPT Web Server",
+	"scripts": {
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"clean:build": "rimraf build",
+		"clean:common": "rimraf node_modules && rimraf pnpm-lock.yaml",
+		"dev": "esno watch ./index.ts",
+		"start": "esno ./index.ts",
+		"build": "pnpm clean && tsup",
+		"prod": "npm run build && esno ./build/index.js"
+	},
+	"keywords": [
+		"chatgpt",
+		"chatbot",
+		"express",
+		"zhongjyuan"
+	],
+	"author": {
+		"name": "zhongjyuan",
+		"email": "zhongjyuan@outlook.com",
+		"url": "https://zhongjyuan.club"
+	},
+	"contributors": [
+		{
+			"name": "zhongjyuan",
+			"email": "zhongjyuan@outlook.com",
+			"url": "https://zhongjyuan.club"
+		}
+	],
+	"license": "Apache-2.0",
+	"homepage": "https://zhongjyuan.club",
+	"repository": {
+		"type": "github",
+		"url": "https://github.com/zhongjyuan/chatgpt-server"
+	},
+	"bugs": {
+		"url": "https://github.com/zhongjyuan/chatgpt-server/issues",
+		"email": "zhongjyuan@outlook.com"
+	},
+	"engines": {
+		"node": "^16 || ^18"
+	},
+	"devDependencies": {
+		"@antfu/eslint-config": "^0.35.3",
+		"@types/express": "^4.17.17",
+		"@types/node": "^18.14.6",
+		"eslint": "^8.35.0",
+		"rimraf": "^4.3.0",
+		"tsup": "^6.6.3",
+		"typescript": "^4.9.5"
+	},
+	"dependencies": {
+		"chatgpt": "^5.0.9",
+		"dotenv": "^16.0.3",
+		"esno": "^0.16.3",
+		"express": "^4.18.2",
+		"isomorphic-fetch": "^3.0.0",
+		"node-fetch": "^3.3.0",
+		"socks-proxy-agent": "^7.0.0"
+	}
+}

@@ -22,6 +22,7 @@ func setOneApiRouter(router *gin.Engine) {
 			selfRoute := userRoute.Group("/")
 			selfRoute.Use(middleware.UserAuth(), middleware.NoTokenAuth())
 			{
+				selfRoute.GET("/token", controller.GenerateAccessToken)
 				selfRoute.GET("/dashboard", controller.GetUserDashboard)
 				selfRoute.GET("/aff", controller.GetAffCode)
 				selfRoute.POST("/topup", controller.TopUp)

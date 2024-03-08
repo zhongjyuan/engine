@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// authHelper 是一个辅助函数，用于进行身份验证和权限检查。
+// auth 是一个辅助函数，用于进行身份验证和权限检查。
 //
 // 输入参数：
 //   - c (*gin.Context): Gin 上下文对象。
@@ -17,7 +17,7 @@ import (
 //
 // 输出参数：
 //   - 无。
-func authHelper(c *gin.Context, minRole int) {
+func auth(c *gin.Context, minRole int) {
 	// 获取会话
 	session := sessions.Default(c)
 
@@ -86,7 +86,7 @@ func authHelper(c *gin.Context, minRole int) {
 //   - 无。
 func UserAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		authHelper(c, common.RoleCommonUser)
+		auth(c, common.RoleCommonUser)
 	}
 }
 
@@ -99,7 +99,7 @@ func UserAuth() func(c *gin.Context) {
 //   - 无。
 func AdminAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		authHelper(c, common.RoleAdminUser)
+		auth(c, common.RoleAdminUser)
 	}
 }
 
@@ -112,7 +112,7 @@ func AdminAuth() func(c *gin.Context) {
 //   - 无。
 func RootAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		authHelper(c, common.RoleRootUser)
+		auth(c, common.RoleRootUser)
 	}
 }
 
