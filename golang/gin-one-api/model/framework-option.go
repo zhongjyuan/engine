@@ -162,15 +162,8 @@ func SearchOptions(keyword string) (options []*OptionEntity, err error) {
 	err = DB.Select([]string{
 		"key",
 		"value",
-		"description",
-		"is_enabled",
-		"creator_id",
-		"creator_name",
-		"create_time",
 	}).Where(
-		"key LIKE ? or description LIKE ? or creator_id LIKE ? or creator_name = ?",
-		keyword+"%",
-		keyword+"%",
+		"key LIKE ? or value LIKE ?",
 		keyword+"%",
 		keyword,
 	).Find(&options).Error
@@ -185,10 +178,6 @@ func InitOptionMap() {
 
 	// 初始化 OptionMap，并设置各项配置参数。
 	common.OptionMap = make(map[string]string)
-	common.OptionMap["FileUploadPermission"] = strconv.Itoa(common.FileUploadPermission)
-	common.OptionMap["FileDownloadPermission"] = strconv.Itoa(common.FileDownloadPermission)
-	common.OptionMap["ImageUploadPermission"] = strconv.Itoa(common.ImageUploadPermission)
-	common.OptionMap["ImageDownloadPermission"] = strconv.Itoa(common.ImageDownloadPermission)
 	common.OptionMap["PasswordLoginEnabled"] = strconv.FormatBool(common.PasswordLoginEnabled)
 	common.OptionMap["PasswordRegisterEnabled"] = strconv.FormatBool(common.PasswordRegisterEnabled)
 	common.OptionMap["EmailVerificationEnabled"] = strconv.FormatBool(common.EmailVerificationEnabled)
@@ -196,24 +185,47 @@ func InitOptionMap() {
 	common.OptionMap["WeChatAuthEnabled"] = strconv.FormatBool(common.WeChatAuthEnabled)
 	common.OptionMap["TurnstileCheckEnabled"] = strconv.FormatBool(common.TurnstileCheckEnabled)
 	common.OptionMap["RegisterEnabled"] = strconv.FormatBool(common.RegisterEnabled)
-	common.OptionMap["SMTPServer"] = ""
+	common.OptionMap["AutomaticDisableChannelEnabled"] = strconv.FormatBool(common.AutomaticDisableChannelEnabled)
+	common.OptionMap["AutomaticEnableChannelEnabled"] = strconv.FormatBool(common.AutomaticEnableChannelEnabled)
+	common.OptionMap["ApproximateTokenEnabled"] = strconv.FormatBool(common.ApproximateTokenEnabled)
+	common.OptionMap["LogConsumeEnabled"] = strconv.FormatBool(common.LogConsumeEnabled)
+	common.OptionMap["DisplayInCurrencyEnabled"] = strconv.FormatBool(common.DisplayInCurrencyEnabled)
+	common.OptionMap["DisplayTokenStatEnabled"] = strconv.FormatBool(common.DisplayTokenStatEnabled)
+	common.OptionMap["ChannelDisableThreshold"] = strconv.FormatFloat(common.ChannelDisableThreshold, 'f', -1, 64)
+	common.OptionMap["EmailDomainRestrictionEnabled"] = strconv.FormatBool(common.EmailDomainRestrictionEnabled)
+	common.OptionMap["EmailDomainWhitelist"] = strings.Join(common.EmailDomainWhitelist, ",")
+	common.OptionMap["SMTPServer"] = common.SMTPServer
+	common.OptionMap["SMTPFrom"] = common.SMTPAccount
 	common.OptionMap["SMTPPort"] = strconv.Itoa(common.SMTPPort)
-	common.OptionMap["SMTPAccount"] = ""
-	common.OptionMap["SMTPToken"] = ""
+	common.OptionMap["SMTPAccount"] = common.SMTPAccount
+	common.OptionMap["SMTPToken"] = common.SMTPToken
 	common.OptionMap["Notice"] = ""
 	common.OptionMap["About"] = ""
+	common.OptionMap["HomePageContent"] = ""
 	common.OptionMap["Footer"] = common.Footer
-	common.OptionMap["HomePageLink"] = common.HomePageLink
 	common.OptionMap["SystemName"] = common.SystemName
-	common.OptionMap["ServerAddress"] = ""
-	common.OptionMap["GitHubClientId"] = ""
-	common.OptionMap["GitHubClientSecret"] = ""
-	common.OptionMap["WeChatServerAddress"] = ""
-	common.OptionMap["WeChatServerToken"] = ""
+	common.OptionMap["Logo"] = common.Logo
+	common.OptionMap["ServerAddress"] = common.ServerAddress
+	common.OptionMap["GitHubClientId"] = common.GitHubClientId
+	common.OptionMap["GitHubClientSecret"] = common.GitHubClientSecret
+	common.OptionMap["WeChatServerAddress"] = common.WeChatServerAddress
+	common.OptionMap["WeChatServerToken"] = common.WeChatServerToken
 	common.OptionMap["WeChatAccountQRCodeImageURL"] = ""
-	common.OptionMap["TurnstileSiteKey"] = ""
-	common.OptionMap["TurnstileSecretKey"] = ""
-	common.OptionMap["Theme"] = ""
+	common.OptionMap["TurnstileSiteKey"] = common.TurnstileSiteKey
+	common.OptionMap["TurnstileSecretKey"] = common.TurnstileSecretKey
+	common.OptionMap["QuotaForNewUser"] = strconv.Itoa(common.QuotaForNewUser)
+	common.OptionMap["QuotaForInviter"] = strconv.Itoa(common.QuotaForInviter)
+	common.OptionMap["QuotaForInvitee"] = strconv.Itoa(common.QuotaForInvitee)
+	common.OptionMap["QuotaRemindThreshold"] = strconv.Itoa(common.QuotaRemindThreshold)
+	common.OptionMap["PreConsumedQuota"] = strconv.Itoa(common.PreConsumedQuota)
+	common.OptionMap["ModelRatio"] = common.ConvertModelRatioToJSONString()
+	common.OptionMap["GroupRatio"] = common.ConvertGroupRatioToJSONString()
+	common.OptionMap["CompletionRatio"] = common.ConvertCompletionRatioToJSONString()
+	common.OptionMap["TopUpLink"] = common.TopUpLink
+	common.OptionMap["ChatLink"] = common.ChatLink
+	common.OptionMap["QuotaPerUnit"] = strconv.FormatFloat(common.QuotaPerUnit, 'f', -1, 64)
+	common.OptionMap["RetryTimes"] = strconv.Itoa(common.RetryTimes)
+	common.OptionMap["Theme"] = common.Theme
 
 	// 解锁 OptionMap。
 	common.OptionMapRWMutex.Unlock()
@@ -221,7 +233,9 @@ func InitOptionMap() {
 	// 获取所有选项并更新 OptionMap。
 	options, _ := GetAllOptions()
 	for _, option := range options {
-		updateOptionConfig(option.Key, option.Value)
+		if err := updateOptionConfig(option.Key, option.Value); err != nil {
+			common.SysError("failed to update option map: " + err.Error())
+		}
 	}
 }
 
@@ -233,7 +247,7 @@ func InitOptionMap() {
 //
 // 输出参数：
 //   - 无。
-func updateOptionConfig(key string, value string) {
+func updateOptionConfig(key string, value string) (err error) {
 	// 加锁以防止并发访问
 	common.OptionMapRWMutex.Lock()
 	defer common.OptionMapRWMutex.Unlock()
@@ -276,18 +290,35 @@ func updateOptionConfig(key string, value string) {
 			common.TurnstileCheckEnabled = boolValue
 		case "RegisterEnabled":
 			common.RegisterEnabled = boolValue
+		case "EmailDomainRestrictionEnabled":
+			common.EmailDomainRestrictionEnabled = boolValue
+		case "AutomaticDisableChannelEnabled":
+			common.AutomaticDisableChannelEnabled = boolValue
+		case "AutomaticEnableChannelEnabled":
+			common.AutomaticEnableChannelEnabled = boolValue
+		case "ApproximateTokenEnabled":
+			common.ApproximateTokenEnabled = boolValue
+		case "LogConsumeEnabled":
+			common.LogConsumeEnabled = boolValue
+		case "DisplayInCurrencyEnabled":
+			common.DisplayInCurrencyEnabled = boolValue
+		case "DisplayTokenStatEnabled":
+			common.DisplayTokenStatEnabled = boolValue
 		}
 	}
 
 	// 根据选项键名更新相应的选项值
 	switch key {
+	case "EmailDomainWhitelist":
+		common.EmailDomainWhitelist = strings.Split(value, ",")
 	case "SMTPServer":
 		common.SMTPServer = value
 	case "SMTPPort":
-		// 将字符串值转换为整数
 		intValue, _ := strconv.Atoi(value)
 		common.SMTPPort = intValue
 	case "SMTPAccount":
+		common.SMTPAccount = value
+	case "SMTPFrom":
 		common.SMTPAccount = value
 	case "SMTPToken":
 		common.SMTPToken = value
@@ -299,10 +330,10 @@ func updateOptionConfig(key string, value string) {
 		common.GitHubClientSecret = value
 	case "Footer":
 		common.Footer = value
-	case "HomePageLink":
-		common.HomePageLink = value
 	case "SystemName":
 		common.SystemName = value
+	case "Logo":
+		common.Logo = value
 	case "WeChatServerAddress":
 		common.WeChatServerAddress = value
 	case "WeChatServerToken":
@@ -313,7 +344,35 @@ func updateOptionConfig(key string, value string) {
 		common.TurnstileSiteKey = value
 	case "TurnstileSecretKey":
 		common.TurnstileSecretKey = value
+	case "QuotaForNewUser":
+		common.QuotaForNewUser, _ = strconv.Atoi(value)
+	case "QuotaForInviter":
+		common.QuotaForInviter, _ = strconv.Atoi(value)
+	case "QuotaForInvitee":
+		common.QuotaForInvitee, _ = strconv.Atoi(value)
+	case "QuotaRemindThreshold":
+		common.QuotaRemindThreshold, _ = strconv.Atoi(value)
+	case "PreConsumedQuota":
+		common.PreConsumedQuota, _ = strconv.Atoi(value)
+	case "RetryTimes":
+		common.RetryTimes, _ = strconv.Atoi(value)
+	case "ModelRatio":
+		err = common.UpdateModelRatioFromJSONString(value)
+	case "GroupRatio":
+		err = common.UpdateGroupRatioFromJSONString(value)
+	case "CompletionRatio":
+		err = common.UpdateCompletionRatioFromJSONString(value)
+	case "TopUpLink":
+		common.TopUpLink = value
+	case "ChatLink":
+		common.ChatLink = value
+	case "ChannelDisableThreshold":
+		common.ChannelDisableThreshold, _ = strconv.ParseFloat(value, 64)
+	case "QuotaPerUnit":
+		common.QuotaPerUnit, _ = strconv.ParseFloat(value, 64)
 	case "Theme":
 		common.Theme = value
 	}
+
+	return err
 }

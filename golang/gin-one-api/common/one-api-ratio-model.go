@@ -6,14 +6,14 @@ import (
 	"time"
 )
 
-// ConvertModelRatioToJSON 将 ModelRatio 转换为 JSON 字符串。
+// ConvertModelRatioToJSONString 将 ModelRatio 转换为 JSON 字符串。
 //
 // 输入参数：
 //   - 无。
 //
 // 输出参数：
 //   - string: 包含 ModelRatio 的 JSON 字符串。
-func ConvertModelRatioToJSON() string {
+func ConvertModelRatioToJSONString() string {
 	// 将 ModelRatio 转换为 JSON 格式的字节序列
 	jsonBytes, err := json.Marshal(ModelRatio)
 	if err != nil {

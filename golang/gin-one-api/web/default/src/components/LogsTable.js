@@ -105,6 +105,12 @@ function renderType(type) {
 }
 
 const LogsTable = () => {
+
+  // 创建日期对象
+  let now = new Date();
+  // 检查当前用户是否为管理员
+  const isAdminUser = isAdmin();
+  
   const [loading, setLoading] = useState(true); // 加载状态
   const [showStat, setShowStat] = useState(false); // 是否显示统计信息
   const [searching, setSearching] = useState(false); // 搜索状态
@@ -136,11 +142,6 @@ const LogsTable = () => {
     endTimestamp,
     channelId,
   } = inputs;
-
-  // 创建日期对象
-  let now = new Date();
-  // 检查当前用户是否为管理员
-  const isAdminUser = isAdmin();
 
   /**
    * 处理输入框值变化的函数。

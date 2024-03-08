@@ -1,12 +1,6 @@
 package common
 
 const (
-	QuotaForNewUser = 0 // 新用户的配额
-	QuotaForInviter = 0 // 邀请者的配额
-	QuotaForInvitee = 0 // 被邀请者的配额
-)
-
-const (
 	BatchUpdateTypeUserQuota        = iota // 批量更新用户配额类型
 	BatchUpdateTypeTokenQuota              // 批量更新令牌配额类型
 	BatchUpdateTypeUsedQuota               // 批量更新已使用配额类型

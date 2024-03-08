@@ -67,6 +67,12 @@ var RequestInterval = time.Duration(requestInterval) * time.Second
 // GeminiSafetySetting 表示 Gemini 安全设置。
 var GeminiSafetySetting = GetOrDefaultEnvString("GEMINI_SAFETY_SETTING", "BLOCK_NONE")
 
+var (
+	QuotaForNewUser = 0 // 新用户的配额
+	QuotaForInviter = 0 // 邀请者的配额
+	QuotaForInvitee = 0 // 被邀请者的配额
+)
+
 var EmailDomainRestrictionEnabled = false
 var EmailDomainWhitelist = []string{
 	"gmail.com",
