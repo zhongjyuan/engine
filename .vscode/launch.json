@@ -119,6 +119,18 @@
 				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-wechat-server?charset=utf8"
 			},
 			"args": []
+		},
+		{
+			"type": "go",
+			"mode": "auto",
+			"request": "launch",
+			"name": "[go] gin-message-site|dev",
+			"program": "${workspaceFolder}\\golang\\gin-message-server\\main.go",
+			"showLog": true,
+			"env": {
+				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-message-server?charset=utf8"
+			},
+			"args": []
 		}
 	]
 }

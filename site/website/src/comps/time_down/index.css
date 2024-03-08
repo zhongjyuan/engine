@@ -1,0 +1,75 @@
+.comp-time-down {
+	display: table;
+	color: #ffffff;
+	background: #0d0d0d;
+	margin: auto;
+	padding: 10px 10px;
+	border-radius: 10px;
+	top: 50%;
+	right: 10px;
+	position: fixed;
+}
+
+.comp-time-down * {
+	padding: 0;
+	margin: 0;
+}
+
+.comp-time-down i {
+	font-size: 14px;
+}
+
+.comp-time-down p {
+	font-size: 18px;
+}
+
+.comp-time-down div {
+	font-size: 20px;
+	padding: 5px 0px;
+	display: table-cell;
+	text-align: center;
+}
+
+.comp-time-down div span {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+.comp-time-down span p:first-child {
+	font-size: 25px;
+}
+
+.comp-time-down span p:last-child {
+	font-size: 14px;
+}
+
+.comp-time-down div span.year {
+	background: #ff0000;
+}
+
+.comp-time-down div span.month {
+	background: #00ff00;
+}
+
+.comp-time-down div span.day {
+	background: #91c407;
+}
+
+.comp-time-down div span.hour {
+	background: #ffa500;
+}
+
+.comp-time-down div span.minute {
+	background: #ff00ff;
+}
+
+.comp-time-down div span.second {
+	background: #00ffff;
+}
+
+.comp-time-down div span.millisecond {
+	background: #800080;
+}
