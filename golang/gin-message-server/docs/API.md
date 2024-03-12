@@ -18,7 +18,7 @@
     "title": "标题",
     "description": "描述",
     "content": "内容",
-    "html_content": "转换为 HTML 后的内容",
+    "htmlContent": "转换为 HTML 后的内容",
     "url": "链接"
    }
    ```

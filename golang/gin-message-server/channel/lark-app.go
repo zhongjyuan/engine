@@ -12,7 +12,7 @@ import (
 )
 
 type larkAppTokenRequest struct {
-	AppID     string `json:"app_id"`
+	AppID     string `json:"appId"`
 	AppSecret string `json:"app_secret"`
 }
 

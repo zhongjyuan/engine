@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"net/http"
 	"strconv"
 	"zhongjyuan/gin-message-server/channel"
 	"zhongjyuan/gin-message-server/common"
@@ -10,216 +9,169 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func AddChannel(c *gin.Context) {
+	channelData := model.ChannelEntity{}
+	if err := c.ShouldBindJSON(&channelData); err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	if len(channelData.Name) == 0 || len(channelData.Name) > 20 {
+		common.SendFailureJSONResponse(c, "通道名称长度必须在1-20之间")
+		return
+	}
+
+	if channelData.Name == "email" {
+		common.SendFailureJSONResponse(c, "不能使用系统保留名称")
+		return
+	}
+
+	channelEntity := model.ChannelEntity{
+		Type:        channelData.Type,
+		Name:        channelData.Name,
+		AppId:       channelData.AppId,
+		Secret:      channelData.Secret,
+		AccountId:   channelData.AccountId,
+		URL:         channelData.URL,
+		Other:       channelData.Other,
+		Status:      common.ChannelStatusEnabled,
+		UserId:      c.GetInt("id"),
+		Description: channelData.Description,
+		CreateTime:  common.GetTimestamp(),
+	}
+
+	if err := channelEntity.Insert(); err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	channel.TokenStoreAddChannel(&channelEntity)
+
+	common.SendSuccessJSONResponse(c, "新增成功", nil)
+}
+
+func DeleteChannel(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	userId := c.GetInt("id")
+	channelEntity, err := model.DeleteChannelByID(id, userId)
+	if err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	channel.TokenStoreRemoveChannel(channelEntity)
+
+	common.SendSuccessJSONResponse(c, "删除成功", nil)
+}
+
+func UpdateChannel(c *gin.Context) {
+	userId := c.GetInt("id")
+	withStatus := c.Query("withStatus")
+
+	channelData := model.ChannelEntity{}
+	if err := c.ShouldBindJSON(&channelData); err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	originChannelEntity, err := model.GetChannelByID(channelData.Id, userId, true)
+	if err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	channelEntity := *originChannelEntity
+	if withStatus != "" {
+		channelEntity.Status = channelData.Status
+	} else {
+		// If you add more fields, please also update channel_.Update()
+		channelEntity.Type = channelData.Type
+		channelEntity.Name = channelData.Name
+		channelEntity.Description = channelData.Description
+		if channelData.Secret != "" {
+			channelEntity.Secret = channelData.Secret
+		}
+		channelEntity.AppId = channelData.AppId
+		channelEntity.AccountId = channelData.AccountId
+		channelEntity.URL = channelData.URL
+		channelEntity.Other = channelData.Other
+	}
+
+	if err := channelEntity.Update(); err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	channel.TokenStoreUpdateChannel(&channelEntity, originChannelEntity)
+
+	common.SendSuccessJSONResponse(c, "更新成功", channelEntity)
+}
+
+func GetChannel(c *gin.Context) {
+	userId := c.GetInt("id")
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	channelEntity, err := model.GetChannelByID(id, userId, false)
+	if err != nil {
+		common.SendFailureJSONResponse(c, err.Error())
+		return
+	}
+
+	common.SendSuccessJSONResponse(c, "获取成功", channelEntity)
+}
+
 func GetAllChannels(c *gin.Context) {
 	if c.Query("brief") != "" {
 		GetBriefChannels(c)
 		return
 	}
+
 	userId := c.GetInt("id")
 	p, _ := strconv.Atoi(c.Query("p"))
 	if p < 0 {
 		p = 0
 	}
-	channels, err := model.GetChannelsByUserId(userId, p*common.ItemsPerPage, common.ItemsPerPage)
+
+	channels, err := model.GetUserPageChannels(userId, p*common.ItemsPerPage, common.ItemsPerPage)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-		"data":    channels,
-	})
-	return
+
+	common.SendSuccessJSONResponse(c, "获取成功", channels)
 }
 
 func GetBriefChannels(c *gin.Context) {
 	userId := c.GetInt("id")
-	channels, err := model.GetBriefChannelsByUserId(userId)
+
+	channels, err := model.GetUserPageBriefChannels(userId)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-		"data":    channels,
-	})
-	return
+
+	common.SendSuccessJSONResponse(c, "获取成功", channels)
 }
 
 func SearchChannels(c *gin.Context) {
 	userId := c.GetInt("id")
 	keyword := c.Query("keyword")
+
 	channels, err := model.SearchChannels(userId, keyword)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
+		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-		"data":    channels,
-	})
-	return
-}
 
-func GetChannel(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	userId := c.GetInt("id")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	channel_, err := model.GetChannelById(id, userId, false)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-		"data":    channel_,
-	})
-	return
-}
-
-func AddChannel(c *gin.Context) {
-	channel_ := model.ChannelEntity{}
-	err := c.ShouldBindJSON(&channel_)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	if len(channel_.Name) == 0 || len(channel_.Name) > 20 {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "通道名称长度必须在1-20之间",
-		})
-		return
-	}
-	if channel_.Name == "email" {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "不能使用系统保留名称",
-		})
-		return
-	}
-	cleanChannel := model.ChannelEntity{
-		Type:        channel_.Type,
-		UserId:      c.GetInt("id"),
-		Name:        channel_.Name,
-		Description: channel_.Description,
-		Status:      common.ChannelStatusEnabled,
-		Secret:      channel_.Secret,
-		AppId:       channel_.AppId,
-		AccountId:   channel_.AccountId,
-		URL:         channel_.URL,
-		Other:       channel_.Other,
-		CreatedTime: common.GetTimestamp(),
-	}
-	err = cleanChannel.Insert()
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	channel.TokenStoreAddChannel(&cleanChannel)
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-	})
-	return
-}
-
-func DeleteChannel(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("id"))
-	userId := c.GetInt("id")
-	channel_, err := model.DeleteChannelById(id, userId)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	channel.TokenStoreRemoveChannel(channel_)
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-	})
-	return
-}
-
-func UpdateChannel(c *gin.Context) {
-	userId := c.GetInt("id")
-	statusOnly := c.Query("status_only")
-	channel_ := model.ChannelEntity{}
-	err := c.ShouldBindJSON(&channel_)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	oldChannel, err := model.GetChannelById(channel_.Id, userId, true)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	cleanChannel := *oldChannel
-	if statusOnly != "" {
-		cleanChannel.Status = channel_.Status
-	} else {
-		// If you add more fields, please also update channel_.Update()
-		cleanChannel.Type = channel_.Type
-		cleanChannel.Name = channel_.Name
-		cleanChannel.Description = channel_.Description
-		if channel_.Secret != "" {
-			cleanChannel.Secret = channel_.Secret
-		}
-		cleanChannel.AppId = channel_.AppId
-		cleanChannel.AccountId = channel_.AccountId
-		cleanChannel.URL = channel_.URL
-		cleanChannel.Other = channel_.Other
-	}
-	err = cleanChannel.Update()
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	channel.TokenStoreUpdateChannel(&cleanChannel, oldChannel)
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-		"data":    cleanChannel,
-	})
-	return
+	common.SendSuccessJSONResponse(c, "获取成功", channels)
 }

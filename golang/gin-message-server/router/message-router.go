@@ -19,7 +19,7 @@ func setMessageApiRouter(router *gin.Engine) {
 		messageRoute := apiRouter.Group("/message")
 		{
 			messageRoute.GET("/", middleware.UserAuth(), controller.GetUserMessages)
-			messageRoute.GET("/stream", middleware.UserAuth(), middleware.SetSSEHeaders(), controller.GetNewMessages)
+			messageRoute.GET("/stream", middleware.UserAuth(), middleware.SetSSEHeaders(), controller.MessagesStream)
 			messageRoute.GET("/search", middleware.UserAuth(), controller.SearchMessages)
 			messageRoute.GET("/status/:link", controller.GetMessageStatus)
 			messageRoute.POST("/resend/:id", middleware.UserAuth(), controller.ResendMessage)
@@ -42,10 +42,10 @@ func setMessageApiRouter(router *gin.Engine) {
 		webhookRoute := apiRouter.Group("/webhook")
 		webhookRoute.Use(middleware.UserAuth())
 		{
-			webhookRoute.GET("/", controller.GetAllWebhooks)
-			webhookRoute.GET("/search", controller.SearchWebhooks)
+			webhookRoute.GET("/", controller.GetAllWebHooks)
+			webhookRoute.GET("/search", controller.SearchWebHooks)
 			webhookRoute.GET("/:id", controller.GetWebhook)
-			webhookRoute.POST("/", controller.AddWebhook)
+			webhookRoute.POST("/", controller.AddWebHook)
 			webhookRoute.PUT("/", controller.UpdateWebhook)
 			webhookRoute.DELETE("/:id", controller.DeleteWebhook)
 		}

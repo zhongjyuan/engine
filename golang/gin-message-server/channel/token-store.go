@@ -124,7 +124,7 @@ func TokenStoreRemoveItem(item TokenStoreItem) {
 }
 
 func TokenStoreAddUser(user *model.UserEntity) {
-	channels, err := model.GetTokenStoreChannelsByUserId(user.Id)
+	channels, err := model.GetUserTokenStoreChannels(user.Id)
 	if err != nil {
 		common.SysError(err.Error())
 		return
@@ -139,7 +139,7 @@ func TokenStoreAddUser(user *model.UserEntity) {
 // user must be filled.
 // It's okay to delete a user that don't have an item here.
 func TokenStoreRemoveUser(user *model.UserEntity) {
-	channels, err := model.GetTokenStoreChannelsByUserId(user.Id)
+	channels, err := model.GetUserTokenStoreChannels(user.Id)
 	if err != nil {
 		common.SysError(err.Error())
 		return

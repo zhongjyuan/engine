@@ -11,7 +11,7 @@ const EditWebhook = () => {
   const [loading, setLoading] = useState(isEditing);
   const originInputs = {
     name: '',
-    extract_rule: `{
+    extractRule: `{
   "title": "attr1",
   "description": "attr2.sub_attr",
   "content": "attr3",
@@ -28,7 +28,7 @@ const EditWebhook = () => {
   };
 
   const [inputs, setInputs] = useState(originInputs);
-  const { name, extract_rule, construct_rule, channel } = inputs;
+  const { name, extractRule, construct_rule, channel } = inputs;
   let [channels, setChannels] = useState([]);
 
   const handleInputChange = (e, { name, value }) => {
@@ -70,7 +70,7 @@ const EditWebhook = () => {
 
   const submit = async () => {
     if (!name) return;
-    if (!verifyJSON(extract_rule)) {
+    if (!verifyJSON(extractRule)) {
       showError('提取规则不是合法的 JSON 格式！');
       return;
     }
@@ -146,8 +146,8 @@ const EditWebhook = () => {
             <Form.TextArea
               label='提取规则'
               placeholder='在此输入提取规则，为一个 JSON，键为模板变量，值为 JSONPath 表达式'
-              value={inputs.extract_rule}
-              name='extract_rule'
+              value={inputs.extractRule}
+              name='extractRule'
               onChange={handleInputChange}
               style={{ minHeight: 200, fontFamily: 'JetBrains Mono, Consolas' }}
             />

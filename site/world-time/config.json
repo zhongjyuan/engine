@@ -1,0 +1,30 @@
+[
+	{
+		"country": "英国",
+		"region": "格林威治",
+		"timezone": "0",
+		"position": "left",
+		"description": "UTC/GMT"
+	},
+	{
+		"country": "葡萄牙",
+		"region": "里斯本",
+		"timezone": "0",
+		"position": "left",
+		"description": "UTC/GMT"
+	},
+	{
+		"country": "爱尔兰",
+		"region": "都柏林",
+		"timezone": "0",
+		"position": "left",
+		"description": "UTC/GMT"
+	},
+	{
+		"country": "苏格兰",
+		"region": "爱丁堡",
+		"timezone": "0",
+		"position": "left",
+		"description": "UTC/GMT"
+	}
+]

@@ -54,11 +54,11 @@ func getLarkAtPrefix(message *model.MessageEntity) string {
 	atPrefix := ""
 	if message.To != "" {
 		if message.To == "@all" {
-			atPrefix = "<at user_id=\"all\">所有人</at>"
+			atPrefix = "<at userId=\"all\">所有人</at>"
 		} else {
 			ids := strings.Split(message.To, "|")
 			for _, id := range ids {
-				atPrefix += fmt.Sprintf("<at user_id=\"%s\"> </at>", id)
+				atPrefix += fmt.Sprintf("<at userId=\"%s\"> </at>", id)
 			}
 		}
 	}

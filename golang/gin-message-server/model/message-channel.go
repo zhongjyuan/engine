@@ -7,29 +7,31 @@ import (
 
 const ChannelTableName = "message_channel"
 
+// ChannelEntity 是频道实体结构。
 type ChannelEntity struct {
-	Id          int    `json:"id" gorm:"column:id"`
-	Type        string `json:"type" gorm:"column:type;type:varchar(32)"`
-	Name        string `json:"name" gorm:"column:name;type:varchar(32);uniqueIndex:name_user_id"`
-	UserId      int    `json:"user_id" gorm:"column:user_id;index;uniqueIndex:name_user_id"`
-	Description string `json:"description" gorm:"column:description"`
-	Status      int    `json:"status" gorm:"column:status;default:1"` // enabled, disabled
-	AppId       string `json:"app_id" gorm:"column:app_id"`
-	Secret      string `json:"secret" gorm:"column:secret;index"`
-	AccountId   string `json:"account_id" gorm:"column:account_id"`
-	URL         string `json:"url" gorm:"column:url"`
-	Other       string `json:"other" gorm:"column:other"`
-	CreatedTime int64  `json:"created_time" gorm:"column:created_time;bigint"`
+	Id          int    `json:"id" gorm:"column:id"`                                               // 频道ID
+	Type        string `json:"type" gorm:"column:type;type:varchar(32)"`                          // 类型
+	Name        string `json:"name" gorm:"column:name;type:varchar(32);uniqueIndex:name_user_id"` // 名称
+	AppId       string `json:"appId" gorm:"column:app_id"`                                        // 应用ID
+	Secret      string `json:"secret" gorm:"column:secret;index"`                                 // 密钥
+	AccountId   string `json:"accountId" gorm:"column:account_id"`                                // 账户ID
+	URL         string `json:"url" gorm:"column:url"`                                             // URL
+	Other       string `json:"other" gorm:"column:other"`                                         // 其他信息
+	Status      int    `json:"status" gorm:"column:status;default:1"`                             // 状态（启用、禁用）
+	UserId      int    `json:"userId" gorm:"column:user_id;index;uniqueIndex:name_user_id"`       // 用户ID
+	Description string `json:"description" gorm:"column:description"`                             // 描述
+	CreateTime  int64  `json:"createTime" gorm:"column:created_time;bigint"`                      // 创建时间
 }
 
 func (ChannelEntity) TableName() string {
 	return ChannelTableName
 }
 
+// ChannelBrief 是频道简要信息结构。
 type ChannelBrief struct {
-	Id          int    `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	Id          int    `json:"id"`          // 频道ID
+	Name        string `json:"name"`        // 名称
+	Description string `json:"description"` // 描述
 }
 
 func (channel *ChannelEntity) Insert() error {
@@ -48,7 +50,7 @@ func (channel *ChannelEntity) UpdateStatus(status int) error {
 	return DB.Model(channel).Update("status", status).Error
 }
 
-func DeleteChannelById(id int, userId int) (c *ChannelEntity, err error) {
+func DeleteChannelByID(id int, userId int) (c *ChannelEntity, err error) {
 	// Why we need userId here? In case user want to delete other's c.
 	if id == 0 || userId == 0 {
 		return nil, errors.New("id 或 userId 为空！")
@@ -62,7 +64,7 @@ func DeleteChannelById(id int, userId int) (c *ChannelEntity, err error) {
 	return c, c.Delete()
 }
 
-func GetChannelById(id int, userId int, selectAll bool) (*ChannelEntity, error) {
+func GetChannelByID(id int, userId int, selectAll bool) (*ChannelEntity, error) {
 	if id == 0 || userId == 0 {
 		return nil, errors.New("id 或 userId 为空！")
 	}
@@ -96,12 +98,12 @@ func GetChannelByName(name string, userId int, selectAll bool) (*ChannelEntity, 
 	return &c, err
 }
 
-func GetChannelsByUserId(userId int, startIdx int, num int) (channels []*ChannelEntity, err error) {
+func GetUserPageChannels(userId int, startIdx int, num int) (channels []*ChannelEntity, err error) {
 	err = DB.Omit("secret").Where("user_id = ?", userId).Order("id desc").Limit(num).Offset(startIdx).Find(&channels).Error
 	return channels, err
 }
 
-func GetBriefChannelsByUserId(userId int) (channels []*ChannelBrief, err error) {
+func GetUserPageBriefChannels(userId int) (channels []*ChannelBrief, err error) {
 	err = DB.Model(&ChannelEntity{}).Select("id", "name", "description").Where("user_id = ? and status = ?", userId, common.ChannelStatusEnabled).Find(&channels).Error
 	return channels, err
 }
@@ -115,7 +117,7 @@ func GetTokenStoreChannels() (channels []*ChannelEntity, err error) {
 	return channels, err
 }
 
-func GetTokenStoreChannelsByUserId(userId int) (channels []*ChannelEntity, err error) {
+func GetUserTokenStoreChannels(userId int) (channels []*ChannelEntity, err error) {
 	err = DB.Where("type in ?", []string{
 		common.TypeWeChatCorpAccount,
 		common.TypeWeChatTestAccount,

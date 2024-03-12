@@ -63,11 +63,11 @@ const ChannelsTable = () => {
         break;
       case 'enable':
         data.status = 1;
-        res = await API.put('/api/channel/?status_only=true', data);
+        res = await API.put('/api/channel/?withStatus=true', data);
         break;
       case 'disable':
         data.status = 2;
-        res = await API.put('/api/channel/?status_only=true', data);
+        res = await API.put('/api/channel/?withStatus=true', data);
         break;
     }
     const { success, message } = res.data;
@@ -214,7 +214,7 @@ const ChannelsTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortChannel('created_time');
+                sortChannel('createTime');
               }}
             >
               创建时间
@@ -241,7 +241,7 @@ const ChannelsTable = () => {
                   <Table.Cell>{renderChannel(channel.type)}</Table.Cell>
                   <Table.Cell>{renderStatus(channel.status)}</Table.Cell>
                   <Table.Cell>
-                    {renderTimestamp(channel.created_time)}
+                    {renderTimestamp(channel.createTime)}
                   </Table.Cell>
                   <Table.Cell>
                     <div>

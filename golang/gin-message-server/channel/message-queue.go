@@ -43,7 +43,7 @@ func asyncMessageSenderHelper(message *model.MessageEntity) error {
 func asyncMessageSender() {
 	for {
 		id := <-AsyncMessageQueue
-		message, err := model.GetMessageById(id)
+		message, err := model.GetMessageByID(id)
 		if err != nil {
 			common.SysError("async message sender error: " + err.Error())
 			continue

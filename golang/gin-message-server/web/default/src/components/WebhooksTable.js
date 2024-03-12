@@ -63,23 +63,23 @@ const WebhooksTable = () => {
         break;
       case 'enable':
         data.status = 1;
-        res = await API.put('/api/webhook/?status_only=true', data);
+        res = await API.put('/api/webhook/?withStatus=true', data);
         break;
       case 'disable':
         data.status = 2;
-        res = await API.put('/api/webhook/?status_only=true', data);
+        res = await API.put('/api/webhook/?withStatus=true', data);
         break;
     }
     const { success, message } = res.data;
     if (success) {
       showSuccess('操作成功完成！');
-      let webhook = res.data.data;
+      let webHook = res.data.data;
       let newWebhooks = [...webhooks];
       let realIdx = (activePage - 1) * ITEMS_PER_PAGE + idx;
       if (action === 'delete') {
         newWebhooks[realIdx].deleted = true;
       } else {
-        newWebhooks[realIdx].status = webhook.status;
+        newWebhooks[realIdx].status = webHook.status;
       }
       setWebhooks(newWebhooks);
     } else {
@@ -206,7 +206,7 @@ const WebhooksTable = () => {
             <Table.HeaderCell
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                sortWebhook('created_time');
+                sortWebhook('createTime');
               }}
             >
               创建时间
@@ -221,20 +221,20 @@ const WebhooksTable = () => {
               (activePage - 1) * ITEMS_PER_PAGE,
               activePage * ITEMS_PER_PAGE
             )
-            .map((webhook, idx) => {
-              if (webhook.deleted) return <></>;
+            .map((webHook, idx) => {
+              if (webHook.deleted) return <></>;
               return (
-                <Table.Row key={webhook.id}>
-                  <Table.Cell>{webhook.id}</Table.Cell>
-                  <Table.Cell>{webhook.name}</Table.Cell>
-                  <Table.Cell>{renderStatus(webhook.status)}</Table.Cell>
+                <Table.Row key={webHook.id}>
+                  <Table.Cell>{webHook.id}</Table.Cell>
+                  <Table.Cell>{webHook.name}</Table.Cell>
+                  <Table.Cell>{renderStatus(webHook.status)}</Table.Cell>
                   <Table.Cell>
                     <Label>
-                      {webhook.channel ? webhook.channel : '默认通道'}
+                      {webHook.channel ? webHook.channel : '默认通道'}
                     </Label>
                   </Table.Cell>
                   <Table.Cell>
-                    {renderTimestamp(webhook.created_time)}
+                    {renderTimestamp(webHook.createTime)}
                   </Table.Cell>
                   <Table.Cell>
                     <div>
@@ -244,7 +244,7 @@ const WebhooksTable = () => {
                         onClick={async () => {
                           if (
                             await copy(
-                              `${window.location.origin}/webhook/${webhook.link}`
+                              `${window.location.origin}/webHook/${webHook.link}`
                             )
                           ) {
                             showSuccess('已复制到剪贴板！');
@@ -259,7 +259,7 @@ const WebhooksTable = () => {
                         size={'small'}
                         negative
                         onClick={() => {
-                          manageWebhook(webhook.id, 'delete', idx).then();
+                          manageWebhook(webHook.id, 'delete', idx).then();
                         }}
                       >
                         删除
@@ -268,18 +268,18 @@ const WebhooksTable = () => {
                         size={'small'}
                         onClick={() => {
                           manageWebhook(
-                            webhook.id,
-                            webhook.status === 1 ? 'disable' : 'enable',
+                            webHook.id,
+                            webHook.status === 1 ? 'disable' : 'enable',
                             idx
                           ).then();
                         }}
                       >
-                        {webhook.status === 1 ? '禁用' : '启用'}
+                        {webHook.status === 1 ? '禁用' : '启用'}
                       </Button>
                       <Button
                         size={'small'}
                         as={Link}
-                        to={'/webhook/edit/' + webhook.id}
+                        to={'/webhook/edit/' + webHook.id}
                       >
                         编辑
                       </Button>

@@ -26,7 +26,7 @@ func SendEmailMessage(message *model.MessageEntity, user *model.UserEntity, chan
 		content = fmt.Sprintf("描述：%s\n\n%s", message.Description, message.Content)
 	}
 	var err error
-	message.HTMLContent, err = common.Markdown2HTML(content)
+	message.HTMLContent, err = common.ConvertMarkdownToHTML(content)
 	if err != nil {
 		common.SysLog(err.Error())
 	}

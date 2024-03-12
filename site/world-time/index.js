@@ -15,9 +15,8 @@ document.querySelector("head").appendChild(iconLink);
 document.querySelector(".header-left-logo").style.backgroundImage = "url('" + base641 + "')";
 
 var footerElement = document.querySelector(".footer");
-var newContent = "<span>Copyright © 2023-2043<a href=\"http://tab.zhongjyuan.club/\" target=\"_blank\">&nbsp;&nbsp;君烛科技</a></span>";
+var newContent = '<span>Copyright © 2023-2043<a href="http://tab.zhongjyuan.club/" target="_blank">&nbsp;&nbsp;君烛科技</a></span>';
 footerElement.innerHTML = newContent;
-
 
 /**当前时间与指定的时间差 */
 var timeDifference;
@@ -190,8 +189,8 @@ function addCountryTimeCard(country, name, timezone, position, description) {
 
 	// 更新底部内容函数
 	function updateBottomContent() {
-        var dateTime = formatTimeZoneDateTime(timezone);
-        cardElement.title = dateTime.type7;
+		var dateTime = formatTimeZoneDateTime(timezone);
+		cardElement.title = dateTime.type7;
 		bottomContentElement.innerText = dateTime.type3;
 	}
 
@@ -248,13 +247,20 @@ function addDateTimeInterval(country, name, timezone) {
 		nameElement.innerText = name;
 	}
 
+	restartDateTimeInterval();
+}
+
+function restartDateTimeInterval() {
+	// 获取名称元素
+	var nameElement = document.querySelector(".content-middle-name");
+
 	// 获取显示时间的元素
 	var timeElement = document.querySelector(".content-middle-time");
 	var dateElement = document.querySelector(".content-middle-date");
 
 	// 更新时间内容函数
 	function updateDateTimeContent() {
-		var formattedDateTime = formatTimeZoneDateTime(timezone);
+		var formattedDateTime = formatTimeZoneDateTime(nameElement.getAttribute("timezone"));
 		timeElement.innerText = formattedDateTime.type2;
 		dateElement.innerText = formattedDateTime.type5;
 	}
@@ -263,9 +269,6 @@ function addDateTimeInterval(country, name, timezone) {
 	if (dateTimeInfoInterval) {
 		clearInterval(dateTimeInfoInterval);
 	}
-
-	// 初始化时间内容
-	updateDateTimeContent();
 
 	// 每秒更新时间内容
 	dateTimeInfoInterval = setInterval(updateDateTimeContent, 1000); // 1000 毫秒为 1 秒
@@ -343,11 +346,6 @@ function showWorldTime() {
 	addCountryTimeCard("新加坡", "圣淘沙", +8, "left", "UTC +8");
 	addCountryTimeCard("泰国", "普吉岛", +7, "left", "UTC +7");
 
-	addCountryTimeCard("英国", "格林威治", 0, "left", "UTC/GMT");
-	addCountryTimeCard("葡萄牙", "里斯本", 0, "left", "UTC/GMT");
-	addCountryTimeCard("爱尔兰", "都柏林", 0, "left", "UTC/GMT");
-	addCountryTimeCard("苏格兰", "爱丁堡", 0, "left", "UTC/GMT");
-
 	addCountryTimeCard("", "西十二区 UTC-12", -12, "right", "国际日期变更线以西");
 	addCountryTimeCard("", "西十一区 UTC-11", -11, "right", "萨摩亚、纽埃岛");
 	addCountryTimeCard("", "西十区 UTC-10", -10, "right", "夏威夷");
@@ -381,6 +379,22 @@ function showWorldTime() {
 	addCountryTimeCard("", "东十区 UTC+10", +10, "right", "澳大利亚、海参崴、关岛、堪培拉、墨尔本、悉尼、巴布亚新几内亚");
 	addCountryTimeCard("", "东十一区 UTC+11", +11, "right", "所罗门群岛、库页岛");
 	addCountryTimeCard("", "东十二区 UTC+12", +12, "right", "新西兰、奥克兰、惠灵顿、斐济、新西兰、瑙鲁");
+
+	fetch("config.json")
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error("君烛提醒您：config.json file error.");
+			}
+			return response.json();
+		})
+		.then((data) => {
+			data.forEach((item) => {
+				addCountryTimeCard(item.country, item.region, item.timezone, item.position, item.description);
+			});
+		})
+		.catch((error) => {
+			throw new Error("君烛提醒您：config.json file error.");
+		});
 
 	addDateTimeInterval("中国", "北京", +8);
 	addTimeStampInterval("中国", "北京", +8);
@@ -595,12 +609,14 @@ $(function () {
 	$("#restart").on("click", function () {
 		$(this).hide();
 		$("#stop").show();
+		restartDateTimeInterval();
 		restartTimeStampInterval();
 	});
 
 	// 点击停止按钮
 	$("#stop").on("click", function () {
 		$(this).hide();
+		clearInterval(dateTimeInfoInterval);
 		clearInterval(timeStampInfoInterval);
 		$("#restart").show();
 	});

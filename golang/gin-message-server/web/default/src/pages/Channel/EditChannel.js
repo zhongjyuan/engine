@@ -15,8 +15,8 @@ const EditChannel = () => {
     name: '',
     description: '',
     secret: '',
-    app_id: '',
-    account_id: '',
+    appId: '',
+    accountId: '',
     url: '',
     other: '',
     corp_id: '', // only for corp_app
@@ -24,7 +24,7 @@ const EditChannel = () => {
   };
 
   const [inputs, setInputs] = useState(originInputs);
-  const { type, name, description, secret, app_id, account_id, url, other } =
+  const { type, name, description, secret, appId, accountId, url, other } =
     inputs;
 
   const handleInputChange = (e, { name, value }) => {
@@ -36,7 +36,7 @@ const EditChannel = () => {
     const { success, message, data } = res.data;
     if (success) {
       if (data.type === 'corp_app') {
-        const [corp_id, agent_id] = data.app_id.split('|');
+        const [corp_id, agent_id] = data.appId.split('|');
         data.corp_id = corp_id;
         data.agent_id = agent_id;
       }
@@ -58,7 +58,7 @@ const EditChannel = () => {
     let localInputs = { ...inputs };
     switch (inputs.type) {
       case 'corp_app':
-        localInputs.app_id = `${inputs.corp_id}|${inputs.agent_id}`;
+        localInputs.appId = `${inputs.corp_id}|${inputs.agent_id}`;
         break;
       case 'bark':
         if (localInputs.url === '') {
@@ -71,11 +71,11 @@ const EditChannel = () => {
         }
         break;
       case 'group':
-        let channels = localInputs.app_id.split('|');
-        let targets = localInputs.account_id.split('|');
-        if (localInputs.account_id === '') {
+        let channels = localInputs.appId.split('|');
+        let targets = localInputs.accountId.split('|');
+        if (localInputs.accountId === '') {
           for (let i = 0; i < channels.length - 1; i++) {
-            localInputs.account_id += '|';
+            localInputs.accountId += '|';
           }
         } else if (channels.length !== targets.length) {
           showError(
@@ -134,7 +134,7 @@ const EditChannel = () => {
       } else {
         let id = result[0]?.message?.chat?.id;
         id = id.toString();
-        setInputs((inputs) => ({ ...inputs, account_id: id }));
+        setInputs((inputs) => ({ ...inputs, accountId: id }));
         showSuccess('会话 ID 获取成功！');
       }
     } else {
@@ -176,10 +176,10 @@ const EditChannel = () => {
             <Form.Group widths={3}>
               <Form.Input
                 label='测试号 ID'
-                name='app_id'
+                name='appId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.app_id}
+                value={inputs.appId}
                 placeholder='测试号信息 -> appID'
               />
               <Form.Input
@@ -203,10 +203,10 @@ const EditChannel = () => {
             <Form.Group widths={3}>
               <Form.Input
                 label='用户 Open ID'
-                name='account_id'
+                name='accountId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.account_id}
+                value={inputs.accountId}
                 placeholder='扫描测试号二维码 -> 用户列表 -> 微信号'
               />
             </Form.Group>
@@ -228,10 +228,10 @@ const EditChannel = () => {
             <Form.Group widths={3}>
               <Form.Input
                 label='SecretId'
-                name='app_id'
+                name='appId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.app_id}
+                value={inputs.appId}
                 placeholder='子账号的 SecretId'
               />
               <Form.Input
@@ -245,10 +245,10 @@ const EditChannel = () => {
               />
               <Form.Input
                 label='消息策略 ID'
-                name='account_id'
+                name='accountId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.account_id}
+                value={inputs.accountId}
                 placeholder='例如：cm-6gl3pq19'
               />
             </Form.Group>
@@ -316,10 +316,10 @@ const EditChannel = () => {
             <Form.Group widths={3}>
               <Form.Input
                 label='用户账号'
-                name='account_id'
+                name='accountId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.account_id}
+                value={inputs.accountId}
                 placeholder='通讯录 -> 点击姓名 -> 账号'
               />
               <Form.Select
@@ -512,11 +512,11 @@ const EditChannel = () => {
               />
               <Form.Input
                 label='Telegram 会话 ID'
-                name='account_id'
+                name='accountId'
                 type='text'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.account_id}
+                value={inputs.accountId}
                 placeholder='在此设置 Telegram 会话 ID'
               />
             </Form.Group>
@@ -577,10 +577,10 @@ const EditChannel = () => {
               />
               <Form.Input
                 label='默认推送目标'
-                name='account_id'
+                name='accountId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.account_id}
+                value={inputs.accountId}
                 placeholder='在此填写默认推送目标，例如 QQ 号'
               />
             </Form.Group>
@@ -599,18 +599,18 @@ const EditChannel = () => {
             <Form.Group widths={2}>
               <Form.Input
                 label='渠道列表'
-                name='app_id'
+                name='appId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.app_id}
+                value={inputs.appId}
                 placeholder='在此填写渠道列表，使用 | 分割，例如 bark|telegram|wechat'
               />
               <Form.Input
                 label='默认推送目标'
-                name='account_id'
+                name='accountId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.account_id}
+                value={inputs.accountId}
                 placeholder='在此填写默认推送目标，使用 | 分割，例如 123456789|@wechat|@wechat'
               />
             </Form.Group>
@@ -648,10 +648,10 @@ const EditChannel = () => {
             <Form.Group widths={3}>
               <Form.Input
                 label='App ID'
-                name='app_id'
+                name='appId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.app_id}
+                value={inputs.appId}
                 placeholder='应用凭证 -> App ID'
               />
               <Form.Input
@@ -664,10 +664,10 @@ const EditChannel = () => {
               />
               <Form.Input
                 label='默认推送目标'
-                name='account_id'
+                name='accountId'
                 onChange={handleInputChange}
                 autoComplete='new-password'
-                value={inputs.account_id}
+                value={inputs.accountId}
                 placeholder='格式必须为：<类型>:<ID>，例如 open_id:123456'
               />
             </Form.Group>

@@ -13,7 +13,7 @@ import (
 
 type oneBotMessageRequest struct {
 	MessageType string `json:"message_type"`
-	UserId      int64  `json:"user_id"`
+	UserId      int64  `json:"userId"`
 	GroupId     int64  `json:"group_id"`
 	Message     string `json:"message"`
 	AutoEscape  bool   `json:"auto_escape"`
