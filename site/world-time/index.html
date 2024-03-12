@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>在线世界时钟</title>
+
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/font-awesome.css" />
+		<link rel="stylesheet" href="lib/laydate/need/laydate.css" />
+		<link rel="stylesheet" href="lib/laydate/skins/default/laydate.css" />
+		<link rel="stylesheet" href="lib/searchable/jquery.searchableSelect.css" />
+		<link rel="stylesheet" href="index.css" />
+
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.noty.packaged.min.js"></script>
+		<script src="lib/searchable/jquery.searchableSelect.js"></script>
+		<script>
+			console.log("君烛科技：君当作磐石，烛照星河！");
+			console.log("http://tab.zhongjyuan.club");
+			console.log("QQ交流群：284095714");
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="header-left">
+					<div class="header-left-logo"></div>
+					<div class="header-left-site-name">世界在线时钟</div>
+				</div>
+				<div class="header-middle">
+					<input type="text" class="header-middle-search-input-box" placeholder="输入城市名..." />
+					<button class="header-middle-search-button">查询</button>
+				</div>
+				<div class="header-right"></div>
+			</div>
+			<div class="content">
+				<div class="content-left"></div>
+				<div class="content-middle">
+					<div class="content-middle-select-time">
+						选择时间：
+						<input class="content-middle-select-time-input" type="datetime-local" step="1" />
+					</div>
+					<div class="content-middle-name">北京 - 中国</div>
+					<div class="content-middle-time">20:14:27</div>
+					<div class="content-middle-date">2024年03月11日 星期一 第11周</div>
+					<div class="content-middle-tool">
+						<div class="tl_container">
+							<div class="widget-box">
+								<div class="widget-content nopadding">
+									<div id="show" style="padding: 10px 20px; text-align: center; font-size: 16px">
+										<div id="show_date" style="margin-top: 10px">
+											<p>
+												当前时间戳：
+												<span id="copy_one" style="cursor: pointer">
+													<span id="showSecond" style="color: darkblue; cursor: pointer">1710211522</span>
+													&nbsp;&nbsp;(点击复制)
+												</span>
+												<a id="stop" href="javascript:;" style="color: rgb(231, 76, 60); display: inline"><i class="fa fa-stop"></i> 停止</a>
+												<a id="restart" href="javascript:;" style="color: rgb(31, 152, 7); display: none"><i class="fa fa-play"></i> 开始</a>
+											</p>
+											<div class="input-group input-group-lg" style="width: 100%">
+												<span class="input-group-addon" style="width: 10%">时间戳</span>
+												<input type="hidden" id="js_timestamp_hide" value="17101xsx32" class="form-control" name="timestamp" />
+												<input type="text" style="width: 100%" value="1710141732" class="form-control js_timestamp" name="timestamp" />
+
+												<span class="input-group-addon js_convert_timestamp" data-zone="8" style="color: darkgreen; cursor: pointer; width: 10%"
+													>转换 <i class="fa fa-angle-double-right"></i
+												></span>
+												<input type="text" class="form-control js_datetime" style="width: 100%" />
+												<span
+													class="input-group-addon copy"
+													data-class="js_datetime"
+													data-title="北京时间"
+													style="cursor: pointer; padding: 0 10px; width: 25%"
+													>北京时间(点击复制)</span
+												>
+											</div>
+											<div class="input-group input-group-lg" style="margin-top: 12px; width: 100%">
+												<span class="input-group-addon" style="padding: 0 10px; width: 10%">北京时间</span>
+												<input
+													type="text"
+													style="width: 100%"
+													class="form-control js_date"
+													name="js_date"
+													unselectable="on"
+													value="2024-03-11 15:22:12"
+													onclick="laydate({istime:true, format: 'YYYY-MM-DD hh:mm:ss'})"
+												/>
+												<span class="input-group-addon js_date_get" data-zone="8" style="color: darkgreen; cursor: pointer; width: 8%; padding: 0"
+													>转换 <i class="fa fa-angle-double-right"></i
+												></span>
+												<input type="text" class="form-control js_time_stamp" style="width: 100%" />
+												<span
+													class="input-group-addon copy"
+													data-class="js_time_stamp"
+													data-title="时间戳"
+													style="width: 10%; cursor: pointer; padding: 0 10px"
+													>时间戳(点击复制)</span
+												>
+												<span
+													class="input-group-addon copy_two"
+													data-class="js_time_stamp"
+													data-title="毫秒"
+													type="button"
+													style="width: 10%; cursor: pointer"
+													>复制毫秒</span
+												>
+											</div>
+										</div>
+										<div style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; width: 100%">
+											<p style="font-weight: 700; text-align: center; color: #fff; background: #007bfc; padding: 8px; width: 100%">
+												世界各地时间与时间戳转换
+											</p>
+
+											<div class="input-group input-group-lg" style="width: auto">
+												<span class="input-group-addon" style="width: 30%">时区/国家/地区：</span>
+												<select class="form-control" name="time_data" id="time_data" style="display: none">
+													<option value="">请选择</option>
+													<option value="零时区【UTC+0】_0" data-value="0">零时区【UTC+0】</option>
+													<option value="东一区【UTC+1】_1" data-value="1">东一区【UTC+1】</option>
+													<option value="东二区【UTC+2】_2" data-value="2">东二区【UTC+2】</option>
+													<option value="东三区【UTC+3】_3" data-value="3">东三区【UTC+3】</option>
+													<option value="东四区【UTC+4】_4" data-value="4">东四区【UTC+4】</option>
+													<option value="东五区【UTC+5】_5" data-value="5">东五区【UTC+5】</option>
+													<option value="东六区【UTC+6】_6" data-value="6">东六区【UTC+6】</option>
+													<option value="东七区【UTC+7】_7" data-value="7">东七区【UTC+7】</option>
+													<option value="东八区【UTC+8】_8" data-value="8">东八区【UTC+8】</option>
+													<option value="东九区【UTC+9】_9" data-value="9">东九区【UTC+9】</option>
+													<option value="东十区【UTC+10】_10" data-value="10">东十区【UTC+10】</option>
+													<option value="东十一区【UTC+11】_11" data-value="11">东十一区【UTC+11】</option>
+													<option value="东十二区【UTC+12】_12" data-value="12">东十二区【UTC+12】</option>
+													<option value="德黑兰【伊朗(UTC+3.5时区)】_3.5" data-value="3.5">德黑兰【伊朗(UTC+3.5时区)】</option>
+													<option value="西十一区【UTC-11】_-11" data-value="-11">西十一区【UTC-11】</option>
+													<option value="西十区【UTC-10】_-10" data-value="-10">西十区【UTC-10】</option>
+													<option value="西九区【UTC-9】_-9" data-value="-9">西九区【UTC-9】</option>
+													<option value="西八区【UTC-8】_-8" data-value="-8">西八区【UTC-8】</option>
+													<option value="西七区【UTC-7】_-7" data-value="-7">西七区【UTC-7】</option>
+													<option value="西六区【UTC-6】_-6" data-value="-6">西六区【UTC-6】</option>
+													<option value="西五区【UTC-5】_-5" data-value="-5">西五区【UTC-5】</option>
+													<option value="西四区【UTC-4】_-4" data-value="-4">西四区【UTC-4】</option>
+													<option value="西三区【UTC-3】_-3" data-value="-3">西三区【UTC-3】</option>
+													<option value="西二区【UTC-2】_-2" data-value="-2">西二区【UTC-2】</option>
+													<option value="西一区【UTC-1】_-1" data-value="-1">西一区【UTC-1】</option>
+													<option value="阿布扎比【阿联酋(UTC+4时区)】_4" data-value="4">阿布扎比【阿联酋(UTC+4时区)】</option>
+													<option value="伊斯兰堡【巴基斯坦(UTC+5时区)】_5" data-value="5">伊斯兰堡【巴基斯坦(UTC+5时区)】</option>
+													<option value="新德里【印度(UTC+5.5时区)】_5.5" data-value="5.5">新德里【印度(UTC+5.5时区)】</option>
+													<option value="达卡【孟加拉国(UTC+6时区)】_6" data-value="6">达卡【孟加拉国(UTC+6时区)】</option>
+													<option value="曼谷【泰国(UTC+7时区)】_7" data-value="7">曼谷【泰国(UTC+7时区)】</option>
+													<option value="东京【日本(UTC+9时区)】_9" data-value="9">东京【日本(UTC+9时区)】</option>
+													<option value="伦敦【英国(UTC+0时区)】_0" data-value="0">伦敦【英国(UTC+0时区)】</option>
+													<option value="柏林【德国(UTC+1时区)】_1" data-value="1">柏林【德国(UTC+1时区)】</option>
+													<option value="基辅【乌克兰(UTC+2时区)】_2" data-value="2">基辅【乌克兰(UTC+2时区)】</option>
+													<option value="莫斯科【俄罗斯(UTC+3时区)】_3" data-value="3">莫斯科【俄罗斯(UTC+3时区)】</option>
+													<option value="普拉亚【佛得角(UTC-1时区)】_-1" data-value="-1">普拉亚【佛得角(UTC-1时区)】</option>
+													<option value="利伯维尔【加蓬(UTC+1时区)】_1" data-value="1">利伯维尔【加蓬(UTC+1时区)】</option>
+													<option value="开罗【埃及(UTC+2时区)】_2" data-value="2">开罗【埃及(UTC+2时区)】</option>
+													<option value="比勒陀利亚【南非(UTC+2时区)】_2" data-value="2">比勒陀利亚【南非(UTC+2时区)】</option>
+													<option value="努库阿洛法【汤加(UTC-11时区)】_-11" data-value="-11">努库阿洛法【汤加(UTC-11时区)】</option>
+													<option value="阿瓦鲁阿【库克群岛(UTC-10时区)】_-10" data-value="-10">阿瓦鲁阿【库克群岛(UTC-10时区)】</option>
+													<option value="帕皮提【法属波利尼西亚(UTC-10时区)】_-10" data-value="-10">帕皮提【法属波利尼西亚(UTC-10时区)】</option>
+													<option value="亚当斯敦【皮特凯恩(UTC-8时区)】_-8" data-value="-8">亚当斯敦【皮特凯恩(UTC-8时区)】</option>
+													<option value="堪培拉【澳大利亚(UTC+10时区)】_10" data-value="10">堪培拉【澳大利亚(UTC+10时区)】</option>
+													<option value="霍尼亚拉【所罗门群岛(UTC+11时区)】_11" data-value="11">霍尼亚拉【所罗门群岛(UTC+11时区)】</option>
+													<option value="惠灵顿【新西兰(UTC+12时区)】_12" data-value="12">惠灵顿【新西兰(UTC+12时区)】</option>
+													<option value="墨西哥城【墨西哥(UTC-6时区)】_-6" data-value="-6">墨西哥城【墨西哥(UTC-6时区)】</option>
+													<option value="渥太华【加拿大(UTC-5时区)】_-5" data-value="-5">渥太华【加拿大(UTC-5时区)】</option>
+													<option value="华盛顿【美国(UTC-5时区)】_-5" data-value="-5">华盛顿【美国(UTC-5时区)】</option>
+													<option value="乔治敦【开曼群岛(UTC-5时区)】_-5" data-value="-5">乔治敦【开曼群岛(UTC-5时区)】</option>
+													<option value="圣菲波哥【哥伦比亚(UTC-5时区)】_-5" data-value="-5">圣菲波哥【哥伦比亚(UTC-5时区)】</option>
+													<option value="加拉加斯【委内瑞拉(UTC-4时区)】_-4" data-value="-4">加拉加斯【委内瑞拉(UTC-4时区)】</option>
+													<option value="巴西利亚【巴西(UTC-3时区)】_-3" data-value="-3">巴西利亚【巴西(UTC-3时区)】</option>
+													<option value="布宜诺斯艾利斯【阿根廷(UTC-3时区)】_-3" data-value="-3">布宜诺斯艾利斯【阿根廷(UTC-3时区)】</option>
+												</select>
+											</div>
+
+											<div id="show_check_data" style="padding: 10px; width: 100%">
+												<div class="input-group input-group-lg" style="width: 100%">
+													<span class="input-group-addon" style="width: 10%">时间戳</span>
+													<input type="text" style="width: 100%" value="" class="form-control js_timestamp" name="timestamp" />
+
+													<span class="input-group-addon js_convert_timestamp" data-zone="6" style="color: darkgreen; cursor: pointer; width: 10%"
+														>转换 <i class="fa fa-angle-double-right"></i
+													></span>
+													<input type="text" class="form-control js_datetime" style="width: 100%" />
+													<span
+														class="input-group-addon copy"
+														data-class="js_datetime"
+														data-title="当地时间"
+														style="cursor: pointer; padding: 0 10px; width: 10%"
+														>当地时间(点击复制)</span
+													>
+												</div>
+												<div class="input-group input-group-lg" style="margin-top: 12px; width: 100%">
+													<span class="input-group-addon" style="padding: 0 10px; width: 10%">当地时间</span>
+													<input
+														type="text"
+														style="width: 100%"
+														class="form-control js_date"
+														name="js_date"
+														unselectable="on"
+														value=""
+														onclick="laydate({istime:true, format: 'YYYY-MM-DD hh:mm:ss'})"
+													/>
+													<span class="input-group-addon js_date_get" data-zone="6" style="color: darkgreen; cursor: pointer; width: 8%; padding: 0"
+														>转换 <i class="fa fa-angle-double-right"></i
+													></span>
+													<input type="text" class="form-control js_time_stamp" style="width: 100%" />
+													<span
+														class="input-group-addon copy"
+														data-class="js_time_stamp"
+														data-title="时间戳"
+														style="cursor: pointer; padding: 0 10px; width: 10%"
+														>时间戳(点击复制)</span
+													>
+													<span
+														class="input-group-addon copy_two"
+														data-class="js_time_stamp"
+														data-title="毫秒"
+														type="button"
+														style="cursor: pointer; width: 10%"
+														>复制毫秒</span
+													>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="content-right"></div>
+			</div>
+			<div class="footer"></div>
+		</div>
+		<script src="lib/laydate/laydate.js"></script>
+		<script src="index.js"></script>
+	</body>
+</html>
