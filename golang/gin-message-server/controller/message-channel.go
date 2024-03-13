@@ -45,7 +45,7 @@ func AddChannel(c *gin.Context) {
 		return
 	}
 
-	channel.TokenStoreAddChannel(&channelEntity)
+	channel.AddTokenStoreItemByChannel(&channelEntity)
 
 	common.SendSuccessJSONResponse(c, "新增成功", nil)
 }
@@ -64,7 +64,7 @@ func DeleteChannel(c *gin.Context) {
 		return
 	}
 
-	channel.TokenStoreRemoveChannel(channelEntity)
+	channel.RemoveTokenStoreItemByChannel(channelEntity)
 
 	common.SendSuccessJSONResponse(c, "删除成功", nil)
 }
@@ -107,7 +107,7 @@ func UpdateChannel(c *gin.Context) {
 		return
 	}
 
-	channel.TokenStoreUpdateChannel(&channelEntity, originChannelEntity)
+	channel.UpdateTokenStoreItemByChannel(&channelEntity, originChannelEntity)
 
 	common.SendSuccessJSONResponse(c, "更新成功", channelEntity)
 }

@@ -130,6 +130,14 @@ func GetMessageStatusByLink(link string) (int, error) {
 	return message.Status, err
 }
 
+// GetAsyncPendingMessageIds 用于获取异步待发送消息的 ID 列表。
+//
+// 输入参数：
+//   - 无。
+//
+// 输出参数：
+//   - ids []int: 异步待发送消息的 ID 列表。
+//   - err error: 获取过程中遇到的错误，如果成功获取则为 nil，否则为获取失败的详细信息。
 func GetAsyncPendingMessageIds() (ids []int, err error) {
 	err = DB.Model(&MessageEntity{}).Where("status = ?", common.MessageSendStatusAsyncPending).Pluck("id", &ids).Error
 	return ids, err

@@ -244,7 +244,7 @@ const WebhooksTable = () => {
                         onClick={async () => {
                           if (
                             await copy(
-                              `${window.location.origin}/webHook/${webHook.link}`
+                              `${window.location.origin}/webhook/${webHook.link}`
                             )
                           ) {
                             showSuccess('已复制到剪贴板！');
