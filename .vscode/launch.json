@@ -131,6 +131,16 @@
 				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-message-server?charset=utf8"
 			},
 			"args": []
+		},
+		{
+			"type": "go",
+			"mode": "auto",
+			"request": "launch",
+			"name": "[go] chat-room|dev",
+			"program": "${workspaceFolder}\\golang\\z-chat-room\\main.go",
+			"showLog": true,
+			"env": {},
+			"args": []
 		}
 	]
 }

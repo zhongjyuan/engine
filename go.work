@@ -12,4 +12,6 @@ use (
 	./golang/gin-ai-server
 	./golang/gin-wechat-server
 	./golang/gin-message-server
+	
+	./golang/z-chat-room
 )
