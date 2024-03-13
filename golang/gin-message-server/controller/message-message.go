@@ -229,6 +229,7 @@ func PostPushMessage(c *gin.Context) {
 	}
 
 	keepCompatible(&messageData) // 保持与 ServerChan 的兼容性
+
 	pushMessage(c, &messageData) // 调用推送消息助手函数实现消息推送
 }
 

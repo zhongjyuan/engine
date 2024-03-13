@@ -14,8 +14,6 @@ func setMessageApiRouter(router *gin.Engine) {
 	apiRouter.Use(gzip.Gzip(gzip.DefaultCompression)) // 在传输过程中对响应进行压缩，以减小数据传输的大小，提高网络传输效率。
 	apiRouter.Use(middleware.GlobalAPIRateLimit())    // 使用全局API速率限制中间件
 	{
-		apiRouter.GET("/register_client/:username", middleware.CriticalRateLimit(), controller.RegisterClient)
-
 		messageRoute := apiRouter.Group("/message")
 		{
 			messageRoute.GET("/", middleware.UserAuth(), controller.GetUserMessages)
@@ -51,7 +49,16 @@ func setMessageApiRouter(router *gin.Engine) {
 		}
 	}
 
+	socketRouter := router.Group("/socket")
+	socketRouter.Use(gzip.Gzip(gzip.DefaultCompression))
+	socketRouter.Use(middleware.GlobalAPIRateLimit())
+	{
+		socketRouter.GET("/:username", middleware.CriticalRateLimit(), controller.RegisterClient)
+
+	}
+
 	pushRouter := router.Group("/push")
+	pushRouter.Use(gzip.Gzip(gzip.DefaultCompression))
 	pushRouter.Use(middleware.GlobalAPIRateLimit())
 	{
 		pushRouter.GET("/:username", controller.GetPushMessage)
@@ -59,6 +66,7 @@ func setMessageApiRouter(router *gin.Engine) {
 	}
 
 	webhookRouter := router.Group("/webhook")
+	webhookRouter.Use(gzip.Gzip(gzip.DefaultCompression))
 	webhookRouter.Use(middleware.GlobalAPIRateLimit())
 	{
 		webhookRouter.POST("/:link", controller.TriggerWebhook)

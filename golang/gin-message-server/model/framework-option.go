@@ -215,8 +215,8 @@ func InitOptionMap() {
 	common.OptionMap["TurnstileSecretKey"] = ""
 	common.OptionMap["Theme"] = ""
 
-	common.OptionMap["UserCount"] = strconv.Itoa(common.UserCount)
-	common.OptionMap["MessageCount"] = strconv.Itoa(common.MessageCount)
+	common.OptionMap["MessagePersistenceEnabled"] = strconv.FormatBool(common.MessagePersistenceEnabled)
+	common.OptionMap["MessageRenderEnabled"] = strconv.FormatBool(common.MessageRenderEnabled)
 
 	// 解锁 OptionMap。
 	common.OptionMapRWMutex.Unlock()
@@ -279,6 +279,10 @@ func updateOptionConfig(key string, value string) {
 			common.TurnstileCheckEnabled = boolValue
 		case "RegisterEnabled":
 			common.RegisterEnabled = boolValue
+		case "MessagePersistenceEnabled":
+			common.MessagePersistenceEnabled = boolValue
+		case "MessageRenderEnabled":
+			common.MessageRenderEnabled = boolValue
 		}
 	}
 

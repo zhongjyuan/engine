@@ -82,7 +82,8 @@ func sendSyncMessageToUser(message *model.MessageEntity, userId int) {
 // 输出参数：
 //   - 无
 func MessagesStream(c *gin.Context) {
-	userId := c.GetInt("id")                                              // 获取用户 ID
+	userId := c.GetInt("id") // 获取用户 ID
+
 	messageChan := make(chan *model.MessageEntity, messageChanBufferSize) // 创建消息通道
 	messageChanStoreAdd(&messageChan, userId)                             // 将消息通道与用户 ID 关联存储
 
@@ -95,5 +96,6 @@ func MessagesStream(c *gin.Context) {
 	})
 
 	messageChanStoreRemove(userId) // 移除用户关联的消息通道
-	close(messageChan)             // 关闭消息通道
+
+	close(messageChan) // 关闭消息通道
 }

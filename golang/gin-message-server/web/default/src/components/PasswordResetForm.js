@@ -18,9 +18,9 @@ const PasswordResetForm = () => {
     let status = localStorage.getItem('status');
     if (status) {
       status = JSON.parse(status);
-      if (status.turnstile_check) {
+      if (status.turnstileCheckEnabled) {
         setTurnstileEnabled(true);
-        setTurnstileSiteKey(status.turnstile_site_key);
+        setTurnstileSiteKey(status.turnstileSiteKey);
       }
     }
   }, []);

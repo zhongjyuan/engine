@@ -31,10 +31,10 @@ const RegisterForm = () => {
     let status = localStorage.getItem('status');
     if (status) {
       status = JSON.parse(status);
-      setShowEmailVerification(status.email_verification);
-      if (status.turnstile_check) {
+      setShowEmailVerification(status.emailVerificationEnabled);
+      if (status.turnstileCheckEnabled) {
         setTurnstileEnabled(true);
-        setTurnstileSiteKey(status.turnstile_site_key);
+        setTurnstileSiteKey(status.turnstileSiteKey);
       }
     }
   });

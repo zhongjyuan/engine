@@ -259,8 +259,8 @@ func TriggerWebhook(c *gin.Context) {
 	}
 
 	for key, value := range extractRule {
-		variableValue := gjson.Get(reqText, value).String()
-		webHook.ConstructRule = strings.Replace(webHook.ConstructRule, "$"+key, variableValue, -1)
+		variableValue := gjson.Get(reqText, value).String()                                        // 从请求文本中提取对应的值
+		webHook.ConstructRule = strings.Replace(webHook.ConstructRule, "$"+key, variableValue, -1) // 将构造规则中的占位符替换为提取的变量值
 	}
 
 	// 解析 WebHook 的构建规则

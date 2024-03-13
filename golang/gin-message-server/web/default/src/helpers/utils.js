@@ -17,13 +17,13 @@ export function isRoot() {
 }
 
 export function getSystemName() {
-  let system_name = localStorage.getItem('system_name');
-  if (!system_name) return '项目模板';
-  return system_name;
+  let systemName = localStorage.getItem('systemName');
+  if (!systemName) return '项目模板';
+  return systemName;
 }
 
 export function getFooterHTML() {
-  return localStorage.getItem('footer_html');
+  return localStorage.getItem('footerHtml');
 }
 
 export async function copy(text) {
