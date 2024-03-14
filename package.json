@@ -98,7 +98,13 @@
 		"init:z-chat-room": "cd golang/z-chat-room && go mod download && go mod tidy && cd ../../",
 		"build:z-chat-room": "cd golang/z-chat-room && go build -ldflags=\"-X main.version=1.0.0\" -o chat-room-service.exe -a main.go && cd ../../",
 		"dev:z-chat-room": "go run golang/z-chat-room/main.go",
-		"start:z-chat-room": "nohup ./golang/z-chat-room/chat-room-service > console.log 2>&1 &"
+		"start:z-chat-room": "nohup ./golang/z-chat-room/chat-room-service > console.log 2>&1 &",
+		"---------------": "",
+		"init:z-node-chat-room": "cd node/z-chat-room && npm run init && cd ../../",
+		"compile:z-node-chat-room": "cd node/z-chat-room && npm run compile && cd ../../",
+		"build:z-node-chat-room": "cd node/z-chat-room && npm run build && cd ../../",
+		"dev:z-node-chat-room": "cd node/z-chat-room && npm run dev && cd ../../",
+		"start:z-node-chat-room": "cd node/z-chat-room && npm run start && cd ../../"
 	},
 	"keywords": [
 		"zhongjyuan",

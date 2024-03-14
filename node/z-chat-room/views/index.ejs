@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Online char room." />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>Chat Room</title>
+
+		<link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+		<link rel="stylesheet" href="/index.css" />
+		<script src="/socket.io.4.7.2.min.js"></script>
+		<script src="/index.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div id="dialog" class="dialog"></div>
+			<div class="tool-bar">
+				<input id="fileInput" type="file" style="display: none" onchange="uploadFile()" />
+				<button onclick="document.getElementById('fileInput').click()">File</button>
+				<button onclick="clearMessage()">Clear</button>
+				<button onclick="changeUsername()">Change username</button>
+			</div>
+			<div class="panel">
+				<input id="input" class="input-box" autofocus />
+				<button onclick="send()" class="send-button">Send</button>
+			</div>
+		</div>
+	</body>
+</html>
