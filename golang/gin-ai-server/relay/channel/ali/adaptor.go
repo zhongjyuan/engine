@@ -60,6 +60,7 @@ func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *re
 	// 根据是否为流式请求设置 X-DashScope-SSE 头部信息
 	if meta.IsStream {
 		req.Header.Set("X-DashScope-SSE", "enable")
+		req.Header.Set("Accept", "text/event-stream")
 	}
 
 	// 如果配置中有插件信息，则设置 X-DashScope-Plugin 头部信息

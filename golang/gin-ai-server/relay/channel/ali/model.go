@@ -16,6 +16,8 @@ type Parameters struct {
 	TopP              float64 `json:"top_p,omitempty"`              // 生成文本的概率阈值
 	TopK              int     `json:"top_k,omitempty"`              // 生成文本的候选词数量
 	Seed              uint64  `json:"seed,omitempty"`               // 随机数种子
+	MaxTokens         int     `json:"max_tokens,omitempty"`         //
+	Temperature       float64 `json:"temperature,omitempty"`        //
 	EnableSearch      bool    `json:"enable_search,omitempty"`      // 是否启用搜索模式
 	IncrementalOutput bool    `json:"incremental_output,omitempty"` // 是否增量输出
 }

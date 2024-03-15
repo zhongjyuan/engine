@@ -18,7 +18,7 @@ type RedemptionEntity struct {
 	UserId       int    `json:"userId" gorm:"column:user_id"`                    // 用户ID
 	UserName     string `json:"userName" gorm:"column:user_name"`                // 用户名
 	Status       int    `json:"status" gorm:"column:status;default:1"`           // 兑换状态，默认为1
-	Quota        int    `json:"quota" gorm:"column:quota;default:100"`           // 兑换配额，默认为100
+	Quota        int64  `json:"quota" gorm:"column:quota;default:100"`           // 兑换配额，默认为100
 	CreateTime   int64  `json:"createTime" gorm:"column:create_time;bigint"`     // 创建时间
 	RedeemedTime int64  `json:"redeemedTime" gorm:"column:redeemed_time;bigint"` // 兑换时间
 
@@ -89,7 +89,7 @@ func SearchRedemptions(keyword string) (redemptions []*RedemptionEntity, err err
 // 输出参数：
 //   - quota: 兑换的额度
 //   - err: 如果成功兑换，则返回nil；否则返回相应的错误信息。
-func RedeemQuota(key string, userId int) (quota int, err error) {
+func RedeemQuota(key string, userId int) (quota int64, err error) {
 	if key == "" {
 		return 0, errors.New("未提供兑换码")
 	}

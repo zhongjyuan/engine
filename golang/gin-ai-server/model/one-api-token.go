@@ -18,8 +18,8 @@ type TokenEntity struct {
 	Status         int    `json:"status" gorm:"column:status;default:1"`                      // 令牌状态，默认值为 1
 	UserId         int    `json:"userId" gorm:"column:user_id;index"`                         // 用户ID，索引
 	UserName       string `json:"userName" gorm:"column:user_name"`                           // 用户名
-	UsedQuota      int    `json:"usedQuota" gorm:"column:used_quota;default:0"`               // 已使用配额
-	RemainQuota    int    `json:"remainQuota" gorm:"column:remain_quota;default:0"`           // 剩余配额，默认值为 0
+	UsedQuota      int64  `json:"usedQuota" gorm:"column:used_quota;default:0"`               // 已使用配额
+	RemainQuota    int64  `json:"remainQuota" gorm:"column:remain_quota;default:0"`           // 剩余配额，默认值为 0
 	UnlimitedQuota bool   `json:"unlimitedQuota" gorm:"column:unlimited_quota;default:false"` // 是否无限配额，默认值为 false
 	CreateTime     int64  `json:"createTime" gorm:"column:create_time;bigint"`                // 创建时间，整型
 	AccesseTime    int64  `json:"accesseTime" gorm:"column:accesse_time;bigint"`              // 访问时间，整型
@@ -103,7 +103,7 @@ func SearchUserTokens(userId int, keyword string) (tokens []*TokenEntity, err er
 //
 // 输出参数：
 //   - err error: 如果有错误发生，返回错误信息；否则返回 nil。
-func IncreaseTokenQuotaByID(id int, quota int) (err error) {
+func IncreaseTokenQuotaByID(id int, quota int64) (err error) {
 	// 检查配额是否为负数
 	if quota < 0 {
 		return errors.New("quota 不能为负数！")
@@ -127,7 +127,7 @@ func IncreaseTokenQuotaByID(id int, quota int) (err error) {
 //
 // 输出参数：
 //   - err error: 如果有错误发生，返回错误信息；否则返回 nil。
-func increaseTokenQuotaByID(id int, quota int) (err error) {
+func increaseTokenQuotaByID(id int, quota int64) (err error) {
 	// 使用数据库模型更新指定 ID 的令牌记录
 	err = DB.Model(&TokenEntity{}).Where("id = ?", id).Updates(
 		map[string]interface{}{
@@ -148,7 +148,7 @@ func increaseTokenQuotaByID(id int, quota int) (err error) {
 //
 // 输出参数：
 //   - err error: 如果有错误发生，返回错误信息；否则返回 nil。
-func DecreaseTokenQuotaByID(id int, quota int) (err error) {
+func DecreaseTokenQuotaByID(id int, quota int64) (err error) {
 	// 检查配额是否为负数
 	if quota < 0 {
 		return errors.New("quota 不能为负数！")
@@ -172,7 +172,7 @@ func DecreaseTokenQuotaByID(id int, quota int) (err error) {
 //
 // 输出参数：
 //   - err error: 如果有错误发生，返回错误信息；否则返回 nil。
-func decreaseTokenQuotaByID(id int, quota int) (err error) {
+func decreaseTokenQuotaByID(id int, quota int64) (err error) {
 	// 使用数据库模型更新指定 ID 的令牌记录
 	err = DB.Model(&TokenEntity{}).Where("id = ?", id).Updates(
 		map[string]interface{}{
@@ -257,7 +257,7 @@ func ValidateUserToken(key string) (token *TokenEntity, err error) {
 //
 // 输出参数：
 //   - err error: 如果有错误发生，返回错误信息；否则返回 nil。
-func PreConsumeTokenQuota(tokenId int, quota int) (err error) {
+func PreConsumeTokenQuota(tokenId int, quota int64) (err error) {
 	// 检查配额是否为负数
 	if quota < 0 {
 		return errors.New("quota 不能为负数！")
@@ -325,7 +325,7 @@ func PreConsumeTokenQuota(tokenId int, quota int) (err error) {
 //
 // 输出参数：
 //   - err error: 如果有错误发生，返回错误信息；否则返回 nil。
-func PostConsumeTokenQuota(tokenId int, quota int) (err error) {
+func PostConsumeTokenQuota(tokenId int, quota int64) (err error) {
 	// 获取指定 ID 的令牌
 	token, err := GetTokenByID(tokenId)
 	if err != nil {

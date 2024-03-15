@@ -10,6 +10,7 @@ import (
 	"time"
 	"zhongjyuan/gin-ai-server/common"
 	"zhongjyuan/gin-ai-server/model"
+	"zhongjyuan/gin-ai-server/monitor"
 	relayhelper "zhongjyuan/gin-ai-server/relay/helper"
 	relaymodel "zhongjyuan/gin-ai-server/relay/model"
 
@@ -369,7 +370,7 @@ func UpdateChannelBalance(c *gin.Context) {
 //   - error: 执行过程中遇到的任何错误。
 func updateAllChannelsBalance() error {
 	// 获取所有渠道信息
-	channels, err := model.GetPageChannels(0, 0, true)
+	channels, err := model.GetPageChannels(0, 0, "all")
 	if err != nil {
 		return err
 	}
@@ -393,7 +394,7 @@ func updateAllChannelsBalance() error {
 		} else {
 			// 如果没有错误且余额小于等于 0，表示配额已用完，禁用该渠道
 			if balance <= 0 {
-				disableChannel(channel.Id, channel.Name, "余额不足")
+				monitor.DisableChannel(channel.Id, channel.Name, "余额不足")
 			}
 		}
 		time.Sleep(common.RequestInterval)

@@ -42,10 +42,22 @@ func main() {
 		common.SysLog("running in debug mode")
 	}
 
+	var err error
+
 	// 初始化SQL数据库
-	err := model.InitDB()
+	model.DB, err = model.InitDB("SQL_DSN")
 	if err != nil {
 		common.FatalLog("failed to initialize database: " + err.Error())
+	}
+
+	model.LOG_DB, err = model.InitDB("LOG_SQL_DSN")
+	if err != nil {
+		model.LOG_DB = model.DB
+		common.FatalLog("failed to initialize secondary database: " + err.Error())
+	}
+
+	if err = model.CreateRootAccountIfNeed(); err != nil {
+		common.FatalLog("database init error: " + err.Error())
 	}
 
 	defer func() {

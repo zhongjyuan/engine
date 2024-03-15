@@ -1,6 +1,7 @@
 package model
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -104,20 +105,32 @@ func GetUserGroupWithCache(id int) (group string, err error) {
 //
 // 输出参数：
 //   - error: 如果成功更新用户配额并存入缓存，则返回nil；否则返回相应的错误信息。
-func UpdateUserQuotaWithCache(id int) error {
+func UpdateUserQuotaWithCache(ctx context.Context, id int) error {
 	// 如果缓存未启用，直接返回
 	if !common.RedisEnabled {
 		return nil
 	}
 
 	// 获取用户配额信息
-	quota, err := GetUserQuotaWithCache(id)
+	quota, err := GetUserQuotaWithCache(ctx, id)
 	if err != nil {
 		return err
 	}
 
 	// 将用户配额信息存入缓存
 	return common.RedisSet(fmt.Sprintf("user_quota:%d", id), fmt.Sprintf("%d", quota), time.Duration(UserIdToQuotaCacheDuration)*time.Second)
+}
+
+func fetchAndUpdateUserQuota(ctx context.Context, id int) (quota int64, err error) {
+	quota, err = GetUserQuotaByID(id)
+	if err != nil {
+		return 0, err
+	}
+	err = common.RedisSet(fmt.Sprintf("user_quota:%d", id), fmt.Sprintf("%d", quota), time.Duration(UserIdToQuotaCacheDuration)*time.Second)
+	if err != nil {
+		common.Error(ctx, "Redis set user quota error: "+err.Error())
+	}
+	return
 }
 
 // GetUserQuotaWithCache 根据用户ID获取用户配额信息，先从缓存中查找，如果未命中则从数据库中获取并缓存。
@@ -128,7 +141,7 @@ func UpdateUserQuotaWithCache(id int) error {
 // 输出参数：
 //   - quota: 用户配额信息
 //   - err: 如果成功获取到用户配额信息，则返回nil；否则返回相应的错误信息。
-func GetUserQuotaWithCache(id int) (quota int, err error) {
+func GetUserQuotaWithCache(ctx context.Context, id int) (quota int64, err error) {
 	// 如果缓存未启用，直接从数据库中获取
 	if !common.RedisEnabled {
 		return GetUserQuotaByID(id)
@@ -137,21 +150,18 @@ func GetUserQuotaWithCache(id int) (quota int, err error) {
 	// 尝试从缓存中获取用户配额信息
 	quotaString, err := common.RedisGet(fmt.Sprintf("user_quota:%d", id))
 	if err != nil {
-		// 缓存未命中，从数据库中获取
-		if quota, err = GetUserQuotaByID(id); err != nil {
-			return 0, err
-		}
-
-		// 将用户配额信息存入缓存
-		if err = common.RedisSet(fmt.Sprintf("user_quota:%d", id), fmt.Sprintf("%d", quota), time.Duration(UserIdToQuotaCacheDuration)*time.Second); err != nil {
-			common.SysError("Redis set user quota error: " + err.Error())
-		}
-
-		return quota, err
+		return fetchAndUpdateUserQuota(ctx, id)
 	}
 
-	// 将缓存中的配额信息转换为整数类型
-	return strconv.Atoi(quotaString)
+	quota, err = strconv.ParseInt(quotaString, 10, 64)
+	if err != nil {
+		return 0, nil
+	}
+	if quota <= common.PreConsumedQuota { // when user's quota is less than pre-consumed quota, we need to fetch from db
+		common.Infof(ctx, "user %d's cached quota is too low: %d, refreshing from db", quota, id)
+		return fetchAndUpdateUserQuota(ctx, id)
+	}
+	return quota, nil
 }
 
 // DecreaseUserQuotaWithCache 减少用户配额信息，并更新缓存中的配额值。
@@ -162,14 +172,14 @@ func GetUserQuotaWithCache(id int) (quota int, err error) {
 //
 // 输出参数：
 //   - error: 如果成功减少用户配额并更新缓存，则返回nil；否则返回相应的错误信息。
-func DecreaseUserQuotaWithCache(id int, quota int) error {
+func DecreaseUserQuotaWithCache(id int, quota int64) error {
 	// 如果缓存未启用，直接返回
 	if !common.RedisEnabled {
 		return nil
 	}
 
 	// 从缓存中减少用户配额信息
-	return common.RedisDecrease(fmt.Sprintf("user_quota:%d", id), int64(quota))
+	return common.RedisDecrease(fmt.Sprintf("user_quota:%d", id), quota)
 }
 
 // CheckUserEnabledWithCache 根据用户ID判断用户是否启用，先从缓存中查找，如果未命中则从数据库中获取并缓存。

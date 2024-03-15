@@ -13,7 +13,7 @@ const ChannelTableName = "one_api_channel"
 // ChannelEntity 结构体定义了渠道的数据模型。
 type ChannelEntity struct {
 	Id                int     `json:"id" gorm:"column:id"`                                                   // 渠道ID
-	Key               string  `json:"key" gorm:"column:key;not null;index"`                                  // 渠道关键字，非空，索引
+	Key               string  `json:"key" gorm:"column:key;type:text"`                                       // 渠道关键字，非空，索引
 	Name              string  `json:"name" gorm:"column:name;index"`                                         // 渠道名称，索引
 	Type              int     `json:"type" gorm:"column:type;default:0"`                                     // 渠道类型，默认值为 0
 	Group             string  `json:"group" gorm:"column:group;type:varchar(32);default:'default'"`          // 渠道分组，默认值为 "default"
@@ -162,7 +162,7 @@ func DeleteChannelByStatus(status int64) (int64, error) {
 	return result.RowsAffected, result.Error
 }
 
-func UpdateChannelUsedQuotaByID(id int, quota int) {
+func UpdateChannelUsedQuotaByID(id int, quota int64) {
 	if common.BatchUpdateEnabled {
 		updateRecord(common.BatchUpdateTypeChannelUsedQuota, id, quota)
 		return
@@ -170,7 +170,7 @@ func UpdateChannelUsedQuotaByID(id int, quota int) {
 	updateChannelUsedQuotaByID(id, quota)
 }
 
-func updateChannelUsedQuotaByID(id int, quota int) {
+func updateChannelUsedQuotaByID(id int, quota int64) {
 	if err := DB.Model(&ChannelEntity{}).Where("id = ?", id).Update("used_quota", gorm.Expr("used_quota + ?", quota)).Error; err != nil {
 		common.SysError("failed to update channel used quota: " + err.Error())
 	}
@@ -200,10 +200,13 @@ func GetChannelByID(id int, selectAll bool) (*ChannelEntity, error) {
 	return &channel, err
 }
 
-func GetPageChannels(startIdx int, num int, selectAll bool) (channels []*ChannelEntity, err error) {
-	if selectAll {
+func GetPageChannels(startIdx int, num int, scope string) (channels []*ChannelEntity, err error) {
+	switch scope {
+	case "all":
 		err = DB.Order("id desc").Find(&channels).Error
-	} else {
+	case "disabled":
+		err = DB.Order("id desc").Where("status = ? or status = ?", common.ChannelStatusAutoDisabled, common.ChannelStatusManuallyDisabled).Find(&channels).Error
+	default:
 		err = DB.Order("id desc").Limit(num).Offset(startIdx).Omit("key").Find(&channels).Error
 	}
 
@@ -211,12 +214,6 @@ func GetPageChannels(startIdx int, num int, selectAll bool) (channels []*Channel
 }
 
 func SearchChannels(keyword string) (channels []*ChannelEntity, err error) {
-	keyCol := "`key`"
-	if common.UsingPostgreSQL {
-		keyCol = `"key"`
-	}
-
-	err = DB.Omit("key").Where("id = ? or name LIKE ? or "+keyCol+" = ?", common.String2Int(keyword), keyword+"%", keyword).Find(&channels).Error
-
+	err = DB.Omit("key").Where("id = ? or name LIKE ?", common.String2Int(keyword), keyword+"%").Find(&channels).Error
 	return channels, err
 }

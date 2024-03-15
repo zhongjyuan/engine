@@ -8,8 +8,6 @@ import (
 	"strings"
 	"zhongjyuan/gin-ai-server/common"
 	relaychannel "zhongjyuan/gin-ai-server/relay/channel"
-	channel_360 "zhongjyuan/gin-ai-server/relay/channel/360"
-	channel_moonshot "zhongjyuan/gin-ai-server/relay/channel/moonshot"
 	relayhelper "zhongjyuan/gin-ai-server/relay/helper"
 	relaymodel "zhongjyuan/gin-ai-server/relay/model"
 
@@ -40,25 +38,31 @@ func (a *Adaptor) Init(meta *relaymodel.AIRelayMeta) {
 //   - string: 返回完整的请求 URL 字符串。
 //   - error: 如果在处理过程中发生错误，则返回相应的错误信息。
 func (a *Adaptor) GetRequestURL(meta *relaymodel.AIRelayMeta) (string, error) {
-	if meta.ChannelType != common.ChannelTypeAzure {
+	switch meta.ChannelType {
+	case common.ChannelTypeAzure:
+		// https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?pivots=rest-api&tabs=command-line#rest-api
+
+		requestURL := strings.Split(meta.RequestURLPath, "?")[0]
+
+		requestURL = fmt.Sprintf("%s?api-version=%s", requestURL, meta.APIVersion)
+
+		task := strings.TrimPrefix(requestURL, "/v1/")
+
+		model_ := meta.ActualModelName
+		model_ = strings.Replace(model_, ".", "", -1)
+
+		// https://github.com/songquanpeng/one-api/issues/67
+		model_ = strings.TrimSuffix(model_, "-0301")
+		model_ = strings.TrimSuffix(model_, "-0314")
+		model_ = strings.TrimSuffix(model_, "-0613")
+
+		requestURL = fmt.Sprintf("/openai/deployments/%s/%s", model_, task)
+		return relayhelper.GetFullRequestURL(meta.BaseURL, requestURL, meta.ChannelType), nil
+	case common.ChannelTypeMinimax:
+		return relayhelper.GetRequestURL(meta)
+	default:
 		return relayhelper.GetFullRequestURL(meta.BaseURL, meta.RequestURLPath, meta.ChannelType), nil
 	}
-
-	baseURL := meta.BaseURL
-	requestURL := meta.RequestURLPath
-
-	// 获取请求 URL，并添加 API 版本信息
-	parts := strings.Split(requestURL, "?")
-	requestURL = parts[0] + fmt.Sprintf("?api-version=%s", meta.APIVersion)
-
-	// 剥离请求 URL 中的版本信息，处理模型名称格式
-	task := strings.TrimPrefix(requestURL, "/v1/")
-	model := strings.Replace(meta.ActualModelName, ".", "", -1)
-	model = strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(model, "-0301"), "-0314"), "-0613")
-
-	// 构建最终请求 URL 并返回
-	requestURL = fmt.Sprintf("/openai/deployments/%s/%s", model, task)
-	return relayhelper.GetFullRequestURL(baseURL, requestURL, meta.ChannelType), nil
 }
 
 // SetupRequestHeader 设置请求的头部信息。
@@ -140,7 +144,7 @@ func (a *Adaptor) DoRequest(c *gin.Context, meta *relaymodel.AIRelayMeta, reques
 func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relaymodel.AIRelayMeta) (usage *relaymodel.Usage, err *relaymodel.HTTPError) {
 	if meta.IsStream {
 		var responseText string
-		err, responseText = StreamHandler(c, resp, meta.Mode)
+		err, responseText, _ = StreamHandler(c, resp, meta.Mode)
 		usage = ResponseText2Usage(responseText, meta.ActualModelName, meta.PromptTokens)
 	} else {
 		err, usage = Handler(c, resp, meta.PromptTokens, meta.ActualModelName)
@@ -156,14 +160,8 @@ func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relaymod
 // 输出参数：
 //   - []string: 返回模型名称列表的切片。
 func (a *Adaptor) GetModelList() []string {
-	switch a.ChannelType {
-	case common.ChannelType360:
-		return channel_360.ModelList
-	case common.ChannelTypeMoonshot:
-		return channel_moonshot.ModelList
-	default:
-		return ModelList
-	}
+	_, modelList := GetCompatibleChannelMeta(a.ChannelType)
+	return modelList
 }
 
 // GetChannelName 获取通道名称。
@@ -174,14 +172,6 @@ func (a *Adaptor) GetModelList() []string {
 // 输出参数：
 //   - string: 返回通道名称字符串。
 func (a *Adaptor) GetChannelName() string {
-	switch a.ChannelType {
-	case common.ChannelTypeAzure:
-		return "azure"
-	case common.ChannelType360:
-		return "360"
-	case common.ChannelTypeMoonshot:
-		return "moonshot"
-	default:
-		return "openai"
-	}
+	channelName, _ := GetCompatibleChannelMeta(a.ChannelType)
+	return channelName
 }

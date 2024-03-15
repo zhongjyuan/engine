@@ -44,6 +44,8 @@ var SessionSecret = uuid.New().String()
 // UsingSQLite 启用SQLite
 var UsingSQLite = false
 
+var UsingMySQL = false
+
 // UsingPostgreSQL 启用PostgreSQL
 var UsingPostgreSQL = false
 
@@ -66,6 +68,7 @@ var MaxRecentItems = 100
 
 // DebugEnabled 表示Debug模式是否启用
 var DebugEnabled = os.Getenv("DEBUG") == "true"
+var DebugSQLEnabled = os.Getenv("DEBUG") == "true"
 
 // RedisEnabled 表示 Redis 是否启用
 var RedisEnabled = true

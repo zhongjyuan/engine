@@ -100,7 +100,7 @@ func GetPageChannels(c *gin.Context) {
 		p = 0
 	}
 
-	channels, err := model.GetPageChannels(p*common.ItemsPerPage, common.ItemsPerPage, false)
+	channels, err := model.GetPageChannels(p*common.ItemsPerPage, common.ItemsPerPage, "limited")
 	if err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return

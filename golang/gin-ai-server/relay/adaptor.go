@@ -6,6 +6,7 @@ import (
 	channel_anthropic "zhongjyuan/gin-ai-server/relay/channel/anthropic"
 	channel_baidu "zhongjyuan/gin-ai-server/relay/channel/baidu"
 	channel_gemini "zhongjyuan/gin-ai-server/relay/channel/gemini"
+	channel_ollama "zhongjyuan/gin-ai-server/relay/channel/ollama"
 	channel_openai "zhongjyuan/gin-ai-server/relay/channel/openai"
 	channel_palm "zhongjyuan/gin-ai-server/relay/channel/palm"
 	channel_proxy "zhongjyuan/gin-ai-server/relay/channel/proxy"
@@ -46,6 +47,8 @@ func GetAdaptor(apiType int) relaychannel.Adaptor {
 		adaptor = &channel_xunfei.Adaptor{}
 	case relaycommon.APITypeZhipu:
 		adaptor = &channel_zhipu.Adaptor{}
+	case relaycommon.APITypeOllama:
+		return &channel_ollama.Adaptor{}
 	}
 
 	return adaptor

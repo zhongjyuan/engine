@@ -18,6 +18,7 @@ import {
   showInfo,
   showSuccess,
   timestamp2string,
+  loadChannelModels,
 } from '../helpers';
 
 import { renderGroup, renderNumber } from '../helpers/render';
@@ -160,6 +161,7 @@ const ChannelsTable = () => {
         // 如果加载数据出错，则显示错误信息
         showError(reason);
       });
+    loadChannelModels().then();
   }, []);
 
   /**
@@ -380,12 +382,12 @@ const ChannelsTable = () => {
   /**
    * 开始测试所有通道的响应时间的异步函数。
    */
-  const testAllChannels = async () => {
-    const res = await API.get(`/api/channel/test`); // 发起测试所有通道的请求
+  const testChannels = async (scope) => {
+    const res = await API.get(`/api/channel/test?scope=${scope}`); // 发起测试所有通道的请求
     const { success, message } = res.data; // 从响应数据中解构出 success 和 message
 
     if (success) {
-      showInfo('已成功开始测试所有通道，请刷新页面查看结果。'); // 显示提示信息，通知已成功开始测试所有通道
+      showInfo('已成功开始测试通道，请刷新页面查看结果。'); // 显示提示信息，通知已成功开始测试所有通道
     } else {
       showError(message); // 显示错误信息
     }
@@ -714,8 +716,23 @@ const ChannelsTable = () => {
               >
                 添加新的渠道
               </Button>
-              <Button size='small' loading={loading} onClick={testAllChannels}>
+              <Button
+                size='small'
+                loading={loading}
+                onClick={() => {
+                  testChannels('all');
+                }}
+              >
                 测试所有渠道
+              </Button>
+              <Button
+                size='small'
+                loading={loading}
+                onClick={() => {
+                  testChannels('disabled');
+                }}
+              >
+                测试禁用渠道
               </Button>
               <Button
                 size='small'

@@ -10,10 +10,13 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 	"zhongjyuan/gin-ai-server/common"
+	"zhongjyuan/gin-ai-server/middleware"
 	"zhongjyuan/gin-ai-server/model"
+	"zhongjyuan/gin-ai-server/monitor"
 	"zhongjyuan/gin-ai-server/relay"
 	relaycommon "zhongjyuan/gin-ai-server/relay/common"
 	relayhelper "zhongjyuan/gin-ai-server/relay/helper"
@@ -26,7 +29,7 @@ import (
 func NewTestRequest() *relaymodel.AIRequest {
 	// 创建测试请求对象
 	return &relaymodel.AIRequest{
-		MaxTokens: 1,
+		MaxTokens: 2,
 		Stream:    false,
 		Model:     "gpt-3.5-turbo",
 		Messages: []relaymodel.AIMessage{
@@ -61,6 +64,8 @@ func testChannel(channel *model.ChannelEntity) (*relaymodel.Error, error) {
 	context.Set("channel", channel.Type)
 	context.Set("baseUrl", channel.GetBaseURL())
 
+	middleware.SetChannelContext(context, channel, "")
+
 	// 创建 AIRelayMeta 对象
 	meta := relayhelper.NewAIRelayMeta(context)
 
@@ -74,6 +79,13 @@ func testChannel(channel *model.ChannelEntity) (*relaymodel.Error, error) {
 
 	// 获取模型名称并构建请求
 	modelName := adaptor.GetModelList()[0]
+	if !strings.Contains(channel.Models, modelName) {
+		modelNames := strings.Split(channel.Models, ",")
+		if len(modelNames) > 0 {
+			modelName = modelNames[0]
+		}
+	}
+
 	testRequest := NewTestRequest()
 	testRequest.Model = modelName
 	meta.OriginModelName, meta.ActualModelName = modelName, modelName
@@ -165,67 +177,6 @@ var testAllChannelsLock sync.Mutex
 // testAllChannelsRunning 表示是否正在测试所有通道。
 var testAllChannelsRunning bool = false
 
-// notifyRootUser 用于通知根用户。
-//
-// 输入参数：
-//   - subject (string): 邮件主题。
-//   - content (string): 邮件内容。
-//
-// 输出参数：
-//   - 无。
-func notifyRootUser(subject string, content string) {
-	// 如果根用户电子邮件为空，则获取管理员用户电子邮件
-	if common.RootUserEmail == "" {
-		common.RootUserEmail, _ = model.GetAdminUserEmail()
-	}
-
-	// 发送邮件通知根用户
-	if err := common.SendEmail(subject, common.RootUserEmail, content); err != nil {
-		common.SysError(fmt.Sprintf("failed to send email: %s", err.Error()))
-	}
-}
-
-// disableChannel 用于禁用通道。并通知根用户
-//
-// 输入参数：
-//   - channelId (int): 要禁用的通道ID。
-//   - channelName (string): 通道名称。
-//   - reason (string): 禁用原因。
-//
-// 输出参数：
-//   - 无。
-func disableChannel(channelId int, channelName string, reason string) {
-	// 更新通道状态为自动禁用
-	model.UpdateChannelStatusByID(channelId, common.ChannelStatusAutoDisabled)
-
-	// 构建邮件主题和内容
-	subject := fmt.Sprintf("通道「%s」（#%d）已被禁用", channelName, channelId)
-	content := fmt.Sprintf("通道「%s」（#%d）已被禁用，原因：%s", channelName, channelId, reason)
-
-	// 通知根用户
-	notifyRootUser(subject, content)
-}
-
-// enableChannel 用于启用通道。并通知根用户
-//
-// 输入参数：
-//   - channelId (int): 要启用的通道ID。
-//   - channelName (string): 通道名称。
-//
-// 输出参数：
-//   - 无。
-func enableChannel(channelId int, channelName string) {
-	// 更新通道状态为已启用
-	model.UpdateChannelStatusByID(channelId, common.ChannelStatusEnabled)
-
-	// 构建邮件主题和内容
-	subject := fmt.Sprintf("通道「%s」（#%d）已被启用", channelName, channelId)
-	content := fmt.Sprintf("通道「%s」（#%d）已被启用", channelName, channelId)
-
-	// 通知根用户
-	notifyRootUser(subject, content)
-}
-
 // testAllChannels 用于测试所有通道。
 //
 // 输入参数：
@@ -233,7 +184,7 @@ func enableChannel(channelId int, channelName string) {
 //
 // 输出参数：
 //   - error: 如果发生错误，则返回错误信息；否则返回 nil。
-func testAllChannels(notify bool) error {
+func testAllChannels(notify bool, scope string) error {
 	// 获取根用户邮箱
 	if common.RootUserEmail == "" {
 		common.RootUserEmail, _ = model.GetAdminUserEmail()
@@ -249,7 +200,7 @@ func testAllChannels(notify bool) error {
 	testAllChannelsLock.Unlock()
 
 	// 获取所有通道
-	channels, err := model.GetPageChannels(0, 0, true)
+	channels, err := model.GetPageChannels(0, 0, scope)
 	if err != nil {
 		return err
 	}
@@ -273,16 +224,20 @@ func testAllChannels(notify bool) error {
 			// 超过响应时间阈值，禁用通道
 			if isChannelEnabled && milliseconds > disableThreshold {
 				err = fmt.Errorf("响应时间 %.2fs 超过阈值 %.2fs", float64(milliseconds)/1000.0, float64(disableThreshold)/1000.0)
-				disableChannel(channel.Id, channel.Name, err.Error())
+				if common.AutomaticDisableChannelEnabled {
+					monitor.DisableChannel(channel.Id, channel.Name, err.Error())
+				} else {
+					_ = common.Notify(common.ByAll, fmt.Sprintf("渠道 %s （%d）测试超时", channel.Name, channel.Id), "", err.Error())
+				}
 			}
 
 			// 根据错误情况禁用或启用通道
 			if isChannelEnabled && relayhelper.ShouldDisableChannel(openaiErr, -1) {
-				disableChannel(channel.Id, channel.Name, err.Error())
+				monitor.DisableChannel(channel.Id, channel.Name, err.Error())
 			}
 
 			if !isChannelEnabled && relayhelper.ShouldEnableChannel(err, openaiErr) {
-				enableChannel(channel.Id, channel.Name)
+				monitor.EnableChannel(channel.Id, channel.Name)
 			}
 
 			// 更新通道响应时间并等待一段时间后继续测试下一个通道
@@ -296,7 +251,7 @@ func testAllChannels(notify bool) error {
 		testAllChannelsLock.Unlock()
 
 		if notify {
-			if err := common.SendEmail("通道测试完成", common.RootUserEmail, "通道测试完成，如果没有收到禁用通知，说明所有通道都正常"); err != nil {
+			if err := common.Notify(common.ByAll, "通道测试完成", "", "通道测试完成，如果没有收到禁用通知，说明所有通道都正常"); err != nil {
 				common.SysError(fmt.Sprintf("failed to send email: %s", err.Error()))
 			}
 		}
@@ -313,8 +268,13 @@ func testAllChannels(notify bool) error {
 // 输出参数：
 //   - 无。
 func TestAllChannels(c *gin.Context) {
+	scope := c.Query("scope")
+	if scope == "" {
+		scope = "all"
+	}
+
 	// 调用 testAllChannels 进行通道测试，并处理可能的错误
-	if err := testAllChannels(true); err != nil {
+	if err := testAllChannels(true, scope); err != nil {
 		common.SendFailureJSONResponse(c, err.Error())
 		return
 	}
@@ -334,7 +294,7 @@ func AutomaticallyTestChannels(frequency int) {
 	for {
 		time.Sleep(time.Duration(frequency) * time.Minute) // 等待指定的时间间隔
 		common.SysLog("testing all channels")              // 记录日志，开始测试所有通道
-		_ = testAllChannels(false)                         // 执行通道测试，忽略可能的错误
+		_ = testAllChannels(false, "all")                  // 执行通道测试，忽略可能的错误
 		common.SysLog("channel test finished")             // 记录日志，通道测试完成
 	}
 }

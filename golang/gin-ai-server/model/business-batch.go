@@ -10,7 +10,7 @@ import (
 var batchUpdateLocks []sync.Mutex
 
 // batchUpdateStores 用于存储批量更新的数据，每个 map[int]int 对应一次更新操作。
-var batchUpdateStores []map[int]int
+var batchUpdateStores []map[int]int64
 
 // init 函数用于初始化批量更新相关的数据结构。
 func init() {
@@ -19,7 +19,7 @@ func init() {
 		batchUpdateLocks = append(batchUpdateLocks, sync.Mutex{})
 
 		// 使用 make 创建一个空的 map[int]int，并添加到 batchUpdateStores 数组中
-		batchUpdateStores = append(batchUpdateStores, make(map[int]int))
+		batchUpdateStores = append(batchUpdateStores, make(map[int]int64))
 	}
 }
 
@@ -46,7 +46,7 @@ func InitBatchUpdater() {
 //
 // 输出参数：
 //   - 无。
-func updateRecord(recordType int, id int, value int) {
+func updateRecord(recordType int, id int, value int64) {
 	// 加锁，保证并发安全
 	batchUpdateLocks[recordType].Lock()
 	defer batchUpdateLocks[recordType].Unlock() // 在函数执行完毕后解锁
@@ -69,7 +69,7 @@ func batchUpdate() {
 		// 加锁以保证线程安全
 		batchUpdateLocks[i].Lock()
 		store := batchUpdateStores[i]
-		batchUpdateStores[i] = make(map[int]int)
+		batchUpdateStores[i] = make(map[int]int64)
 		batchUpdateLocks[i].Unlock()
 
 		// 遍历存储中的数据进行更新

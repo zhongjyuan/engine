@@ -318,6 +318,48 @@ func GetOrDefaultEnvInt(env string, defaultValue int) int {
 	return num // 返回成功转换的整数值
 }
 
+// GetOrDefaultEnvBool 从环境变量中获取指定参数的布尔值，如果不存在则返回默认值。
+//
+// 输入参数：
+//   - env string: 环境变量名。
+//   - defaultValue bool: 默认布尔值。
+//
+// 输出参数：
+//   - bool: 返回从环境变量中获取的布尔值或者默认值。
+func GetOrDefaultEnvBool(env string, defaultValue bool) bool {
+	// 如果环境变量名为空或者对应环境变量值为空，则返回默认值
+	if env == "" || os.Getenv(env) == "" {
+		return defaultValue
+	}
+
+	// 返回从环境变量中获取的布尔值
+	return os.Getenv(env) == "true"
+}
+
+// GetOrDefaultEnvFloat64 从环境变量中获取指定参数的浮点数值，如果不存在或解析失败则返回默认值。
+//
+// 输入参数：
+//   - env string: 环境变量名。
+//   - defaultValue float64: 默认浮点数值。
+//
+// 输出参数：
+//   - float64: 返回从环境变量中获取的浮点数值或者默认值。
+func GetOrDefaultEnvFloat64(env string, defaultValue float64) float64 {
+	// 如果环境变量名为空或者对应环境变量值为空，则返回默认值
+	if env == "" || os.Getenv(env) == "" {
+		return defaultValue
+	}
+
+	// 尝试将环境变量值解析为浮点数值
+	num, err := strconv.ParseFloat(os.Getenv(env), 64)
+	if err != nil { // 解析失败，返回默认值
+		return defaultValue
+	}
+
+	// 返回从环境变量中获取的浮点数值
+	return num
+}
+
 // GetOrDefaultEnvString 函数用于从环境变量中获取字符串值，如果获取失败或环境变量不存在则返回默认值。
 //
 // 输入参数：

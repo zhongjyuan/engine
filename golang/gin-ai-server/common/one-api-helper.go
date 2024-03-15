@@ -8,7 +8,7 @@ import "fmt"
 //   - quota int: 需要格式化的额度值。
 // 输出参数：
 //   - string: 返回格式化后的额度信息。
-func FormatQuota(quota int) string {
+func FormatQuota(quota int64) string {
 	// 如果启用显示货币格式
 	if DisplayInCurrencyEnabled {
 		// 返回格式化后的货币额度信息

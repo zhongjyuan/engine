@@ -56,8 +56,11 @@ func auth(c *gin.Context, minRole int) {
 	}
 
 	// 检查用户状态是否被封禁
-	if status.(int) == common.UserStatusDisabled {
+	if status.(int) == common.UserStatusDisabled || common.IsBanned(id.(int)) {
 		common.SendFailureJSONResponse(c, "用户已被封禁")
+		session := sessions.Default(c)
+		session.Clear()
+		_ = session.Save()
 		c.Abort()
 		return
 	}

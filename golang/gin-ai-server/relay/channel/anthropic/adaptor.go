@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/http"
 	relaychannel "zhongjyuan/gin-ai-server/relay/channel"
-	channel_openai "zhongjyuan/gin-ai-server/relay/channel/openai"
 	relaymodel "zhongjyuan/gin-ai-server/relay/model"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +27,7 @@ func (a *Adaptor) Init(meta *relaymodel.AIRelayMeta) {
 //   - string: 请求的URL地址。
 //   - error: 错误信息（如果有）。
 func (a *Adaptor) GetRequestURL(meta *relaymodel.AIRelayMeta) (string, error) {
-	return fmt.Sprintf("%s/v1/complete", meta.BaseURL), nil
+	return fmt.Sprintf("%s/v1/messages", meta.BaseURL), nil
 }
 
 // SetupRequestHeader 方法用于设置请求的头部信息。
@@ -53,6 +52,7 @@ func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Request, meta *re
 		anthropicVersion = "2023-06-01"
 	}
 	req.Header.Set("anthropic-version", anthropicVersion)
+	req.Header.Set("anthropic-beta", "messages-2023-12-15")
 
 	return nil
 }
@@ -93,9 +93,7 @@ func (a *Adaptor) DoRequest(c *gin.Context, meta *relaymodel.AIRelayMeta, reques
 //   - err *relaymodel.HTTPError: 带有状态码的错误信息。
 func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *relaymodel.AIRelayMeta) (usage *relaymodel.Usage, err *relaymodel.HTTPError) {
 	if meta.IsStream {
-		var responseText string
-		err, responseText = StreamHandler(c, resp)
-		usage = channel_openai.ResponseText2Usage(responseText, meta.ActualModelName, meta.PromptTokens)
+		err, usage = StreamHandler(c, resp)
 	} else {
 		err, usage = Handler(c, resp, meta.PromptTokens, meta.ActualModelName)
 	}
@@ -107,5 +105,5 @@ func (a *Adaptor) GetModelList() []string {
 }
 
 func (a *Adaptor) GetChannelName() string {
-	return "authropic"
+	return "anthropic"
 }

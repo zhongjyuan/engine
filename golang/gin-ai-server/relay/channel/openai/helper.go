@@ -68,7 +68,7 @@ func splitFunc(data []byte, atEOF bool) (advance int, token []byte, err error) {
 //
 // 输出参数：
 //   - 无。
-func processStreamResponse(relayMode int, data string, responseText *string) {
+func processStreamResponse(relayMode int, data string, responseText *string, usage *relaymodel.Usage) {
 	switch relayMode {
 	case relaycommon.RelayModeChatCompletions:
 		var streamResponse relaymodel.AIChatCompletionsStreamResponse
@@ -80,6 +80,11 @@ func processStreamResponse(relayMode int, data string, responseText *string) {
 		for _, choice := range streamResponse.Choices {
 			*responseText += choice.Delta.Content
 		}
+
+		if streamResponse.Usage != nil {
+			usage = streamResponse.Usage
+		}
+
 	case relaycommon.RelayModeCompletions:
 		var streamResponse relaymodel.AICompletionsStreamResponse
 		if err := json.Unmarshal([]byte(data), &streamResponse); err != nil {
@@ -120,7 +125,7 @@ func handleData(c *gin.Context, data string) {
 // 输出参数：
 //   - *relaymodel.HTTPError: 错误对象，如果有错误发生。
 //   - string: 生成的响应文本。
-func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relaymodel.HTTPError, string) {
+func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relaymodel.HTTPError, string, *relaymodel.Usage) {
 	responseText := "" // 初始化响应文本
 
 	// 创建一个 scanner 对象来扫描 HTTP 响应体
@@ -129,6 +134,8 @@ func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relaymo
 
 	dataChan := make(chan string) // 创建用于接收数据的通道
 	stopChan := make(chan bool)   // 创建用于发送停止信号的通道
+
+	var usage relaymodel.Usage
 
 	// 开启协程处理数据流
 	go func() {
@@ -145,7 +152,7 @@ func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relaymo
 			dataChan <- data // 将符合条件的数据发送到通道中
 			data = data[6:]  // 去除前缀
 			if !strings.HasPrefix(data, "[DONE]") {
-				processStreamResponse(relayMode, data, &responseText) // 处理数据
+				processStreamResponse(relayMode, data, &responseText, &usage) // 处理数据
 			}
 		}
 		stopChan <- true // 发送停止信号
@@ -163,10 +170,10 @@ func StreamHandler(c *gin.Context, resp *http.Response, relayMode int) (*relaymo
 	})
 
 	if err := resp.Body.Close(); err != nil { // 关闭响应体
-		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), "" // 返回关闭响应体失败的错误
+		return relayhelper.WrapHTTPError(err, "close_response_body_failed", http.StatusInternalServerError), "", nil // 返回关闭响应体失败的错误
 	}
 
-	return nil, responseText // 返回响应文本和空错误
+	return nil, responseText, &usage // 返回响应文本和空错误
 }
 
 // Handler 用于处理 HTTP 响应并生成相应的 Gin 响应。

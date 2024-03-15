@@ -67,7 +67,8 @@ func RelayText(c *gin.Context) *relaymodel.HTTPError {
 	var requestBody io.Reader
 	if meta.APIType == relaycommon.APITypeOpenAI {
 		// 对于 OpenAI 不需要转换请求
-		if isModelMapped {
+		shouldResetRequestBody := isModelMapped || meta.ChannelType == common.ChannelTypeBaichuan // frequency_penalty 0 is not acceptable for baichuan
+		if shouldResetRequestBody {
 			jsonStr, err := json.Marshal(textRequest)
 			if err != nil {
 				return relayhelper.WrapHTTPError(err, "json_marshal_failed", http.StatusInternalServerError)
@@ -85,6 +86,7 @@ func RelayText(c *gin.Context) *relaymodel.HTTPError {
 		if err != nil {
 			return relayhelper.WrapHTTPError(err, "json_marshal_failed", http.StatusInternalServerError)
 		}
+		common.Debugf(ctx, "converted request: \n%s", string(jsonData))
 		requestBody = bytes.NewBuffer(jsonData)
 	}
 
@@ -95,12 +97,12 @@ func RelayText(c *gin.Context) *relaymodel.HTTPError {
 		return relayhelper.WrapHTTPError(err, "do_request_failed", http.StatusInternalServerError)
 	}
 
-	meta.IsStream = meta.IsStream || strings.HasPrefix(resp.Header.Get("Content-Type"), "text/event-stream")
-
-	if resp.StatusCode != http.StatusOK {
+	errorHappened := (resp.StatusCode != http.StatusOK) || (meta.IsStream && resp.Header.Get("Content-Type") == "application/json")
+	if errorHappened {
 		relayhelper.ReturnPreConsumedQuota(ctx, preConsumedQuota, meta.TokenId)
 		return relayhelper.NewHTTPError(resp)
 	}
+	meta.IsStream = meta.IsStream || strings.HasPrefix(resp.Header.Get("Content-Type"), "text/event-stream")
 
 	// 处理响应
 	usage, respErr := adaptor.DoResponse(c, resp, meta)

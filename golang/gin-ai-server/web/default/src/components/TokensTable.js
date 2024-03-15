@@ -24,12 +24,12 @@ import { ITEMS_PER_PAGE } from '../constants';
 
 const COPY_OPTIONS = [
   { key: 'next', text: 'ChatGPT Next Web', value: 'next' },
-  { key: 'ama', text: 'AMA 问天', value: 'ama' },
+  { key: 'ama', text: 'BotGem', value: 'ama' },
   { key: 'opencat', text: 'OpenCat', value: 'opencat' },
 ];
 
 const OPEN_LINK_OPTIONS = [
-  { key: 'ama', text: 'AMA 问天', value: 'ama' },
+  { key: 'ama', text: 'BotGem', value: 'ama' },
   { key: 'opencat', text: 'OpenCat', value: 'opencat' },
 ];
 

@@ -39,6 +39,10 @@ func ConvertRequest(request relaymodel.AIRequest) *AIChatRequest {
 	// 如果启用了搜索，去除模型名称中的搜索后缀
 	aliModel := strings.TrimSuffix(request.Model, EnableSearchModelSuffix)
 
+	if request.TopP >= 1 {
+		request.TopP = 0.9999
+	}
+
 	return &AIChatRequest{
 		Model: aliModel, // 设置模型名称
 		Input: Input{
@@ -48,6 +52,9 @@ func ConvertRequest(request relaymodel.AIRequest) *AIChatRequest {
 			EnableSearch:      enableSearch,         // 设置是否启用搜索
 			IncrementalOutput: request.Stream,       // 设置增量输出
 			Seed:              uint64(request.Seed), // 设置随机种子
+			MaxTokens:         request.MaxTokens,
+			Temperature:       request.Temperature,
+			TopP:              request.TopP,
 		},
 	}
 }

@@ -28,6 +28,8 @@ import (
 // 输出参数：
 //   - *relaymodel.HTTPError: 返回 HTTP 错误对象，如果为 nil 则表示操作成功。
 func RelayAudio(c *gin.Context, relayMode int) *relaymodel.HTTPError {
+	ctx := c.Request.Context()
+
 	modelName := "whisper-1"
 
 	userId := c.GetInt("id")              // 获取用户 ID
@@ -60,18 +62,18 @@ func RelayAudio(c *gin.Context, relayMode int) *relaymodel.HTTPError {
 	modelRatio := common.RetrieveModelRatio(modelName) // 获取模型配额比例
 	ratio := modelRatio * groupRatio                   // 计算综合配额比例
 
-	var quota int            // 定义配额
-	var preConsumedQuota int // 定义预消耗配额
+	var quota int64            // 定义配额
+	var preConsumedQuota int64 // 定义预消耗配额
 	switch relayMode {
 	case relaycommon.RelayModeAudioSpeech:
-		preConsumedQuota = int(float64(len(ttsRequest.Input)) * ratio) // 根据输入文本长度计算预消耗配额
-		quota = preConsumedQuota                                       // 预消耗配额即为总配额
+		preConsumedQuota = int64(float64(len(ttsRequest.Input)) * ratio) // 根据输入文本长度计算预消耗配额
+		quota = preConsumedQuota                                         // 预消耗配额即为总配额
 	default:
-		preConsumedQuota = int(float64(common.PreConsumedQuota) * ratio) // 使用预设的配额值计算预消耗配额
+		preConsumedQuota = int64(float64(common.PreConsumedQuota) * ratio) // 使用预设的配额值计算预消耗配额
 	}
 
 	// 获取用户配额
-	userQuota, err := model.GetUserQuotaWithCache(userId)
+	userQuota, err := model.GetUserQuotaWithCache(ctx, userId)
 	if err != nil {
 		return relayhelper.WrapHTTPError(err, "get_user_quota_failed", http.StatusInternalServerError)
 	}
@@ -210,7 +212,7 @@ func RelayAudio(c *gin.Context, relayMode int) *relaymodel.HTTPError {
 		}
 
 		// 根据文本内容和模型名称计算配额
-		quota = relaymodel.CalculateTextTokens(text, modelName)
+		quota = int64(relaymodel.CalculateTextTokens(text, modelName))
 		resp.Body = io.NopCloser(bytes.NewBuffer(responseBody))
 	}
 

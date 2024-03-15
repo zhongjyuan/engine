@@ -27,17 +27,7 @@ func ConvertRequest(request relaymodel.AIRequest) *AIChatRequest {
 	messages := make([]Message, 0, len(request.Messages))
 	for i := 0; i < len(request.Messages); i++ {
 		message := request.Messages[i]
-		if message.Role == "system" {
-			messages = append(messages, Message{
-				Role:    "user",
-				Content: message.StringContent(),
-			})
-			messages = append(messages, Message{
-				Role:    "assistant",
-				Content: "Okay",
-			})
-			continue
-		}
+
 		messages = append(messages, Message{
 			Content: message.StringContent(),
 			Role:    message.Role,
@@ -80,6 +70,7 @@ func responseTencent2OpenAI(response *ChatResponse) *relaymodel.AITextResponse {
 
 func streamResponseTencent2OpenAI(TencentResponse *ChatResponse) *relaymodel.AIChatCompletionsStreamResponse {
 	response := relaymodel.AIChatCompletionsStreamResponse{
+		Id:      fmt.Sprintf("chatcmpl-%s", common.GetUUID()),
 		Object:  "chat.completion.chunk",
 		Created: common.GetTimestamp(),
 		Model:   "tencent-hunyuan",

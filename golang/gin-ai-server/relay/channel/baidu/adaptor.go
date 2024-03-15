@@ -2,8 +2,10 @@ package channel_baidu
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	relaychannel "zhongjyuan/gin-ai-server/relay/channel"
 	relaycommon "zhongjyuan/gin-ai-server/relay/common"
 	relaymodel "zhongjyuan/gin-ai-server/relay/model"
@@ -27,24 +29,48 @@ func (a *Adaptor) Init(meta *relaymodel.AIRelayMeta) {
 //   - string: 完整的请求 URL 字符串。
 //   - error: 如果获取 Access Token 出现错误，则返回相应错误信息。
 func (a *Adaptor) GetRequestURL(meta *relaymodel.AIRelayMeta) (string, error) {
-	var fullRequestURL string
+	// https://cloud.baidu.com/doc/WENXINWORKSHOP/s/clntwmv7t
 
-	// 根据不同模型名称拼接不同的请求 URL
-	modelURLs := map[string]string{
-		"ERNIE-Bot-4":     "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro",
-		"ERNIE-Bot-8K":    "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie_bot_8k",
-		"ERNIE-Bot":       "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions",
-		"ERNIE-Speed":     "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie_speed",
-		"ERNIE-Bot-turbo": "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/eb-instant",
-		"BLOOMZ-7B":       "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/bloomz_7b1",
-		"Embedding-V1":    "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/embeddings/embedding-v1",
+	suffix := "chat/"
+	if strings.HasPrefix(meta.ActualModelName, "Embedding") {
+		suffix = "embeddings/"
+	}
+	if strings.HasPrefix(meta.ActualModelName, "bge-large") {
+		suffix = "embeddings/"
+	}
+	if strings.HasPrefix(meta.ActualModelName, "tao-8k") {
+		suffix = "embeddings/"
 	}
 
-	if url, ok := modelURLs[meta.ActualModelName]; ok {
-		fullRequestURL = url
-	} else {
-		return "", errors.New("unsupported model name")
+	switch meta.ActualModelName {
+	case "ERNIE-4.0":
+		suffix += "completions_pro"
+	case "ERNIE-Bot-4":
+		suffix += "completions_pro"
+	case "ERNIE-3.5-8K":
+		suffix += "completions"
+	case "ERNIE-Bot-8K":
+		suffix += "ernie_bot_8k"
+	case "ERNIE-Bot":
+		suffix += "completions"
+	case "ERNIE-Speed":
+		suffix += "ernie_speed"
+	case "ERNIE-Bot-turbo":
+		suffix += "eb-instant"
+	case "BLOOMZ-7B":
+		suffix += "bloomz_7b1"
+	case "Embedding-V1":
+		suffix += "embedding-v1"
+	case "bge-large-zh":
+		suffix += "bge_large_zh"
+	case "bge-large-en":
+		suffix += "bge_large_en"
+	case "tao-8k":
+		suffix += "tao_8k"
+	default:
+		suffix += meta.ActualModelName
 	}
+	fullRequestURL := fmt.Sprintf("%s/rpc/2.0/ai_custom/v1/wenxinworkshop/%s", meta.BaseURL, suffix)
 
 	accessToken, err := GetAccessToken(meta.APIKey)
 	if err != nil {

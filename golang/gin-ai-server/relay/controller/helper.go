@@ -15,6 +15,65 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func getImageCostRatio(imageRequest *relaymodel.AIImageRequest) (float64, error) {
+	if imageRequest == nil {
+		return 0, errors.New("imageRequest is nil")
+	}
+	imageCostRatio, hasValidSize := common.DalleSizeRatios[imageRequest.Model][imageRequest.Size]
+	if !hasValidSize {
+		return 0, fmt.Errorf("size not supported for this image model: %s", imageRequest.Size)
+	}
+	if imageRequest.Quality == "hd" && imageRequest.Model == "dall-e-3" {
+		if imageRequest.Size == "1024x1024" {
+			imageCostRatio *= 2
+		} else {
+			imageCostRatio *= 1.5
+		}
+	}
+	return imageCostRatio, nil
+}
+
+func getImageRequest(c *gin.Context, relayMode int) (*relaymodel.AIImageRequest, error) {
+	imageRequest := &relaymodel.AIImageRequest{}
+	err := common.UnmarshalBodyReusable(c, imageRequest)
+	if err != nil {
+		return nil, err
+	}
+	if imageRequest.N == 0 {
+		imageRequest.N = 1
+	}
+	if imageRequest.Size == "" {
+		imageRequest.Size = "1024x1024"
+	}
+	if imageRequest.Model == "" {
+		imageRequest.Model = "dall-e-2"
+	}
+	return imageRequest, nil
+}
+
+func validateImageRequest(imageRequest *relaymodel.AIImageRequest, meta *relaymodel.AIRelayMeta) *relaymodel.HTTPError {
+	// model validation
+	_, hasValidSize := common.DalleSizeRatios[imageRequest.Model][imageRequest.Size]
+	if !hasValidSize {
+		return relayhelper.WrapHTTPError(errors.New("size not supported for this image model"), "size_not_supported", http.StatusBadRequest)
+	}
+	// check prompt length
+	if imageRequest.Prompt == "" {
+		return relayhelper.WrapHTTPError(errors.New("prompt is required"), "prompt_missing", http.StatusBadRequest)
+	}
+	if len(imageRequest.Prompt) > common.DalleImagePromptLengthLimitations[imageRequest.Model] {
+		return relayhelper.WrapHTTPError(errors.New("prompt is too long"), "prompt_too_long", http.StatusBadRequest)
+	}
+	// Number of generated images validation
+	if !isWithinRange(imageRequest.Model, imageRequest.N) {
+		// channel not azure
+		if meta.ChannelType != common.ChannelTypeAzure {
+			return relayhelper.WrapHTTPError(errors.New("invalid value of n"), "n_not_within_range", http.StatusBadRequest)
+		}
+	}
+	return nil
+}
+
 // ValidateAndExtractTextRequest 从请求中获取并验证文本请求。
 //
 // 输入参数：
@@ -81,17 +140,17 @@ func CalculateInputTokens(textRequest *relaymodel.AIRequest, relayMode int) int 
 //
 // 输出参数：
 //   - int: 预消耗配额。
-func CalculatePreConsumedQuota(textRequest *relaymodel.AIRequest, promptTokens int, ratio float64) int {
+func CalculatePreConsumedQuota(textRequest *relaymodel.AIRequest, promptTokens int, ratio float64) int64 {
 	// 初始预消耗配额为通用预消耗配额
 	preConsumedTokens := common.PreConsumedQuota
 
 	// 如果AI请求指定了最大令牌数，则使用最大令牌数和输入令牌数计算预消耗配额
 	if textRequest.MaxTokens != 0 {
-		preConsumedTokens = promptTokens + textRequest.MaxTokens
+		preConsumedTokens = int64(promptTokens) + int64(textRequest.MaxTokens)
 	}
 
 	// 根据比率计算最终预消耗配额
-	return int(float64(preConsumedTokens) * ratio)
+	return int64(float64(preConsumedTokens) * ratio)
 }
 
 // PreConsumeQuota 预消耗配额处理函数。
@@ -106,12 +165,12 @@ func CalculatePreConsumedQuota(textRequest *relaymodel.AIRequest, promptTokens i
 // 输出参数：
 //   - int: 预消耗配额。
 //   - *relaymodel.HTTPError: HTTP错误对象。
-func PreConsumeQuota(ctx context.Context, textRequest *relaymodel.AIRequest, promptTokens int, ratio float64, meta *relaymodel.AIRelayMeta) (int, *relaymodel.HTTPError) {
+func PreConsumeQuota(ctx context.Context, textRequest *relaymodel.AIRequest, promptTokens int, ratio float64, meta *relaymodel.AIRelayMeta) (int64, *relaymodel.HTTPError) {
 	// 计算预消耗配额
 	preConsumedQuota := CalculatePreConsumedQuota(textRequest, promptTokens, ratio)
 
 	// 获取用户配额并进行检查
-	userQuota, err := model.GetUserQuotaWithCache(meta.UserId)
+	userQuota, err := model.GetUserQuotaWithCache(ctx, meta.UserId)
 	if err != nil {
 		return preConsumedQuota, relayhelper.WrapHTTPError(err, "get_user_quota_failed", http.StatusInternalServerError)
 	}
@@ -157,19 +216,19 @@ func PreConsumeQuota(ctx context.Context, textRequest *relaymodel.AIRequest, pro
 //
 // 输出参数：
 //   - 无。
-func PostConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *relaymodel.AIRelayMeta, textRequest *relaymodel.AIRequest, ratio float64, preConsumedQuota int, modelRatio float64, groupRatio float64) {
+func PostConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *relaymodel.AIRelayMeta, textRequest *relaymodel.AIRequest, ratio float64, preConsumedQuota int64, modelRatio float64, groupRatio float64) {
 	if usage == nil {
 		common.Error(ctx, "usage is nil, which is unexpected")
 		return
 	}
 
-	quota := 0                                                           // 初始化配额为 0
+	var quota int64                                                      // 初始化配额为 0
 	completionRatio := common.RetrieveCompletionRatio(textRequest.Model) // 获取补全比例
 	promptTokens := usage.PromptTokens                                   // 获取提示文本标记数
 	completionTokens := usage.CompletionTokens                           // 获取补全文本标记数
 
 	// 计算消耗配额
-	quota = int(math.Ceil((float64(promptTokens) + float64(completionTokens)*completionRatio) * ratio))
+	quota = int64(math.Ceil((float64(promptTokens) + float64(completionTokens)*completionRatio) * ratio))
 	if ratio != 0 && quota <= 0 {
 		quota = 1
 	}
@@ -191,20 +250,18 @@ func PostConsumeQuota(ctx context.Context, usage *relaymodel.Usage, meta *relaym
 	}
 
 	// 更新用户配额缓存
-	err = model.UpdateUserQuotaWithCache(meta.UserId)
+	err = model.UpdateUserQuotaWithCache(ctx, meta.UserId)
 	if err != nil {
 		common.Error(ctx, "error update user quota cache: "+err.Error())
 	}
 
-	if quota != 0 {
-		// 记录消耗日志
-		logContent := fmt.Sprintf("模型倍率 %.2f，分组倍率 %.2f，补全倍率 %.2f", modelRatio, groupRatio, completionRatio)
-		model.RecordConsumeLog(ctx, meta.UserId, meta.ChannelId, promptTokens, completionTokens, textRequest.Model, meta.TokenName, quota, logContent)
+	// 记录消耗日志
+	logContent := fmt.Sprintf("模型倍率 %.2f，分组倍率 %.2f，补全倍率 %.2f", modelRatio, groupRatio, completionRatio)
+	model.RecordConsumeLog(ctx, meta.UserId, meta.ChannelId, promptTokens, completionTokens, textRequest.Model, meta.TokenName, quota, logContent)
 
-		// 更新用户已使用配额和请求计数
-		model.UpdateUserUsedQuotaAndRequestCountByID(meta.UserId, quota)
+	// 更新用户已使用配额和请求计数
+	model.UpdateUserUsedQuotaAndRequestCountByID(meta.UserId, quota)
 
-		// 更新渠道已使用配额
-		model.UpdateChannelUsedQuotaByID(meta.ChannelId, quota)
-	}
+	// 更新渠道已使用配额
+	model.UpdateChannelUsedQuotaByID(meta.ChannelId, quota)
 }

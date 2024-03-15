@@ -46,10 +46,10 @@ var ChannelDisableThreshold = 5.0
 var QuotaPerUnit = 500 * 1000.0 // $0.002 / 1K tokens
 
 // QuotaRemindThreshold 表示配额提醒阈值。
-var QuotaRemindThreshold = 1000
+var QuotaRemindThreshold int64 = 1000
 
 // PreConsumedQuota 表示预消耗配额。
-var PreConsumedQuota = 500
+var PreConsumedQuota int64 = 500
 
 // RetryTimes 表示重试次数。
 var RetryTimes = 0
@@ -68,10 +68,19 @@ var RequestInterval = time.Duration(requestInterval) * time.Second
 var GeminiSafetySetting = GetOrDefaultEnvString("GEMINI_SAFETY_SETTING", "BLOCK_NONE")
 
 var (
-	QuotaForNewUser = 0 // 新用户的配额
-	QuotaForInviter = 0 // 邀请者的配额
-	QuotaForInvitee = 0 // 被邀请者的配额
+	QuotaForNewUser int64 = 0 // 新用户的配额
+	QuotaForInviter int64 = 0 // 邀请者的配额
+	QuotaForInvitee int64 = 0 // 被邀请者的配额
 )
+
+var MessagePusherAddress = ""
+var MessagePusherToken = ""
+
+var EnableMetric = GetOrDefaultEnvBool("ENABLE_METRIC", false)                                // EnableMetric 用于确定是否启用指标。
+var MetricQueueSize = GetOrDefaultEnvInt("METRIC_QUEUE_SIZE", 10)                             // MetricQueueSize 表示指标队列的大小。
+var MetricSuccessRateThreshold = GetOrDefaultEnvFloat64("METRIC_SUCCESS_RATE_THRESHOLD", 0.8) // MetricSuccessRateThreshold 表示指标成功率的阈值。
+var MetricSuccessChanSize = GetOrDefaultEnvInt("METRIC_SUCCESS_CHAN_SIZE", 1024)              // MetricSuccessChanSize 表示指标成功通道的大小。
+var MetricFailChanSize = GetOrDefaultEnvInt("METRIC_FAIL_CHAN_SIZE", 128)                     // MetricFailChanSize 表示指标失败通道的大小。
 
 var EmailDomainRestrictionEnabled = false
 var EmailDomainWhitelist = []string{
@@ -147,6 +156,13 @@ var ChannelBaseURLs = []string{
 	"https://hunyuan.cloud.tencent.com",         // 23 - Tencent Cloud
 	"https://generativelanguage.googleapis.com", // 24 - Google Generative Language
 	"https://api.moonshot.cn",                   // 25 - Moonshot
+
+	"https://api.baichuan-ai.com", // 26
+	"https://api.minimax.chat",    // 27
+	"https://api.mistral.ai",      // 28
+	"https://api.groq.com/openai", // 29
+	"http://localhost:11434",      // 30
+	"https://api.lingyiwanwu.com", // 31
 }
 
 // ModelRatio
@@ -202,22 +218,36 @@ var ModelRatio = map[string]float64{
 	"text-search-ada-doc-001": 10,
 	"text-moderation-stable":  0.1,
 	"text-moderation-latest":  0.1,
-	"dall-e-2":                8,     // $0.016 - $0.020 / image
-	"dall-e-3":                20,    // $0.040 - $0.120 / image
-	"claude-instant-1":        0.815, // $1.63 / 1M tokens
-	"claude-2":                5.51,  // $11.02 / 1M tokens
-	"claude-2.0":              5.51,  // $11.02 / 1M tokens
-	"claude-2.1":              5.51,  // $11.02 / 1M tokens
+	"dall-e-2":                8,  // $0.016 - $0.020 / image
+	"dall-e-3":                20, // $0.040 - $0.120 / image
 
-	// https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7 百度 AI 模型价格
-	"ERNIE-Bot":                 0.8572,     // ￥0.012 / 1k tokens
-	"ERNIE-Bot-turbo":           0.5715,     // ￥0.008 / 1k tokens
-	"ERNIE-Bot-4":               0.12 * RMB, // ￥0.12 / 1k tokens
-	"ERNIE-Bot-8k":              0.024 * RMB,
-	"Embedding-V1":              0.1429, // ￥0.002 / 1k tokens
-	"PaLM-2":                    1,
-	"gemini-pro":                1,      // $0.00025 / 1k characters -> $0.001 / 1k tokens
-	"gemini-pro-vision":         1,      // $0.00025 / 1k characters -> $0.001 / 1k tokens
+	// https://www.anthropic.com/api#pricing
+	"claude-instant-1.2":       0.8 / 1000 * USD,
+	"claude-2.0":               8.0 / 1000 * USD,
+	"claude-2.1":               8.0 / 1000 * USD,
+	"claude-3-haiku-20240307":  0.25 / 1000 * USD,
+	"claude-3-sonnet-20240229": 3.0 / 1000 * USD,
+	"claude-3-opus-20240229":   15.0 / 1000 * USD,
+
+	// https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7
+	"ERNIE-Bot":       0.8572,     // ￥0.012 / 1k tokens
+	"ERNIE-Bot-turbo": 0.5715,     // ￥0.008 / 1k tokens
+	"ERNIE-Bot-4":     0.12 * RMB, // ￥0.12 / 1k tokens
+	"ERNIE-Bot-8k":    0.024 * RMB,
+	"Embedding-V1":    0.1429, // ￥0.002 / 1k tokens
+
+	"bge-large-zh":      0.002 * RMB,
+	"bge-large-en":      0.002 * RMB,
+	"bge-large-8k":      0.002 * RMB,
+	"PaLM-2":            1,
+	"gemini-pro":        1, // $0.00025 / 1k characters -> $0.001 / 1k tokens
+	"gemini-pro-vision": 1, // $0.00025 / 1k characters -> $0.001 / 1k tokens
+
+	// https://open.bigmodel.cn/pricing
+	"glm-4":       0.1 * RMB,
+	"glm-4v":      0.1 * RMB,
+	"glm-3-turbo": 0.005 * RMB,
+
 	"chatglm_turbo":             0.3572, // ￥0.005 / 1k tokens
 	"chatglm_pro":               0.7143, // ￥0.01 / 1k tokens
 	"chatglm_std":               0.3572, // ￥0.005 / 1k tokens
@@ -244,4 +274,35 @@ var ModelRatio = map[string]float64{
 	"moonshot-v1-8k":   0.012 * RMB,
 	"moonshot-v1-32k":  0.024 * RMB,
 	"moonshot-v1-128k": 0.06 * RMB,
+
+	// https://platform.baichuan-ai.com/price
+	"Baichuan2-Turbo":      0.008 * RMB,
+	"Baichuan2-Turbo-192k": 0.016 * RMB,
+	"Baichuan2-53B":        0.02 * RMB,
+
+	// https://api.minimax.chat/document/price
+	"abab6-chat":    0.1 * RMB,
+	"abab5.5-chat":  0.015 * RMB,
+	"abab5.5s-chat": 0.005 * RMB,
+
+	// https://docs.mistral.ai/platform/pricing/
+	"open-mistral-7b":       0.25 / 1000 * USD,
+	"open-mixtral-8x7b":     0.7 / 1000 * USD,
+	"mistral-small-latest":  2.0 / 1000 * USD,
+	"mistral-medium-latest": 2.7 / 1000 * USD,
+	"mistral-large-latest":  8.0 / 1000 * USD,
+	"mistral-embed":         0.1 / 1000 * USD,
+
+	// https://wow.groq.com/
+	"llama2-70b-4096":    0.7 / 1000 * USD,
+	"llama2-7b-2048":     0.1 / 1000 * USD,
+	"mixtral-8x7b-32768": 0.27 / 1000 * USD,
+	"gemma-7b-it":        0.1 / 1000 * USD,
+
+	// https://platform.lingyiwanwu.com/docs#-计费单元
+	"yi-34b-chat-0205": 2.5 / 1000000 * RMB,
+	"yi-34b-chat-200k": 12.0 / 1000000 * RMB,
+	"yi-vl-plus":       6.0 / 1000000 * RMB,
 }
+
+var CompletionRatio = map[string]float64{}

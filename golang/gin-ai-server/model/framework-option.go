@@ -201,10 +201,11 @@ func InitOptionMap() {
 	common.OptionMap["SMTPToken"] = common.SMTPToken
 	common.OptionMap["Notice"] = ""
 	common.OptionMap["About"] = ""
+	common.OptionMap["Logo"] = common.Logo
 	common.OptionMap["HomePageContent"] = ""
 	common.OptionMap["Footer"] = common.Footer
+	common.OptionMap["Theme"] = common.Theme
 	common.OptionMap["SystemName"] = common.SystemName
-	common.OptionMap["Logo"] = common.Logo
 	common.OptionMap["ServerAddress"] = common.ServerAddress
 	common.OptionMap["GitHubClientId"] = common.GitHubClientId
 	common.OptionMap["GitHubClientSecret"] = common.GitHubClientSecret
@@ -213,11 +214,14 @@ func InitOptionMap() {
 	common.OptionMap["WeChatAccountQRCodeImageURL"] = ""
 	common.OptionMap["TurnstileSiteKey"] = common.TurnstileSiteKey
 	common.OptionMap["TurnstileSecretKey"] = common.TurnstileSecretKey
-	common.OptionMap["QuotaForNewUser"] = strconv.Itoa(common.QuotaForNewUser)
-	common.OptionMap["QuotaForInviter"] = strconv.Itoa(common.QuotaForInviter)
-	common.OptionMap["QuotaForInvitee"] = strconv.Itoa(common.QuotaForInvitee)
-	common.OptionMap["QuotaRemindThreshold"] = strconv.Itoa(common.QuotaRemindThreshold)
-	common.OptionMap["PreConsumedQuota"] = strconv.Itoa(common.PreConsumedQuota)
+
+	common.OptionMap["MessagePusherAddress"] = ""
+	common.OptionMap["MessagePusherToken"] = ""
+	common.OptionMap["QuotaForNewUser"] = strconv.FormatInt(common.QuotaForNewUser, 10)
+	common.OptionMap["QuotaForInviter"] = strconv.FormatInt(common.QuotaForInviter, 10)
+	common.OptionMap["QuotaForInvitee"] = strconv.FormatInt(common.QuotaForInvitee, 10)
+	common.OptionMap["QuotaRemindThreshold"] = strconv.FormatInt(common.QuotaRemindThreshold, 10)
+	common.OptionMap["PreConsumedQuota"] = strconv.FormatInt(common.PreConsumedQuota, 10)
 	common.OptionMap["ModelRatio"] = common.ConvertModelRatioToJSONString()
 	common.OptionMap["GroupRatio"] = common.ConvertGroupRatioToJSONString()
 	common.OptionMap["CompletionRatio"] = common.ConvertCompletionRatioToJSONString()
@@ -225,7 +229,6 @@ func InitOptionMap() {
 	common.OptionMap["ChatLink"] = common.ChatLink
 	common.OptionMap["QuotaPerUnit"] = strconv.FormatFloat(common.QuotaPerUnit, 'f', -1, 64)
 	common.OptionMap["RetryTimes"] = strconv.Itoa(common.RetryTimes)
-	common.OptionMap["Theme"] = common.Theme
 
 	// 解锁 OptionMap。
 	common.OptionMapRWMutex.Unlock()
@@ -233,6 +236,10 @@ func InitOptionMap() {
 	// 获取所有选项并更新 OptionMap。
 	options, _ := GetAllOptions()
 	for _, option := range options {
+		if option.Key == "ModelRatio" {
+			option.Value = common.UpdateMissingRatio(option.Value)
+		}
+
 		if err := updateOptionConfig(option.Key, option.Value); err != nil {
 			common.SysError("failed to update option map: " + err.Error())
 		}
@@ -345,15 +352,15 @@ func updateOptionConfig(key string, value string) (err error) {
 	case "TurnstileSecretKey":
 		common.TurnstileSecretKey = value
 	case "QuotaForNewUser":
-		common.QuotaForNewUser, _ = strconv.Atoi(value)
+		common.QuotaForNewUser, _ = strconv.ParseInt(value, 10, 64)
 	case "QuotaForInviter":
-		common.QuotaForInviter, _ = strconv.Atoi(value)
+		common.QuotaForInviter, _ = strconv.ParseInt(value, 10, 64)
 	case "QuotaForInvitee":
-		common.QuotaForInvitee, _ = strconv.Atoi(value)
+		common.QuotaForInvitee, _ = strconv.ParseInt(value, 10, 64)
 	case "QuotaRemindThreshold":
-		common.QuotaRemindThreshold, _ = strconv.Atoi(value)
+		common.QuotaRemindThreshold, _ = strconv.ParseInt(value, 10, 64)
 	case "PreConsumedQuota":
-		common.PreConsumedQuota, _ = strconv.Atoi(value)
+		common.PreConsumedQuota, _ = strconv.ParseInt(value, 10, 64)
 	case "RetryTimes":
 		common.RetryTimes, _ = strconv.Atoi(value)
 	case "ModelRatio":
@@ -372,6 +379,10 @@ func updateOptionConfig(key string, value string) (err error) {
 		common.QuotaPerUnit, _ = strconv.ParseFloat(value, 64)
 	case "Theme":
 		common.Theme = value
+	case "MessagePusherAddress":
+		common.MessagePusherAddress = value
+	case "MessagePusherToken":
+		common.MessagePusherToken = value
 	}
 
 	return err

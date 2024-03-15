@@ -21,8 +21,8 @@ func GetSubscriptionInfo(c *gin.Context) {
 		err         error              // 错误对象
 		token       *model.TokenEntity // 令牌实体
 		expireTime  int64              // 过期时间
-		usedQuota   int                // 已使用配额
-		remainQuota int                // 剩余配额
+		usedQuota   int64              // 已使用配额
+		remainQuota int64              // 剩余配额
 	)
 
 	// 根据配置获取订阅信息
@@ -90,8 +90,8 @@ func GetSubscriptionInfo(c *gin.Context) {
 // 输出参数：
 //   - 无。
 func GetUsageInfo(c *gin.Context) {
-	var quota int // 已使用配额
-	var err error // 错误对象
+	var quota int64 // 已使用配额
+	var err error   // 错误对象
 	var token *model.TokenEntity
 
 	// 根据配置获取配额信息

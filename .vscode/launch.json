@@ -104,7 +104,8 @@
 			"program": "${workspaceFolder}\\golang\\gin-ai-server\\main.go",
 			"showLog": true,
 			"env": {
-				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-ai-server?charset=utf8"
+				"SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-ai-server?charset=utf8",
+				"LOG_SQL_DSN": "root:zhongjyuan@tcp(120.77.174.82:3306)/go-gin-ai-server?charset=utf8"
 			},
 			"args": []
 		},

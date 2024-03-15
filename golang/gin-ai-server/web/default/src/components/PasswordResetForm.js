@@ -16,6 +16,17 @@ const PasswordResetForm = () => {
   });
   const { email } = inputs; // 解构获取 email
 
+  useEffect(() => {
+    let status = localStorage.getItem('status');
+    if (status) {
+      status = JSON.parse(status);
+      if (status.turnstileCheckEnabled) {
+        setTurnstileEnabled(true);
+        setTurnstileSiteKey(status.turnstileSiteKey);
+      }
+    }
+  }, []);
+
   /**
    * 在 disableButton 或 countdown 发生变化时执行副作用操作
    */

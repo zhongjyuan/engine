@@ -9,6 +9,7 @@ import (
 	"zhongjyuan/gin-ai-server/common"
 	"zhongjyuan/gin-ai-server/middleware"
 	"zhongjyuan/gin-ai-server/model"
+	"zhongjyuan/gin-ai-server/monitor"
 	relaycommon "zhongjyuan/gin-ai-server/relay/common"
 	relaycontroller "zhongjyuan/gin-ai-server/relay/controller"
 	relayhelper "zhongjyuan/gin-ai-server/relay/helper"
@@ -58,7 +59,9 @@ func processChannelRelayError(ctx context.Context, channelId int, channelName st
 
 	// 根据转发模型的错误码和状态码判断是否需要禁用渠道
 	if relayhelper.ShouldDisableChannel(&err.Error, err.StatusCode) {
-		disableChannel(channelId, channelName, err.Message)
+		monitor.DisableChannel(channelId, channelName, err.Message)
+	} else {
+		monitor.Emit(channelId, false)
 	}
 }
 
@@ -101,13 +104,19 @@ func Relay(c *gin.Context) {
 	ctx := c.Request.Context()
 
 	relayMode := relaycommon.GetRelayModeByPath(c.Request.URL.Path)
+	if common.DebugEnabled {
+		requestBody, _ := common.GetRequestBody(c)
+		common.Debugf(ctx, "request body: %s", string(requestBody))
+	}
+	channelId := c.GetInt("channelId") // 获取渠道 ID
+
 	bizErr := relayRequest(c, relayMode)
 	if bizErr == nil {
+		monitor.Emit(channelId, true)
 		return
 	}
 
 	group := c.GetString("group")                 // 获取分组信息
-	channelId := c.GetInt("channelId")            // 获取渠道 ID
 	channelName := c.GetString("channelName")     // 获取渠道名称
 	originalModel := c.GetString("originalModel") // 获取原始模型信息
 	lastFailedChannelId := channelId              // 记录最后失败的渠道 ID

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"zhongjyuan/gin-ai-server/common"
+	relaycommon "zhongjyuan/gin-ai-server/relay/common"
 	relaymodel "zhongjyuan/gin-ai-server/relay/model"
 
 	"github.com/gin-gonic/gin"
@@ -55,10 +56,29 @@ func ShouldDisableChannel(err *relaymodel.Error, statusCode int) bool {
 	}
 
 	// 对于未经授权的状态码或特定的错误类型或代码，禁用渠道
-	if statusCode == http.StatusUnauthorized ||
-		err.Type == "insufficient_quota" ||
-		err.Code == "invalid_api_key" ||
-		err.Code == "account_deactivated" {
+	if statusCode == http.StatusUnauthorized {
+		return true
+	}
+
+	switch err.Type {
+	case "insufficient_quota":
+		return true
+	// https://docs.anthropic.com/claude/reference/errors
+	case "authentication_error":
+		return true
+	case "permission_error":
+		return true
+	case "forbidden":
+		return true
+	}
+
+	if err.Code == "invalid_api_key" || err.Code == "account_deactivated" {
+		return true
+	}
+
+	if strings.HasPrefix(err.Message, "Your credit balance is too low") { // anthropic
+		return true
+	} else if strings.HasPrefix(err.Message, "This organization has been disabled.") {
 		return true
 	}
 
@@ -92,6 +112,13 @@ func ShouldEnableChannel(err error, openAIErr *relaymodel.Error) bool {
 
 	// 默认情况下启用渠道
 	return true
+}
+
+func GetRequestURL(meta *relaymodel.AIRelayMeta) (string, error) {
+	if meta.Mode == relaycommon.RelayModeChatCompletions {
+		return fmt.Sprintf("%s/v1/text/chatcompletion_v2", meta.BaseURL), nil
+	}
+	return "", fmt.Errorf("unsupported relay mode %d for minimax", meta.Mode)
 }
 
 // GetFullRequestURL 用于构建完整的请求URL。

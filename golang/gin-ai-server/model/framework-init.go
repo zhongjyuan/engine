@@ -15,8 +15,9 @@ import (
 
 // DB 是一个全局变量，用于存储 *gorm.DB 类型的数据库连接。
 var DB *gorm.DB
+var LOG_DB *gorm.DB
 
-// createRootAccountIfNeed 用于根据需要创建根账户。
+// CreateRootAccountIfNeed 用于根据需要创建根账户。
 //
 // 如果数据库中不存在用户，则创建一个根用户，用户名为 "root"，密码为 "123456"。
 // 如果存在用户或创建过程中发生错误，则返回相应的错误信息；否则返回 nil。
@@ -24,7 +25,7 @@ var DB *gorm.DB
 // 输入参数：无
 // 输出参数：
 //   - error: 如果创建根账户过程中出现错误，则返回相应的错误信息；否则返回 nil。
-func createRootAccountIfNeed() error {
+func CreateRootAccountIfNeed() error {
 	var user UserEntity // 声明一个 UserEntity 类型的变量 user
 
 	// 检查数据库中是否已存在用户
@@ -67,12 +68,12 @@ func CountTable(tableName string) (num int64) {
 	return                          // 返回目标数据表的记录数
 }
 
-func chooseDB() (*gorm.DB, error) {
-	if os.Getenv("SQL_DSN") != "" {
-		dsn := os.Getenv("SQL_DSN")
+func chooseDB(envName string) (*gorm.DB, error) {
+	if os.Getenv(envName) != "" {
+		dsn := os.Getenv(envName)
 		if strings.HasPrefix(dsn, "postgres://") {
-			common.SysLog("using PostgreSQL as database")
 			common.UsingPostgreSQL = true
+			common.SysLog("using PostgreSQL as database")
 			return gorm.Open(postgres.New(postgres.Config{
 				DSN:                  dsn,
 				PreferSimpleProtocol: true, // disables implicit prepared statement usage
@@ -82,6 +83,7 @@ func chooseDB() (*gorm.DB, error) {
 		}
 
 		// Use MySQL
+		common.UsingMySQL = true
 		common.SysLog("using MySQL as database")
 		return gorm.Open(mysql.Open(dsn), &gorm.Config{
 			PrepareStmt: true, // precompile SQL
@@ -126,6 +128,8 @@ func migration(db *gorm.DB) error {
 		return err
 	}
 
+	common.SysLog("database migration finish")
+
 	return nil
 }
 
@@ -136,37 +140,39 @@ func migration(db *gorm.DB) error {
 //
 // 输出参数：
 //   - err: 如果初始化过程中出现错误，则返回相应的错误信息；否则返回 nil。
-func InitDB() (err error) {
-	db, err := chooseDB()
+func InitDB(envName string) (db *gorm.DB, err error) {
+	db, err = chooseDB(envName)
 	if err == nil {
-		if common.DebugEnabled {
+		if common.DebugSQLEnabled {
 			db = db.Debug()
 		}
 
-		DB = db // 将数据库连接赋值给全局变量 DB
 		sqlDB, err := DB.DB()
 		if err != nil {
-			return err
+			return nil, err
 		}
 		sqlDB.SetMaxIdleConns(common.GetOrDefaultEnvInt("SQL_MAX_IDLE_CONNS", 100))
 		sqlDB.SetMaxOpenConns(common.GetOrDefaultEnvInt("SQL_MAX_OPEN_CONNS", 1000))
 		sqlDB.SetConnMaxLifetime(time.Second * time.Duration(common.GetOrDefaultEnvInt("SQL_MAX_LIFETIME", 60)))
 
 		if !common.IsMasterNode {
-			return nil
+			return db, err
+		}
+
+		if common.UsingMySQL {
+			_, _ = sqlDB.Exec("DROP INDEX idx_channels_key ON channels;")
 		}
 
 		if err := migration(db); err != nil {
-			return err
+			return nil, err
 		}
 
-		// 创建根账户
-		return createRootAccountIfNeed()
+		return db, err
 	} else {
 		common.FatalLog(err) // 记录致命错误日志
 	}
 
-	return err
+	return db, err
 }
 
 // CloseDB 用于关闭数据库连接。
@@ -176,11 +182,21 @@ func InitDB() (err error) {
 //
 // 输出参数：
 //   - error: 如果关闭数据库连接过程中出现错误，则返回相应的错误信息；否则返回 nil。
-func CloseDB() error {
-	sqlDB, err := DB.DB() // 获取数据库连接对象
+func closeDB(db *gorm.DB) error {
+	sqlDB, err := db.DB() // 获取数据库连接对象
 	if err != nil {
 		return err
 	}
 
 	return sqlDB.Close() // 关闭数据库连接
+}
+
+func CloseDB() error {
+	if LOG_DB != DB {
+		err := closeDB(LOG_DB)
+		if err != nil {
+			return err
+		}
+	}
+	return closeDB(DB)
 }

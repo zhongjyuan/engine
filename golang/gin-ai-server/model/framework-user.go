@@ -60,10 +60,11 @@ func (user *UserEntity) Delete() error {
 		return errors.New("id 为空！")
 	}
 
-	// 调用 GORM 的 Delete 方法删除用户信息，并返回可能出现的错误
-	err := DB.Delete(user).Error
+	user.Status = common.UserStatusDeleted
+
+	err := DB.Model(user).Updates(user).Error
 	if err == nil {
-		err = DB.Delete(UserProfileEntity{Id: user.Id}).Error
+		common.Ban(user.Id)
 	}
 
 	return err
@@ -78,6 +79,12 @@ func (user *UserEntity) Update(updatePassword bool, updateProfile bool) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	if user.Status == common.UserStatusDisabled {
+		common.Ban(user.Id)
+	} else if user.Status == common.UserStatusEnabled {
+		common.UnBan(user.Id)
 	}
 
 	if updateProfile {

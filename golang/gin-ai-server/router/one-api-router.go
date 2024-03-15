@@ -14,6 +14,7 @@ func setOneApiRouter(router *gin.Engine) {
 	apiRouter.Use(middleware.GlobalAPIRateLimit())
 	{
 		apiRouter.GET("/home_page_content", controller.GetHomePageContent)
+		apiRouter.GET("/models", middleware.UserAuth(), controller.DashboardListModels)
 
 		// 用户相关路由组
 		userRoute := apiRouter.Group("/user")
@@ -154,6 +155,7 @@ func setRelayRouter(router *gin.Engine) {
 
 func setDashboardRouter(router *gin.Engine) {
 	apiRouter := router.Group("/")
+	apiRouter.Use(middleware.Cors())
 	apiRouter.Use(gzip.Gzip(gzip.DefaultCompression))
 	apiRouter.Use(middleware.GlobalAPIRateLimit())
 	apiRouter.Use(middleware.OnlyTokenAuth())

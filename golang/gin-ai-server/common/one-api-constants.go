@@ -32,32 +32,41 @@ const (
 )
 
 const (
-	ChannelTypeUnknown        = 0  // 未知类型
-	ChannelTypeOpenAI         = 1  // OpenAI 渠道
-	ChannelTypeAPI2D          = 2  // API2D 渠道
-	ChannelTypeAzure          = 3  // Azure 渠道
-	ChannelTypeCloseAI        = 4  // CloseAI 渠道
-	ChannelTypeOpenAISB       = 5  // OpenAI SB 渠道
-	ChannelTypeOpenAIMax      = 6  // OpenAI Max 渠道
-	ChannelTypeOhMyGPT        = 7  // OhMyGPT 渠道
-	ChannelTypeCustom         = 8  // 自定义渠道
-	ChannelTypeAILS           = 9  // AILS 渠道
-	ChannelTypeAIProxy        = 10 // AIProxy 渠道
-	ChannelTypePaLM           = 11 // PaLM 渠道
-	ChannelTypeAPI2GPT        = 12 // API2GPT 渠道
-	ChannelTypeAIGC2D         = 13 // AIGC2D 渠道
-	ChannelTypeAnthropic      = 14 // Anthropic 渠道
-	ChannelTypeBaidu          = 15 // 百度渠道
-	ChannelTypeZhipu          = 16 // 智谱渠道
-	ChannelTypeAli            = 17 // 阿里渠道
-	ChannelTypeXunfei         = 18 // 讯飞渠道
-	ChannelType360            = 19 // 360 渠道
-	ChannelTypeOpenRouter     = 20 // OpenRouter 渠道
-	ChannelTypeAIProxyLibrary = 21 // AIProxyLibrary 渠道
-	ChannelTypeFastGPT        = 22 // FastGPT 渠道
-	ChannelTypeTencent        = 23 // 腾讯渠道
-	ChannelTypeGemini         = 24 // Gemini 渠道
-	ChannelTypeMoonshot       = 25 // Moonshot 渠道
+	ChannelTypeUnknown        = iota // 未知类型
+	ChannelTypeOpenAI                // OpenAI 渠道
+	ChannelTypeAPI2D                 // API2D 渠道
+	ChannelTypeAzure                 // Azure 渠道
+	ChannelTypeCloseAI               // CloseAI 渠道
+	ChannelTypeOpenAISB              // OpenAI SB 渠道
+	ChannelTypeOpenAIMax             // OpenAI Max 渠道
+	ChannelTypeOhMyGPT               // OhMyGPT 渠道
+	ChannelTypeCustom                // 自定义渠道
+	ChannelTypeAILS                  // AILS 渠道
+	ChannelTypeAIProxy               // AIProxy 渠道
+	ChannelTypePaLM                  // PaLM 渠道
+	ChannelTypeAPI2GPT               // API2GPT 渠道
+	ChannelTypeAIGC2D                // AIGC2D 渠道
+	ChannelTypeAnthropic             // Anthropic 渠道
+	ChannelTypeBaidu                 // 百度渠道
+	ChannelTypeZhipu                 // 智谱渠道
+	ChannelTypeAli                   // 阿里渠道
+	ChannelTypeXunfei                // 讯飞渠道
+	ChannelType360                   // 360 渠道
+	ChannelTypeOpenRouter            // OpenRouter 渠道
+	ChannelTypeAIProxyLibrary        // AIProxyLibrary 渠道
+	ChannelTypeFastGPT               // FastGPT 渠道
+	ChannelTypeTencent               // 腾讯渠道
+	ChannelTypeGemini                // Gemini 渠道
+	ChannelTypeMoonshot              // Moonshot 渠道
+
+	ChannelTypeBaichuan
+	ChannelTypeMinimax
+	ChannelTypeMistral
+	ChannelTypeGroq
+	ChannelTypeOllama
+	ChannelTypeLingYiWanWu
+
+	ChannelTypeDummy
 )
 
 const (

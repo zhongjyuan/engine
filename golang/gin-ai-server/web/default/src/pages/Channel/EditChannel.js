@@ -11,6 +11,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import {
   API,
+  copy,
+  getChannelModels,
   showError,
   showInfo,
   showSuccess,
@@ -75,82 +77,10 @@ const EditChannel = () => {
 
   const handleInputChange = (e, { name, value }) => {
     setInputs((inputs) => ({ ...inputs, [name]: value }));
-    if (name === 'type' && inputs.models.length === 0) {
-      let localModels = [];
-      switch (value) {
-        case 14:
-          localModels = [
-            'claude-instant-1',
-            'claude-2',
-            'claude-2.0',
-            'claude-2.1',
-          ];
-          break;
-        case 11:
-          localModels = ['PaLM-2'];
-          break;
-        case 15:
-          localModels = [
-            'ERNIE-Bot',
-            'ERNIE-Bot-turbo',
-            'ERNIE-Bot-4',
-            'Embedding-V1',
-          ];
-          break;
-        case 17:
-          localModels = [
-            'qwen-turbo',
-            'qwen-plus',
-            'qwen-max',
-            'qwen-max-longcontext',
-            'text-embedding-v1',
-          ];
-          let withInternetVersion = [];
-          for (let i = 0; i < localModels.length; i++) {
-            if (localModels[i].startsWith('qwen-')) {
-              withInternetVersion.push(localModels[i] + '-internet');
-            }
-          }
-          localModels = [...localModels, ...withInternetVersion];
-          break;
-        case 16:
-          localModels = [
-            'chatglm_turbo',
-            'chatglm_pro',
-            'chatglm_std',
-            'chatglm_lite',
-          ];
-          break;
-        case 18:
-          localModels = [
-            'SparkDesk',
-            'SparkDesk-v1.1',
-            'SparkDesk-v2.1',
-            'SparkDesk-v3.1',
-            'SparkDesk-v3.5',
-          ];
-          break;
-        case 19:
-          localModels = [
-            '360GPT_S2_V9',
-            'embedding-bert-512-v1',
-            'embedding_s1_v1',
-            'semantic_similarity_s1_v1',
-          ];
-          break;
-        case 23:
-          localModels = ['hunyuan'];
-          break;
-        case 24:
-          localModels = ['gemini-pro', 'gemini-pro-vision'];
-          break;
-        case 25:
-          localModels = [
-            'moonshot-v1-8k',
-            'moonshot-v1-32k',
-            'moonshot-v1-128k',
-          ];
-          break;
+    if (name === 'type') {
+      let localModels = getChannelModels(value);
+      if (inputs.models.length === 0) {
+        setInputs((inputs) => ({ ...inputs, models: localModels }));
       }
       setInputs((inputs) => ({ ...inputs, models: localModels }));
     }
@@ -321,6 +251,7 @@ const EditChannel = () => {
               label='类型'
               name='type'
               required
+              search
               options={CHANNEL_OPTIONS}
               value={inputs.type}
               onChange={handleInputChange}
@@ -456,6 +387,10 @@ const EditChannel = () => {
               required
               fluid
               multiple
+              search
+              onLabelClick={(e, { value }) => {
+                copy(value).then();
+              }}
               selection
               onChange={handleInputChange}
               value={inputs.models}

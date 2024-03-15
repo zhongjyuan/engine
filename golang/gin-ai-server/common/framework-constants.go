@@ -21,6 +21,7 @@ const (
 const (
 	UserStatusEnabled  = 1 // 不要使用 0，0 是默认值！
 	UserStatusDisabled = 2 // 同样不要使用 0
+	UserStatusDeleted  = 3
 )
 
 const (

@@ -51,6 +51,10 @@ func GetTimeString() string {
 	return fmt.Sprintf("%s%d", now.Format("20060102150405"), now.UnixNano()%1e9) // 格式化时间为指定格式的字符串
 }
 
+func GenRequestID() string {
+	return GetTimeString() + GetRandomNumberString(8)
+}
+
 // OpenBrowser 用于在默认浏览器中打开指定的 URL
 //
 // 输入参数：
@@ -215,20 +219,16 @@ func IntMax(a int, b int) int {
 	}
 }
 
-// Max 返回两个整数 a 和 b 中的最大值
+// IntRange 返回在 min 和 max 之间的随机数（max 不包含在内）。
 //
 // 输入参数：
-//   - a int: 第一个整数
-//   - b int: 第二个整数
+//   - min int: 最小值。
+//   - max int: 最大值。
 //
 // 输出参数：
-//   - int: 两个整数中的最大值
-func Max(a int, b int) int {
-	if a >= b {
-		return a
-	} else {
-		return b
-	}
+//   - int: 返回的随机数。
+func IntRange(min int, max int) int {
+	return min + rand.Intn(max-min)
 }
 
 // GenerateKey 函数用于生成一个48位长度的密钥。
@@ -316,6 +316,48 @@ func GetOrDefaultEnvInt(env string, defaultValue int) int {
 	}
 
 	return num // 返回成功转换的整数值
+}
+
+// GetOrDefaultEnvBool 从环境变量中获取指定参数的布尔值，如果不存在则返回默认值。
+//
+// 输入参数：
+//   - env string: 环境变量名。
+//   - defaultValue bool: 默认布尔值。
+//
+// 输出参数：
+//   - bool: 返回从环境变量中获取的布尔值或者默认值。
+func GetOrDefaultEnvBool(env string, defaultValue bool) bool {
+	// 如果环境变量名为空或者对应环境变量值为空，则返回默认值
+	if env == "" || os.Getenv(env) == "" {
+		return defaultValue
+	}
+
+	// 返回从环境变量中获取的布尔值
+	return os.Getenv(env) == "true"
+}
+
+// GetOrDefaultEnvFloat64 从环境变量中获取指定参数的浮点数值，如果不存在或解析失败则返回默认值。
+//
+// 输入参数：
+//   - env string: 环境变量名。
+//   - defaultValue float64: 默认浮点数值。
+//
+// 输出参数：
+//   - float64: 返回从环境变量中获取的浮点数值或者默认值。
+func GetOrDefaultEnvFloat64(env string, defaultValue float64) float64 {
+	// 如果环境变量名为空或者对应环境变量值为空，则返回默认值
+	if env == "" || os.Getenv(env) == "" {
+		return defaultValue
+	}
+
+	// 尝试将环境变量值解析为浮点数值
+	num, err := strconv.ParseFloat(os.Getenv(env), 64)
+	if err != nil { // 解析失败，返回默认值
+		return defaultValue
+	}
+
+	// 返回从环境变量中获取的浮点数值
+	return num
 }
 
 // GetOrDefaultEnvString 函数用于从环境变量中获取字符串值，如果获取失败或环境变量不存在则返回默认值。

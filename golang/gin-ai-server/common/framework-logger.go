@@ -82,7 +82,10 @@ func logHelper(ctx context.Context, level int8, msg string) {
 		levelName = "INFO"
 	}
 
-	id := ctx.Value(RequestIdKey)                                                                               // 获取请求ID
+	id := ctx.Value(RequestIdKey) // 获取请求ID
+	if id == nil {
+		id = GenRequestID()
+	}
 	now := time.Now()                                                                                           // 获取当前时间
 	_, _ = fmt.Fprintf(writer, "[%s] %v | %s | %s \n", levelName, now.Format("2006/01/02 - 15:04:05"), id, msg) // 格式化日志信息并输出
 

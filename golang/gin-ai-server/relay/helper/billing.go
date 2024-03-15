@@ -16,7 +16,7 @@ import (
 //
 // 输出参数：
 //   - 无。
-func ReturnPreConsumedQuota(ctx context.Context, preConsumedQuota int, tokenId int) {
+func ReturnPreConsumedQuota(ctx context.Context, preConsumedQuota int64, tokenId int) {
 	// 如果预先消费的配额不为 0，则执行以下逻辑
 	if preConsumedQuota != 0 {
 		// 在新的 goroutine 中执行后续操作
@@ -47,21 +47,21 @@ func ReturnPreConsumedQuota(ctx context.Context, preConsumedQuota int, tokenId i
 //
 // 输出参数：
 //   - 无。
-func PostConsumeQuota(ctx context.Context, tokenId, quotaDelta, totalQuota, userId, channelId int, modelRatio, groupRatio float64, modelName, tokenName string) {
+func PostConsumeQuota(ctx context.Context, tokenId int, quotaDelta int64, totalQuota int64, userId int, channelId int, modelRatio, groupRatio float64, modelName string, tokenName string) {
 	// Consume remaining quota
 	if err := model.PostConsumeTokenQuota(tokenId, quotaDelta); err != nil {
 		common.SysError("error consuming token remain quota: " + err.Error())
 	}
 
 	// Update user quota with cache
-	if err := model.UpdateUserQuotaWithCache(userId); err != nil {
+	if err := model.UpdateUserQuotaWithCache(ctx, userId); err != nil {
 		common.SysError("error update user quota cache: " + err.Error())
 	}
 
 	// Record consume log and update quotas if totalQuota is not 0
 	if totalQuota != 0 {
 		logContent := fmt.Sprintf("模型倍率 %.2f，分组倍率 %.2f", modelRatio, groupRatio)
-		model.RecordConsumeLog(ctx, userId, channelId, totalQuota, 0, modelName, tokenName, totalQuota, logContent)
+		model.RecordConsumeLog(ctx, userId, channelId, int(totalQuota), 0, modelName, tokenName, totalQuota, logContent)
 		model.UpdateUserUsedQuotaAndRequestCountByID(userId, totalQuota)
 		model.UpdateChannelUsedQuotaByID(channelId, totalQuota)
 	}

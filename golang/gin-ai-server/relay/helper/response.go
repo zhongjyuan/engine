@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"zhongjyuan/gin-ai-server/common"
 	relaymodel "zhongjyuan/gin-ai-server/relay/model"
 )
 
@@ -37,6 +38,10 @@ func NewHTTPError(resp *http.Response) (httpError *relaymodel.HTTPError) {
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return
+	}
+
+	if common.DebugEnabled {
+		common.SysLog(fmt.Sprintf("error happened, status code: %d, response: \n%s", resp.StatusCode, string(responseBody)))
 	}
 
 	// 解析错误响应

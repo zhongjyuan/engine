@@ -22,7 +22,7 @@ func RequestId() func(c *gin.Context) {
 
 	return func(c *gin.Context) {
 		// 生成请求 ID
-		id := common.GetTimeString() + common.GetRandomNumberString(8)
+		id := common.GenRequestID()
 
 		// 在 Gin 上下文中设置请求 ID
 		c.Set(common.RequestIdKey, id)

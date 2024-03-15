@@ -48,12 +48,12 @@ func RecordLog(userId int, logType int, content string) {
 		CreateTime: common.GetTimestamp(),
 	}
 
-	if err := DB.Create(log).Error; err != nil {
+	if err := LOG_DB.Create(log).Error; err != nil {
 		common.SysError("failed to record log: " + err.Error())
 	}
 }
 
-func RecordConsumeLog(ctx context.Context, userId int, channelId int, promptTokens int, completionTokens int, modelName string, tokenName string, quota int, content string) {
+func RecordConsumeLog(ctx context.Context, userId int, channelId int, promptTokens int, completionTokens int, modelName string, tokenName string, quota int64, content string) {
 	common.Info(ctx, fmt.Sprintf("record consume log: userId=%d, channelId=%d, promptTokens=%d, completionTokens=%d, modelName=%s, tokenName=%s, quota=%d, content=%s", userId, channelId, promptTokens, completionTokens, modelName, tokenName, quota, content))
 	if !common.LogConsumeEnabled {
 		return
@@ -72,19 +72,19 @@ func RecordConsumeLog(ctx context.Context, userId int, channelId int, promptToke
 		TokenName:        tokenName,
 		ChannelId:        channelId,
 		ModelName:        modelName,
-		Quota:            quota,
+		Quota:            int(quota),
 		PromptTokens:     promptTokens,
 		CompletionTokens: completionTokens,
 		CreateTime:       common.GetTimestamp(),
 	}
 
-	if err := DB.Create(log).Error; err != nil {
+	if err := LOG_DB.Create(log).Error; err != nil {
 		common.Error(ctx, "failed to record log: "+err.Error())
 	}
 }
 
 func DeleteHistoryLog(targetTimestamp int64) (int64, error) {
-	result := DB.Where("create_time < ?", targetTimestamp).Delete(&LogEntity{})
+	result := LOG_DB.Where("create_time < ?", targetTimestamp).Delete(&LogEntity{})
 	return result.RowsAffected, result.Error
 }
 
@@ -94,7 +94,7 @@ func GetPageLogs(logType int, startTimestamp int64, endTimestamp int64, modelNam
 	if logType == common.LogTypeUnknown {
 		tx = DB
 	} else {
-		tx = DB.Where("type = ?", logType)
+		tx = LOG_DB.Where("type = ?", logType)
 	}
 
 	if userName != "" {
@@ -130,9 +130,9 @@ func GetPageUserLogs(userId int, logType int, startTimestamp int64, endTimestamp
 	var tx *gorm.DB
 
 	if logType == common.LogTypeUnknown {
-		tx = DB.Where("user_id = ?", userId)
+		tx = LOG_DB.Where("user_id = ?", userId)
 	} else {
-		tx = DB.Where("user_id = ? and type = ?", userId, logType)
+		tx = LOG_DB.Where("user_id = ? and type = ?", userId, logType)
 	}
 
 	if tokenName != "" {
@@ -157,17 +157,17 @@ func GetPageUserLogs(userId int, logType int, startTimestamp int64, endTimestamp
 }
 
 func SearchLogs(keyword string) (logs []*LogEntity, err error) {
-	err = DB.Where("type = ? or content LIKE ?", keyword, keyword+"%").Order("id desc").Limit(common.MaxRecentItems).Find(&logs).Error
+	err = LOG_DB.Where("type = ? or content LIKE ?", keyword, keyword+"%").Order("id desc").Limit(common.MaxRecentItems).Find(&logs).Error
 	return logs, err
 }
 
 func SearchUserLogs(userId int, keyword string) (logs []*LogEntity, err error) {
-	err = DB.Where("user_id = ? and type = ?", userId, keyword).Order("id desc").Limit(common.MaxRecentItems).Omit("id").Find(&logs).Error
+	err = LOG_DB.Where("user_id = ? and type = ?", userId, keyword).Order("id desc").Limit(common.MaxRecentItems).Omit("id").Find(&logs).Error
 	return logs, err
 }
 
 func SumUsedQuota(logType int, startTimestamp int64, endTimestamp int64, modelName string, userName string, tokenName string, channelId int) (quota int) {
-	tx := DB.Table(LogTableName).Select("ifnull(sum(quota),0)")
+	tx := LOG_DB.Table(LogTableName).Select("ifnull(sum(quota),0)")
 	if userName != "" {
 		tx = tx.Where("user_name = ?", userName)
 	}
@@ -198,7 +198,7 @@ func SumUsedQuota(logType int, startTimestamp int64, endTimestamp int64, modelNa
 }
 
 func SumUsedToken(logType int, startTimestamp int64, endTimestamp int64, modelName string, userName string, tokenName string) (token int) {
-	tx := DB.Table(LogTableName).Select("ifnull(sum(prompt_tokens),0) + ifnull(sum(completion_tokens),0)")
+	tx := LOG_DB.Table(LogTableName).Select("ifnull(sum(prompt_tokens),0) + ifnull(sum(completion_tokens),0)")
 	if userName != "" {
 		tx = tx.Where("user_name = ?", userName)
 	}
@@ -238,7 +238,7 @@ func SearchLogsByDayAndModel(userId, start, end int) (LogStatistics []*LogStatis
 		groupSelect = "strftime('%Y-%m-%d', datetime(create_time, 'unixepoch')) as day"
 	}
 
-	err = DB.Raw(`
+	err = LOG_DB.Raw(`
 		SELECT ?,
 		model_name, count(1) as request_count,
 		sum(quota) as quota,

@@ -19,8 +19,8 @@ type UserProfileEntity struct {
 	AffCode      string `json:"affCode" gorm:"column:aff_code;type:varchar(32);uniqueIndex"`      // 推广码，唯一索引
 	AccessToken  string `json:"accessToken" gorm:"column:access_token;type:char(32);uniqueIndex"` // 访问令牌，用于系统管理，唯一索引
 	Group        string `json:"group" gorm:"column:group;type:varchar(32);default:'default'"`     // 请求组，默认值为 'default'
-	Quota        int    `json:"quota" gorm:"column:quota;type:int;default:0"`                     // 配额，默认值为 0
-	UsedQuota    int    `json:"usedQuota" gorm:"column:used_quota;type:int;default:0;"`           // 已使用配额
+	Quota        int64  `json:"quota" gorm:"column:quota;type:int;default:0"`                     // 配额，默认值为 0
+	UsedQuota    int64  `json:"usedQuota" gorm:"column:used_quota;type:int;default:0;"`           // 已使用配额
 	RequestCount int    `json:"requestCount" gorm:"column:request_count;type:int;default:0;"`     // 请求次数
 	InviterId    int    `json:"inviterId" gorm:"column:inviter_id;type:int;index"`                // 邀请者ID
 
@@ -171,12 +171,12 @@ func GetUserGroupByID(userId int) (group string, err error) {
 	return group, err
 }
 
-func GetUserQuotaByID(userId int) (quota int, err error) {
+func GetUserQuotaByID(userId int) (quota int64, err error) {
 	err = DB.Model(&UserProfileEntity{}).Where("id = ?", userId).Select("quota").Find(&quota).Error
 	return quota, err
 }
 
-func GetUserUsedQuotaByID(userId int) (usedQuota int, err error) {
+func GetUserUsedQuotaByID(userId int) (usedQuota int64, err error) {
 	err = DB.Model(&UserProfileEntity{}).Where("id = ?", userId).Select("used_quota").Find(&usedQuota).Error
 	return usedQuota, err
 }
@@ -224,7 +224,7 @@ func IsGitHubIdAlreadyTaken(githubId string) bool {
 //
 // 输出参数：
 //   - error: 如果操作成功，则返回 nil；否则返回相应错误信息。
-func IncreaseUserQuotaByID(userId int, quota int) (err error) {
+func IncreaseUserQuotaByID(userId int, quota int64) (err error) {
 	if quota < 0 {
 		return errors.New("quota 不能为负数！")
 	}
@@ -238,7 +238,7 @@ func IncreaseUserQuotaByID(userId int, quota int) (err error) {
 	return increaseUserQuotaByID(userId, quota)
 }
 
-func increaseUserQuotaByID(userId int, quota int) (err error) {
+func increaseUserQuotaByID(userId int, quota int64) (err error) {
 	return DB.Model(&UserProfileEntity{}).Where("id = ?", userId).Update("quota", gorm.Expr("quota + ?", quota)).Error
 }
 
@@ -250,7 +250,7 @@ func increaseUserQuotaByID(userId int, quota int) (err error) {
 //
 // 输出参数：
 //   - err error: 函数执行过程中的错误，如果没有错误则为 nil。
-func DecreaseUserQuotaByID(userId int, quota int) (err error) {
+func DecreaseUserQuotaByID(userId int, quota int64) (err error) {
 	if quota < 0 {
 		return errors.New("quota 不能为负数！")
 	}
@@ -264,7 +264,7 @@ func DecreaseUserQuotaByID(userId int, quota int) (err error) {
 	return decreaseUserQuotaByID(userId, quota)
 }
 
-func decreaseUserQuotaByID(userId int, quota int) (err error) {
+func decreaseUserQuotaByID(userId int, quota int64) (err error) {
 	return DB.Model(&UserProfileEntity{}).Where("id = ?", userId).Update("quota", gorm.Expr("quota - ?", quota)).Error
 }
 
@@ -276,7 +276,7 @@ func decreaseUserQuotaByID(userId int, quota int) (err error) {
 //
 // 输出参数：
 //   - 无。
-func updateUserUsedQuotaByID(userId int, quota int) {
+func updateUserUsedQuotaByID(userId int, quota int64) {
 	if err := DB.Model(&UserProfileEntity{}).Where("id = ?", userId).Updates(
 		map[string]interface{}{
 			"used_quota": gorm.Expr("used_quota + ?", quota),
@@ -294,7 +294,7 @@ func updateUserUsedQuotaByID(userId int, quota int) {
 //
 // 输出参数：
 //   - 无。
-func updateUserRequestCountByID(userId int, count int) {
+func updateUserRequestCountByID(userId int, count int64) {
 	if err := DB.Model(&UserProfileEntity{}).Where("id = ?", userId).Updates(
 		map[string]interface{}{
 			"request_count": gorm.Expr("request_count + ?", count),
@@ -312,7 +312,7 @@ func updateUserRequestCountByID(userId int, count int) {
 //
 // 输出参数：
 //   - 无。
-func UpdateUserUsedQuotaAndRequestCountByID(userId int, quota int) {
+func UpdateUserUsedQuotaAndRequestCountByID(userId int, quota int64) {
 
 	// 如果批量更新功能启用，则调用批量更新记录的函数
 	if common.BatchUpdateEnabled {
@@ -324,7 +324,7 @@ func UpdateUserUsedQuotaAndRequestCountByID(userId int, quota int) {
 	updateUserUsedQuotaAndRequestCountByID(userId, quota, 1)
 }
 
-func updateUserUsedQuotaAndRequestCountByID(userId int, quota int, count int) {
+func updateUserUsedQuotaAndRequestCountByID(userId int, quota int64, count int) {
 	if err := DB.Model(&UserProfileEntity{}).Where("id = ?", userId).Updates(
 		map[string]interface{}{
 			"used_quota":    gorm.Expr("used_quota + ?", quota),

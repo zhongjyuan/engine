@@ -29,36 +29,32 @@ var baiduTokenStore sync.Map
 //
 // 输出参数：
 //   - *AIChatRequest: 转换后的 AIChatRequest 对象。
-func ConvertRequest(request relaymodel.AIRequest) *AIChatRequest {
-	// 初始化一个空的消息数组
-	messages := make([]Message, 0, len(request.Messages))
+func ConvertRequest(request relaymodel.AIRequest) *ChatRequest {
 
-	// 遍历每条消息进行转换
+	baiduRequest := ChatRequest{
+		Messages:        make([]Message, 0, len(request.Messages)),
+		Temperature:     request.Temperature,
+		TopP:            request.TopP,
+		PenaltyScore:    request.FrequencyPenalty,
+		Stream:          request.Stream,
+		DisableSearch:   false,
+		EnableCitation:  false,
+		MaxOutputTokens: request.MaxTokens,
+		UserId:          request.User,
+	}
+
 	for _, message := range request.Messages {
 		if message.Role == "system" {
-			// 系统消息转换为用户消息和助手回复消息
-			messages = append(messages, Message{
-				Role:    "user",
-				Content: message.StringContent(),
-			})
-			messages = append(messages, Message{
-				Role:    "assistant",
-				Content: "Okay",
-			})
+			baiduRequest.System = message.StringContent()
 		} else {
-			// 非系统消息保持原样
-			messages = append(messages, Message{
+			baiduRequest.Messages = append(baiduRequest.Messages, Message{
 				Role:    message.Role,
 				Content: message.StringContent(),
 			})
 		}
 	}
 
-	// 构建并返回 AIChatRequest 对象
-	return &AIChatRequest{
-		Messages: messages,
-		Stream:   request.Stream,
-	}
+	return &baiduRequest
 }
 
 // responseBaidu2OpenAI 将 ChatResponse 转换为 relaymodel.AITextResponse 对象。

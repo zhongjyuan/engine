@@ -240,6 +240,7 @@ type AIChatCompletionsStreamResponse struct {
 	Created int64                                   `json:"created"`    // 创建时间
 	Model   string                                  `json:"relaymodel"` // 模型名称
 	Choices []AIChatCompletionsStreamResponseChoice `json:"choices"`    // 选择列表
+	Usage   *Usage                                  `json:"usage"`
 }
 
 // AICompletionChoice 代表完成选择的结构体。

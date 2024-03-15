@@ -13,6 +13,7 @@ const (
 	APITypeAIProxyLibrary        // APITypeAIProxyLibrary 表示 API 类型为 AIProxyLibrary。
 	APITypeTencent               // APITypeTencent 表示 API 类型为 Tencent。
 	APITypeGemini                // APITypeGemini 表示 API 类型为 Gemini。
+	APITypeOllama
 
 	APITypeDummy // APITypeDummy 仅用于计数，不要在此之后添加任何通道。
 )
@@ -43,6 +44,8 @@ func GetApiTypeByChannelType(channelType int) int {
 		return APITypeTencent // 返回 Tencent API 类型
 	case common.ChannelTypeGemini:
 		return APITypeGemini // 返回 Gemini API 类型
+	case common.ChannelTypeOllama:
+		return APITypeOllama
 	default:
 		return APITypeOpenAI // 默认返回 OpenAI API 类型
 	}
