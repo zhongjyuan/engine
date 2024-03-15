@@ -1,0 +1,48 @@
+/**
+ * 这段CSS代码用于设置页面的body元素样式，包括边距、字体等。
+ */
+
+ body {
+    margin: 0;
+    padding-top: 55px; /* 设置顶部内边距为55像素 */
+    overflow-y: scroll; /* 当内容超出页面高度时显示垂直滚动条 */
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, "Microsoft YaHei", sans-serif; /* 设置字体 */
+    -webkit-font-smoothing: antialiased; /* 在WebKit浏览器中抗锯齿 */
+    -moz-osx-font-smoothing: grayscale; /* 在Mac OS X平台的Firefox浏览器中抗锯齿 */
+    scrollbar-width: none; /* 隐藏滚动条 */
+}
+
+/**
+ * 隐藏WebKit浏览器下的滚动条。
+ */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/**
+ * 代码样式、主要内容区域、小图标、自定义页脚的样式。
+ */
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.main-content {
+    padding: 4px;
+}
+
+.small-icon .icon {
+    font-size: 1em !important;
+}
+
+.custom-footer {
+    font-size: 1.1em;
+}
+
+/**
+ * 针对小屏幕设备的响应式设计。
+ */
+@media only screen and (max-width: 600px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+}
