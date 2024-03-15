@@ -15,14 +15,14 @@ const StatusProvider = ({ children }) => {
 	const loadStatus = useCallback(async () => {
 		const res = await API.get("/api/status");
 		const { success, data } = res.data;
-		let system_name = "";
+		let systemName = "";
 		if (success) {
-			if (!data.chat_link) {
-				delete data.chat_link;
+			if (!data.chatLink) {
+				delete data.chatLink;
 			}
 			localStorage.setItem("siteInfo", JSON.stringify(data));
-			localStorage.setItem("quota_per_unit", data.quota_per_unit);
-			localStorage.setItem("display_in_currency", data.display_in_currency);
+			localStorage.setItem("quotaPerUnit", data.quotaPerUnit);
+			localStorage.setItem("displayInCurrencyEnabled", data.displayInCurrencyEnabled);
 			dispatch({ type: SET_SITE_INFO, payload: data });
 			if (
 				data.version !== process.env.REACT_APP_VERSION &&
@@ -32,15 +32,15 @@ const StatusProvider = ({ children }) => {
 			) {
 				showNotice(`新版本可用：${data.version}，请使用快捷键 Shift + F5 刷新页面`);
 			}
-			if (data.system_name) {
-				system_name = data.system_name;
+			if (data.systemName) {
+				systemName = data.systemName;
 			}
 		} else {
 			const backupSiteInfo = localStorage.getItem("siteInfo");
 			if (backupSiteInfo) {
 				const data = JSON.parse(backupSiteInfo);
-				if (data.system_name) {
-					system_name = data.system_name;
+				if (data.systemName) {
+					systemName = data.systemName;
 				}
 				dispatch({
 					type: SET_SITE_INFO,
@@ -50,8 +50,8 @@ const StatusProvider = ({ children }) => {
 			showError("无法正常连接至服务器！");
 		}
 
-		if (system_name) {
-			document.title = system_name;
+		if (systemName) {
+			document.title = systemName;
 		}
 	}, [dispatch]);
 

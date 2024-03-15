@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Chat = () => {
-  const chatLink = localStorage.getItem('chat_link');
+  const chatLink = localStorage.getItem('chatLink');
 
   return (
     <iframe

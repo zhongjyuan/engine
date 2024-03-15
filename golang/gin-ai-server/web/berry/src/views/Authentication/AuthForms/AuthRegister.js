@@ -76,10 +76,10 @@ const RegisterForm = ({ ...others }) => {
 			localStorage.setItem("aff", affCode);
 		}
 
-		setShowEmailVerification(siteInfo.email_verification);
-		if (siteInfo.turnstile_check) {
+		setShowEmailVerification(siteInfo.emailVerificationEnabled);
+		if (siteInfo.turnstileCheckEnabled) {
 			setTurnstileEnabled(true);
-			setTurnstileSiteKey(siteInfo.turnstile_site_key);
+			setTurnstileSiteKey(siteInfo.turnstileSiteKey);
 		}
 	}, [siteInfo]);
 

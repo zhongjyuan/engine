@@ -23,9 +23,9 @@ const PersonalSetting = () => {
     if (status) {
       status = JSON.parse(status);
       setStatus(status);
-      if (status.turnstile_check) {
+      if (status.turnstileCheckEnabled) {
         setTurnstileEnabled(true);
-        setTurnstileSiteKey(status.turnstile_site_key);
+        setTurnstileSiteKey(status.turnstileSiteKey);
       }
     }
   }, []);
@@ -61,7 +61,7 @@ const PersonalSetting = () => {
 
   const openGitHubOAuth = () => {
     window.open(
-      `https://github.com/login/oauth/authorize?client_id=${status.github_client_id}&scope=user:email`
+      `https://github.com/login/oauth/authorize?client_id=${status.gitHubClientId}&scope=user:email`
     );
   };
 
@@ -109,7 +109,7 @@ const PersonalSetting = () => {
       <Button onClick={generateToken}>生成访问令牌</Button>
       <Divider />
       <Header as='h3'>账号绑定</Header>
-      {status.wechat_login && (
+      {status.weChatAuthEnabled && (
         <Button
           onClick={() => {
             setShowWeChatBindModal(true);
@@ -126,7 +126,7 @@ const PersonalSetting = () => {
       >
         <Modal.Content>
           <Modal.Description>
-            <Image src={status.wechat_qrcode} fluid />
+            <Image src={status.wechatQRcode} fluid />
             <div style={{ textAlign: 'center' }}>
               <p>
                 微信扫码关注公众号，输入「验证码」获取验证码（三分钟内有效）
@@ -147,7 +147,7 @@ const PersonalSetting = () => {
           </Modal.Description>
         </Modal.Content>
       </Modal>
-      {status.github_oauth && (
+      {status.gitHubOAuthEnabled && (
         <Button onClick={openGitHubOAuth}>绑定 GitHub 账号</Button>
       )}
       <Button

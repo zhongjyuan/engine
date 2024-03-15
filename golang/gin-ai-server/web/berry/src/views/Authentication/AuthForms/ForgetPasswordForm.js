@@ -65,9 +65,9 @@ const ForgetPasswordForm = ({ ...others }) => {
 	}, [disableButton, countdown]);
 
 	useEffect(() => {
-		if (siteInfo.turnstile_check) {
+		if (siteInfo.turnstileCheckEnabled) {
 			setTurnstileEnabled(true);
-			setTurnstileSiteKey(siteInfo.turnstile_site_key);
+			setTurnstileSiteKey(siteInfo.turnstileSiteKey);
 		}
 	}, [siteInfo]);
 

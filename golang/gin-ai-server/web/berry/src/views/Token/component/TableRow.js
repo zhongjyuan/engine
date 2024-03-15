@@ -120,8 +120,8 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
 
 	const handleCopy = (option, type) => {
 		let serverAddress = "";
-		if (siteInfo?.server_address) {
-			serverAddress = siteInfo.server_address;
+		if (siteInfo?.serverAddress) {
+			serverAddress = siteInfo.serverAddress;
 		} else {
 			serverAddress = window.location.host;
 		}
@@ -132,8 +132,8 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
 
 		let url = option.url;
 
-		if (option.key === "next" && siteInfo?.chat_link) {
-			url = siteInfo.chat_link + `/#/?settings={"key":"sk-{key}","url":"{serverAddress}"}`;
+		if (option.key === "next" && siteInfo?.chatLink) {
+			url = siteInfo.chatLink + `/#/?settings={"key":"sk-{key}","url":"{serverAddress}"}`;
 		}
 
 		const key = item.key;

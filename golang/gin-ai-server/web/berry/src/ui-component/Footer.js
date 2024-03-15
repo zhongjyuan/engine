@@ -11,12 +11,12 @@ const Footer = () => {
 	return (
 		<Container sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "64px" }}>
 			<Box sx={{ textAlign: "center" }}>
-				{siteInfo.footer_html ? (
-					<div className="custom-footer" dangerouslySetInnerHTML={{ __html: siteInfo.footer_html }}></div>
+				{siteInfo.footerHtml ? (
+					<div className="custom-footer" dangerouslySetInnerHTML={{ __html: siteInfo.footerHtml }}></div>
 				) : (
 					<>
 						<Link href="https://gitee.com/zhongjyuan/one-api" target="_blank">
-							{siteInfo.system_name} {process.env.REACT_APP_VERSION}{" "}
+							{siteInfo.systemName} {process.env.REACT_APP_VERSION}{" "}
 						</Link>
 						由{" "}
 						<Link href="https://gitee.com/zhongjyuan" target="_blank">

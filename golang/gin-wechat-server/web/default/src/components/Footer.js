@@ -16,10 +16,10 @@ const Footer = () => {
   // 加载页脚内容
   const loadFooter = () => {
     // 从localStorage中获取页脚HTML
-    let footer_html = localStorage.getItem('footer_html');
-    if (footer_html) {
+    let footerHtml = localStorage.getItem('footerHtml');
+    if (footerHtml) {
       // 更新页脚内容的状态
-      setFooter(footer_html);
+      setFooter(footerHtml);
     }
   };
 

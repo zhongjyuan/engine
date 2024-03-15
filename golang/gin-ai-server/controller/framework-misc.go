@@ -19,25 +19,25 @@ import (
 //   - 无。
 func GetStatus(c *gin.Context) {
 	common.SendSuccessJSONResponse(c, "获取成功", gin.H{
-		"version":            common.Version,
-		"start_time":         common.StartTime,
-		"email_verification": common.EmailVerificationEnabled,
-		"github_oauth":       common.GitHubOAuthEnabled,
-		"github_client_id":   common.GitHubClientId,
-		"system_name":        common.SystemName,
-		"logo":               common.Logo,
-		"home_page_link":     common.HomePageLink,
-		"footer_html":        common.Footer,
-		"wechat_qrcode":      common.WeChatAccountQRCodeImageURL,
-		"wechat_login":       common.WeChatAuthEnabled,
-		"server_address":     common.ServerAddress,
-		"turnstile_check":    common.TurnstileCheckEnabled,
-		"turnstile_site_key": common.TurnstileSiteKey,
+		"version":                  common.Version,
+		"startTime":                common.StartTime,
+		"systemName":               common.SystemName,
+		"logo":                     common.Logo,
+		"footerHtml":               common.Footer,
+		"homePageLink":             common.HomePageLink,
+		"serverAddress":            common.ServerAddress,
+		"emailVerificationEnabled": common.EmailVerificationEnabled,
+		"gitHubOAuthEnabled":       common.GitHubOAuthEnabled,
+		"gitHubClientId":           common.GitHubClientId,
+		"wechatQRcode":             common.WeChatAccountQRCodeImageURL,
+		"weChatAuthEnabled":        common.WeChatAuthEnabled,
+		"turnstileCheckEnabled":    common.TurnstileCheckEnabled,
+		"turnstileSiteKey":         common.TurnstileSiteKey,
 
-		"top_up_link":         common.TopUpLink,
-		"chat_link":           common.ChatLink,
-		"quota_per_unit":      common.QuotaPerUnit,
-		"display_in_currency": common.DisplayInCurrencyEnabled,
+		"chatLink":                 common.ChatLink,
+		"topUpLink":                common.TopUpLink,
+		"quotaPerUnit":             common.QuotaPerUnit,
+		"displayInCurrencyEnabled": common.DisplayInCurrencyEnabled,
 	})
 }
 

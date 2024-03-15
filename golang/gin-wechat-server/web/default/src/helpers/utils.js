@@ -23,9 +23,9 @@ export function isRoot() {
 }
 
 export function getSystemName() {
-  let system_name = localStorage.getItem('system_name');
-  if (!system_name) return 'One API';
-  return system_name;
+  let systemName = localStorage.getItem('systemName');
+  if (!systemName) return 'One API';
+  return systemName;
 }
 
 export function getLogo() {
@@ -35,7 +35,7 @@ export function getLogo() {
 }
 
 export function getFooterHTML() {
-  return localStorage.getItem('footer_html');
+  return localStorage.getItem('footerHtml');
 }
 
 export async function copy(text) {

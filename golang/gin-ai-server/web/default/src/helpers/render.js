@@ -40,8 +40,8 @@ export function renderNumber(num) {
 }
 
 export function renderQuota(quota, digits = 2) {
-  let quotaPerUnit = localStorage.getItem('quota_per_unit');
-  let displayInCurrency = localStorage.getItem('display_in_currency');
+  let quotaPerUnit = localStorage.getItem('quotaPerUnit');
+  let displayInCurrency = localStorage.getItem('displayInCurrencyEnabled');
   quotaPerUnit = parseFloat(quotaPerUnit);
   displayInCurrency = displayInCurrency === 'true';
   if (displayInCurrency) {
@@ -51,7 +51,7 @@ export function renderQuota(quota, digits = 2) {
 }
 
 export function renderQuotaWithPrompt(quota, digits) {
-  let displayInCurrency = localStorage.getItem('display_in_currency');
+  let displayInCurrency = localStorage.getItem('displayInCurrencyEnabled');
   displayInCurrency = displayInCurrency === 'true';
   if (displayInCurrency) {
     return `（等价金额：${renderQuota(quota, digits)}）`;

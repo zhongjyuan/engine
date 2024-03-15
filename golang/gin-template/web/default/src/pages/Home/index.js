@@ -5,7 +5,7 @@ import { StatusContext } from '../../context/Status';
 
 const Home = () => {
   const [statusState, statusDispatch] = useContext(StatusContext);
-  const homePageLink = localStorage.getItem('home_page_link') || '';
+  const homePageLink = localStorage.getItem('homePageLink') || '';
 
   const displayNotice = async () => {
     const res = await API.get('/api/notice');
@@ -22,7 +22,7 @@ const Home = () => {
   };
 
   const getStartTimeString = () => {
-    const timestamp = statusState?.status?.start_time;
+    const timestamp = statusState?.status?.startTtime;
     return timestamp2string(timestamp);
   };
 
@@ -49,7 +49,7 @@ const Home = () => {
                     <Card.Header>系统信息</Card.Header>
                     <Card.Meta>系统信息总览</Card.Meta>
                     <Card.Description>
-                      <p>名称：{statusState?.status?.system_name}</p>
+                      <p>名称：{statusState?.status?.systemName}</p>
                       <p>版本：{statusState?.status?.version}</p>
                       <p>
                         源码：
@@ -73,25 +73,25 @@ const Home = () => {
                     <Card.Description>
                       <p>
                         邮箱验证：
-                        {statusState?.status?.email_verification === true
+                        {statusState?.status?.emailVerificationEnabled === true
                           ? '已启用'
                           : '未启用'}
                       </p>
                       <p>
                         GitHub 身份验证：
-                        {statusState?.status?.github_oauth === true
+                        {statusState?.status?.gitHubOAuthEnabled === true
                           ? '已启用'
                           : '未启用'}
                       </p>
                       <p>
                         微信身份验证：
-                        {statusState?.status?.wechat_login === true
+                        {statusState?.status?.weChatAuthEnabled === true
                           ? '已启用'
                           : '未启用'}
                       </p>
                       <p>
                         Turnstile 用户校验：
-                        {statusState?.status?.turnstile_check === true
+                        {statusState?.status?.turnstileCheckEnabled === true
                           ? '已启用'
                           : '未启用'}
                       </p>

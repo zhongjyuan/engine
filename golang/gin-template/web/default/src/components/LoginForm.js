@@ -43,7 +43,7 @@ const LoginForm = () => {
 
   const onGitHubOAuthClicked = () => {
     window.open(
-      `https://github.com/login/oauth/authorize?client_id=${status.github_client_id}&scope=user:email`
+      `https://github.com/login/oauth/authorize?client_id=${status.gitHubClientId}&scope=user:email`
     );
   };
 
@@ -133,10 +133,10 @@ const LoginForm = () => {
             点击注册
           </Link>
         </Message>
-        {status.github_oauth || status.wechat_login ? (
+        {status.gitHubOAuthEnabled || status.weChatAuthEnabled ? (
           <>
             <Divider horizontal>Or</Divider>
-            {status.github_oauth ? (
+            {status.gitHubOAuthEnabled ? (
               <Button
                 circular
                 color="black"
@@ -146,7 +146,7 @@ const LoginForm = () => {
             ) : (
               <></>
             )}
-            {status.wechat_login ? (
+            {status.weChatAuthEnabled ? (
               <Button
                 circular
                 color="green"
@@ -168,7 +168,7 @@ const LoginForm = () => {
         >
           <Modal.Content>
             <Modal.Description>
-              <Image src={status.wechat_qrcode} fluid />
+              <Image src={status.wechatQRcode} fluid />
               <div style={{ textAlign: 'center' }}>
                 <p>
                   微信扫码关注公众号，输入「验证码」获取验证码（三分钟内有效）

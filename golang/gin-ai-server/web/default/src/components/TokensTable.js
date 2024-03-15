@@ -122,13 +122,13 @@ const TokensTable = () => {
     let serverAddress = '';
     if (status) {
       status = JSON.parse(status);
-      serverAddress = status.server_address;
+      serverAddress = status.serverAddress;
     }
     if (serverAddress === '') {
       serverAddress = window.location.origin;
     }
     let encodedServerAddress = encodeURIComponent(serverAddress);
-    const nextLink = localStorage.getItem('chat_link');
+    const nextLink = localStorage.getItem('chatLink');
     let nextUrl;
 
     if (nextLink) {
@@ -165,13 +165,13 @@ const TokensTable = () => {
     let serverAddress = '';
     if (status) {
       status = JSON.parse(status);
-      serverAddress = status.server_address;
+      serverAddress = status.serverAddress;
     }
     if (serverAddress === '') {
       serverAddress = window.location.origin;
     }
     let encodedServerAddress = encodeURIComponent(serverAddress);
-    const chatLink = localStorage.getItem('chat_link');
+    const chatLink = localStorage.getItem('chatLink');
     let defaultUrl;
 
     if (chatLink) {

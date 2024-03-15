@@ -59,11 +59,11 @@ const RegisterForm = () => {
       // 解析status为对象
       status = JSON.parse(status);
       // 根据status中的email_verification值来设置showEmailVerification状态变量
-      setShowEmailVerification(status.email_verification);
+      setShowEmailVerification(status.emailVerificationEnabled);
       // 如果status中的turnstile_check为true，则设置turnstileEnabled状态变量为true，并设置turnstileSiteKey状态变量为status中的turnstile_site_key值
-      if (status.turnstile_check) {
+      if (status.turnstileCheckEnabled) {
         setTurnstileEnabled(true);
-        setTurnstileSiteKey(status.turnstile_site_key);
+        setTurnstileSiteKey(status.turnstileSiteKey);
       }
     }
   });

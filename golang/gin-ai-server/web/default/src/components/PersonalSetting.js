@@ -55,9 +55,9 @@ const PersonalSetting = () => {
       // 如果存在状态信息，则解析并设置状态
       status = JSON.parse(status);
       setStatus(status); // 设置状态信息
-      if (status.turnstile_check) {
+      if (status.turnstileCheckEnabled) {
         setTurnstileEnabled(true); // 启用 Turnstile
-        setTurnstileSiteKey(status.turnstile_site_key); // 设置 Turnstile Site Key
+        setTurnstileSiteKey(status.turnstileSiteKey); // 设置 Turnstile Site Key
       }
     }
   }, []);
@@ -266,7 +266,7 @@ const PersonalSetting = () => {
       )}
       <Divider />
       <Header as='h3'>账号绑定</Header>
-      {status.wechat_login && (
+      {status.weChatAuthEnabled && (
         <Button
           onClick={() => {
             setShowWeChatBindModal(true);
@@ -283,7 +283,7 @@ const PersonalSetting = () => {
       >
         <Modal.Content>
           <Modal.Description>
-            <Image src={status.wechat_qrcode} fluid />
+            <Image src={status.wechatQRcode} fluid />
             <div style={{ textAlign: 'center' }}>
               <p>
                 微信扫码关注公众号，输入「验证码」获取验证码（三分钟内有效）
@@ -304,10 +304,10 @@ const PersonalSetting = () => {
           </Modal.Description>
         </Modal.Content>
       </Modal>
-      {status.github_oauth && (
+      {status.gitHubOAuthEnabled && (
         <Button
           onClick={() => {
-            onGitHubOAuthClicked(status.github_client_id);
+            onGitHubOAuthClicked(status.gitHubClientId);
           }}
         >
           绑定 GitHub 账号

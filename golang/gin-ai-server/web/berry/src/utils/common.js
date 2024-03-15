@@ -3,9 +3,9 @@ import { snackbarConstants } from "constants/SnackbarConstants";
 import { API } from "./api";
 
 export function getSystemName() {
-	let system_name = localStorage.getItem("system_name");
-	if (!system_name) return "One API";
-	return system_name;
+	let systemName = localStorage.getItem("systemName");
+	if (!systemName) return "One API";
+	return systemName;
 }
 
 export function isMobile() {
@@ -80,10 +80,10 @@ export async function getOAuthState() {
 	}
 }
 
-export async function onGitHubOAuthClicked(github_client_id, openInNewTab = false) {
+export async function onGitHubOAuthClicked(gitHubClientId, openInNewTab = false) {
 	const state = await getOAuthState();
 	if (!state) return;
-	let url = `https://github.com/login/oauth/authorize?client_id=${github_client_id}&state=${state}&scope=user:email`;
+	let url = `https://github.com/login/oauth/authorize?client_id=${gitHubClientId}&state=${state}&scope=user:email`;
 	if (openInNewTab) {
 		window.open(url);
 	} else {
@@ -125,14 +125,14 @@ export function timestamp2string(timestamp) {
 }
 
 export function calculateQuota(quota, digits = 2) {
-	let quotaPerUnit = localStorage.getItem("quota_per_unit");
+	let quotaPerUnit = localStorage.getItem("quotaPerUnit");
 	quotaPerUnit = parseFloat(quotaPerUnit);
 
 	return (quota / quotaPerUnit).toFixed(digits);
 }
 
 export function renderQuota(quota, digits = 2) {
-	let displayInCurrency = localStorage.getItem("display_in_currency");
+	let displayInCurrency = localStorage.getItem("displayInCurrencyEnabled");
 	displayInCurrency = displayInCurrency === "true";
 	if (displayInCurrency) {
 		return "$" + calculateQuota(quota, digits);
@@ -162,7 +162,7 @@ export function renderNumber(num) {
 }
 
 export function renderQuotaWithPrompt(quota, digits) {
-	let displayInCurrency = localStorage.getItem("display_in_currency");
+	let displayInCurrency = localStorage.getItem("displayInCurrencyEnabled");
 	displayInCurrency = displayInCurrency === "true";
 	if (displayInCurrency) {
 		return `（等价金额：${renderQuota(quota, digits)}）`;

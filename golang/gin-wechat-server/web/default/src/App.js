@@ -41,15 +41,15 @@ function App() {
     if (success) {
       localStorage.setItem('status', JSON.stringify(data));
       statusDispatch({ type: 'set', payload: data });
-      localStorage.setItem('system_name', data.system_name);
+      localStorage.setItem('systemName', data.systemName);
       localStorage.setItem('logo', data.logo);
-      localStorage.setItem('footer_html', data.footer_html);
-      localStorage.setItem('quota_per_unit', data.quota_per_unit);
-      localStorage.setItem('display_in_currency', data.display_in_currency);
-      if (data.chat_link) {
-        localStorage.setItem('chat_link', data.chat_link);
+      localStorage.setItem('footerHtml', data.footerHtml);
+      localStorage.setItem('quotaPerUnit', data.quotaPerUnit);
+      localStorage.setItem('displayInCurrencyEnabled', data.displayInCurrencyEnabled);
+      if (data.chatLink) {
+        localStorage.setItem('chatLink', data.chatLink);
       } else {
-        localStorage.removeItem('chat_link');
+        localStorage.removeItem('chatLink');
       }
       if (
         data.version !== process.env.REACT_APP_VERSION &&

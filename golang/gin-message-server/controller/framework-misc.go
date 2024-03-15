@@ -34,8 +34,9 @@ func GetStatus(c *gin.Context) {
 		"turnstileSiteKey":          common.TurnstileSiteKey,
 		"messagePersistenceEnabled": common.MessagePersistenceEnabled,
 		"messageRenderEnabled":      common.MessageRenderEnabled,
-		"messageCount":              common.MessageCount,
-		"userCount":                 common.UserCount,
+
+		"userCount":    common.UserCount,
+		"messageCount": common.MessageCount,
 	})
 }
 

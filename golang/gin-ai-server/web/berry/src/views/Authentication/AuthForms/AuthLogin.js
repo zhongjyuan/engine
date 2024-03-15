@@ -49,7 +49,7 @@ const LoginForm = ({ ...others }) => {
 	// const [checked, setChecked] = useState(true);
 
 	let tripartiteLogin = false;
-	if (siteInfo.github_oauth || siteInfo.wechat_login) {
+	if (siteInfo.gitHubOAuthEnabled || siteInfo.weChatAuthEnabled) {
 		tripartiteLogin = true;
 	}
 
@@ -74,13 +74,13 @@ const LoginForm = ({ ...others }) => {
 		<>
 			{tripartiteLogin && (
 				<Grid container direction="column" justifyContent="center" spacing={2}>
-					{siteInfo.github_oauth && (
+					{siteInfo.gitHubOAuthEnabled && (
 						<Grid item xs={12}>
 							<AnimateButton>
 								<Button
 									disableElevation
 									fullWidth
-									onClick={() => onGitHubOAuthClicked(siteInfo.github_client_id)}
+									onClick={() => onGitHubOAuthClicked(siteInfo.gitHubClientId)}
 									size="large"
 									variant="outlined"
 									sx={{
@@ -97,7 +97,7 @@ const LoginForm = ({ ...others }) => {
 							</AnimateButton>
 						</Grid>
 					)}
-					{siteInfo.wechat_login && (
+					{siteInfo.weChatAuthEnabled && (
 						<Grid item xs={12}>
 							<AnimateButton>
 								<Button
@@ -118,7 +118,7 @@ const LoginForm = ({ ...others }) => {
 									使用微信登录
 								</Button>
 							</AnimateButton>
-							<WechatModal open={openWechat} handleClose={handleWechatClose} wechatLogin={wechatLogin} qrCode={siteInfo.wechat_qrcode} />
+							<WechatModal open={openWechat} handleClose={handleWechatClose} wechatLogin={wechatLogin} qrCode={siteInfo.wechatQRcode} />
 						</Grid>
 					)}
 					<Grid item xs={12}>

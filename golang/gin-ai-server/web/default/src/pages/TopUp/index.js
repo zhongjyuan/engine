@@ -66,8 +66,8 @@ const TopUp = () => {
     let status = localStorage.getItem('status');
     if (status) {
       status = JSON.parse(status);
-      if (status.top_up_link) {
-        setTopUpLink(status.top_up_link);
+      if (status.topUpLink) {
+        setTopUpLink(status.topUpLink);
       }
     }
     getUserQuota().then();

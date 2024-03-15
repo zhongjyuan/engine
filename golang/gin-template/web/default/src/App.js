@@ -45,9 +45,9 @@ function App() {
       console.log(`GitHub 仓库地址：https://github.com/zhongjyuan/gin-template`);
       localStorage.setItem('status', JSON.stringify(data));
       statusDispatch({ type: 'set', payload: data });
-      localStorage.setItem('system_name', data.system_name);
-      localStorage.setItem('footer_html', data.footer_html);
-      localStorage.setItem('home_page_link', data.home_page_link);
+      localStorage.setItem('systemName', data.systemName);
+      localStorage.setItem('footerHtml', data.footerHtml);
+      localStorage.setItem('homePageLink', data.homePageLink);
       if (
         data.version !== process.env.REACT_APP_VERSION &&
         data.version !== 'v0.0.0' &&

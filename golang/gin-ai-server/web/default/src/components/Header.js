@@ -73,9 +73,9 @@ let headerButtons = [
   },
 ];
 
-// 检查本地存储中是否存在 'chat_link'
-if (localStorage.getItem('chat_link')) {
-  // 如果存在 'chat_link'，则向 headerButtons 数组的第二个位置插入一个新的按钮对象
+// 检查本地存储中是否存在 'chatLink'
+if (localStorage.getItem('chatLink')) {
+  // 如果存在 'chatLink'，则向 headerButtons 数组的第二个位置插入一个新的按钮对象
   headerButtons.splice(1, 0, {
     name: '聊天',
     to: '/chat',

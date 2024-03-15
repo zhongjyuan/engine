@@ -114,9 +114,9 @@ export default function Profile() {
 
 	useEffect(() => {
 		if (status) {
-			if (status.turnstile_check) {
+			if (status.turnstileCheckEnabled) {
 				setTurnstileEnabled(true);
-				setTurnstileSiteKey(status.turnstile_site_key);
+				setTurnstileSiteKey(status.turnstileSiteKey);
 			}
 		}
 		loadUser().then();
@@ -191,16 +191,16 @@ export default function Profile() {
 						</SubCard>
 						<SubCard title="账号绑定">
 							<Grid container spacing={2}>
-								{status.wechat_login && !inputs.wechatId && (
+								{status.weChatAuthEnabled && !inputs.wechatId && (
 									<Grid xs={12} md={4}>
 										<Button variant="contained" onClick={handleWechatOpen}>
 											绑定微信账号
 										</Button>
 									</Grid>
 								)}
-								{status.github_oauth && !inputs.githubId && (
+								{status.gitHubOAuthEnabled && !inputs.githubId && (
 									<Grid xs={12} md={4}>
-										<Button variant="contained" onClick={() => onGitHubOAuthClicked(status.github_client_id, true)}>
+										<Button variant="contained" onClick={() => onGitHubOAuthClicked(status.gitHubClientId, true)}>
 											绑定 GitHub 账号
 										</Button>
 									</Grid>
@@ -278,7 +278,7 @@ export default function Profile() {
 					</Button>
 				</DialogActions>
 			</Dialog>
-			<WechatModal open={openWechat} handleClose={handleWechatClose} wechatLogin={bindWeChat} qrCode={status.wechat_qrcode} />
+			<WechatModal open={openWechat} handleClose={handleWechatClose} wechatLogin={bindWeChat} qrCode={status.wechatQRcode} />
 			<EmailModal
 				open={openEmail}
 				turnstileToken={turnstileToken}
