@@ -1,0 +1,91 @@
+#!/usr/bin/env node
+
+/**用于实时加载ES6 语法 */
+require("babel-core/register");
+
+/**模块依赖信息 */
+var http = require("http");
+var io = require("socket.io");
+var debug = require("debug")("react-redux-router:server");
+
+/**程序配置载体 */
+var application = require("../public/config/application");
+/**Socket服务端 */
+var socketServer = require("../src/tools/socket/server");
+/**程序端口(Express与WebSocket统一端口) */
+var port = normalizePort(process.env.PORT || application.port);
+
+/**Express */
+var app = require("../app");
+app.set("port", port);
+
+/**HttpServer */
+var server = http.createServer(app);
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**WebSocket Server(Express和webSocket服务器代码之间共享一个服务器示例,以达到同一端口) */
+var webSocket = io.listen(server, { pingTimeout: 180000 });
+
+console.log("www__dirname:" + __dirname);
+console.log("www__filename:" + __filename);
+
+/**
+ * 规范化端口
+ * @param val
+ * @returns
+ */
+function normalizePort(val) {
+	var port = parseInt(val, 10);
+
+	if (isNaN(port)) {
+		return val;
+	}
+
+	if (port >= 0) {
+		return port;
+	}
+
+	return false;
+}
+
+/**HttpServer事件error处理函数 */
+function onError(error) {
+	if (error.syscall !== "listen") {
+		throw error;
+	}
+
+	var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+	// handle specific listen errors with friendly messages
+	switch (error.code) {
+		case "EACCES":
+			console.error(bind + " requires elevated privileges");
+			process.exit(1);
+			break;
+		case "EADDRINUSE":
+			console.error(bind + " is already in use");
+			process.exit(1);
+			break;
+		default:
+			throw error;
+	}
+}
+
+/**HttpServer事件listening处理函数 */
+function onListening() {
+	var addr = server.address();
+	var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+	debug("Listening on " + bind);
+}
+
+/**
+ * 启动socket客户端(Buffer对象转byte数组)
+ * @returns
+ */
+Buffer.prototype.toByteArray = function () {
+	return Array.prototype.slice.call(this, 0);
+};
+
+socketServer.bind(webSocket);

@@ -1,0 +1,232 @@
+{
+	"apps": [
+		{
+			"title": "Windows 11",
+			"labels": ["popular", "other"],
+			"icon": "../../assets/icon/program/window-react-favicon.ico",
+			"summary": "../../assets/image/program/window-react-summary.png",
+			"description": "win11React 是一个开源项目，旨在使用 React、CSS 和 JavaScript 等标准 Web 技术在 Web 上复制 Windows 11 桌面体验",
+			"open": {
+				"url": "./program/window-react",
+				"title": "Windows 11",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/window-react-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"window-react": {
+						"url": "./program/window-react",
+						"title": "Windows 11",
+						"developer": "zhongjyuan",
+						"description": "win11React 是一个开源项目，旨在使用 React、CSS 和 JavaScript 等标准 Web 技术在 Web 上复制 Windows 11 桌面体验",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/window-react-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["window-react"],
+				"menu": {
+					"window-react": {
+						"app": "window-react",
+						"title": "Windows 11",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "WeTab",
+			"labels": ["popular", "other"],
+			"icon": "../../assets/icon/program/wetab-favicon.ico",
+			"summary": "../../assets/image/program/wetab-summary.png",
+			"description": "wetab是一个多功能浏览器主页插件工具，能够帮助我们为浏览器自定义多功能的主页，不仅功能强大，而且漂亮简洁，不仅提供了在线版，而且还支持Edge、Chrome、Safari等主流的网络浏览器，能帮助我们打造个性化的功能强大的浏览器主页。",
+			"open": {
+				"url": "https://web.wetab.link",
+				"title": "WeTab",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/wetab-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"wetab": {
+						"url": "https://web.wetab.link",
+						"title": "WeTab",
+						"developer": "zhongjyuan",
+						"description": "wetab是一个多功能浏览器主页插件工具，能够帮助我们为浏览器自定义多功能的主页，不仅功能强大，而且漂亮简洁，不仅提供了在线版，而且还支持Edge、Chrome、Safari等主流的网络浏览器，能帮助我们打造个性化的功能强大的浏览器主页。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/wetab-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["wetab"],
+				"menu": {
+					"wetab": {
+						"app": "wetab",
+						"title": "WeTab",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "迈特云",
+			"labels": ["other"],
+			"icon": "../../assets/icon/program/mate-cloud-favicon.ico",
+			"summary": "../../assets/image/program/mate-cloud-summary.png",
+			"description": "迈特云®快速开发平台",
+			"open": {
+				"url": "https://v3.mate.vip",
+				"title": "迈特云",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mate-cloud-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mate-cloud": {
+						"url": "https://v3.mate.vip",
+						"title": "迈特云",
+						"developer": "zhongjyuan",
+						"description": "迈特云®快速开发平台",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mate-cloud-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mate-cloud"],
+				"menu": {
+					"mate-cloud": {
+						"app": "mate-cloud",
+						"title": "迈特云",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "灯灯",
+			"labels": ["other"],
+			"icon": "../../assets/icon/program/tangyh-favicon.ico",
+			"summary": "../../assets/image/program/tangyh-summary.png",
+			"description": "专注于多租户解决方案的微服务中后台快速开发平台。租户模式支持独立数据库(DATASOURCE模式)、共享数据架构(COLUMN模式) 和 非租户模式(NONE模式)✨",
+			"open": {
+				"url": "https://tangyh.top",
+				"title": "灯灯",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tangyh-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tangyh": {
+						"url": "https://tangyh.top",
+						"title": "灯灯",
+						"developer": "zhongjyuan",
+						"description": "专注于多租户解决方案的微服务中后台快速开发平台。租户模式支持独立数据库(DATASOURCE模式)、共享数据架构(COLUMN模式) 和 非租户模式(NONE模式)✨",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tangyh-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tangyh"],
+				"menu": {
+					"tangyh": {
+						"app": "tangyh",
+						"title": "灯灯",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "ZLT",
+			"labels": ["other"],
+			"icon": "../../assets/icon/program/zlt-favicon.ico",
+			"summary": "../../assets/image/program/zlt-summary.png",
+			"description": "基于SpringBoot2.x、SpringCloud和SpringCloudAlibaba并采用前后端分离的企业级微服务多租户系统架构。",
+			"open": {
+				"url": "http://zlt2000.cn",
+				"title": "ZLT",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/zlt-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"zlt": {
+						"url": "http://zlt2000.cn",
+						"title": "ZLT",
+						"developer": "zhongjyuan",
+						"description": "基于SpringBoot2.x、SpringCloud和SpringCloudAlibaba并采用前后端分离的企业级微服务多租户系统架构。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/zlt-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["zlt"],
+				"menu": {
+					"zlt": {
+						"app": "zlt",
+						"title": "ZLT",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Hasor",
+			"labels": ["other"],
+			"icon": "../../assets/icon/program/hasor-favicon.ico",
+			"summary": "../../assets/image/program/hasor-summary.png",
+			"description": "Hasor 本身是由多个不同系列框架组合而成的一个框架体系。这些子框架的能力涵盖了 IoC、Aop、WebMVC、数据库以及其它方方面面。",
+			"open": {
+				"url": "https://www.hasor.net",
+				"title": "Hasor",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/hasor-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"hasor": {
+						"url": "https://www.hasor.net",
+						"title": "Hasor",
+						"developer": "zhongjyuan",
+						"description": "Hasor 本身是由多个不同系列框架组合而成的一个框架体系。这些子框架的能力涵盖了 IoC、Aop、WebMVC、数据库以及其它方方面面。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/hasor-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["hasor"],
+				"menu": {
+					"hasor": {
+						"app": "hasor",
+						"title": "Hasor",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

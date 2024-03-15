@@ -1,0 +1,20 @@
+/**简体中文 */
+module.exports = {
+	"Home Page": "首页",
+	"Go To Login": "跳转登录页",
+	"Socket Disconnect": "网络断开...",
+	"Server Disconnect": "服务端已断开连接,请联系管理员!",
+	"Socket Client Disconnect": "Socket客户端已断开连接,请重新登录来建立连接!",
+	"Socket Server Disconnect": "Socket服务端已断开连接,请联系管理员!",
+	"System Tip": "系统通知",
+	"System Message": "系统错误!",
+	"Ticket Tip": "您已经被踢下线！",
+	"Ticket Message": "您的账号在别处登录!",
+	"Password Update Tip": "修改密码",
+	"Password Update Message": "密码修改成功!",
+	"Result Column Key Title": "主键",
+	"Result Column Status Title": "执行状态",
+	"Result Column Status Fail": "执行失败",
+	"Result Column Status Success": "执行成功",
+	"Result Column Message Title": "提示信息",
+};

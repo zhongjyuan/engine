@@ -1,0 +1,480 @@
+{
+	"apps": [
+		{
+			"title": "多玩盒子",
+			"labels": ["educate"],
+			"icon": "../../program/imitate/study/icon/favicon.ico",
+			"summary": "../../program/imitate/study/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部应用：多玩盒子",
+			"open": {
+				"resizable": false,
+				"url": "/program/imitate/study/index.html",
+				"title": "多玩盒子",
+				"icon": {
+					"type": "img",
+					"content": "/program/imitate/study/icon/favicon.ico"
+				},
+				"size": {
+					"width": "400",
+					"height": "700"
+				}
+			},
+			"setup": {
+				"apps": {
+					"studybox": {
+						"resizable": false,
+						"url": "/program/imitate/study/index.html",
+						"title": "多玩盒子",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部应用：多玩盒子",
+						"icon": {
+							"type": "img",
+							"content": "/program/imitate/study/icon/favicon.ico"
+						},
+						"size": {
+							"width": "400",
+							"height": "700"
+						}
+					}
+				},
+				"shortcuts": ["studybox"],
+				"menu": {
+					"studybox": {
+						"app": "studybox",
+						"title": "多玩盒子",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Jay资源库",
+			"labels": ["popular", "educate"],
+			"icon": "../../assets/icon/program/jay-favicon.ico",
+			"summary": "../../assets/image/program/jay-summary.png",
+			"description": "互联网净土，白嫖党天堂，聚合全网优质资源，致力于做到一个网站解决所有问题",
+			"open": {
+				"url": "https://www.lovejay.top",
+				"title": "Jay资源库",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/jay-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"jay": {
+						"url": "https://www.lovejay.top",
+						"title": "Jay资源库",
+						"developer": "zhongjyuan",
+						"description": "互联网净土，白嫖党天堂，聚合全网优质资源，致力于做到一个网站解决所有问题",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/jay-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["jay"],
+				"menu": {
+					"jay": {
+						"app": "jay",
+						"title": "Jay资源库",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "图欧学习资源库",
+			"labels": ["popular", "educate"],
+			"icon": "../../assets/icon/program/tuou-favicon.ico",
+			"summary": "../../assets/image/program/tuou-summary.png",
+			"description": "分享了有23个类目的资源站，它内容非常全面，全是有关学习资源的，它几乎满足了各阶段的学习要求，比如，单词视频、课本音频、单词文本、电子书等。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://tuostudy.com",
+				"title": "图欧学习资源库",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tuou-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tuou": {
+						"openMode": "outer",
+						"url": "https://tuostudy.com",
+						"title": "图欧学习资源库",
+						"developer": "zhongjyuan",
+						"description": "分享了有23个类目的资源站，它内容非常全面，全是有关学习资源的，它几乎满足了各阶段的学习要求，比如，单词视频、课本音频、单词文本、电子书等。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tuou-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tuou"],
+				"menu": {
+					"tuou": {
+						"app": "tuou",
+						"title": "图欧学习资源库",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "轻工具资源导航",
+			"labels": ["popular", "educate"],
+			"icon": "../../assets/icon/program/qinggongju-favicon.ico",
+			"summary": "../../assets/image/program/qinggongju-summary.png",
+			"description": "一个专注收集优质免费资源的导航，集影视、音乐、图库、设计、娱乐、视频、学习等于一体的资源型网站，主打国内优质免费资源网站，简约优雅的设计风格，全面的前端用户功能，简单的模块化配置，欢迎您的体验",
+			"open": {
+				"openMode": "outer",
+				"url": "https://qinggongju.com",
+				"title": "轻工具资源导航",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/qinggongju-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"qinggongju": {
+						"openMode": "outer",
+						"url": "https://qinggongju.com",
+						"title": "轻工具资源导航",
+						"developer": "zhongjyuan",
+						"description": "一个专注收集优质免费资源的导航，集影视、音乐、图库、设计、娱乐、视频、学习等于一体的资源型网站，主打国内优质免费资源网站，简约优雅的设计风格，全面的前端用户功能，简单的模块化配置，欢迎您的体验",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/qinggongju-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["qinggongju"],
+				"menu": {
+					"qinggongju": {
+						"app": "qinggongju",
+						"title": "轻工具资源导航",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "JustAuth",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/justauth-favicon.ico",
+			"summary": "../../assets/image/program/justauth-summary.png",
+			"description": "开箱即用的整合第三方登录的开源组件，已集成国内外数十家平台，是实现第三方社会化登录的不二之选",
+			"open": {
+				"resizable": false,
+				"url": "https://www.justauth.cn",
+				"title": "JustAuth",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/justauth-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"justauth": {
+						"resizable": false,
+						"url": "https://www.justauth.cn",
+						"title": "JustAuth",
+						"developer": "zhongjyuan",
+						"description": "开箱即用的整合第三方登录的开源组件，已集成国内外数十家平台，是实现第三方社会化登录的不二之选",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/justauth-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["justauth"],
+				"menu": {
+					"justauth": {
+						"app": "justauth",
+						"title": "JustAuth",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Mybatis",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/mybatis-favicon.ico",
+			"summary": "../../assets/image/program/mybatis-summary.png",
+			"description": "Mybatis – MyBatis 3 | 简介",
+			"open": {
+				"url": "https://mybatis.org/mybatis-3/zh/index.html",
+				"title": "Mybatis",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mybatis-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mybatis": {
+						"url": "https://mybatis.org/mybatis-3/zh/index.html",
+						"title": "Mybatis",
+						"developer": "zhongjyuan",
+						"description": "Mybatis – MyBatis 3 | 简介",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mybatis-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mybatis"],
+				"menu": {
+					"mybatis": {
+						"app": "mybatis",
+						"title": "Mybatis",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Mybatis Plus",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/mybatis-plus-favicon.ico",
+			"summary": "../../assets/image/program/mybatis-plus-summary.png",
+			"description": "MyBatis-Plus 官方文档",
+			"open": {
+				"url": "https://baomidou.com",
+				"title": "Mybatis Plus",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mybatis-plus-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mybatis-plus": {
+						"url": "https://baomidou.com",
+						"title": "Mybatis Plus",
+						"developer": "zhongjyuan",
+						"description": "MyBatis-Plus 官方文档",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mybatis-plus-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mybatis-plus"],
+				"menu": {
+					"mybatis-plus": {
+						"app": "mybatis-plus",
+						"title": "Mybatis Plus",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "有趣Gif",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/funnygifsbox-favicon.ico",
+			"summary": "../../assets/image/program/funnygifsbox-summary.png",
+			"description": "🔥100000+ 😝 Funny Gif Emoji Emoticons Box 😘 Free Download 👍",
+			"open": {
+				"openMode": "outer",
+				"url": "https://funnygifsbox.com",
+				"title": "有趣Gif",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/funnygifsbox-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"funnygifsbox": {
+						"openMode": "outer",
+						"url": "https://funnygifsbox.com",
+						"title": "有趣Gif",
+						"developer": "zhongjyuan",
+						"description": "🔥100000+ 😝 Funny Gif Emoji Emoticons Box 😘 Free Download 👍",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/funnygifsbox-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["funnygifsbox"],
+				"menu": {
+					"funnygifsbox": {
+						"app": "funnygifsbox",
+						"title": "有趣Gif",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Element",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/element-favicon.ico",
+			"summary": "../../assets/image/program/element-summary.png",
+			"description": "Element，一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的桌面端组件库",
+			"open": {
+				"openMode": "outer",
+				"url": "https://element.eleme.cn/#/zh-CN",
+				"title": "Element",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/element-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"element": {
+						"openMode": "outer",
+						"url": "https://element.eleme.cn/#/zh-CN",
+						"title": "Element",
+						"developer": "zhongjyuan",
+						"description": "Element，一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的桌面端组件库",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/element-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["element"],
+				"menu": {
+					"element": {
+						"app": "element",
+						"title": "Element",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "C语言中文网",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/biancheng-favicon.ico",
+			"summary": "../../assets/image/program/biancheng-summary.png",
+			"description": "C语言中文网是中国领先的C语言程序设计专业网站，提供C语言入门经典教程、C语言编译器、C语言函数手册，C语言编程技巧，C语言考试试题等，是学习、自学C语言程序设计的好帮手。",
+			"open": {
+				"url": "http://c.biancheng.net/",
+				"title": "C语言中文网",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/biancheng-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"biancheng": {
+						"url": "http://c.biancheng.net/",
+						"title": "C语言中文网",
+						"developer": "zhongjyuan",
+						"description": "C语言中文网是中国领先的C语言程序设计专业网站，提供C语言入门经典教程、C语言编译器、C语言函数手册，C语言编程技巧，C语言考试试题等，是学习、自学C语言程序设计的好帮手。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/biancheng-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["biancheng"],
+				"menu": {
+					"biancheng": {
+						"app": "biancheng",
+						"title": "C语言中文网",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "廖雪峰的官方网站",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/liaoxuefeng-favicon.ico",
+			"summary": "../../assets/image/program/liaoxuefeng-summary.png",
+			"description": "研究互联网产品和技术，提供原创中文精品教程",
+			"open": {
+				"url": "http://c.biancheng.net",
+				"title": "廖雪峰的官方网站",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/liaoxuefeng-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"liaoxuefeng": {
+						"url": "http://c.biancheng.net",
+						"title": "廖雪峰的官方网站",
+						"developer": "zhongjyuan",
+						"description": "研究互联网产品和技术，提供原创中文精品教程",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/liaoxuefeng-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["liaoxuefeng"],
+				"menu": {
+					"liaoxuefeng": {
+						"app": "liaoxuefeng",
+						"title": "廖雪峰的官方网站",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "程序猿DD",
+			"labels": ["educate"],
+			"icon": "../../assets/icon/program/didispace-favicon.ico",
+			"summary": "../../assets/image/program/didispace-summary.png",
+			"description": "本站是程序猿DD（翟永超）的技术分享博客。内容涵盖Java后端技术、Spring Boot、Spring Cloud、微服务架构、运维开发、系统监控等相关的研究与知识分享。",
+			"open": {
+				"url": "https://blog.didispace.com",
+				"title": "程序猿DD",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/didispace-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"didispace": {
+						"url": "https://blog.didispace.com",
+						"title": "程序猿DD",
+						"developer": "zhongjyuan",
+						"description": "本站是程序猿DD（翟永超）的技术分享博客。内容涵盖Java后端技术、Spring Boot、Spring Cloud、微服务架构、运维开发、系统监控等相关的研究与知识分享。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/didispace-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["didispace"],
+				"menu": {
+					"didispace": {
+						"app": "didispace",
+						"title": "程序猿DD",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

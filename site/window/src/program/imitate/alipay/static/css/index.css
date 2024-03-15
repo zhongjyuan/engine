@@ -1,0 +1,311 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+img {
+	vertical-align: top;
+}
+
+.footer {
+	border: 0;
+}
+
+.footer a {
+	border: 0;
+}
+
+.bg-color {
+	background-color: #00c7ff !important;
+	color: #fff !important;
+}
+
+.font-color {
+	color: #00c7ff !important;
+}
+
+.nostyle {
+	background: none !important;
+	border: 0 !important;
+	box-shadow: none !important;
+}
+
+#live .header {
+	height: 100px;
+}
+
+#live .header-top a {
+	color: #fff;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 5px 5px;
+}
+
+.mylist.ui-listview .ui-li-has-thumb > img:first-child,
+.mylist.ui-listview .ui-li-has-thumb > .ui-btn > img:first-child,
+.mylist.ui-listview .ui-li-has-thumb .ui-li-thumb {
+	max-width: 4em;
+	max-height: 4em;
+	margin-left: 1em;
+	margin-top: 0.5em;
+	border-radius: 5px;
+}
+
+.mylist.ui-listview .ui-li-has-thumb .ui-btn {
+	padding-left: 4em;
+}
+
+.mylist h2 {
+	position: relative;
+}
+
+.mylist .timeTips {
+	position: absolute;
+	right: 10px;
+	bottom: 0;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+#live .mylist {
+	margin-top: 40px;
+}
+
+.list {
+	position: relative;
+}
+
+.list .timeTips {
+	position: absolute;
+	right: 30px;
+	top: 15px;
+	font-size: 12px;
+	font-weight: normal;
+	color: #999999;
+}
+
+#friend .tou {
+	width: 3em;
+	height: 3em;
+	border-radius: 50%;
+}
+
+#friend .footer {
+	border: 0;
+}
+
+#friend .footer a {
+	border: 0;
+}
+
+#friend .left {
+	padding: 0;
+}
+
+#friend .friendlist {
+	margin-top: 20px;
+}
+
+#friend .friendlist h2 {
+	position: relative;
+}
+
+#friend .friendlist h2 .tips {
+	float: right;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+#friend .header {
+	height: 40px;
+}
+
+#friend .header-top a {
+	color: #fff;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 5px 5px;
+}
+
+.menulist {
+	padding: 1em;
+	background-color: #fff;
+	border-radius: 20px;
+	margin-top: 1em;
+}
+
+.menulist span {
+	display: block;
+	margin-top: 0.5em;
+}
+
+#friend .menulist {
+	text-align: center;
+}
+
+#friend .menulist img {
+	width: 3em;
+	height: 3em;
+	margin-top: 1em;
+}
+
+#friend .menulist span {
+	color: #333333;
+	font-weight: normal;
+}
+
+#friend .menulist p {
+	color: #a3a3a3;
+	font-weight: normal;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.mylist span {
+	color: #9a9a9a;
+}
+
+.mylist p {
+	color: #cccccc;
+}
+
+#home .header {
+	height: 130px;
+	background-color: #1678ff !important;
+}
+
+#home .header-top a {
+	color: #fff;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 20px 0px 0px 5px;
+}
+
+#home .right a {
+	margin-left: -15px;
+	margin-top: 13px;
+}
+
+#home .menulist {
+	text-align: center;
+	background: none;
+	margin-top: 0.25em;
+}
+
+#home .menulist img {
+	width: 2em;
+	height: 2em;
+	margin-top: 1em;
+}
+
+#home .header .menulist span {
+	color: #fff;
+	font-weight: normal !important;
+	font-size: 15px;
+}
+
+#home .content .menulist span {
+	color: #666666;
+	font-weight: normal !important;
+	font-size: 15px;
+}
+
+#home .mylist {
+	height: 2em;
+}
+
+#home .cfshlist {
+	text-align: center;
+	background: none;
+	margin-top: 1em;
+	background-color: #fff;
+	padding-bottom: 10px;
+}
+
+#home .cfshlist img {
+	width: 7em;
+	height: 7em;
+	margin-top: 1em;
+}
+
+#home .cfshlist span {
+	color: #333333;
+	font-weight: normal !important;
+	font-size: 15px;
+	display: block;
+}
+
+.hzflist span {
+	display: block;
+	margin-top: 0.5em;
+	float: left;
+}
+
+#home .hzflist {
+	text-align: center;
+	background: none;
+	margin-top: 0em;
+	background-color: #fff;
+	padding-bottom: 10px;
+}
+
+#home .hzflist img {
+	width: 3em;
+	height: 3em;
+	margin-top: 1em;
+	margin-left: 2em;
+}
+
+#home .hzflist span {
+	color: #999999;
+	font-weight: normal !important;
+	font-size: 12px;
+	margin-left: 10px;
+	margin-top: -13px;
+}
+
+#home .hzflist h3 {
+	font-size: 12px;
+	color: #333333;
+	float: left;
+	margin-left: 10px;
+	margin-top: 2em;
+}
+
+.hzflist span {
+	display: block;
+	margin-top: 0.5em;
+}
+
+.lunbo {
+	width: 100%;
+	height: 120px;
+	background-color: #fff;
+	margin-top: 5em;
+}
+
+#test1 {
+	margin-top: 65px;
+}
+
+#test1 img {
+	width: 100%;
+	height: 100%;
+}
+
+.foot {
+	height: 100px;
+	width: 100%;
+	color: #999999;
+	text-align: center;
+	margin-top: 20px;
+}

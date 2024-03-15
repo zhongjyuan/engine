@@ -1,0 +1,233 @@
+{
+	"apps": {
+		"color-picker": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": false,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/colorPicker/index.html",
+			"tileUrl": "",
+			"title": "取色器",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用: 取色器",
+			"icon": {
+				"type": "fa",
+				"bg": "#3289c7",
+				"content": "eyedropper"
+			},
+			"size": {
+				"width": "207",
+				"height": "239"
+			},
+			"position": {
+				"x": "(x-207)/2",
+				"y": "(y-239)/2",
+				"top": true,
+				"left": true,
+				"autoOffset": false
+			}
+		},
+		"documents": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "./documents/README.md",
+			"tileUrl": "",
+			"title": "指引文档",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：指引文档",
+			"icon": {
+				"type": "fa",
+				"bg": "#d9ab4a",
+				"content": "book"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"system": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/system/index.html",
+			"tileUrl": "",
+			"title": "控制面板",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：系统控制面板",
+			"icon": {
+				"type": "fa",
+				"bg": "#436fde",
+				"content": "gear"
+			},
+			"size": {
+				"width": "1100",
+				"height": "590"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"browser": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": true,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/browser/index.html",
+			"tileUrl": "",
+			"title": "浏览器",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：浏览器",
+			"icon": {
+				"type": "fa",
+				"bg": "#3a55c2",
+				"content": "internet-explorer"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.1",
+				"y": "y*0.1",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"app-store": {
+			"badge": 0,
+			"autoRun": 1,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/appStore/index.html",
+			"tileUrl": "",
+			"title": "应用商店",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：应用商店",
+			"icon": {
+				"type": "fa",
+				"bg": "#b36aba",
+				"content": "shopping-bag"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.1",
+				"y": "y*0.1",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"website": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/website/index.html",
+			"tileUrl": "./program/website/index.html",
+			"title": "官网",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：官方网站",
+			"icon": {
+				"type": "img",
+				"content": "./program/website/icon/favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.1",
+				"y": "y*0.1",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"website-server": {
+			"badge": 0,
+			"autoRun": 1,
+			"plugin": true,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "min",
+			"urlRandomToken": true,
+			"url": "./program/website/index.html",
+			"tileUrl": "",
+			"title": "官网服务",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置插件：官方网站服务",
+			"icon": {
+				"type": "img",
+				"content": "./program/website/icon/favicon.ico"
+			},
+			"size": {
+				"width": "x+4",
+				"height": "y+4"
+			},
+			"position": {
+				"x": "-2",
+				"y": "-2",
+				"top": true,
+				"left": true,
+				"autoOffset": false
+			}
+		}
+	}
+}

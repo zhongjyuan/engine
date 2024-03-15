@@ -1,0 +1,109 @@
+<div id="system" :class="system_class">
+	<div class="tab-title"><i class="fa fa-gear fa-fw"></i> {{lang("SystemOptions")}}</div>
+	<div class="tab-left">
+		<ul class="tab-nav">
+			<li :class="system_nav_class(nav,id)" :style="system_nav_style(id)" v-for="(nav,id) in navs" @click="system_nav_click(nav,id)">
+				<i class="fa fa-fw" :class="system_nav_icon_class(nav,id)"></i>
+				{{nav.text}}
+			</li>
+		</ul>
+	</div>
+
+	<system-app-manage
+		:lang="lang"
+		:searchWords="searchWords"
+		:apps="apps"
+		:appSetting="appSetting"
+		:appSettingForm="appSettingForm"
+		:system_app_manage_class="system_app_manage_class"
+		:badge_text="badge_text"
+		:render_auto_run="render_auto_run"
+		:app_show="app_show"
+		:app_icon_image_url_fix="url_fix"
+		@onUrlError="url_error"
+		@onCheckAutoRunLevel="check_auto_run_level"
+		@onReduceAutoRunLevel="reduce_auto_run_level"
+		@onIncreaseAutoRunLevel="increase_auto_run_level"
+		@onOpacityClick="opacity_click"
+		@onAppCreate="app_create"
+		@onAppUninstall="app_uninstall"
+		@onAppAddToShortcut="app_add_to_shortcut"
+		@onAppAddToStartMenu="app_add_to_start_menu"
+		@onAppAddToStartMenuSidebar="app_add_to_start_menu_sidebar"
+		@onAppAddToTile="app_add_to_tile"
+		@onAppContextMenu="app_context_menu"
+		@onAppDoubleClick="app_double_click"
+		@onFontAwesomeClick="open_font_awesome"
+		@onImageHostClick="open_image_host"
+		@onIconBgClick="icon_bg_click"
+	></system-app-manage>
+
+	<system-theme-color
+		:lang="lang"
+		:colors="colors"
+		:chooseColor="chooseColor"
+		:autoThemeColor="autoThemeColor"
+		:system_theme_color_class="system_theme_color_class"
+		:color_style="color_style"
+		@onColorChooseClick="color_choose_click"
+		@onColorPickerClick="color_picker_click"
+		@onColorChooseChange="color_choose_change"
+		@onAutoThemeColorChange="auto_theme_color_change"
+	></system-theme-color>
+
+	<system-wallpaper-manage
+		:lang="lang"
+		:wallpaper="wallpaper"
+		:wallpapers="wallpapers"
+		:wallpaperAddUrl="wallpaperAddUrl"
+		:wallpaperBlur="wallpaperBlur"
+		:wallpaperSlide="wallpaperSlide"
+		:wallpaperSlideRandom="wallpaperSlideRandom"
+		:wallpaperSlideInterval="wallpaperSlideInterval"
+		:system_wallpaper_manage_class="system_wallpaper_manage_class"
+		:wallpaper_fixed="wallpaper_fixed"
+		:wallpaper_current_fixed="wallpaper_current_fixed"
+		@onUrlError="url_error"
+		@onWallpaperBlurChange="wallpaper_blur_change"
+		@onWallpaperSlideChange="wallpaper_slide_change"
+		@onWallpaperSlideRandomChange="wallpaper_slide_random_change"
+		@onWallpaperSlideIntervalChange="wallpaper_slide_interval_change"
+		@onWallpaperImageAddClick="wallpaper_image_add_click"
+		@onWallpaperImageUploadClick="open_image_host"
+		@onWallpaperImagePreviewClick="wallpaper_image_preview_click"
+		@onWallpaperImageContextMenu="wallpaper_image_context_menu"
+	></system-wallpaper-manage>
+
+	<system-other-manage
+		:lang="lang"
+		:openMax="openMax"
+		:topTaskBar="topTaskBar"
+		:system_other_manage_class="system_other_manage_class"
+		@onTopTaskBarChange="top_taskbar_change"
+		@onOpenMaxChange="open_max_change"
+	></system-other-manage>
+
+	<system-data-manage
+		:lang="lang"
+		:textData="textData"
+		:dataChange="dataChange"
+		:effectLoading="effectLoading"
+		:system_data_manage_class="system_data_manage_class"
+		@onDataRefreshClick="data_refresh_click"
+		@onDataEffectClick="data_effect_click"
+		@onDataCopyClick="data_copy_click"
+		@onDataImportClick="data_import_click"
+		@onDataImportChange="data_import_change"
+		@onDatExportClick="data_export_click"
+	></system-data-manage>
+
+	<system-about-us
+		:lang="lang"
+		:themeColor="themeColor"
+		:isSmallScreen="isSmallScreen"
+		:information="information"
+		:system_about_us_class="system_about_us_class"
+		:software_name_icon_class="software_name_icon_class"
+		@onWebsiteClick="website_click"
+	></system-about-us>
+</div>

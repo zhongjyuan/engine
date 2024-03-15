@@ -1,0 +1,151 @@
+/* 公共样式 */
+:root {
+    --hover-width: 75%;
+    --other-width: 25%;
+    --speed: 1000ms;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* 标题 */
+h1 {
+    font-size: 4rem;
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    /* 设置不换行 */
+    white-space: nowrap;
+}
+
+/* 按钮 */
+.btn {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%);
+    text-decoration: none;
+    color: #fff;
+    border: #fff solid 0.2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    /* 转换为大写 */
+    text-transform: uppercase;
+    width: 15rem;
+    padding: 1.5rem;
+}
+
+/* 左边按钮悬停 */
+.split.left .btn:hover {
+    background-color: rgba(87, 84, 236, 1);
+    border-color: rgba(87, 84, 236, 1);
+}
+
+/* 右边按钮悬停 */
+.split.right .btn:hover {
+    background-color: rgba(28, 122, 28, 0.1);
+    border-color: rgba(87, 84, 236, 1);
+}
+
+/* 总体 */
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #333;
+}
+
+/* 左右两边进行对半分开 */
+.split {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* 左边的图 */
+.split.left {
+    left: 0;
+    background: url('../img/ps.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* 伪元素，允许创作人员在元素内容前面插入内容 */
+.split.left::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* 加个蒙层 */
+    background-color: rgba(87, 84, 236, 0.7);
+}
+
+/* 右边的图 */
+.split.right {
+    right: 0;
+    background: url('../img/xbox.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.split.right::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* 加个蒙层 */
+    background-color: rgba(43, 43, 43, 0.8);
+}
+
+/* 来回动画 */
+.split.left,
+.split.right,
+.split.left::before,
+.split.right::before {
+    transition: all var(--speed) ease-in-out;
+}
+
+/* 这一块用来设置偏移量 */
+/* 在左边区域那么就是左边75% */
+.hover-left .left {
+    width: var(--hover-width);
+}
+
+.hover-left .right {
+    width: var(--other-width);
+}
+
+/* 在右边就是右边75% */
+.hover-right .right {
+    width: var(--hover-width);
+}
+
+.hover-right .left {
+    width: var(--other-width);
+}
+
+/* 媒体查询 */
+@media(max-width: 800px) {
+    h1 {
+        font-size: 2rem;
+        top: 30%;
+    }
+
+    .btn {
+        padding: 1.2rem;
+        width: 12rem;
+    }
+}

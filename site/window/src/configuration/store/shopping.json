@@ -1,0 +1,316 @@
+{
+	"apps": [
+		{
+			"title": "拼多多",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/pinduoduo-favicon.ico",
+			"summary": "../../assets/image/program/pinduoduo-summary.png",
+			"description": "拼多多，是国内移动互联网的主流电子商务应用产品。",
+			"open": {
+				"url": "https://mobile.yangkeduo.com",
+				"title": "拼多多",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/pinduoduo-favicon.ico"
+				},
+				"size": {
+					"height": "800",
+					"width": "790"
+				}
+			},
+			"setup": {
+				"apps": {
+					"pinduoduo": {
+						"url": "https://mobile.yangkeduo.com",
+						"title": "拼多多",
+						"developer": "zhongjyuan",
+						"description": "拼多多，是国内移动互联网的主流电子商务应用产品。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/pinduoduo-favicon.ico"
+						},
+						"size": {
+							"height": "800",
+							"width": "790"
+						}
+					}
+				},
+				"shortcuts": ["pinduoduo"],
+				"menu": {
+					"pinduoduo": {
+						"app": "pinduoduo",
+						"title": "拼多多",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "1688",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/alibaba-favicon.ico",
+			"summary": "../../assets/image/program/alibaba-summary.png",
+			"description": "阿里巴巴(1688.com)是全球企业间(B2B)电子商务的著名品牌,为数千万网商提供海量商机信息和便捷安全的在线交易市场,也是商人们以商会友、真实互动的社区平台。",
+			"open": {
+				"url": "https://www.1688.com",
+				"title": "1688",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/alibaba-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"alibaba": {
+						"url": "https://www.1688.com",
+						"title": "1688",
+						"developer": "zhongjyuan",
+						"description": "阿里巴巴(1688.com)是全球企业间(B2B)电子商务的著名品牌,为数千万网商提供海量商机信息和便捷安全的在线交易市场,也是商人们以商会友、真实互动的社区平台。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/alibaba-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["alibaba"],
+				"menu": {
+					"alibaba": {
+						"app": "alibaba",
+						"title": "1688",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "淘宝",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/taobao-favicon.ico",
+			"summary": "../../assets/image/program/taobao-summary.png",
+			"description": "淘宝网 - 亚洲较大的网上交易平台，提供各类服饰、美容、家居、数码、话费/点卡充值… 数亿优质商品，同时提供担保交易(先收货后付款)等安全交易保障服务，并由商家提供退货承诺、破损补寄等消费者保障服务，让你安心享受网上购物乐趣！",
+			"open": {
+				"url": "https://www.taobao.com",
+				"title": "淘宝",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/taobao-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"taobao": {
+						"url": "https://www.taobao.com",
+						"title": "淘宝",
+						"developer": "zhongjyuan",
+						"description": "淘宝网 - 亚洲较大的网上交易平台，提供各类服饰、美容、家居、数码、话费/点卡充值… 数亿优质商品，同时提供担保交易(先收货后付款)等安全交易保障服务，并由商家提供退货承诺、破损补寄等消费者保障服务，让你安心享受网上购物乐趣！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/taobao-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["taobao"],
+				"menu": {
+					"taobao": {
+						"app": "taobao",
+						"title": "淘宝",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "京东",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/jingdong-favicon.ico",
+			"summary": "../../assets/image/program/jingdong-summary.png",
+			"description": "京东JD.COM-专业的综合网上购物商城，为您提供正品低价的购物选择、优质便捷的服务体验。商品来自全球数十万品牌商家，囊括家电、手机、电脑、服装、居家、母婴、美妆、个护、食品、生鲜等丰富品类，满足各种购物需求。",
+			"open": {
+				"url": "https://www.jd.com",
+				"title": "京东",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/jingdong-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"jingdong": {
+						"url": "https://www.jd.com",
+						"title": "京东",
+						"developer": "zhongjyuan",
+						"description": "京东JD.COM-专业的综合网上购物商城，为您提供正品低价的购物选择、优质便捷的服务体验。商品来自全球数十万品牌商家，囊括家电、手机、电脑、服装、居家、母婴、美妆、个护、食品、生鲜等丰富品类，满足各种购物需求。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/jingdong-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["jingdong"],
+				"menu": {
+					"jingdong": {
+						"app": "jingdong",
+						"title": "京东",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "天猫",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/tmall-favicon.ico",
+			"summary": "../../assets/image/program/tmall-summary.png",
+			"description": "天猫tmall.com--理想生活上天猫",
+			"open": {
+				"url": "https://www.tmall.com",
+				"title": "天猫",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tmall-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tmall": {
+						"url": "https://www.tmall.com",
+						"title": "天猫",
+						"developer": "zhongjyuan",
+						"description": "天猫tmall.com--理想生活上天猫",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tmall-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tmall"],
+				"menu": {
+					"tmall": {
+						"app": "tmall",
+						"title": "天猫",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "苏宁易购",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/suning-favicon.ico",
+			"summary": "../../assets/image/program/suning-summary.png",
+			"description": "苏宁易购苏宁易购-综合网上购物平台，商品涵盖家电、手机、电脑、超市、母婴、服装、百货、海外购等品类。送货更准时、价格更超值、上新货更快，正品行货、全国联保、可门店自提，全网更低价，让您放心去喜欢！",
+			"open": {
+				"url": "https://www.suning.com",
+				"title": "苏宁易购",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/suning-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"suning": {
+						"url": "https://www.suning.com",
+						"title": "苏宁易购",
+						"developer": "zhongjyuan",
+						"description": "苏宁易购苏宁易购-综合网上购物平台，商品涵盖家电、手机、电脑、超市、母婴、服装、百货、海外购等品类。送货更准时、价格更超值、上新货更快，正品行货、全国联保、可门店自提，全网更低价，让您放心去喜欢！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/suning-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["suning"],
+				"menu": {
+					"suning": {
+						"app": "suning",
+						"title": "苏宁易购",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "唯品会",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/weipinhui-favicon.ico",
+			"summary": "../../assets/image/program/weipinhui-summary.png",
+			"description": "唯品会vip购物网以1-7折超低折扣对全球各大品牌进行限时特卖，商品囊括服装、化妆品、家居、奢侈品等上千品牌。100%正品、低价、货到付款、7天无理由退货。",
+			"open": {
+				"url": "https://www.vip.com",
+				"title": "唯品会",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/weipinhui-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"weipinhui": {
+						"url": "https://www.vip.com",
+						"title": "唯品会",
+						"developer": "zhongjyuan",
+						"description": "唯品会vip购物网以1-7折超低折扣对全球各大品牌进行限时特卖，商品囊括服装、化妆品、家居、奢侈品等上千品牌。100%正品、低价、货到付款、7天无理由退货。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/weipinhui-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["weipinhui"],
+				"menu": {
+					"weipinhui": {
+						"app": "weipinhui",
+						"title": "唯品会",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "聚美优品",
+			"labels": ["shopping"],
+			"icon": "../../assets/icon/program/jumei-favicon.ico",
+			"summary": "../../assets/image/program/jumei-summary.png",
+			"description": "聚美优品为聚美旗下电商业务，是国内最大的化妆品电商平台。聚美先后在电子商务、影视娱乐、共享经济等创新赛道持续发力，孵化出一系列行业领军企业。",
+			"open": {
+				"url": "http://gz.jumei.com",
+				"title": "聚美优品",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/jumei-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"jumei": {
+						"url": "http://gz.jumei.com",
+						"title": "聚美优品",
+						"developer": "zhongjyuan",
+						"description": "聚美优品为聚美旗下电商业务，是国内最大的化妆品电商平台。聚美先后在电子商务、影视娱乐、共享经济等创新赛道持续发力，孵化出一系列行业领军企业。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/jumei-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["jumei"],
+				"menu": {
+					"jumei": {
+						"app": "jumei",
+						"title": "聚美优品",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,5 @@
+{
+	"presets": ["react", "es2015", "stage-0"],
+	"plugins": ["transform-runtime"]
+}
+/*https://blog.csdn.net/qq_37299525/article/details/125272621*/

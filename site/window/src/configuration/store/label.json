@@ -1,0 +1,21 @@
+{
+	"labels": [
+		{ "code": "popular", "name": "常用" },
+		{ "code": "social", "name": "社交" },
+		{ "code": "community", "name": "社区" },
+		{ "code": "educate", "name": "教育" },
+		{ "code": "official", "name": "办公" },
+		{ "code": "shopping", "name": "购物" },
+		{ "code": "browser", "name": "浏览器" },
+		{ "code": "music", "name": "音乐" },
+		{ "code": "video", "name": "视频" },
+		{ "code": "recreation", "name": "娱乐" },
+		{ "code": "theme", "name": "主题" },
+		{ "code": "secure", "name": "安全" },
+		{ "code": "program", "name": "编程" },
+		{ "code": "ai", "name": "AI" },
+		{ "code": "tool", "name": "工具" },
+		{ "code": "plugin", "name": "插件" },
+		{ "code": "other", "name": "其他" }
+	]
+}

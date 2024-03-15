@@ -1,0 +1,29 @@
+* {
+	font-family: "Scerh", sans-serif;
+}
+
+.jdtstt {
+	border: 1px solid #000;
+}
+
+.rightsty {
+	transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+}
+
+.trans {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==);
+}
+
+html,
+body {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+input[type="button"] {
+	background-color: #fff;
+	border: 1px solid #808080;
+	cursor: pointer;
+}

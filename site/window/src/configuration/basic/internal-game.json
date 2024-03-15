@@ -1,0 +1,101 @@
+{
+	"apps": {
+		"chickfarm": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/game/chickfarm/index.html",
+			"tileUrl": "",
+			"title": "养鸡庄园",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置游戏：养鸡庄园",
+			"icon": {
+				"type": "img",
+				"bg": "#6b96cf",
+				"content": "./program/game/chickfarm/icon/favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"typewrite": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/game/typewrite/index.html",
+			"tileUrl": "",
+			"title": "金山打字",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置游戏：金山打字",
+			"icon": {
+				"type": "img",
+				"content": "./program/game/typewrite/icon/favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"zhizhuzhipai": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/game/zhizhuzhipai/index.html",
+			"tileUrl": "",
+			"title": "蜘蛛纸牌",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置游戏：蜘蛛纸牌",
+			"icon": {
+				"type": "img",
+				"content": "./program/game/zhizhuzhipai/icon/favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		}
+	}
+}

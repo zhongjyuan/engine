@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- 定义文档类型为 HTML5 -->
+<html lang="zh-CN">
+	<!-- 定义文档的语言为简体中文 -->
+
+	<head>
+		<meta charset="UTF-8" />
+		<!-- 设置字符编码为UTF-8，以支持中文等特殊字符 -->
+
+		<title data-string="phishingErrorTitle"></title>
+		<!-- 设置页面标题，使用data-string属性以便后续JS脚本进行国际化处理 -->
+
+		<link rel="stylesheet" href="../css/base.css" />
+		<link rel="stylesheet" href="./css/index.css" />
+		<!-- 引入基础CSS文件和当前页面CSS文件 -->
+
+		<link rel="icon" href="./favicon.png" />
+		<!-- 设置网站图标 -->
+	</head>
+
+	<body>
+		<div id="page-wrapper">
+			<h1 data-string="phishingErrorTitle"></h1>
+			<!-- 添加标题，使用 data-string 属性可以在后续 JS 脚本中进行国际化处理 -->
+			<h2 data-string="phishingErrorMessage"></h2>
+			<!-- 添加错误信息，使用 data-string 属性可以在后续 JS 脚本中进行国际化处理 -->
+
+			<button class="secondary-button" id="ignore-button" data-string="phishingErrorVisitAnyway"></button>
+			<!-- 添加一个次要按钮，用于忽略错误，使用 data-string 属性可以在后续 JS 脚本中进行国际化处理 -->
+			<button class="primary-button" id="continue-button" data-string="phishingErrorLeave"></button>
+			<!-- 添加一个主要按钮，用于继续操作，使用 data-string 属性可以在后续 JS 脚本中进行国际化处理 -->
+
+			<script src="../../../dist/language.js"></script>
+			<!-- 引入国际化 JS 文件 -->
+			<script src="../../settings/pageSettingManagement.js"></script>
+			<!-- 引入页面设置 JS 文件 -->
+			<script src="./js/index.js"></script>
+			<!-- 引入当前页面 JS 文件 -->
+		</div>
+	</body>
+</html>

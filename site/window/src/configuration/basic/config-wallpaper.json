@@ -1,0 +1,109 @@
+{
+	"configs": {
+		"wallpaper": "./assets/image/wall-paper/7.jpg",
+		"wallpaperBlur": false,
+		"wallpaperSlide": true,
+		"wallpaperSlideRandom": true,
+		"wallpaperSlideInterval": 1,
+		"wallpaperSlideTime": 1519442460788,
+		"wallpaperSlideIndex": 8,
+		"wallpapers": [
+			{
+				"image": "./assets/image/wall-paper/1.jpg",
+				"preview": "./assets/image/wall-paper/1_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/2.jpg",
+				"preview": "./assets/image/wall-paper/2_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/3.jpg",
+				"preview": "./assets/image/wall-paper/3_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/4.jpg",
+				"preview": "./assets/image/wall-paper/4_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/5.jpg",
+				"preview": "./assets/image/wall-paper/5_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/6.jpg",
+				"preview": "./assets/image/wall-paper/6_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/7.jpg",
+				"preview": "./assets/image/wall-paper/7_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/8.jpg",
+				"preview": "./assets/image/wall-paper/8_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/9.jpg",
+				"preview": "./assets/image/wall-paper/9_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/10.jpg",
+				"preview": "./assets/image/wall-paper/10_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/11.jpg",
+				"preview": "./assets/image/wall-paper/11_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/12.jpg",
+				"preview": "./assets/image/wall-paper/12_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/13.jpg",
+				"preview": "./assets/image/wall-paper/13_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/14.jpg",
+				"preview": "./assets/image/wall-paper/14_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/15.jpg",
+				"preview": "./assets/image/wall-paper/15_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/16.jpg",
+				"preview": "./assets/image/wall-paper/16_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/17.jpg",
+				"preview": "./assets/image/wall-paper/17_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/18.jpg",
+				"preview": "./assets/image/wall-paper/18_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/19.jpg",
+				"preview": "./assets/image/wall-paper/19_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/20.jpg",
+				"preview": "./assets/image/wall-paper/20_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/21.jpg",
+				"preview": "./assets/image/wall-paper/21_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/22.jpg",
+				"preview": "./assets/image/wall-paper/22_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/23.jpg",
+				"preview": "./assets/image/wall-paper/23_1.jpg"
+			},
+			{
+				"image": "./assets/image/wall-paper/24.jpg",
+				"preview": "./assets/image/wall-paper/24_1.jpg"
+			}
+		]
+	}
+}

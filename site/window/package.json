@@ -1,0 +1,88 @@
+{
+  "name": "window",
+  "version": "1.0.0",
+  "description": "window ui",
+  "keywords": [
+    "zhongjyuan",
+    "window",
+    "ui"
+  ],
+  "author": {
+    "name": "zhongjyuan",
+    "email": "zhongjyuan@outlook.com",
+    "url": "https://gitlab.zhongjyuan.club/zhongjyuan"
+  },
+  "contributors": [
+    {
+      "name": "zhongjyuan",
+      "email": "zhongjyuan@outlook.com",
+      "url": "https://gitlab.zhongjyuan.club/zhongjyuan"
+    }
+  ],
+  "homepage": "http://zhongjyuan.club",
+  "repository": {
+    "type": "gitlab",
+    "url": "http://gitlab.zhongjyuan.club/zhongjyuan/window"
+  },
+  "bugs": {
+    "url": "http://gitlab.zhongjyuan.club/zhongjyuan/window/issues",
+    "email": "zhongjyuan@outlook.com"
+  },
+  "scripts": {
+    "start": "http-server ./dist/ -p 7077 -s",
+    "build": "webpack --config ./build/webpack.build.config.js"
+  },
+  "dependencies": {
+    "http-server": "^13.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.8.8",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-vue": "^2.0.2",
+    "clean-css": "^4.2.4",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^6.4.1",
+    "css-loader": "^5.2.7",
+    "cssnano": "^4.1.11",
+    "file-loader": "^6.2.0",
+    "glob": "^10.2.4",
+    "glob-all": "^3.3.1",
+    "html-loader": "^1.3.2",
+    "html-webpack-plugin": "^4.5.2",
+    "http-server": "^13.0.1",
+    "image-webpack-loader": "^8.1.0",
+    "imagemin": "^7.0.1",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-mozjpeg": "^7.0.0",
+    "imagemin-pngquant": "^7.0.0",
+    "imagemin-webp": "^7.0.0",
+    "imagemin-webpack-plugin": "^2.4.2",
+    "mini-css-extract-plugin": "^1.6.2",
+    "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "postcss-loader": "^3.0.0",
+    "raw-loader": "^4.0.2",
+    "svg-url-loader": "^7.1.1",
+    "terser-webpack-plugin": "^4.2.3",
+    "uglify-js": "^3.17.4",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^4.1.1",
+    "vue-loader": "^15.0.9",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.3.3",
+    "vue-template-loader": "^0.4.1",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  }
+}

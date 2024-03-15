@@ -1,0 +1,88 @@
+.popup-container {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400px;
+	height: auto;
+	z-index: 9999;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.4);
+	font-family: Segoe UI, sans-serif;
+}
+
+.popup-container .titlebar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 18px;
+	color: #fff;
+	background-color: #0078d7;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.popup-container .titlebar .title {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.popup-container .titlebar .close {
+	cursor: pointer;
+	border: none;
+	outline: none;
+	background-color: transparent;
+	font-size: 24px;
+	color: #fff;
+	opacity: 0.8;
+}
+
+.popup-container .titlebar .close:hover {
+	opacity: 1;
+}
+
+.popup-container .content {
+	padding: 20px;
+	text-align: center;
+}
+
+.popup-container .content img {
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 10px;
+	background: url("../../image/wechat.png");
+}
+
+.popup-container .content p {
+	font-size: 1.1rem;
+	line-height: 1.5;
+}
+
+.animatedBackground {
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0.8;
+	transition: all 0.3s;
+	background: linear-gradient(120deg, #ff00ff, #00ffff, #f0f, #ff7f50, #87cefa);
+	background-size: 400% 400%;
+	animation: gradientAnimation 10s ease-in-out infinite;
+}
+
+@keyframes gradientAnimation {
+	0% {
+		background-position: 0%;
+	}
+	50% {
+		background-position: 100%;
+	}
+	100% {
+		background-position: 0%;
+	}
+}

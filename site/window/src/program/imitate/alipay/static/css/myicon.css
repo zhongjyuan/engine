@@ -1,0 +1,11 @@
+.ui-icon-shouye:after {
+    background-image: url("../../image/icons/zhuyemian.png");
+}
+
+.ui-icon-pengyou:after {
+    background-image: url("../../image/icons/pengyou.png");
+}
+
+.ui-icon-wode:after {
+    background-image: url("../../image/icons/wode.png");
+}

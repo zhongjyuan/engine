@@ -1,0 +1,187 @@
+{
+	"apps": [
+		{
+			"title": "计算器",
+			"labels": ["plugin"],
+			"icon": "../../program/plugin/calculator/icon/favicon.ico",
+			"summary": "../../program/plugin/calculator/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置插件：计算器",
+			"open": {
+				"url": "./program/plugin/calculator/index.html",
+				"title": "计算器",
+				"icon": {
+					"type": "img",
+					"content": "./program/plugin/calculator/icon/favicon.ico"
+				},
+				"size": {
+					"width": "324",
+					"height": "496"
+				}
+			},
+			"setup": {
+				"apps": {
+					"calculator": {
+						"url": "./program/plugin/calculator/index.html",
+						"title": "计算器",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置插件：计算器",
+						"icon": {
+							"type": "img",
+							"content": "./program/plugin/calculator/icon/favicon.ico"
+						},
+						"size": {
+							"width": "324",
+							"height": "496"
+						}
+					}
+				},
+				"shortcuts": ["calculator"],
+				"menu": {
+					"calculator": {
+						"app": "calculator",
+						"title": "计算器",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "桌面时钟",
+			"labels": ["popular", "plugin"],
+			"icon": "../../program/plugin/clock/icon/favicon.ico",
+			"summary": "../../program/plugin/clock/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置插件：桌面时钟",
+			"open": {
+				"url": "./program/plugin/clock/index.html",
+				"title": "桌面时钟",
+				"icon": {
+					"type": "fa",
+					"content": "clock-o",
+					"bg": "#375980"
+				},
+				"size": {
+					"width": "324",
+					"height": "496"
+				}
+			},
+			"setup": {
+				"apps": {
+					"clock": {
+						"url": "./program/plugin/clock/index.html",
+						"title": "桌面时钟",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置插件：桌面时钟",
+						"icon": {
+							"type": "fa",
+							"content": "clock-o",
+							"bg": "#375980"
+						},
+						"size": {
+							"width": "324",
+							"height": "496"
+						}
+					}
+				},
+				"shortcuts": ["clock"],
+				"menu": {
+					"clock": {
+						"app": "clock",
+						"title": "桌面时钟",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "天气预报",
+			"labels": ["plugin"],
+			"icon": "../../program/plugin/weather/icon/favicon.ico",
+			"summary": "../../program/plugin/weather/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置插件：天气预报",
+			"open": {
+				"url": "./program/plugin/weather/index.html",
+				"title": "天气预报",
+				"icon": {
+					"type": "img",
+					"content": "./program/plugin/weather/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"weather": {
+						"url": "./program/plugin/weather/index.html",
+						"title": "天气预报",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置插件：天气预报",
+						"icon": {
+							"type": "img",
+							"content": "./program/plugin/weather/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["weather"],
+				"menu": {
+					"weather": {
+						"app": "weather",
+						"title": "天气预报",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "支付宝",
+			"labels": ["plugin"],
+			"icon": "../../program/imitate/alipay/icon/favicon.ico",
+			"summary": "../../program/imitate/alipay/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：支付宝",
+			"open": {
+				"resizable": false,
+				"url": "./program/imitate/alipay/index.html",
+				"title": "支付宝",
+				"icon": {
+					"type": "img",
+					"content": "./program/imitate/alipay/icon/favicon.ico"
+				},
+				"size": {
+					"width": "400",
+					"height": "700"
+				}
+			},
+			"setup": {
+				"apps": {
+					"alipay": {
+						"resizable": false,
+						"url": "./program/imitate/alipay/index.html",
+						"title": "支付宝",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置应用：支付宝",
+						"icon": {
+							"type": "img",
+							"content": "./program/imitate/alipay/icon/favicon.ico"
+						},
+						"size": {
+							"width": "400",
+							"height": "700"
+						}
+					}
+				},
+				"shortcuts": ["alipay"],
+				"menu": {
+					"alipay": {
+						"app": "alipay",
+						"title": "支付宝",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

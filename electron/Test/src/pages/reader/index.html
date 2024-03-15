@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<!-- 设置文档编码为UTF-8 -->
+		<meta charset="UTF-8" />
+
+		<!-- 设置主题颜色 -->
+		<meta name="theme-color" id="meta-theme" />
+
+		<!-- 引入iconfont图标样式 -->
+		<link rel="stylesheet" href="../../../exts/iconfont/iconfont.css" />
+
+		<!-- 引入base.css样式文件 -->
+		<link rel="stylesheet" href="../../css/base.css" />
+
+		<!-- 引入setting.css样式文件 -->
+		<link rel="stylesheet" href="../css/setting.css" />
+
+		<!-- 引入ui.css样式文件 -->
+		<link rel="stylesheet" href="./css/ui.css" />
+
+		<!-- 引入Readability.js脚本文件 -->
+		<script src="../../../exts/readability/Readability.js"></script>
+	</head>
+
+	<body>
+		<!-- 设置按钮，用于打开设置面板 -->
+		<button id="settings-button" class="i carbon:settings-adjust" data-label="buttonReaderSettings"></button>
+
+		<!-- 设置面板的下拉菜单 -->
+		<div id="settings-dropdown" hidden>
+			<!-- 主题切换区域 -->
+			<div class="setting-section theme-circles">
+				<!-- 亮色主题按钮 -->
+				<button class="theme-circle selected" data-theme="light" data-label="buttonReaderLightTheme"></button>
+				<!-- 褐色主题按钮 -->
+				<button class="theme-circle" data-theme="sepia" data-label="buttonReaderSepiaTheme"></button>
+				<!-- 暗色主题按钮 -->
+				<button class="theme-circle" data-theme="dark" data-label="buttonReaderDarkTheme"></button>
+			</div>
+
+			<!-- 自动阅读视图选项区域 -->
+			<div class="setting-section">
+				<input type="checkbox" id="auto-reader-checkbox" />
+				<!-- 自动阅读视图开关 -->
+				<label for="auto-reader-checkbox" data-string="openReaderView"></label>
+			</div>
+		</div>
+
+		<!-- 网站导航链接区域 -->
+		<div id="site-nav-links"></div>
+
+		<!-- 自动重定向提示条，用于询问是否跳转到阅读视图 -->
+		<div id="auto-redirect-banner" hidden>
+			<!-- 提示文字 -->
+			<label data-string="autoRedirectBannerReader"></label>
+			<span id="auto-redirect-button-area">
+				<!-- 是，跳转按钮 -->
+				<button id="auto-redirect-yes" data-string="buttonReaderRedirectYes"></button>
+				<!-- 否，不跳转按钮 -->
+				<button id="auto-redirect-no" data-string="buttonReaderRedirectNo"></button>
+			</span>
+		</div>
+
+		<!-- 返回文章链接区域 -->
+		<div id="backtoarticle">
+			<a id="backtoarticle-link">
+				<!-- 左箭头图标 -->
+				<i class="i carbon:chevron-left"></i>
+				<!-- 文章阅读视图文字 -->
+				<span data-string="articleReaderView"></span>
+			</a>
+		</div>
+
+		<!-- DOM inserted in reader.js -->
+
+		<!-- 引入language.js脚本文件 -->
+		<script src="../../../dist/language.js"></script>
+
+		<!-- 引入pageSettingManagement.js脚本文件 -->
+		<script src="../../settings/pageSettingManagement.js"></script>
+
+		<!-- 引入readerDecision.js脚本文件 -->
+		<script src="../js/readerDecision.js"></script>
+
+		<!-- 引入index.js脚本文件 -->
+		<script src="./js/index.js"></script>
+
+		<!-- 引入theme.js脚本文件 -->
+		<script src="./js/theme.js"></script>
+	</body>
+</html>

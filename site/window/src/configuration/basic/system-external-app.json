@@ -1,0 +1,48 @@
+{
+	"apps": {
+		"font-awesome": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://fontawesome.com:/cheatsheet",
+			"tileUrl": "",
+			"title": "Font Awesome",
+			"version": "1.0.0",
+			"developer": "Font Awesome",
+			"description": "Font Awesome 是为 Twitter Bootstrap 设计的图标字体。",
+			"icon": {
+				"type": "fa",
+				"bg": "rgb(53,154,238)",
+				"content": "flag"
+			}
+		},
+		"image-host": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://imgchr.com",
+			"tileUrl": "",
+			"title": "跳过图床",
+			"version": "1.0.0",
+			"developer": "imgchr.com",
+			"description": "路过图床, 免费公共图床, 提供图片上传和图片外链服务, 原图保存, 全球CDN加速.",
+			"icon": {
+				"type": "fa",
+				"bg": "#72b076",
+				"content": "image"
+			}
+		}
+	}
+}

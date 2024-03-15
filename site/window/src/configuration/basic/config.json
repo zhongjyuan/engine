@@ -1,0 +1,13 @@
+{
+	"configs": {
+		"debug": false,
+		"sound": false,
+		"openMax": 9,
+		"idCounter": 170,
+		"topTaskBar": false,
+		"themeColor": "rgba(2,35,64,1)",
+		"autoThemeColor": true,
+		"shortcutsSortAuto": true,
+		"winBlur": true
+	}
+}

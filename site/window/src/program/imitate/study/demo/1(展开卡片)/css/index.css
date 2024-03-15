@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    /* 竖直排列 */
+    /* flex-direction: column; */
+    /* 水平居中 */
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 视窗 */
+    height: 100vh;
+    /* 防止margin影响 */
+    margin: 0;
+    /* 隐藏滚动条 */
+    overflow: hidden;
+}
+
+.container {
+    /* 变为弹性盒 */
+    display: flex;
+    /* 比如屏幕视为100块，会占用其中的90块 */
+    width: 90vw;
+}
+
+.panel {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80vh;
+    border-radius: 50px;
+    color: #fff;
+    cursor: pointer;
+    flex: 0.5;
+    margin: 10px;
+    position: relative;
+    /* 动画过渡效果 */
+    transition: flex 0.7s ease-in;
+}
+
+.panel h3 {
+    position: absolute;
+    font-size: 24px;
+    bottom: 20px;
+    left: 35px;
+    margin: 0;
+    /* 先将文字设为透明度为0不展示 */
+    opacity: 0;
+}
+
+.panel.active {
+    /* 初始弹性盒子宽度值 */
+    flex: 5;
+}
+
+.panel.active h3 {
+    /* 处于活动状态的时候设为1透明度 */
+    opacity: 1;
+    transition: opacity 0.3s ease-in 0.4s;
+}
+
+/* 媒体查询，在某些屏幕上只显示前三个 */
+@media (max-width: 480px) {
+    .container {
+        width: 100vw;
+    }
+
+    /* 删除第四和第五个在屏幕上的显示 */
+    .panel:nth-of-type(4),
+    .panel:nth-of-type(5) {
+        display: none;
+    }
+}

@@ -1,0 +1,862 @@
+{
+	"apps": [
+		{
+			"title": "VS Code",
+			"labels": ["popular", "program"],
+			"icon": "../../assets/icon/program/vscode-favicon.ico",
+			"summary": "../../assets/image/program/vscode-summary.png",
+			"description": "微软发布 VSCode 在线版，让你直接在浏览器中进行开发！",
+			"open": {
+				"openMode": "outer",
+				"url": "https://vscode.dev",
+				"title": "VS Code",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/vscode-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"vscode": {
+						"openMode": "outer",
+						"url": "https://vscode.dev",
+						"title": "VS Code",
+						"developer": "zhongjyuan",
+						"description": "微软发布 VSCode 在线版，让你直接在浏览器中进行开发！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/vscode-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["vscode"],
+				"menu": {
+					"vscode": {
+						"app": "vscode",
+						"title": "VS Code",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Laya Box",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/layabox-favicon.ico",
+			"summary": "../../assets/image/program/layabox-summary.png",
+			"description": "Layabox（蓝亚盒子）是知名引擎提供商，旗下LayaAir引擎是全平台次世代3D引擎，支持2D/3D/AR/VR产品的研发。支持TS/JS/AS3三种语言开发，一次开发可发布浏览器/APP(安卓与iOS)/小游戏平台（微信/百度/快游戏等）、旗下LayaMe（来呀世界）是免编程3D开发工具与游戏创作平台，是游戏界真正的UGC、下一代Roblox、个性元宇宙的缔造者。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://vscode.dev",
+				"title": "Laya Box",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/layabox-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"layabox": {
+						"openMode": "outer",
+						"url": "https://vscode.dev",
+						"title": "Laya Box",
+						"developer": "zhongjyuan",
+						"description": "Layabox（蓝亚盒子）是知名引擎提供商，旗下LayaAir引擎是全平台次世代3D引擎，支持2D/3D/AR/VR产品的研发。支持TS/JS/AS3三种语言开发，一次开发可发布浏览器/APP(安卓与iOS)/小游戏平台（微信/百度/快游戏等）、旗下LayaMe（来呀世界）是免编程3D开发工具与游戏创作平台，是游戏界真正的UGC、下一代Roblox、个性元宇宙的缔造者。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/layabox-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["layabox"],
+				"menu": {
+					"layabox": {
+						"app": "layabox",
+						"title": "Laya Box",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "APIFox",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/apifox-favicon.ico",
+			"summary": "../../assets/image/program/apifox-summary.png",
+			"description": "API 文档、API 调试、API Mock、API 自动化测试 一体化协作平台",
+			"open": {
+				"url": "https://app.apifox.com",
+				"title": "APIFox",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/apifox-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"apifox": {
+						"url": "https://app.apifox.com",
+						"title": "APIFox",
+						"developer": "zhongjyuan",
+						"description": "API 文档、API 调试、API Mock、API 自动化测试 一体化协作平台",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/apifox-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["apifox"],
+				"menu": {
+					"apifox": {
+						"app": "apifox",
+						"title": "APIFox",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "APIPost",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/apipost-favicon.ico",
+			"summary": "../../assets/image/program/apipost-summary.png",
+			"description": "Apipost是集API设计、API调试、API文档、自动化测试为一体的API研发协同平台,支持grpc,http,websocket,socketio,socketjs类型接口调试,支持私有化部署。",
+			"open": {
+				"url": "https://v7.apipost.cn",
+				"title": "APIPost",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/apipost-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"apipost": {
+						"url": "https://v7.apipost.cn",
+						"title": "APIPost",
+						"developer": "zhongjyuan",
+						"description": "Apipost是集API设计、API调试、API文档、自动化测试为一体的API研发协同平台,支持grpc,http,websocket,socketio,socketjs类型接口调试,支持私有化部署。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/apipost-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["apipost"],
+				"menu": {
+					"apipost": {
+						"app": "apipost",
+						"title": "APIPost",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "DCloud",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/dcloud-favicon.ico",
+			"summary": "../../assets/image/program/dcloud-summary.png",
+			"description": "一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、Web（响应式）、以及各种小程序（微信/支付宝/百度/头条/飞书/QQ/快手/钉钉/淘宝）、快应用等多个平台。",
+			"open": {
+				"url": "https://uniapp.dcloud.net.cn",
+				"title": "DCloud",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/dcloud-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"dcloud": {
+						"url": "https://uniapp.dcloud.net.cn",
+						"title": "DCloud",
+						"developer": "zhongjyuan",
+						"description": "一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、Web（响应式）、以及各种小程序（微信/支付宝/百度/头条/飞书/QQ/快手/钉钉/淘宝）、快应用等多个平台。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/dcloud-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["dcloud"],
+				"menu": {
+					"dcloud": {
+						"app": "dcloud",
+						"title": "DCloud",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Webpack",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/webpack-favicon.ico",
+			"summary": "../../assets/image/program/webpack-summary.png",
+			"description": "一个用于现代 JavaScript 应用程序的 静态模块打包工具。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://www.webpackjs.com",
+				"title": "Webpack",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/webpack-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"webpack": {
+						"openMode": "outer",
+						"url": "https://www.webpackjs.com",
+						"title": "webpack",
+						"developer": "zhongjyuan",
+						"description": "一个用于现代 JavaScript 应用程序的 静态模块打包工具。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/webpack-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["webpack"],
+				"menu": {
+					"webpack": {
+						"app": "webpack",
+						"title": "Webpack",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "菜鸟教程",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/runoob-favicon.ico",
+			"summary": "../../assets/image/program/runoob-summary.png",
+			"description": "提供了编程的基础技术教程, 介绍了HTML、CSS、Javascript、Python，Java，Ruby，C，PHP , MySQL等各种编程语言的基础知识。同时本站中也提供了大量的在线实例，通过实例，您可以更好的study编程。",
+			"open": {
+				"url": "https://www.runoob.com",
+				"title": "菜鸟教程",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/runoob-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"runoob": {
+						"url": "https://www.runoob.com",
+						"title": "菜鸟教程",
+						"developer": "zhongjyuan",
+						"description": "提供了编程的基础技术教程, 介绍了HTML、CSS、Javascript、Python，Java，Ruby，C，PHP , MySQL等各种编程语言的基础知识。同时本站中也提供了大量的在线实例，通过实例，您可以更好的study编程。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/runoob-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["runoob"],
+				"menu": {
+					"runoob": {
+						"app": "runoob",
+						"title": "菜鸟教程",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "GitHub",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/github-favicon.ico",
+			"summary": "../../assets/image/program/github-summary.png",
+			"description": "GitHub是一个面向开源及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://github.com/zhongjyuan",
+				"title": "GitHub",
+				"icon": {
+					"type": "fa",
+					"bg": "#292929",
+					"content": "github"
+				}
+			},
+			"setup": {
+				"apps": {
+					"github": {
+						"openMode": "outer",
+						"url": "https://github.com/zhongjyuan",
+						"title": "GitHub",
+						"developer": "zhongjyuan",
+						"description": "GitHub是一个面向开源及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。",
+						"icon": {
+							"type": "fa",
+							"bg": "#292929",
+							"content": "github"
+						}
+					}
+				},
+				"shortcuts": ["github"],
+				"menu": {
+					"github": {
+						"app": "github",
+						"title": "GitHub",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "GitLab",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/gitlab-favicon.ico",
+			"summary": "../../assets/image/program/gitlab-summary.png",
+			"description": "GitLab 是一个用于仓库管理系统的开源项目，使用Git作为代码管理工具，并在此基础上搭建起来的Web服务。",
+			"open": {
+				"url": "http://gitlab.zhongjyuan.club/zhongjyuan",
+				"title": "GitLab",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/gitlab-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"gitlab": {
+						"url": "http://gitlab.zhongjyuan.club/zhongjyuan",
+						"title": "GitLab",
+						"developer": "zhongjyuan",
+						"description": "GitLab 是一个用于仓库管理系统的开源项目，使用Git作为代码管理工具，并在此基础上搭建起来的Web服务。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/gitlab-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["gitlab"],
+				"menu": {
+					"gitlab": {
+						"app": "gitlab",
+						"title": "GitLab",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Gitee",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/gitee-favicon.ico",
+			"summary": "../../assets/image/program/gitee-summary.png",
+			"description": "面向企业提供一站式研发管理解决方案，包括代码管理、项目管理、文档协作、测试管理、CICD、效能度量等多个模块，支持SaaS、私有化等多种部署方式，帮助企业有序规划和管理研发过程，提升研发效率和质量。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://gitee.com/zhongjyuan",
+				"title": "Gitee",
+				"icon": {
+					"type": "str",
+					"content": "G",
+					"bg": "rgb(216,2,18)"
+				}
+			},
+			"setup": {
+				"apps": {
+					"gitee": {
+						"openMode": "outer",
+						"url": "https://gitee.com/zhongjyuan",
+						"title": "Gitee",
+						"developer": "zhongjyuan",
+						"description": "面向企业提供一站式研发管理解决方案，包括代码管理、项目管理、文档协作、测试管理、CICD、效能度量等多个模块，支持SaaS、私有化等多种部署方式，帮助企业有序规划和管理研发过程，提升研发效率和质量。",
+						"icon": {
+							"type": "str",
+							"content": "G",
+							"bg": "rgb(216,2,18)"
+						}
+					}
+				},
+				"shortcuts": ["gitee"],
+				"menu": {
+					"gitee": {
+						"app": "gitee",
+						"title": "Gitee",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Coding",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/coding-favicon.ico",
+			"summary": "../../assets/image/program/coding-summary.png",
+			"description": "CODING DevOps 一站式研发管理平台，学习腾讯云团队如何采用 DevOps 文化，了解 DevOps 的做法和 DevOps 好处，使研发团队在云端高效协同，实践敏捷开发与 DevOps，提升软件交付质量与速度。",
+			"open": {
+				"url": "https://zhongjyuan.coding.net",
+				"title": "Coding",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/coding-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"coding": {
+						"url": "https://zhongjyuan.coding.net",
+						"title": "Coding",
+						"developer": "zhongjyuan",
+						"description": "CODING DevOps 一站式研发管理平台，学习腾讯云团队如何采用 DevOps 文化，了解 DevOps 的做法和 DevOps 好处，使研发团队在云端高效协同，实践敏捷开发与 DevOps，提升软件交付质量与速度。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/coding-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["coding"],
+				"menu": {
+					"coding": {
+						"app": "coding",
+						"title": "Coding",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Codeup",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/codeup-favicon.ico",
+			"summary": "../../assets/image/program/codeup-summary.png",
+			"description": "云效代码管理 Codeup，是基于 Git 的代码管理平台，数十万企业正在使用，提供代码托管、代码评审、代码扫描、质量检测、持续集成等功能，全方位保护企业代码资产，帮助企业实现安全、稳定、高效的代码托管和研发管理。",
+			"open": {
+				"url": "https://codeup.aliyun.com",
+				"title": "Codeup",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/codeup-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"codeup": {
+						"url": "https://codeup.aliyun.com",
+						"title": "Codeup",
+						"developer": "zhongjyuan",
+						"description": "云效代码管理 Codeup，是基于 Git 的代码管理平台，数十万企业正在使用，提供代码托管、代码评审、代码扫描、质量检测、持续集成等功能，全方位保护企业代码资产，帮助企业实现安全、稳定、高效的代码托管和研发管理。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/codeup-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["codeup"],
+				"menu": {
+					"codeup": {
+						"app": "codeup",
+						"title": "Codeup",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "GitCode",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/gitcode-favicon.ico",
+			"summary": "../../assets/image/program/gitcode-summary.png",
+			"description": "GitCode 是 CSDN 为开发者提供的开源项目创新服务平台，秉承“创新、开放、协作、共享”的开源价值观，致力于为大规模开源开放协同创新助力赋能，打造创新成果孵化和新时代开发者培养的开源创新生态！支持公有云使用、私有化部署以及软硬一体化私有部署。",
+			"open": {
+				"url": "https://gitcode.net/zhongjyuan_jinyuan",
+				"title": "GitCode",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/gitcode-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"gitcode": {
+						"url": "https://gitcode.net/zhongjyuan_jinyuan",
+						"title": "GitCode",
+						"developer": "zhongjyuan",
+						"description": "GitCode 是 CSDN 为开发者提供的开源项目创新服务平台，秉承“创新、开放、协作、共享”的开源价值观，致力于为大规模开源开放协同创新助力赋能，打造创新成果孵化和新时代开发者培养的开源创新生态！支持公有云使用、私有化部署以及软硬一体化私有部署。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/gitcode-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["gitcode"],
+				"menu": {
+					"gitcode": {
+						"app": "gitcode",
+						"title": "GitCode",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "GitWeixin",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/gitweixin-favicon.ico",
+			"summary": "../../assets/image/program/gitweixin-summary.png",
+			"description": "微信开发者·代码管理是为开发者提供的一项代码管理服务，方便微信开发者进行代码推送、拉取、版本管理和多人协作",
+			"open": {
+				"url": "https://git.weixin.qq.com",
+				"title": "GitWeixin",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/gitweixin-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"gitweixin": {
+						"url": "https://git.weixin.qq.com",
+						"title": "GitWeixin",
+						"developer": "zhongjyuan",
+						"description": "微信开发者·代码管理是为开发者提供的一项代码管理服务，方便微信开发者进行代码推送、拉取、版本管理和多人协作",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/gitweixin-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["gitweixin"],
+				"menu": {
+					"gitweixin": {
+						"app": "gitweixin",
+						"title": "GitWeixin",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Font Awesome",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/font-awesome-favicon.ico",
+			"summary": "../../assets/image/program/font-awesome-summary.png",
+			"description": "Font Awesome 是为 Twitter Bootstrap 设计的图标字体。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://fontawesome.com:/cheatsheet",
+				"title": "Font Awesome",
+				"icon": {
+					"type": "fa",
+					"bg": "rgb(53,154,238)",
+					"content": "flag"
+				}
+			},
+			"setup": {
+				"apps": {
+					"font-awesome": {
+						"openMode": "outer",
+						"url": "https://fontawesome.com:/cheatsheet",
+						"title": "Font Awesome",
+						"developer": "zhongjyuan",
+						"description": "Font Awesome 是为 Twitter Bootstrap 设计的图标字体。",
+						"icon": {
+							"type": "fa",
+							"bg": "rgb(53,154,238)",
+							"content": "flag"
+						}
+					}
+				},
+				"shortcuts": ["font-awesome"],
+				"menu": {
+					"font-awesome": {
+						"app": "font-awesome",
+						"title": "Font Awesome",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "跳过图床",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/image-host-favicon.ico",
+			"summary": "../../assets/image/program/image-host-summary.png",
+			"description": "路过图床, 免费公共图床, 提供图片上传和图片外链服务, 原图保存, 全球CDN加速.",
+			"open": {
+				"openMode": "outer",
+				"url": "https://imgchr.com",
+				"title": "跳过图床",
+				"icon": {
+					"type": "fa",
+					"bg": "#72b076",
+					"content": "image"
+				}
+			},
+			"setup": {
+				"apps": {
+					"image-host": {
+						"openMode": "outer",
+						"url": "https://imgchr.com",
+						"title": "跳过图床",
+						"developer": "zhongjyuan",
+						"description": "路过图床, 免费公共图床, 提供图片上传和图片外链服务, 原图保存, 全球CDN加速.",
+						"icon": {
+							"type": "fa",
+							"bg": "#72b076",
+							"content": "image"
+						}
+					}
+				},
+				"shortcuts": ["image-host"],
+				"menu": {
+					"image-host": {
+						"app": "image-host",
+						"title": "跳过图床",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Code Server",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/codeserver-favicon.ico",
+			"summary": "../../assets/image/program/codeserver-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：Code Server",
+			"open": {
+				"url": "http://code.zhongjyuan.club",
+				"title": "Code Server",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/codeserver-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"codeserver": {
+						"url": "http://code.zhongjyuan.club",
+						"title": "Code Server",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：Code Server",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/codeserver-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["codeserver"],
+				"menu": {
+					"codeserver": {
+						"app": "codeserver",
+						"title": "Code Server",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Nexus",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/nexus-favicon.ico",
+			"summary": "../../assets/image/program/nexus-summary.png",
+			"description": "Nexus是一个强大的Maven仓库管理器，它极大地简化了自己内部仓库的维护和外部仓库的访问。",
+			"open": {
+				"url": "http://nexus.zhongjyuan.club",
+				"title": "Nexus",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/nexus-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"nexus": {
+						"url": "http://nexus.zhongjyuan.club",
+						"title": "Nexus",
+						"developer": "zhongjyuan",
+						"description": "Nexus是一个强大的Maven仓库管理器，它极大地简化了自己内部仓库的维护和外部仓库的访问。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/nexus-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["nexus"],
+				"menu": {
+					"nexus": {
+						"app": "nexus",
+						"title": "Nexus",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Nacos",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/nacos-favicon.ico",
+			"summary": "../../assets/image/program/nacos-summary.png",
+			"description": "Nacos是阿里开放的一款中间件,它主要提供三种功能:持久化节点注册,非持久化节点注册和配置管理。",
+			"open": {
+				"url": "http://nacos.zhongjyuan.club/nacos",
+				"title": "Nacos",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/nacos-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"nacos": {
+						"url": "http://nacos.zhongjyuan.club/nacos",
+						"title": "Nacos",
+						"developer": "zhongjyuan",
+						"description": "Nacos是阿里开放的一款中间件,它主要提供三种功能:持久化节点注册,非持久化节点注册和配置管理。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/nacos-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["nacos"],
+				"menu": {
+					"nacos": {
+						"app": "nacos",
+						"title": "Nacos",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "MVN Repository",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/mvnrepository-favicon.ico",
+			"summary": "../../assets/image/program/mvnrepository-summary.png",
+			"description": "Maven 中央仓库",
+			"open": {
+				"url": "https://mvnrepository.com",
+				"title": "MVN Repository",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mvnrepository-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mvnrepository": {
+						"url": "https://mvnrepository.com",
+						"title": "MVN Repository",
+						"developer": "zhongjyuan",
+						"description": "Maven 中央仓库",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mvnrepository-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mvnrepository"],
+				"menu": {
+					"mvnrepository": {
+						"app": "mvnrepository",
+						"title": "MVN Repository",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "NPM Repository",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/npmrepository-favicon.ico",
+			"summary": "../../assets/image/program/npmrepository-summary.png",
+			"description": "NPM 中央仓库",
+			"open": {
+				"url": "https://registry.npmmirror.com/binary.html",
+				"title": "NPM Repository",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/npmrepository-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"npmrepository": {
+						"url": "https://registry.npmmirror.com/binary.html",
+						"title": "NPM Repository",
+						"developer": "zhongjyuan",
+						"description": "NPM 中央仓库",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/npmrepository-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["npmrepository"],
+				"menu": {
+					"npmrepository": {
+						"app": "npmrepository",
+						"title": "NPM Repository",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Aspose",
+			"labels": ["program"],
+			"icon": "../../assets/icon/program/aspose-favicon.ico",
+			"summary": "../../assets/image/program/aspose-summary.png",
+			"description": "Aspose于2002年3月在澳大利亚悉尼创建，旗下产品覆盖文档、图表、PDF、条码、OCR、CAD、HTML、电子邮件等各个文档管理领域，为全球.NET 、Java、C ++等10余种平台开发人员提供丰富的开发选择。",
+			"open": {
+				"url": "https://registry.npmmirror.com/binary.html",
+				"title": "Aspose",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/aspose-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"aspose": {
+						"url": "https://registry.npmmirror.com/binary.html",
+						"title": "Aspose",
+						"developer": "zhongjyuan",
+						"description": "Aspose于2002年3月在澳大利亚悉尼创建，旗下产品覆盖文档、图表、PDF、条码、OCR、CAD、HTML、电子邮件等各个文档管理领域，为全球.NET 、Java、C ++等10余种平台开发人员提供丰富的开发选择。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/aspose-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["aspose"],
+				"menu": {
+					"aspose": {
+						"app": "aspose",
+						"title": "Aspose",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

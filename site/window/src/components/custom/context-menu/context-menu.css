@@ -1,0 +1,114 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+.context-menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 150px;
+	height: auto;
+	display: block;
+	color: white;
+	z-index: 99999999;
+	border-radius: 10px;
+	background-color: rgb(61, 61, 61);
+	/*border-radius: 5px;*/
+	/*overflow: hidden;*/
+}
+
+.context-menu.sub {
+	position: absolute;
+	left: 98%;
+	display: none;
+}
+
+.context-menu.sub.left {
+	left: auto;
+	right: 98%;
+}
+
+.context-menu ul.left .context-menu.sub {
+	left: -100%;
+}
+
+.context-menu ul li:hover .context-menu.sub {
+	display: block;
+}
+
+.context-menu ul {
+	margin: 0px;
+	padding: 0px;
+	border-radius: 10px;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.54);
+}
+
+.context-menu ul li {
+	position: relative;
+	height: 30px;
+	font-size: 10px;
+	cursor: default;
+	padding: 0px 1em;
+	list-style: none;
+	line-height: 30px;
+	transition: background-color 0.5s;
+	/*overflow: hidden;*/
+}
+
+.context-menu ul li div .title {
+	float: left;
+	width: 80%;
+	height: 100%;
+	overflow: hidden;
+	word-break: break-all;
+}
+
+.context-menu ul li div .title.disable {
+	color: darkgrey;
+}
+
+.context-menu ul li.sub:after {
+	content: ">";
+	float: right;
+	position: relative;
+	transform: scale3d(0.5, 1.5, 1);
+}
+
+.context-menu ul li:hover {
+	background-color: #636363;
+}
+
+.context-menu ul li a {
+	height: 100%;
+	color: #333;
+	outline: none;
+	display: block;
+	text-decoration: none;
+}
+
+.context-menu ul hr {
+	margin: 0;
+	height: 0;
+	border: 0;
+	border-top: none;
+	border-bottom: rgba(132, 132, 132, 0.47) 1px solid;
+}
+
+/*浅色主题*/
+.context-menu .light {
+	color: #333333;
+	border-color: #535353;
+	background-color: #e0e0e0;
+}
+
+.context-menu .light ul li:hover {
+	color: #ffffff;
+	background-color: #707070;
+}
+
+.context-menu .light ul hr {
+	border-color: #535353;
+}

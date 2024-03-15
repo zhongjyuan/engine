@@ -1,0 +1,17 @@
+<div id="browser">
+	<div id="url-box">
+		<input @keyup.enter="visit()" id="url-ipt" spellcheck="false" autofocus v-model="url" />
+	</div>
+	<div id="btn-go" @click="visit()">
+		<i class="fa fa-location-arrow fa-fw"></i>
+	</div>
+	<div class="clear"></div>
+	<ul id="history-box">
+		<li v-for="history in historys">
+			<span class="left text-one-line" @click="visit(history.url)" :title="history.url">{{history.url}}</span>
+			<span class="right text-one-line">
+				{{new Date(history.date).format('MM-dd hh:mm')}}
+			</span>
+		</li>
+	</ul>
+</div>

@@ -1,0 +1,870 @@
+{
+	"apps": [
+		{
+			"title": "腾讯云",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/tencent-cloud-favicon.ico",
+			"summary": "../../assets/image/program/tencent-cloud-summary.png",
+			"description": "腾讯云为数百万的企业和开发者提供安全稳定的云计算服务，涵盖云服务器、云数据库、云存储、视频与CDN、域名注册等全方位云服务和各行业解决方案。",
+			"open": {
+				"resizable": false,
+				"url": "https://cloud.tencent.com",
+				"title": "腾讯云",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tencent-cloud-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tencent-cloud": {
+						"resizable": false,
+						"url": "https://cloud.tencent.com",
+						"title": "腾讯云",
+						"developer": "zhongjyuan",
+						"description": "腾讯云为数百万的企业和开发者提供安全稳定的云计算服务，涵盖云服务器、云数据库、云存储、视频与CDN、域名注册等全方位云服务和各行业解决方案。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tencent-cloud-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tencent-cloud"],
+				"menu": {
+					"tencent-cloud": {
+						"app": "tencent-cloud",
+						"title": "腾讯云",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "阿里云",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/aliyun-favicon.ico",
+			"summary": "../../assets/image/program/aliyun-summary.png",
+			"description": "阿里云——阿里巴巴集团旗下公司，是全球领先的云计算及人工智能科技公司之一。提供免费试用、云服务器、云数据库、云安全、云企业应用等云计算服务，以及大数据、人工智能服务、精准定制基于场景的行业解决方案。免费备案，7x24小时售后支持，助企业无忧上云。",
+			"open": {
+				"resizable": false,
+				"url": "https://www.aliyun.com",
+				"title": "阿里云",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/aliyun-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"aliyun": {
+						"resizable": false,
+						"url": "https://www.aliyun.com",
+						"title": "阿里云",
+						"developer": "zhongjyuan",
+						"description": "阿里云——阿里巴巴集团旗下公司，是全球领先的云计算及人工智能科技公司之一。提供免费试用、云服务器、云数据库、云安全、云企业应用等云计算服务，以及大数据、人工智能服务、精准定制基于场景的行业解决方案。免费备案，7x24小时售后支持，助企业无忧上云。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/aliyun-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["aliyun"],
+				"menu": {
+					"aliyun": {
+						"app": "aliyun",
+						"title": "阿里云",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "百度云",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/baidu-cloud-favicon.ico",
+			"summary": "../../assets/image/program/baidu-cloud-summary.png",
+			"description": "百度智能云致力于为企业和开发者提供全球领先的人工智能、大数据和云计算服务，加速产业智能化转型升级",
+			"open": {
+				"resizable": false,
+				"url": "https://cloud.baidu.com",
+				"title": "百度云",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/baidu-cloud-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"baidu-cloud": {
+						"resizable": false,
+						"url": "https://cloud.baidu.com",
+						"title": "百度云",
+						"developer": "zhongjyuan",
+						"description": "百度智能云致力于为企业和开发者提供全球领先的人工智能、大数据和云计算服务，加速产业智能化转型升级",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/baidu-cloud-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["baidu-cloud"],
+				"menu": {
+					"baidu-cloud": {
+						"app": "baidu-cloud",
+						"title": "百度云",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "华为云",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/huawei-cloud-favicon.ico",
+			"summary": "../../assets/image/program/huawei-cloud-summary.png",
+			"description": "华为云最新优惠促销活动汇聚了云服务器,云数据库,云存储等优势产品,推出打折促销,推荐送等多种福利活动,还有更多精彩的线下大会及技术沙龙等着你来参与-华为云",
+			"open": {
+				"resizable": false,
+				"url": "https://activity.huaweicloud.com",
+				"title": "华为云",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/huawei-cloud-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"huawei-cloud": {
+						"resizable": false,
+						"url": "https://activity.huaweicloud.com",
+						"title": "华为云",
+						"developer": "zhongjyuan",
+						"description": "华为云最新优惠促销活动汇聚了云服务器,云数据库,云存储等优势产品,推出打折促销,推荐送等多种福利活动,还有更多精彩的线下大会及技术沙龙等着你来参与-华为云",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/huawei-cloud-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["huawei-cloud"],
+				"menu": {
+					"huawei-cloud": {
+						"app": "huawei-cloud",
+						"title": "华为云",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "钉钉",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/dingtalk-favicon.ico",
+			"summary": "../../assets/image/program/dingtalk-summary.png",
+			"description": "钉钉（Ding Talk）是阿里巴巴集团打造的企业级智能移动办公平台，引领未来新一代工作方式，将陪伴每一个企业成长，是数字经济时代的企业组织协同办公和应用开发平台，是新生产力工具。",
+			"open": {
+				"resizable": false,
+				"url": "https://www.dingtalk.com",
+				"title": "钉钉",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/dingtalk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"dingtalk": {
+						"resizable": false,
+						"url": "https://www.dingtalk.com",
+						"title": "钉钉",
+						"developer": "zhongjyuan",
+						"description": "钉钉（Ding Talk）是阿里巴巴集团打造的企业级智能移动办公平台，引领未来新一代工作方式，将陪伴每一个企业成长，是数字经济时代的企业组织协同办公和应用开发平台，是新生产力工具。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/dingtalk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["dingtalk"],
+				"menu": {
+					"dingtalk": {
+						"app": "dingtalk",
+						"title": "钉钉",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "企业微信",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/workweixin-favicon.ico",
+			"summary": "../../assets/image/program/workweixin-summary.png",
+			"description": "企业微信，是腾讯微信团队为企业打造的专业办公管理工具。与微信一致的沟通体验，丰富免费的OA应用，并与微信消息、小程序、微信支付等互通，助力企业高效办公和管理。全面安全保障，国际权威认证，银行级别加密水平，保障企业数据安全。",
+			"open": {
+				"resizable": false,
+				"url": "https://work.weixin.qq.com",
+				"title": "企业微信",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/workweixin-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"workweixin": {
+						"resizable": false,
+						"url": "https://work.weixin.qq.com",
+						"title": "企业微信",
+						"developer": "zhongjyuan",
+						"description": "企业微信，是腾讯微信团队为企业打造的专业办公管理工具。与微信一致的沟通体验，丰富免费的OA应用，并与微信消息、小程序、微信支付等互通，助力企业高效办公和管理。全面安全保障，国际权威认证，银行级别加密水平，保障企业数据安全。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/workweixin-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["workweixin"],
+				"menu": {
+					"workweixin": {
+						"app": "workweixin",
+						"title": "企业微信",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "腾讯乐享",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/lexiangla-favicon.ico",
+			"summary": "../../assets/image/program/lexiangla-summary.png",
+			"description": "腾讯乐享，一站式企业社区，凝聚腾讯十余年企业管理精华，提供企业直播、在线课堂、考试、学习地图、文档、问卷调研等多项应用服务，满足企业培训学习、知识管理、文化建设等多元化需求，提供全行业、多场景解决方案，助力企业数字化管理升级。",
+			"open": {
+				"resizable": false,
+				"url": "https://lexiangla.com",
+				"title": "腾讯乐享",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/lexiangla-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"lexiangla": {
+						"resizable": false,
+						"url": "https://lexiangla.com",
+						"title": "腾讯乐享",
+						"developer": "zhongjyuan",
+						"description": "腾讯乐享，一站式企业社区，凝聚腾讯十余年企业管理精华，提供企业直播、在线课堂、考试、学习地图、文档、问卷调研等多项应用服务，满足企业培训学习、知识管理、文化建设等多元化需求，提供全行业、多场景解决方案，助力企业数字化管理升级。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/lexiangla-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["lexiangla"],
+				"menu": {
+					"lexiangla": {
+						"app": "lexiangla",
+						"title": "腾讯乐享",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "腾讯开放平台",
+			"labels": ["popular", "community"],
+			"icon": "../../assets/icon/program/tencent-open-favicon.ico",
+			"summary": "../../assets/image/program/tencent-open-summary.png",
+			"description": "腾讯开放平台，致力于打造最高效、可靠的企业服务平台。依托腾讯20年技术沉淀，整合腾讯内部核心资源，在研发、设计、推广、营收转化、产品体验上全方位赋能合作企业，助力企业加速实现科技转型，快速成长。",
+			"open": {
+				"resizable": false,
+				"url": "https://open.tencent.com",
+				"title": "腾讯开放平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tencent-open-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tencent-open": {
+						"resizable": false,
+						"url": "https://open.tencent.com",
+						"title": "腾讯开放平台",
+						"developer": "zhongjyuan",
+						"description": "腾讯开放平台，致力于打造最高效、可靠的企业服务平台。依托腾讯20年技术沉淀，整合腾讯内部核心资源，在研发、设计、推广、营收转化、产品体验上全方位赋能合作企业，助力企业加速实现科技转型，快速成长。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tencent-open-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tencent-open"],
+				"menu": {
+					"tencent-open": {
+						"app": "tencent-open",
+						"title": "腾讯开放平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Activity",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/activiti-favicon.ico",
+			"summary": "../../assets/image/program/activiti-summary.png",
+			"description": "Activiti 是一个开源架构的工作流引擎，基于bpmn2.0 标准进行流程定义。其前身是JBPM，Activiti 通过嵌入到业务系统开发中进行使用。",
+			"open": {
+				"url": "https://www.activiti.org",
+				"title": "Activity",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/activiti-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"activiti": {
+						"url": "https://www.activiti.org",
+						"title": "Activity",
+						"developer": "zhongjyuan",
+						"description": "Activiti 是一个开源架构的工作流引擎，基于bpmn2.0 标准进行流程定义。其前身是JBPM，Activiti 通过嵌入到业务系统开发中进行使用。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/activiti-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["activiti"],
+				"menu": {
+					"activiti": {
+						"app": "activiti",
+						"title": "Activity",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Flowable",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/flowable-favicon.ico",
+			"summary": "../../assets/image/program/flowable-summary.png",
+			"description": "Flowable 是一个使用 Java 编写的轻量级业务流程引擎,使用 Apache V2 license 协议开源。",
+			"open": {
+				"url": "https://www.flowable.com",
+				"title": "Flowable",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/flowable-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"flowable": {
+						"url": "https://www.flowable.com",
+						"title": "Flowable",
+						"developer": "zhongjyuan",
+						"description": "Flowable 是一个使用 Java 编写的轻量级业务流程引擎,使用 Apache V2 license 协议开源。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/flowable-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["flowable"],
+				"menu": {
+					"flowable": {
+						"app": "flowable",
+						"title": "Flowable",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Apollo",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/apollo-favicon.ico",
+			"summary": "../../assets/image/program/apollo-summary.png",
+			"description": "Apollo (阿波罗）是携程框架部门研发的分布式配置中心，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性，适用于微服务配置管理场景。",
+			"open": {
+				"url": "https://aecore.glodon.com/sp/apollo",
+				"title": "Apollo",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/apollo-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"apollo-website": {
+						"url": "https://aecore.glodon.com/sp/apollo",
+						"title": "Apollo",
+						"developer": "zhongjyuan",
+						"description": "Apollo (阿波罗）是携程框架部门研发的分布式配置中心，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性，适用于微服务配置管理场景。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/apollo-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["apollo-website"],
+				"menu": {
+					"apollo-website": {
+						"app": "apollo-website",
+						"title": "Apollo",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Nacos",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/nacos-website-favicon.ico",
+			"summary": "../../assets/image/program/nacos-website-summary.png",
+			"description": "Apollo (阿波罗）是携程框架部门研发的分布式配置中心，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性，适用于微服务配置管理场景。",
+			"open": {
+				"url": "https://nacos.io/zh-cn",
+				"title": "Nacos",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/nacos-website-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"nacos-website": {
+						"url": "https://nacos.io/zh-cn",
+						"title": "Nacos",
+						"developer": "zhongjyuan",
+						"description": "Apollo (阿波罗）是携程框架部门研发的分布式配置中心，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性，适用于微服务配置管理场景。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/nacos-website-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["nacos-website"],
+				"menu": {
+					"nacos-website": {
+						"app": "nacos-website",
+						"title": "Nacos",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Swagger",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/swagger-favicon.ico",
+			"summary": "../../assets/image/program/swagger-summary.png",
+			"description": "Simplify API development for users, teams, and enterprises with our open source and professional toolset. Find out how Swagger can help you and get started today.",
+			"open": {
+				"url": "https://swagger.io",
+				"title": "Swagger",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/swagger-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"swagger": {
+						"url": "https://swagger.io",
+						"title": "Swagger",
+						"developer": "zhongjyuan",
+						"description": "Simplify API development for users, teams, and enterprises with our open source and professional toolset. Find out how Swagger can help you and get started today.",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/swagger-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["swagger"],
+				"menu": {
+					"swagger": {
+						"app": "swagger",
+						"title": "Swagger",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "OnlyOffice",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/onlyoffice-favicon.ico",
+			"summary": "../../assets/image/program/onlyoffice-summary.png",
+			"description": "ONLYOFFICE Developer API",
+			"open": {
+				"url": "https://api.onlyoffice.com",
+				"title": "OnlyOffice",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/onlyoffice-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"onlyoffice": {
+						"url": "https://api.onlyoffice.com",
+						"title": "OnlyOffice",
+						"developer": "zhongjyuan",
+						"description": "ONLYOFFICE Developer API",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/onlyoffice-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["onlyoffice"],
+				"menu": {
+					"onlyoffice": {
+						"app": "onlyoffice",
+						"title": "OnlyOffice",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Action Script 3.0 Flex",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/as3-favicon.ico",
+			"summary": "../../assets/image/program/as3-summary.png",
+			"description": "用于 Adobe® Flash® Platform 的 ActionScript® 3.0 参考",
+			"open": {
+				"url": "https://help.adobe.com/zh_CN/FlashPlatform/reference/actionscript/3/index.html",
+				"title": "Action Script 3.0 Flex",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/as3-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"as3": {
+						"url": "https://help.adobe.com/zh_CN/FlashPlatform/reference/actionscript/3/index.html",
+						"title": "Action Script 3.0 Flex",
+						"developer": "zhongjyuan",
+						"description": "用于 Adobe® Flash® Platform 的 ActionScript® 3.0 参考",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/as3-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["as3"],
+				"menu": {
+					"as3": {
+						"app": "as3",
+						"title": "Action Script 3.0 Flex",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "一飞开源",
+			"labels": ["popular", "community"],
+			"icon": "../../assets/icon/program/exmaycode-favicon.ico",
+			"summary": "../../assets/image/program/exmaycode-summary.png",
+			"description": "不飞则已，一飞冲天；不鸣则已，一鸣惊人！介绍创意、新奇、有趣、实用的免费开源应用、系统、软件、硬件及技术，提供了一个探索、发现、分享、使用与互动交流的开源技术平台。一飞开源致力于打造共建、共享、共治的开源社区。",
+			"open": {
+				"resizable": false,
+				"url": "https://code.exmay.com",
+				"title": "一飞开源",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/exmaycode-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"exmaycode": {
+						"resizable": false,
+						"url": "https://code.exmay.com",
+						"title": "一飞开源",
+						"developer": "zhongjyuan",
+						"description": "不飞则已，一飞冲天；不鸣则已，一鸣惊人！介绍创意、新奇、有趣、实用的免费开源应用、系统、软件、硬件及技术，提供了一个探索、发现、分享、使用与互动交流的开源技术平台。一飞开源致力于打造共建、共享、共治的开源社区。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/exmaycode-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["exmaycode"],
+				"menu": {
+					"exmaycode": {
+						"app": "exmaycode",
+						"title": "一飞开源",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "星搭",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/staringos-favicon.ico",
+			"summary": "../../assets/image/program/staringos-summary.png",
+			"description": "星搭低代码平台专注企业官网、H5、落地页在线设计、搭建,平台提供63类场景图片设计模板，一键生成，在线编辑。公众号页面、投票、统计、投放落地页。极速落地页搭建，业务组件灵活接入，自定义插件动态拓展",
+			"open": {
+				"resizable": false,
+				"url": "https://mtbird.staringos.com",
+				"title": "星搭",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/staringos-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"staringos": {
+						"resizable": false,
+						"url": "https://mtbird.staringos.com",
+						"title": "星搭",
+						"developer": "zhongjyuan",
+						"description": "星搭低代码平台专注企业官网、H5、落地页在线设计、搭建,平台提供63类场景图片设计模板，一键生成，在线编辑。公众号页面、投票、统计、投放落地页。极速落地页搭建，业务组件灵活接入，自定义插件动态拓展",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/staringos-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["staringos"],
+				"menu": {
+					"staringos": {
+						"app": "staringos",
+						"title": "星搭",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "墨滴",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/mdnice-favicon.ico",
+			"summary": "../../assets/image/program/mdnice-summary.png",
+			"description": "墨滴社区是一个看颜值的文章社区，技术、数学、文学文章汇集，极具趣味性，其开发的 mdnice 编辑器是一款 Markdown 微信编辑器,拥有良好的兼容性、海量主题样式、免费的图床。GitHub、StackOverflow、稀土掘金、简书的用户也能在这里有所收益。",
+			"open": {
+				"resizable": false,
+				"url": "https://www.mdnice.com/user/874795",
+				"title": "墨滴",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mdnice-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mdnice": {
+						"resizable": false,
+						"url": "https://www.mdnice.com/user/874795",
+						"title": "墨滴",
+						"developer": "zhongjyuan",
+						"description": "墨滴社区是一个看颜值的文章社区，技术、数学、文学文章汇集，极具趣味性，其开发的 mdnice 编辑器是一款 Markdown 微信编辑器,拥有良好的兼容性、海量主题样式、免费的图床。GitHub、StackOverflow、稀土掘金、简书的用户也能在这里有所收益。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mdnice-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mdnice"],
+				"menu": {
+					"mdnice": {
+						"app": "mdnice",
+						"title": "墨滴",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "喜讯",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/xixun-favicon.ico",
+			"summary": "../../assets/image/program/xixun-summary.png",
+			"description": "喜讯是一个可以提供内容发布的平台,部分隐藏内容关注作者可见,提取密码可见内容,付费关注作者可见无需密码.",
+			"open": {
+				"resizable": false,
+				"url": "https://x-x.fun/e/BG7473eae456y",
+				"title": "喜讯",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/xixun-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xixun": {
+						"resizable": false,
+						"url": "https://x-x.fun/a/BG7473eae456y",
+						"title": "喜讯",
+						"developer": "zhongjyuan",
+						"description": "喜讯是一个可以提供内容发布的平台,部分隐藏内容关注作者可见,提取密码可见内容,付费关注作者可见无需密码.",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/xixun-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xixun"],
+				"menu": {
+					"xixun": {
+						"app": "xixun",
+						"title": "喜讯",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "爱数",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/aishu-favicon.ico",
+			"summary": "../../assets/image/program/aishu-summary.png",
+			"description": "爱数是领先的大数据基础设施提供商,致力于为政府、公共事业及企业的数字化转型赋能,帮助各行各业的客户在数字化浪潮中充分释放数据价值,实现即时、随时、实时的数据服务.",
+			"open": {
+				"resizable": false,
+				"url": "https://www.aishu.cn",
+				"title": "爱数",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/aishu-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"aishu": {
+						"resizable": false,
+						"url": "https://www.aishu.cn",
+						"title": "爱数",
+						"developer": "zhongjyuan",
+						"description": "爱数是领先的大数据基础设施提供商,致力于为政府、公共事业及企业的数字化转型赋能,帮助各行各业的客户在数字化浪潮中充分释放数据价值,实现即时、随时、实时的数据服务.",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/aishu-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["aishu"],
+				"menu": {
+					"aishu": {
+						"app": "aishu",
+						"title": "爱数",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "苏迪科技",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/sudytech-favicon.ico",
+			"summary": "../../assets/image/program/sudytech-summary.png",
+			"description": "苏迪科技创立于2001年，致力于成为中国教育的卓越使能者。公司坚持稳健经营、战略创新与源头技术创新、开放合作，形成了以“软件、云服务、数据服务”为核心的融合服务解决方案和校园互联网云服务，是教育信息化行业内最具影响力的品牌之一。",
+			"open": {
+				"resizable": false,
+				"url": "http://wap.sudytech.com",
+				"title": "苏迪科技",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/sudytech-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"sudytech": {
+						"resizable": false,
+						"url": "http://wap.sudytech.com",
+						"title": "苏迪科技",
+						"developer": "zhongjyuan",
+						"description": "苏迪科技创立于2001年，致力于成为中国教育的卓越使能者。公司坚持稳健经营、战略创新与源头技术创新、开放合作，形成了以“软件、云服务、数据服务”为核心的融合服务解决方案和校园互联网云服务，是教育信息化行业内最具影响力的品牌之一。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/sudytech-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["sudytech"],
+				"menu": {
+					"sudytech": {
+						"app": "sudytech",
+						"title": "苏迪科技",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "建木",
+			"labels": ["community"],
+			"icon": "../../assets/icon/program/jianmu-favicon.ico",
+			"summary": "../../assets/image/program/jianmu-summary.png",
+			"description": "建木持续集成平台基于建木，致力于为国内开发者与DevOps人员提供极致用户体验，提升开发、上线、运维的效率，让软件用户专注于提供业务价值。",
+			"open": {
+				"resizable": false,
+				"url": "https://jianmu.dev",
+				"title": "建木",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/jianmu-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"jianmu": {
+						"resizable": false,
+						"url": "https://jianmu.dev",
+						"title": "建木",
+						"developer": "zhongjyuan",
+						"description": "建木持续集成平台基于建木，致力于为国内开发者与DevOps人员提供极致用户体验，提升开发、上线、运维的效率，让软件用户专注于提供业务价值。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/jianmu-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["jianmu"],
+				"menu": {
+					"jianmu": {
+						"app": "jianmu",
+						"title": "建木",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

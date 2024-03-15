@@ -1,0 +1,604 @@
+{
+	"shortcuts": [
+		{
+			"app": "app-store",
+			"title": "应用商店",
+			"params": {},
+			"hash": ""
+		},
+		{
+			"app": "browser",
+			"title": "浏览器",
+			"params": {},
+			"hash": ""
+		},
+		{
+			"app": "weather",
+			"title": "天气",
+			"params": {},
+			"hash": ""
+		},
+		{
+			"app": "frp",
+			"title": "FRP",
+			"params": {},
+			"hash": ""
+		},
+		{
+			"title": "默认应用",
+			"children": [
+				{
+					"app": "website",
+					"title": "官网",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "documents",
+					"title": "指引文档",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "font-awesome",
+					"title": "图标字体",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "image-host",
+					"title": "图床",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "内置游戏",
+			"children": [
+				{
+					"app": "zhizhuzhipai",
+					"title": "蜘蛛纸牌",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "typewrite",
+					"title": "金山打字",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "代码仓库",
+			"children": [
+				{
+					"app": "github",
+					"title": "GitHub",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "gitlab",
+					"title": "GitLab",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "gitee",
+					"title": "Gitee",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "coding",
+					"title": "Coding",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "codeup",
+					"title": "CodeUp",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "gitcode",
+					"title": "GitCode",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "gitweixin",
+					"title": "GitWeixin",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "协同开发",
+			"children": [
+				{
+					"app": "jira",
+					"title": "JIRA",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "confluence",
+					"title": "Confluence",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "nacos",
+					"title": "NACOS",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "nexus",
+					"title": "Nexus",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "apifox",
+					"title": "APIFox",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "网盘大全",
+			"children": [
+				{
+					"app": "baidu-netdisk",
+					"title": "百度网盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "kuake-netdisk",
+					"title": "夸克网盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "ali-netdisk",
+					"title": "阿里云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "tencent-netdisk",
+					"title": "腾讯云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "115-netdisk",
+					"title": "115云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "tianyi-netdisk",
+					"title": "天翼云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "jianguo-netdisk",
+					"title": "坚果云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "huawei-netdisk",
+					"title": "华为云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "nainiu-netdisk",
+					"title": "奶牛快传",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "lanzou-netdisk",
+					"title": "蓝奏云存储",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "quqi-netdisk",
+					"title": "曲奇云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "yunzhongzhuan-netdisk",
+					"title": "云中转",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "yidong-netdisk",
+					"title": "移动云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "chengtong-netdisk",
+					"title": "城通云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "feimao-netdisk",
+					"title": "飞猫云盘",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "wenshushu-netdisk",
+					"title": "文叔叔",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "资源中心",
+			"children": [
+				{
+					"app": "jay",
+					"title": "Jay资源库",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "tuou",
+					"title": "图欧学习资源库",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "创作中心",
+			"children": [
+				{
+					"app": "weixin-creator",
+					"title": "微信创作中心",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "douyin-creator",
+					"title": "抖音创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "xigua-creator",
+					"title": "西瓜创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "toutiao-creator",
+					"title": "头条创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "kuaishou-creator",
+					"title": "快手创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "bilibili-creator",
+					"title": "哔哩哔哩创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "weibo-creator",
+					"title": "微博创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "weishi-creator",
+					"title": "微视创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "pipixia-creator",
+					"title": "皮皮虾创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "xiaohongshu-creator",
+					"title": "小红书创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "zhihu-creator",
+					"title": "知乎创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "csdn-creator",
+					"title": "CSDN创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "zuiyou-creator",
+					"title": "最右达人",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "tenxun-creator",
+					"title": "腾讯视频创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "youku-creator",
+					"title": "优酷视频创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "mangguotv-creator",
+					"title": "芒果TV创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "aiqiyi-creator",
+					"title": "爱奇艺视频创作平台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "baijiahao-creator",
+					"title": "百家号",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "qiehao-creator",
+					"title": "企鹅号",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "dayuhao-creator",
+					"title": "大鱼号",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "影音中心",
+			"children": [
+				{
+					"app": "bilibili",
+					"title": "哔哩哔哩",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "douyin",
+					"title": "抖音",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "xigua",
+					"title": "西瓜视频",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "xiaohongshu",
+					"title": "小红书",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "tenxun",
+					"title": "腾讯视频",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "youku",
+					"title": "优酷视频",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "mangguotv",
+					"title": "芒果TV",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "aiqiyi",
+					"title": "爱奇艺",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "kugou",
+					"title": "酷狗音乐",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "wangyiyun",
+					"title": "网易云音乐",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "电商购物",
+			"children": [
+				{
+					"app": "pinduoduo",
+					"title": "拼多多",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "alibaba",
+					"title": "1688",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "taobao",
+					"title": "淘宝",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "jingdong",
+					"title": "京东",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "办公软件",
+			"children": [
+				{
+					"app": "tuguaishou",
+					"title": "图怪兽",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "iconfont",
+					"title": "iconfont",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "processon",
+					"title": "ProcessOn",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "mock",
+					"title": "慕客",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "AI汇聚",
+			"children": [
+				{
+					"app": "chatgpt-1",
+					"title": "ChatGPT(1)",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "chatgpt-2",
+					"title": "ChatGPT(2)",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "chatgpt-3",
+					"title": "ChatGPT(3)",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "chatgpt-4",
+					"title": "AI智能中台",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "tenglangai",
+					"title": "腾朗AI",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "aiwht",
+					"title": "AI万花筒",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"title": "Demo",
+			"children": [
+				{
+					"app": "zhifubao",
+					"title": "支付宝",
+					"params": {},
+					"hash": ""
+				},
+				{
+					"app": "chickfarm",
+					"title": "养鸡庄园",
+					"params": {},
+					"hash": ""
+				}
+			]
+		},
+		{
+			"app": "window-react",
+			"title": "Windows 11",
+			"params": {},
+			"hash": ""
+		},
+		{
+			"app": "vscode",
+			"title": "VS Code",
+			"params": {},
+			"hash": ""
+		},
+		{
+			"app": "codeserver",
+			"title": "Code Server",
+			"params": {},
+			"hash": ""
+		},
+		{
+			"app": "chatgpt-1",
+			"title": "ChatGPT",
+			"params": {},
+			"hash": ""
+		}
+	]
+}

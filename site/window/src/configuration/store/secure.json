@@ -1,0 +1,80 @@
+{
+	"apps": [
+		{
+			"title": "FRP",
+			"labels": ["secure"],
+			"icon": "../../assets/icon/program/frp-favicon.ico",
+			"summary": "../../assets/image/program/frp-summary.png",
+			"description": "frp 是一个高性能的反向代理应用，支持 tcp, udp, http, https 协议。",
+			"open": {
+				"url": "http://frp.zhongjyuan.club",
+				"title": "FRP",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/frp-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"frp": {
+						"url": "http://frp.zhongjyuan.club",
+						"title": "FRP",
+						"developer": "zhongjyuan",
+						"description": "frp 是一个高性能的反向代理应用，支持 tcp, udp, http, https 协议。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/frp-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["frp"],
+				"menu": {
+					"frp": {
+						"app": "frp",
+						"title": "FRP",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Zerotier",
+			"labels": ["secure"],
+			"icon": "../../assets/icon/program/zerotier-favicon.ico",
+			"summary": "../../assets/image/program/zerotier-summary.png",
+			"description": "ZeroTier是一种软件定义的虚拟局域网（SD-WAN）解决方案，旨在为用户提供安全、可靠且灵活的网络连接。它可以通过使用点对点加密隧道，在多个设备之间创建一个虚拟的私人网络。这使得用户能够实现远程访问、团队协作和设备互连等功能，而无需考虑设备所在的物理位置。ZeroTier具有简单易用的界面和跨平台支持，被广泛应用于企业、个人和开发人员等不同领域。",
+			"open": {
+				"url": "https://www.zerotier.com",
+				"title": "Zerotier",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/zerotier-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"zerotier": {
+						"url": "https://www.zerotier.com",
+						"title": "Zerotier",
+						"developer": "zhongjyuan",
+						"description": "ZeroTier是一种软件定义的虚拟局域网（SD-WAN）解决方案，旨在为用户提供安全、可靠且灵活的网络连接。它可以通过使用点对点加密隧道，在多个设备之间创建一个虚拟的私人网络。这使得用户能够实现远程访问、团队协作和设备互连等功能，而无需考虑设备所在的物理位置。ZeroTier具有简单易用的界面和跨平台支持，被广泛应用于企业、个人和开发人员等不同领域。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/zerotier-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["zerotier"],
+				"menu": {
+					"zerotier": {
+						"app": "zerotier",
+						"title": "Zerotier",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

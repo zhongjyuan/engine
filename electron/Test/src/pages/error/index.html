@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<!-- 引入基础样式表 -->
+		<link rel="stylesheet" href="../css/base.css" />
+	</head>
+
+	<body>
+		<div id="page-wrapper">
+			<!-- 错误名称 -->
+			<h1 id="error-name"></h1>
+			<!-- 错误描述 -->
+			<h2 id="error-desc"></h2>
+
+			<!-- 次要按钮，初始时隐藏 -->
+			<button id="secondary-button" class="secondary-button" hidden></button>
+			<!-- 主要按钮，包含错误页面主要操作的字符串数据属性 -->
+			<button id="primary-button" class="primary-button" data-string="errorPagePrimaryAction"></button>
+		</div>
+
+		<!-- 语言处理脚本 -->
+		<script src="../../../dist/language.js"></script>
+		<!-- 设置管理脚本 -->
+		<script src="../../settings/pageSettingManagement.js"></script>
+		<!-- 主题管理脚本 -->
+		<script src="../js/themeManagement.js"></script>
+		<!-- 页面主要逻辑脚本 -->
+		<script src="./js/index.js"></script>
+	</body>
+</html>

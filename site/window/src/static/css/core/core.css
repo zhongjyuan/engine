@@ -1,0 +1,1477 @@
+html {
+	height: 100%;
+	font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif, "宋体" !important;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+#app {
+	width: 100%;
+	height: 100%;
+	transition: opacity 1s;
+	background-size: 100% 100%;
+	/*禁用选中*/
+	-webkit-touch-callout: none;
+	/* iOS Safari */
+	-webkit-user-select: none;
+	/* Chrome/Safari/Opera */
+	-khtml-user-select: none;
+	/* Konqueror */
+	-moz-user-select: none;
+	/* Firefox */
+	-ms-user-select: none;
+	/* Internet Explorer/Edge */
+}
+
+#zhongjyuan {
+	width: 100%;
+	height: 100%;
+	transition: opacity 1s;
+	background-size: 100% 100%;
+	/*禁用选中*/
+	-webkit-touch-callout: none;
+	/* iOS Safari */
+	-webkit-user-select: none;
+	/* Chrome/Safari/Opera */
+	-khtml-user-select: none;
+	/* Konqueror */
+	-moz-user-select: none;
+	/* Firefox */
+	-ms-user-select: none;
+	/* Internet Explorer/Edge */
+}
+
+#zhongjyuan .opacity-enter-active,
+.opacity-leave-active {
+	transition: opacity 0.2s, transform 0.2s !important;
+}
+
+#zhongjyuan .opacity-leave-active,
+.opacity-enter {
+	opacity: 0 !important;
+	transform: scale3d(0.9, 0.9, 1);
+}
+
+#zhongjyuan .shadow {
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px 2px;
+}
+
+#zhongjyuan .shadow-inside {
+	box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 20px 2px;
+}
+
+#zhongjyuan .shadow-hover:hover {
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px 2px;
+}
+
+#zhongjyuan .shadow-inside-hover:hover {
+	box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 20px 2px;
+}
+
+#zhongjyuan .mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	transition: all 0.3s;
+}
+
+#zhongjyuan .selectable {
+	-webkit-touch-callout: default;
+	/* iOS Safari */
+	-webkit-user-select: text;
+	/* Chrome/Safari/Opera */
+	-khtml-user-select: text;
+	/* Konqueror */
+	-moz-user-select: text;
+	/* Firefox */
+	-ms-user-select: text;
+	/* Internet Explorer/Edge */
+}
+
+#zhongjyuan .shader {
+	position: fixed;
+	top: -10%;
+	left: -10%;
+	width: 120%;
+	height: 120%;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+#zhongjyuan .blur {
+	filter: blur(8px);
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=8, MakeShadow=false);
+	transition: filter 0.3s;
+	transition: -ms-filter 0.3s;
+	transition: -moz-filter 0.3s;
+	transition: -webkit-filter 0.3s;
+	/* Chrome, Opera */
+	-ms-filter: blur(8px);
+	-moz-filter: blur(8px);
+	-webkit-filter: blur(8px);
+}
+
+#zhongjyuan .desktop {
+	position: fixed;
+	top: 0;
+	z-index: 0;
+	width: 100%;
+	height: calc(100% - 40px);
+	background-color: black;
+}
+
+#zhongjyuan .shortcut {
+	width: 64px;
+	cursor: pointer;
+	box-sizing: border-box;
+	border: 1px solid transparent;
+	transition: opacity 0.3s, top 0.3s, left 0.3s, border 0.3s, background-color 0.3s;
+}
+
+#zhongjyuan.small-screen .shortcut {
+	width: 56px;
+}
+
+#zhongjyuan .shortcut.cut {
+	opacity: 0.5;
+}
+
+#zhongjyuan .shortcut.move {
+	transition: none;
+	z-index: 3;
+}
+
+#zhongjyuan .shortcut.insert {
+	border-bottom: 1px solid white;
+}
+
+#zhongjyuan .shortcut.over {
+	background-color: rgba(62, 70, 167, 0.75);
+}
+
+#zhongjyuan > .desktop > .shortcut {
+	position: absolute;
+	border-radius: 10px;
+}
+
+#zhongjyuan .shortcut:hover {
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	background-color: rgba(239, 255, 236, 0.25);
+}
+
+#zhongjyuan .icon > img {
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+}
+
+#zhongjyuan .shortcut .icon {
+	width: 40px;
+	height: 40px;
+	font-size: 28px;
+	line-height: 40px;
+	text-align: center;
+	margin: 5px auto;
+	color: white;
+	position: relative;
+	/*border: 1px solid rgba(255, 255, 255, 0.5);*/
+	border-radius: 10px;
+}
+
+#zhongjyuan.small-screen .shortcut .icon {
+	width: 36px;
+	height: 36px;
+	font-size: 24px;
+	line-height: 36px;
+	border-radius: 10px;
+}
+
+#zhongjyuan .shortcut .title {
+	height: 28px;
+	color: white;
+	overflow: hidden;
+	text-align: center;
+	font-size: 12px;
+	line-height: 14px;
+	margin-bottom: 5px;
+	transition: all 0.5s;
+	text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+}
+
+#zhongjyuan.small-screen .shortcut .title {
+	height: 24px;
+	font-size: 9px;
+	line-height: 12px;
+	margin-bottom: 2px;
+}
+
+#zhongjyuan .icon-drawer {
+	position: relative;
+	width: 40px;
+	height: 40px;
+	margin: 5px auto;
+	/*border: 1px solid rgba(255, 255, 255, 0.5);*/
+	/*overflow: hidden;*/
+	/*padding: 4px;*/
+	background-color: rgba(255, 255, 255, 0.19);
+}
+
+#zhongjyuan .icon-drawer .icon-drawer-pre {
+	position: absolute;
+	display: none;
+	width: 16px;
+	height: 16px;
+	color: white;
+	font-size: 12px;
+	line-height: 16px;
+	text-align: center;
+	border-radius: 10px;
+}
+
+#zhongjyuan .icon-drawer .icon-drawer-pre > img {
+	width: 100%;
+	height: 100%;
+}
+
+#zhongjyuan .icon-drawer .icon-drawer-pre:nth-child(1) {
+	top: 3px;
+	left: 3px;
+	display: block;
+}
+
+#zhongjyuan .icon-drawer .icon-drawer-pre:nth-child(2) {
+	top: 3px;
+	left: 21px;
+	display: block;
+}
+
+#zhongjyuan .icon-drawer .icon-drawer-pre:nth-child(3) {
+	top: 21px;
+	left: 3px;
+	display: block;
+}
+
+#zhongjyuan .icon-drawer .icon-drawer-pre:nth-child(4) {
+	top: 21px;
+	left: 21px;
+	display: block;
+}
+
+#zhongjyuan .desktop .win {
+	position: absolute;
+	opacity: 1;
+	transition: opacity 0.3s;
+}
+
+#zhongjyuan .desktop .win .bar {
+	position: relative;
+	background-color: transparent;
+}
+
+#zhongjyuan .desktop .win.plugin .bar,
+#zhongjyuan .desktop .win.plugin .address-bar {
+	opacity: 0;
+}
+
+#zhongjyuan .desktop .win.plugin .bar:hover,
+#zhongjyuan .desktop .win.plugin .address-bar:hover {
+	opacity: 1 !important;
+}
+
+#zhongjyuan .desktop .win .bar-mask {
+	background-color: white;
+}
+
+#zhongjyuan .desktop .win.active .bar-mask {
+	background-color: black;
+}
+
+#zhongjyuan .desktop .win .bar .title {
+	float: left;
+	height: inherit;
+	width: calc(100% - 156px);
+	cursor: move;
+	color: #dad8d8;
+	font-size: 14px;
+	overflow: hidden;
+	padding-left: 30px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+#zhongjyuan .desktop .win .bar.no-max .title {
+	width: calc(100% - 110px);
+}
+
+#zhongjyuan .desktop .win.active .bar .title {
+	color: white;
+}
+
+#zhongjyuan .desktop .win .init {
+	position: absolute;
+	left: 0;
+	top: -41px;
+	z-index: 2;
+	width: 100%;
+	height: calc(100% + 40px);
+	background-color: #bbb5b5;
+}
+
+#zhongjyuan .desktop .win.addressBar-hidden .init {
+	top: -1px;
+	height: 100%;
+}
+
+#zhongjyuan .desktop .win .init .icon {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	color: white;
+	font-size: 16px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 10px;
+	display: inline-block;
+	transform: translate(-50%, -50%);
+}
+
+#zhongjyuan .desktop .win .bar-box {
+	position: absolute;
+	top: -80px;
+	width: 100%;
+	box-shadow: inherit;
+}
+
+#zhongjyuan .desktop .win.addressBar-hidden .bar-box {
+	top: -40px;
+}
+
+#zhongjyuan .desktop .win .bar .title .icon {
+	position: absolute;
+	top: 9px;
+	left: 9px;
+	width: 20px;
+	height: 20px;
+	font-size: 16px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 10px;
+	display: inline-block;
+}
+
+#zhongjyuan .desktop .win .bar .title:before {
+	content: "  ";
+	margin-left: 0.5em;
+}
+
+#zhongjyuan .desktop .win .bar .tools {
+	height: 40px;
+	float: right;
+	cursor: default;
+	overflow: hidden;
+	text-align: right;
+}
+
+#zhongjyuan .desktop .win .bar .tools .tool {
+	float: left;
+	width: 40px;
+	height: 40px;
+	display: block;
+	cursor: pointer;
+	transition: all 0.3s;
+	background-size: 14px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#zhongjyuan .desktop .win .bar .tools .tool:hover {
+	background-color: rgba(255, 255, 255, 0.19);
+}
+
+#zhongjyuan .desktop .win .bar .tools .tool.close:hover {
+	background-color: red;
+}
+
+#zhongjyuan .desktop .win .address-bar {
+	position: relative;
+	top: -1px;
+	width: 100%;
+	height: 40px;
+	overflow: hidden;
+	line-height: 40px;
+	padding-left: 1em;
+	transition: all 0.3s;
+	box-sizing: border-box;
+	background-color: rgb(242, 242, 242);
+}
+
+#zhongjyuan .desktop .win .address-bar .btns {
+	width: 1.5em;
+	height: 1.5em;
+	color: black;
+	cursor: pointer;
+	line-height: 1.5em;
+}
+
+#zhongjyuan .desktop .win .address-bar .btns.disable {
+	color: darkgrey;
+}
+
+#zhongjyuan .desktop .win .address-bar .btns:hover {
+	background-color: rgba(0, 0, 0, 0.08);
+}
+
+#zhongjyuan .desktop .win .address-bar input {
+	position: relative;
+	float: right;
+	bottom: -4px;
+	outline: none;
+	color: grey;
+	padding: 0.5em;
+	margin-right: 3px;
+	width: calc(100% - 166px);
+}
+
+#zhongjyuan .desktop .win .win-drag-placeholder {
+	top: -1px;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	box-sizing: border-box;
+}
+
+#zhongjyuan .desktop .win .win-drag-placeholder .win-move {
+	position: absolute;
+	width: 100%;
+	height: 15px;
+	left: -15px;
+	bottom: -10px;
+	cursor: move;
+	z-index: 99;
+}
+
+#zhongjyuan .desktop .win .win-drag-placeholder .loading-box {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	opacity: 0.7;
+	overflow: hidden;
+	background-color: rgb(34, 34, 34);
+}
+
+#zhongjyuan .desktop .win .win-drag-placeholder .loading-box > img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 200px;
+	height: 150px;
+	display: block;
+	margin-top: -75px;
+	margin-left: -100px;
+}
+
+#zhongjyuan .desktop .win .win-drag-placeholder .frm {
+	width: 100%;
+	height: 100%;
+	border: none;
+	resize: none;
+	box-sizing: border-box;
+	background-color: white;
+}
+
+#zhongjyuan .desktop .win.plugin {
+	box-shadow: none;
+}
+
+#zhongjyuan .desktop .win.plugin .win-drag-placeholder .frm {
+	background-color: transparent;
+}
+
+#zhongjyuan .desktop .win.plugin:hover .bar,
+#zhongjyuan .desktop .win.plugin:hover .address-bar {
+	opacity: 0.5;
+}
+
+#zhongjyuan .desktop .win .win-drag-placeholder {
+	top: -1px;
+	resize: none;
+	position: relative;
+	/*border: 1px solid darkgray;*/
+}
+
+#zhongjyuan .desktop .win.plugin .win-drag-placeholder {
+	background-color: transparent;
+	border: 1px solid transparent;
+}
+
+#zhongjyuan .desktop .win.plugin:hover .win-drag-placeholder {
+	border: 1px solid darkgray;
+}
+
+#zhongjyuan .desktop .win .win-drag-placeholder.drag {
+	background-color: rgba(240, 240, 240, 0.64);
+}
+
+#zhongjyuan .desktop .win .win-resize {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: 99;
+	width: 15px;
+	height: 15px;
+	cursor: se-resize;
+}
+
+#zhongjyuan .bar {
+	height: 40px;
+	color: white;
+	cursor: default;
+	line-height: 40px;
+	/*box-shadow: 0 0 16px #555;*/
+}
+
+#zhongjyuan .bar .powered-by {
+	opacity: 0.3;
+	font-size: 12px;
+	text-align: center;
+	letter-spacing: 1px;
+	transition: all 0.3s;
+}
+
+#zhongjyuan .bar .powered-by.fade {
+	opacity: 0.1;
+}
+
+#zhongjyuan > .bar {
+	bottom: 0;
+	width: 100%;
+	position: fixed;
+	z-index: 19930813;
+	box-sizing: border-box;
+}
+
+#zhongjyuan .bar .plugin-icons {
+	position: absolute;
+	top: auto;
+	right: 36px;
+	bottom: 40px;
+	width: 146px;
+	min-height: 32px;
+	box-sizing: border-box;
+	background-color: transparent;
+}
+
+#zhongjyuan.small-screen .bar .plugin-icons {
+	right: 22px;
+}
+
+#zhongjyuan .bar .plugin-icon {
+	display: block;
+	float: left;
+	width: 32px;
+	height: 32px;
+	padding: 2px;
+}
+
+#zhongjyuan .bar .plugin-icon .icon {
+	position: relative;
+	top: 2px;
+	left: 5px;
+	width: 24px;
+	height: 24px;
+	font-size: 20px;
+	line-height: 24px;
+	text-align: center;
+	border-radius: 10px;
+	border-radius: 10px;
+}
+
+#zhongjyuan .bar .plugin-icon:hover {
+	background-color: rgba(255, 255, 255, 0.22);
+}
+
+#zhongjyuan .bar.top .plugin-icons {
+	top: 40px;
+	bottom: auto;
+}
+
+#zhongjyuan .bar .calendar-box {
+	box-sizing: border-box;
+	position: absolute;
+	top: auto;
+	bottom: 40px;
+	right: 0;
+	display: block;
+	min-height: 32px;
+	z-index: -1;
+}
+
+#zhongjyuan .bar.top .calendar-box {
+	top: 40px;
+	bottom: auto;
+}
+
+#zhongjyuan .bar .btn {
+	position: relative;
+	float: left;
+	height: 100%;
+	padding: 0 6px;
+	font-size: 18px;
+	min-width: 28px;
+	margin-right: 1px;
+	text-align: center;
+	line-height: inherit;
+	transition: all 0.5s;
+}
+
+#zhongjyuan .bar .btn:hover {
+	background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+#zhongjyuan .bar .btnStartOpen {
+	border-radius: 0px 10px;
+	background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+#zhongjyuan .bar #btn-right-bottom {
+	padding: 0;
+	width: 4px;
+	float: right;
+	min-width: 0;
+	margin-left: 3px;
+	border-left: rgba(255, 255, 255, 0.6) 1px solid;
+}
+
+#zhongjyuan.small-screen .bar #btn-right-bottom {
+	width: 4px;
+}
+
+#zhongjyuan .bar .btn.win-task .icon {
+	position: relative;
+	float: left;
+	top: 9px;
+	width: 20px;
+	height: 20px;
+	font-size: 16px;
+	line-height: 20px;
+	text-align: center;
+	margin-left: 0.5em;
+	margin-bottom: 20px;
+	border-radius: 10px;
+}
+
+#zhongjyuan .bar .btn.win-task .title {
+	float: left;
+	height: inherit;
+	width: calc(100% - 50px);
+	color: white;
+	margin: 0 0.5em;
+	font-size: 12px;
+	text-align: left;
+	overflow: hidden;
+	line-height: 40px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+#zhongjyuan .bar .btn.win-task .line {
+	position: absolute;
+	left: 5px;
+	bottom: 0;
+	height: 3px;
+	width: calc(100% - 10px);
+	transition: all 0.5s;
+	background-color: rgba(255, 255, 255, 0.47);
+}
+
+#zhongjyuan .bar .top .btn.win-task .line {
+	top: 0;
+	bottom: auto;
+}
+
+#zhongjyuan .bar .btn.win-task:hover .line {
+	left: 0;
+	width: calc(100% - 0px);
+}
+
+#zhongjyuan .bar .btn.win-task.active .line {
+	left: 0;
+	width: calc(100% - 0px);
+}
+
+#zhongjyuan .bar .btn.win-task {
+	padding: 0;
+	height: 100%;
+	min-width: 0;
+	max-width: 150px;
+	text-align: left;
+	overflow: hidden;
+}
+
+#zhongjyuan .bar .btn.win-task.active {
+	background-color: rgba(191, 191, 191, 0.25);
+}
+
+#zhongjyuan .badge {
+	position: absolute;
+	top: 0;
+	right: 10px;
+	color: #fff;
+	height: 18px;
+	padding: 0 6px;
+	font-size: 12px;
+	line-height: 18px;
+	text-align: center;
+	white-space: nowrap;
+	border-radius: 10px;
+	display: inline-block;
+	background-color: #ff4949;
+	/*border: 1px solid #fff;*/
+	transform: translateY(-50%) translateX(100%);
+}
+
+#zhongjyuan .desktop .background-mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+}
+
+#zhongjyuan .desktop .background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -999;
+	background-size: auto 100%;
+	transform: scale3d(1.1, 1.1, 1);
+	background-position: center center;
+}
+
+#zhongjyuan .desktop .background.cross {
+	background-size: 100% auto;
+}
+
+#zhongjyuan .drawer {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 40%;
+	padding: 10px;
+	overflow: auto;
+	color: white;
+	max-width: 600px;
+	min-height: 240px;
+	max-height: 500px;
+	overflow-x: hidden;
+	box-sizing: border-box;
+	transform: translate(-50%, -50%);
+	border: 1px solid rgba(255, 255, 255, 0.54);
+	background-color: rgba(255, 255, 255, 0.29);
+}
+
+#zhongjyuan.small-screen .drawer {
+	width: 284px;
+}
+
+#zhongjyuan .drawer .line {
+	line-height: 40px;
+}
+
+#zhongjyuan .drawer .line span {
+	width: 78px;
+	font-size: 14px;
+	overflow: hidden;
+	text-align: right;
+	margin-right: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	text-overflow: ellipsis;
+}
+
+#zhongjyuan.small-screen .drawer .line span {
+	width: 50px;
+}
+
+#zhongjyuan .drawer .line input {
+	outline: none;
+	padding: 0.4em;
+	color: white;
+	width: calc(100% - 12em);
+	background-color: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#zhongjyuan.small-screen .drawer .line input {
+	width: 10em;
+}
+
+#zhongjyuan .drawer .line input:first-child {
+	width: 42px;
+	text-align: right;
+	margin-left: 40px;
+	margin-right: 15px;
+}
+
+#zhongjyuan.small-screen .drawer .line input:first-child {
+	margin-left: 15px;
+	margin-right: 13px;
+}
+
+#zhongjyuan .drawer .line input::placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+#zhongjyuan .drawer .line i {
+	cursor: pointer;
+	margin-left: 0.5em;
+	transition: all 0.3s;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+#zhongjyuan .drawer .line i:hover {
+	color: white;
+}
+
+#zhongjyuan .drawer > .shortcut {
+	position: relative;
+	display: inline-block;
+}
+
+#zhongjyuan .drawer > .title {
+	width: 100%;
+	color: white;
+	font-size: 14px;
+	line-height: 34px;
+	margin-bottom: 1em;
+	box-sizing: border-box;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+#zhongjyuan .drawer > .title > .btn-advance {
+	position: relative;
+	top: 3px;
+	float: right;
+	opacity: 0.8;
+	padding: 0.5em;
+	font-size: 12px;
+	cursor: pointer;
+	line-height: 10px;
+	border: 1px solid;
+	transition: all 0.3s;
+}
+
+#zhongjyuan .drawer > .title > .btn-advance:hover {
+	opacity: 1;
+}
+
+#zhongjyuan .startMenu {
+	position: fixed;
+	left: 0;
+	top: auto;
+	width: 100%;
+	bottom: 40px;
+	cursor: default;
+	overflow: hidden;
+	z-index: 19930000;
+	border-radius: 10px;
+	transition: opacity 0.3s;
+	height: calc(100% - 40px);
+}
+
+#zhongjyuan .startMenu.topTaskBar {
+	top: 40px;
+	bottom: auto;
+}
+
+/*左侧边栏*/
+#zhongjyuan .startMenu .sidebar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 20;
+	width: 48px;
+	height: 100%;
+	overflow: hidden;
+	transition: all 0.3s;
+}
+
+#zhongjyuan .startMenu .sidebar.spread {
+	width: 256px;
+}
+
+#zhongjyuan .startMenu .sidebar .btn-group {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+
+#zhongjyuan .startMenu .sidebar .btn {
+	position: relative;
+	float: left;
+	width: 256px;
+	color: white;
+	font-size: 18px;
+	min-width: 28px;
+	text-align: left;
+	line-height: 52px;
+	padding-left: 12px;
+	transition: all 0.5s;
+}
+
+#zhongjyuan .startMenu .sidebar .btn:hover {
+	background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+#zhongjyuan .startMenu .sidebar .btn .icon {
+	position: relative;
+	font-size: 16px;
+	width: 23.14px;
+	height: 23.14px;
+	text-align: center;
+	border-radius: 10px;
+	line-height: 23.14px;
+	display: inline-block;
+}
+
+#zhongjyuan .startMenu .sidebar .btn .icon > img {
+	position: relative;
+	top: 4px;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+}
+
+#zhongjyuan .startMenu .sidebar .title {
+	font-size: 14px;
+	padding-left: 20px;
+	line-height: inherit;
+}
+
+#zhongjyuan .startMenu .menu {
+	position: absolute;
+	left: 48px;
+	z-index: 16;
+	width: 224px;
+	padding: 16px;
+	overflow-x: hidden;
+	transition: left 0.3s;
+	height: calc(100% - 32px);
+}
+
+#zhongjyuan.small-screen .startMenu .menu {
+	width: calc(100% - 80px);
+}
+
+#zhongjyuan .startMenu .menu .item {
+	position: relative;
+	height: 0;
+	color: white;
+	overflow: hidden;
+	line-height: 34px;
+	padding-right: 10px;
+	transition: all 0.2s;
+}
+
+#zhongjyuan .startMenu .menu .item.open {
+	height: 34px;
+}
+
+#zhongjyuan .startMenu .menu .item:hover {
+	padding-left: 2px;
+	background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+#zhongjyuan .startMenu .menu .item .icon {
+	position: absolute;
+	top: 2px;
+	width: 30px;
+	height: 30px;
+	font-size: 22px;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 10px;
+	display: inline-block;
+}
+
+#zhongjyuan .startMenu .menu .item .icon-drawer {
+	position: absolute;
+	top: 2px;
+	margin: 0;
+	padding: 0;
+	width: 30px;
+	height: 30px;
+	border-radius: 0;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+#zhongjyuan .startMenu .menu .item .icon-drawer .icon-drawer-pre {
+	width: 12px;
+	height: 12px;
+	font-size: 10px;
+	overflow: hidden;
+	line-height: 12px;
+}
+
+#zhongjyuan .startMenu .menu .item .icon-drawer .icon-drawer-pre:nth-child(1) {
+	top: 2px;
+	left: 2px;
+}
+
+#zhongjyuan .startMenu .menu .item .icon-drawer .icon-drawer-pre:nth-child(2) {
+	top: 2px;
+	left: 16px;
+}
+
+#zhongjyuan .startMenu .menu .item .icon-drawer .icon-drawer-pre:nth-child(3) {
+	top: 17px;
+	left: 2px;
+}
+
+#zhongjyuan .startMenu .menu .item .icon-drawer .icon-drawer-pre:nth-child(4) {
+	top: 17px;
+	left: 16px;
+}
+
+#zhongjyuan .startMenu .menu .item .icon {
+	position: absolute;
+	top: 2px;
+	margin: 0;
+	padding: 0;
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
+	border-radius: 10px;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+#zhongjyuan .startMenu .menu .item .title {
+	font-size: 12px;
+	margin-left: 40px;
+	line-height: inherit;
+}
+
+#zhongjyuan .startMenu .menu .item .arrow {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 1.5em;
+	line-height: inherit;
+	padding-right: 0.5em;
+	transition: all 0.2s;
+	color: rgba(255, 255, 255, 0.6);
+}
+
+#zhongjyuan .startMenu .menu .item .arrow .open {
+	bottom: -34px;
+}
+
+#zhongjyuan .startMenu .startMenu-resize {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 99;
+	width: 15px;
+	height: 15px;
+	cursor: ne-resize;
+}
+
+#zhongjyuan .startMenu .topTaskBar .startMenu-resize {
+	top: auto;
+	bottom: 0;
+	cursor: se-resize;
+}
+
+#zhongjyuan .tiles-box {
+	position: absolute;
+	top: 16px;
+	padding-right: 0;
+	overflow-y: auto;
+	padding: 8px 16px;
+	overflow-x: hidden;
+	transition: left 0.3s;
+	width: calc(100% - 328px);
+	height: calc(100% - 24px);
+	/*column-count: 3;*/
+}
+
+#zhongjyuan.small-screen .tiles-box {
+	position: absolute;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: calc(100% - 56px);
+}
+
+#zhongjyuan .tiles-flex-container {
+	width: 100%;
+	column-gap: 0;
+}
+
+#zhongjyuan .tiles {
+	top: 0;
+	overflow: hidden;
+	break-inside: avoid;
+	transition: left 0.3s;
+}
+
+#zhongjyuan .tiles > .title {
+	height: 3em;
+	color: white;
+	font-size: 12px;
+	overflow: hidden;
+	line-height: 3em;
+	padding-left: 4px;
+	text-overflow: ellipsis;
+}
+
+#zhongjyuan .tiles > .title > .tip {
+	opacity: 0;
+	float: right;
+	font-size: 1.5em;
+	margin-right: 4px;
+	transition: all 0.3s;
+	line-height: inherit;
+}
+
+#zhongjyuan .tiles:hover > .title > .tip {
+	opacity: 1;
+}
+
+#zhongjyuan .tiles .vue-grid-item {
+	opacity: 0.9;
+	/*transition: opacity 0.3s ;*/
+	/*background-color: #4fa1da;*/
+}
+
+#zhongjyuan .tiles .vue-grid-item:hover {
+	opacity: 1;
+	box-shadow: inset 0 0 0 2px white;
+}
+
+#zhongjyuan .tiles .vue-grid-item .vue-grid-placeholder {
+	background: rgba(105, 120, 135, 0.52);
+}
+
+#zhongjyuan .tiles .vue-grid-item:hover .tile {
+	animation-fill-mode: backwards;
+}
+
+#zhongjyuan .tiles .vue-grid-item .tile {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+#zhongjyuan .tiles .vue-grid-item .tile > .mask {
+	height: 100%;
+}
+
+#zhongjyuan .tiles .vue-grid-item .tile > .mask > .badge {
+	top: 0.2em;
+	right: 0.2em;
+	min-width: 2em;
+	padding: 0.2em;
+	transform: none;
+	border-radius: 0;
+	border-color: rgba(255, 255, 255, 0.71);
+	background-color: rgba(255, 255, 255, 0.25);
+}
+
+#zhongjyuan .vue-grid-item > .vue-resizable-handle {
+	opacity: 0;
+}
+
+#zhongjyuan .vue-grid-item:hover > .vue-resizable-handle {
+	opacity: 1;
+}
+
+#zhongjyuan .tiles .tile .icon {
+	color: white;
+	position: absolute;
+	text-align: center;
+	border-radius: 10px;
+}
+
+#zhongjyuan .tiles .tile .title {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	padding: 0.5em;
+	color: white;
+	font-size: 12px;
+	overflow: hidden;
+	max-height: 28px;
+	line-height: 14px;
+	text-overflow: ellipsis;
+	text-shadow: 0px 0px 4px #0000006b;
+}
+
+#zhongjyuan .tiles .tile .custom-tile {
+	width: 100%;
+	height: 100%;
+	border: none;
+	resize: none;
+}
+
+#zhongjyuan .center {
+	position: fixed;
+	top: 0;
+	width: 360px;
+	right: -360px;
+	color: white;
+	z-index: 19930003;
+	transition: all 0.5s;
+	height: calc(100% - 40px);
+	/*box-shadow: 0 0 16px #555;*/
+	/*background-color: rgba(0, 0, 0, 0.82);*/
+}
+
+#zhongjyuan.small-screen .center {
+	width: 100%;
+	right: -100%;
+}
+
+#zhongjyuan .center.open {
+	right: 0;
+}
+
+#zhongjyuan .center .banner {
+	position: relative;
+	color: white;
+	font-size: 16px;
+	line-height: 54px;
+	padding-left: 1em;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+#zhongjyuan .center .banner .clear {
+	position: absolute;
+	bottom: 0;
+	right: 16px;
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 12px;
+	color: #ffffff82;
+	transition: all 0.2s;
+}
+
+#zhongjyuan .center .banner .clear:hover {
+	color: white;
+}
+
+#zhongjyuan .center .banner.no-msg {
+	position: absolute;
+	width: 100%;
+	color: #ffffff82;
+}
+
+#zhongjyuan .center .msgs {
+	overflow: auto;
+	height: calc(100% - 120px);
+}
+
+#zhongjyuan .center .msg {
+	position: relative;
+	padding: 8px;
+	margin: 14px;
+	overflow: hidden;
+	transition: all 0.2s;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+#zhongjyuan .center .msg .title {
+	color: #e3e3e3;
+	font-size: 16px;
+	line-height: 36px;
+	transition: all 0.5s;
+}
+
+#zhongjyuan .center .msg .content {
+	font-size: 12px;
+	line-height: 18px;
+	transition: all 0.5s;
+	word-break: break-all;
+	color: rgba(255, 255, 255, 0.64);
+}
+
+#zhongjyuan .center .msg:hover .title {
+	color: #f3f3f3;
+}
+
+#zhongjyuan .center .msg:hover .content {
+	color: #f3f3f3;
+}
+
+#zhongjyuan .center .msg .btn-close {
+	position: relative;
+	float: right;
+	right: -30px;
+	cursor: pointer;
+	color: #e3e3e3;
+	transition: all 0.2s;
+}
+
+#zhongjyuan .center .msg:hover .btn-close {
+	right: 0;
+}
+
+/*消息预览框*/
+#zhongjyuan .msg-attention {
+	position: fixed;
+	right: 0;
+	margin: 5px;
+	width: 240px;
+	height: 140px;
+	padding: 12px;
+	color: white;
+	overflow: hidden;
+	z-index: 19930004;
+	border: 1px solid rgba(255, 255, 255, 0.53);
+}
+
+#zhongjyuan .msg-attention .title {
+	height: 27px;
+	font-size: 20px;
+	overflow: hidden;
+	font-weight: bold;
+	line-height: 27px;
+	margin-bottom: 15px;
+	text-overflow: ellipsis;
+}
+
+#zhongjyuan .msg-attention .content {
+	font-size: 12px;
+	line-height: 18px;
+	/*color: grey;*/
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#zhongjyuan .msg-attention .mask-msg {
+	position: absolute;
+	bottom: 0;
+	height: 24px;
+	width: 100%;
+}
+
+#zhongjyuan-btn-center {
+	background-size: 22px;
+	background: url(../../icon/message.svg) center 56% no-repeat;
+}
+
+.load {
+	text-align: center;
+	position: absolute;
+	top: 3%;
+	width: 100%;
+}
+
+.k-line {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	border-radius: 15px;
+	background-color: #4b9cdb;
+}
+.k-line6b-1 {
+	animation: k-loadingB 1.5s 0.1s infinite;
+	background-color: #009688;
+}
+.k-line6b-2 {
+	animation: k-loadingB 1.5s 0.2s infinite;
+	background-color: #009688;
+}
+.k-line6b-3 {
+	animation: k-loadingB 1.5s 0.4s infinite;
+	background-color: #009688;
+}
+.k-line6b-4 {
+	animation: k-loadingB 1.5s 0.8s infinite;
+	background-color: #009688;
+}
+.k-line6b-5 {
+	animation: k-loadingB 1.5s 1.2s infinite;
+	background-color: #009688;
+}
+@keyframes k-loadingB {
+	0 {
+		width: 15px;
+	}
+	50% {
+		width: 35px;
+	}
+	100% {
+		width: 15px;
+	}
+}
+.k-line2 {
+	display: inline-block;
+	background: #666;
+	height: 10px;
+	width: 10px;
+	opacity: 0;
+	border-radius: 50%;
+	transform: translateX(-300px);
+	background-color: #4b9cdb;
+}
+.k-line12-1 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.8s;
+}
+.k-line12-2 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.7s;
+}
+.k-line12-3 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.6s;
+}
+.k-line12-4 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.5s;
+}
+.k-line12-5 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.4s;
+}
+.k-line12-6 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.3s;
+}
+.k-line12-7 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.2s;
+}
+.k-line12-8 {
+	animation: k-loadingS 4s infinite;
+	animation-delay: 0.1s;
+}
+@keyframes k-loadingS {
+	40% {
+		transform: translateX(0);
+		opacity: 0.8;
+	}
+	100% {
+		transform: translateX(300px);
+		opacity: 0;
+	}
+}

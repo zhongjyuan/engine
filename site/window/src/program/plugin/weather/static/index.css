@@ -1,0 +1,170 @@
+* {
+	font-family: "Microsoft Yahei";
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: #0a5bac;
+	text-decoration: none;
+}
+a {
+	color: white;
+}
+
+h1:hover a {
+	color: #0a5bac;
+}
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+header,
+main,
+ul,
+li,
+footer,
+p,
+span,
+section {
+	padding: 0;
+	margin: 0;
+}
+html,
+body {
+	height: 100%;
+	/* min-width: 960px; */
+}
+body {
+	background: url(../image/bg.jpg);
+	font-size: 14px;
+	font-family: "microsoft yahei";
+	-webkit-background-size: 100%;
+	background-size: 100%;
+	color: #fff;
+}
+header {
+	position: relative;
+	height: 50px;
+	padding-left: 80px;
+	background: rgba(100, 100, 100, 0.6);
+}
+.bigbox {
+	/* position: relative; */
+	width: 480px;
+	margin: 0 auto;
+}
+h1 {
+	padding-right: 20px;
+	line-height: 50px;
+	font-size: 30px;
+	float: left;
+}
+#weather_search {
+	margin-top: 10px;
+	float: left;
+}
+#weather_search span {
+	height: 30px;
+	float: left;
+	/* margin: 0 auto; */
+	/* transform: translateX(-50%); */
+}
+#text {
+	padding: 0 6px 0 6px;
+	background: #fff;
+	font-size: 14px;
+	width: 240px;
+	height: 30px;
+	border: none;
+	outline-color: skyblue;
+}
+#btn {
+	width: 70px;
+	height: 30px;
+	border: none;
+	background: rgba(255, 255, 255, 0.5);
+	color: #333;
+	outline: none;
+	cursor: pointer;
+}
+#btn:hover {
+	background: rgba(255, 255, 255, 0.5);
+}
+section {
+	padding-top: 90px;
+}
+#today_container {
+	/* width: 900px; */
+	margin: 0 auto;
+	padding: 20px;
+	background: rgba(69, 64, 64, 0.52);
+	overflow: hidden;
+	border-radius: 10px;
+}
+#today_container div img {
+	margin: 0 50px 0 40px;
+	float: left;
+}
+.main_info {
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+.main_info span {
+	margin: 0 15px;
+}
+.main_info span:first-child {
+	margin-left: 0;
+}
+.more_info {
+	margin-top: 3px;
+	font-size: 17px;
+	/* color:blue; */
+}
+.more_info span {
+	margin: 0 15px 0 0;
+	/* color:blue; */
+}
+#future_container {
+	margin: 80px auto 0 auto;
+	/* width: 1160px; */
+	text-align: center;
+	overflow: hidden;
+}
+#future_container div {
+	float: left;
+	width: 150px;
+	padding: 20px 0;
+	margin: 20px;
+	background: rgba(100, 100, 100, 0.5);
+}
+#future_container div:hover {
+	background: rgba(200, 200, 200, 0.5);
+	border-radius: 10px;
+}
+#future_container div span {
+	display: block;
+}
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+footer div {
+	width: 175px;
+	margin: 0 auto;
+}
+
+#tips {
+	font-size: 14px;
+	color: yellow;
+}
+.future_box:hover {
+	color: black;
+	opacity: 1;
+}
+.future_box img {
+	width: 60px;
+	height: 60px;
+}

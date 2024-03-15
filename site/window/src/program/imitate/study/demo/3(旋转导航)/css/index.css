@@ -1,0 +1,177 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #333;
+    color: #222;
+    /* 隐藏掉x轴上的滚动条 */
+    overflow-x: hidden;
+    margin: 0;
+}
+
+.container {
+    background-color: #fafafa;
+    /* 设置旋转点为左上角 */
+    transform-origin: top left;
+    /* 添加过渡动画属性 */
+    transition: transform 0.5s linear;
+    /* 设置视口宽高为100 */
+    /* 在css中vw与vh的区别：vw单位可以根据窗口的宽度自动改变大小，“1vw”是窗口宽度的“1%”；vh单位可以根据窗口的高度自动改变大小，“1vh”是窗口高度的“1%”。 */
+    width: 100vw;
+    min-height: 100vh;
+    /* 内边距往里面缩50px */
+    padding: 50px;
+}
+
+.container.show-nav {
+    /* 页面逆时针旋转20度 */
+    transform: rotate(-20deg);
+}
+
+/* 固定半圆位置，设置top和left使其只露出四分之一个正方形，因为如下正方形设置为200*200的大小 */
+.circle-container {
+    /* 固定在一个位置 */
+    position: fixed;
+    top: -100px;
+    left: -100px;
+}
+
+/* 半圆 */
+.circle {
+    background-color: #ff7979;
+    height: 200px;
+    width: 200px;
+    /* 从这一步之上左上角还是个正方形，设置border-radius为50%之后变成半圆 */
+    border-radius: 50%;
+    position: relative;
+    transition: transform 0.5s linear;
+}
+
+/* 当左上角按钮被点击的时候把按钮图标换成关闭按钮X，直接旋转70度即可 */
+.container.show-nav .circle {
+    transform: rotate(-70deg);
+}
+
+/* 设置左上角的按钮 */
+.circle button {
+    /* 鼠标移上去变为小手指 */
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 100px;
+    /* 背景设置为透明 */
+    background: transparent;
+    /* 取消边框 */
+    border: 0;
+    /* 增大字体大小 */
+    font-size: 26px;
+    color: #fff;
+}
+
+/* 设置按钮被点击的时候也不会出现边框 */
+.circle button:focus {
+    outline: none;
+}
+
+/* 设置左上角按钮关闭或者打开时候的位置 */
+.circle button#open {
+    left: 60%;
+}
+
+.circle button#close {
+    /* 这里的关闭按钮其实在整个大圆的左下部分，看不到，而在后续点击的时候它会通过旋转出现 */
+    top: 60%;
+    transform: rotate(90deg);
+    transform-origin: top left;
+}
+
+.container.show-nav+nav li {
+    transform: translateX(0);
+    transition-delay: 0.3s;
+}
+
+/* 这里制作旋转之后出现的nav */
+nav {
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    z-index: 100;
+}
+
+nav ul {
+    /* 去掉列表自带的点 */
+    list-style-type: none;
+    padding-left: 30px;
+}
+
+nav ul li {
+    /* 转换大写 */
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    margin: 40px 0;
+    transform: translateX(-100%);
+    transition: transform 0.4s ease-in;
+}
+
+nav ul li i {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+
+
+nav ul li+li {
+    /* 设置第二个相比第一个往右移动了15px */
+    margin-left: 15px;
+    transform: translateX(-150%);
+}
+
+nav ul li+li+li {
+    /* 设置第三个相比第一个往右移动了30px */
+    margin-left: 30px;
+    transform: translateX(-200%);
+}
+
+/* 去掉a标签自带的下划线并且上色 */
+nav a {
+    color: #fafafa;
+    text-decoration: none;
+    transition: all 0.5s;
+}
+
+/* 鼠标覆盖上去字体会加粗变红 */
+nav a:hover {
+    color: #FF7979;
+    font-weight: bold;
+}
+
+/* 设置一下图片,因为图片过大，所以让它占内容区域的100%以达到全部显示的效果 */
+.content img {
+    max-width: 100%;
+}
+
+.content {
+    max-width: 1000px;
+    margin: 50px auto;
+}
+
+/* 设置大标题 */
+.content h1 {
+    margin: 0;
+}
+
+/* 设置作者的字体 */
+.content small {
+    color: #555;
+    font-style: italic;
+}
+
+/* 设置段落 */
+.content p {
+    color: #333;
+    /* 行距 */
+    line-height: 1.5;
+}

@@ -1,0 +1,63 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#ul1 {
+	position: relative;
+	margin: 20px auto;
+	background: #1b1f2b;
+	overflow: hidden;
+}
+
+#ul1 li {
+	list-style: none;
+}
+
+body {
+	text-align: center;
+	background-color: #2a2a2a;
+	color: aliceblue;
+}
+
+.box0 {
+	width: 70px;
+	height: 70px;
+	background: url(../../image/1.jpg) no-repeat;
+	float: left;
+}
+
+.box1 {
+	width: 70px;
+	height: 70px;
+	background: url(../../image/2.jpg) no-repeat;
+	float: left;
+}
+
+.box2 {
+	width: 70px;
+	height: 70px;
+	background: url(../../image/3.jpg) no-repeat;
+	float: left;
+}
+
+.box3 {
+	width: 70px;
+	height: 70px;
+	background: url(../../image/4.jpg) no-repeat;
+	float: left;
+}
+
+.box4 {
+	width: 70px;
+	height: 70px;
+	background: url(../../image/5.jpg) no-repeat;
+	float: left;
+}
+
+.box5 {
+	width: 70px;
+	height: 70px;
+	background: url(../../image/6.jpg) no-repeat;
+	float: left;
+}

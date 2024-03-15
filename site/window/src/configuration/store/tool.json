@@ -1,0 +1,422 @@
+{
+	"apps": [
+		{
+			"title": "取色器",
+			"labels": ["tool"],
+			"icon": "../../program/colorPicker/icon/favicon.ico",
+			"summary": "../../program/colorPicker/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用: 取色器",
+			"open": {
+				"url": "./program/colorPicker/index.html",
+				"title": "取色器",
+				"icon": {
+					"type": "img",
+					"content": "./program/colorPicker/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"color-picker": {
+						"url": "./program/colorPicker/index.html",
+						"title": "取色器",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置应用: 取色器",
+						"icon": {
+							"type": "img",
+							"content": "./program/colorPicker/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["color-picker"],
+				"menu": {
+					"color-picker": {
+						"app": "color-picker",
+						"title": "取色器",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "JSON在线解析",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/json-favicon.ico",
+			"summary": "../../assets/image/program/json-summary.png",
+			"description": "Json中文网致力于在中国推广Json,并提供相关的Json解析、验证、格式化、压缩、编辑器以及Json与XML相互转换等服务",
+			"open": {
+				"url": "https://www.json.cn",
+				"title": "JSON在线解析",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/json-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"json": {
+						"url": "https://www.json.cn",
+						"title": "JSON在线解析",
+						"developer": "zhongjyuan",
+						"description": "Json中文网致力于在中国推广Json,并提供相关的Json解析、验证、格式化、压缩、编辑器以及Json与XML相互转换等服务",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/json-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["json"],
+				"menu": {
+					"json": {
+						"app": "json",
+						"title": "JSON在线解析",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "JS压缩",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/css-js-favicon.ico",
+			"summary": "../../assets/image/program/css-js-summary.png",
+			"description": "JS压缩",
+			"open": {
+				"url": "https://www.css-js.com",
+				"title": "JS压缩",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/css-js-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"css-js": {
+						"url": "https://www.css-js.com",
+						"title": "JS压缩",
+						"developer": "zhongjyuan",
+						"description": "JS压缩",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/css-js-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["css-js"],
+				"menu": {
+					"css-js": {
+						"app": "css-js",
+						"title": "JS压缩",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "在线工具箱",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/tool-lu-favicon.ico",
+			"summary": "../../assets/image/program/tool-lu-summary.png",
+			"description": "在线工具,开发人员工具,代码格式化、压缩、加密、解密,下载链接转换,json格式化,正则测试工具,favicon在线制作,字帖工具,中文简繁体转换,迅雷下载链接转换,进制转换,二维码,照片压缩,pdf合并",
+			"open": {
+				"url": "https://tool.lu",
+				"title": "在线工具箱",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tool-lu-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tool-lu": {
+						"url": "https://tool.lu",
+						"title": "在线工具箱",
+						"developer": "zhongjyuan",
+						"description": "在线工具,开发人员工具,代码格式化、压缩、加密、解密,下载链接转换,json格式化,正则测试工具,favicon在线制作,字帖工具,中文简繁体转换,迅雷下载链接转换,进制转换,二维码,照片压缩,pdf合并",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tool-lu-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tool-lu"],
+				"menu": {
+					"tool-lu": {
+						"app": "tool-lu",
+						"title": "在线工具箱",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "开发者工具(1)",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/chacuo-favicon.ico",
+			"summary": "../../assets/image/program/chacuo-summary.png",
+			"description": "开发者工具(1)",
+			"open": {
+				"url": "http://web.chacuo.net",
+				"title": "开发者工具",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/chacuo-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"chacuo": {
+						"url": "http://web.chacuo.net",
+						"title": "开发者工具(1)",
+						"developer": "zhongjyuan",
+						"description": "开发者工具",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/chacuo-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["chacuo"],
+				"menu": {
+					"chacuo": {
+						"app": "chacuo",
+						"title": "开发者工具(1)",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "开发者工具(2)",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/tooltt-favicon.ico",
+			"summary": "../../assets/image/program/tooltt-summary.png",
+			"description": "在线工具箱:免安装,在线使用,程序员编程开发必备工具箱",
+			"open": {
+				"url": "http://web.chacuo.net",
+				"title": "开发者工具(2)",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tooltt-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tooltt": {
+						"url": "http://web.chacuo.net",
+						"title": "开发者工具(2)",
+						"developer": "zhongjyuan",
+						"description": "在线工具箱:免安装,在线使用,程序员编程开发必备工具箱",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tooltt-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tooltt"],
+				"menu": {
+					"tooltt": {
+						"app": "tooltt",
+						"title": "开发者工具(2)",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "站长工具",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/lusongsong-favicon.ico",
+			"summary": "../../assets/image/program/lusongsong-summary.png",
+			"description": "站长工具导航皆在为站长提供全面的站长工具，本网收录了互联网各大热门在线站长工具，经常上站长工具可以了解SEO数据变化。还可以检测网站死链接、蜘蛛访问、HTML格式检测、网站速度测试、友情链接检查、网站域名IP查询、PR、权重查询、alexa、whois查询等等。",
+			"open": {
+				"url": "https://tool.lusongsong.com",
+				"title": "站长工具",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/lusongsong-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"lusongsong": {
+						"url": "https://tool.lusongsong.com",
+						"title": "站长工具",
+						"developer": "zhongjyuan",
+						"description": "站长工具导航皆在为站长提供全面的站长工具，本网收录了互联网各大热门在线站长工具，经常上站长工具可以了解SEO数据变化。还可以检测网站死链接、蜘蛛访问、HTML格式检测、网站速度测试、友情链接检查、网站域名IP查询、PR、权重查询、alexa、whois查询等等。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/lusongsong-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["lusongsong"],
+				"menu": {
+					"lusongsong": {
+						"app": "lusongsong",
+						"title": "站长工具",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Markdown编辑器",
+			"labels": ["popular", "tool"],
+			"icon": "../../assets/icon/program/markdown-edit-favicon.ico",
+			"summary": "../../assets/image/program/markdown-edit-summary.png",
+			"description": "Markdown 在线编辑器",
+			"open": {
+				"url": "https://tool.lu/markdown",
+				"title": "Markdown编辑器",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/markdown-edit-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"markdown-edit": {
+						"url": "https://tool.lu/markdown",
+						"title": "Markdown编辑器",
+						"developer": "zhongjyuan",
+						"description": "Markdown 在线编辑器",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/markdown-edit-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["markdown-edit"],
+				"menu": {
+					"markdown-edit": {
+						"app": "markdown-edit",
+						"title": "Markdown编辑器",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Linux命令大全",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/linuxling-favicon.ico",
+			"summary": "../../assets/image/program/linuxling-summary.png",
+			"description": "最专业的Linux命令大全，内容包含Linux命令手册、Linux命令详解、Linux命令学习、Linux命令行与shell脚本编程大全、Linux命令实例讲解，值得收藏的Linux命令速查手册。",
+			"open": {
+				"url": "http://man.it69.net",
+				"title": "Linux命令大全",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/linuxling-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"linuxling": {
+						"url": "http://man.it69.net",
+						"title": "Linux命令大全",
+						"developer": "zhongjyuan",
+						"description": "最专业的Linux命令大全，内容包含Linux命令手册、Linux命令详解、Linux命令学习、Linux命令行与shell脚本编程大全、Linux命令实例讲解，值得收藏的Linux命令速查手册。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/linuxling-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["linuxling"],
+				"menu": {
+					"linuxling": {
+						"app": "linuxling",
+						"title": "Linux命令大全",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "查询网",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/ip138-favicon.ico",
+			"summary": "../../assets/image/program/ip138-summary.png",
+			"description": "iP地址查询--手机号码查询归属地 | 邮政编码查询 | iP地址归属地查询 | 身份证号码验证在线查询网",
+			"open": {
+				"url": "https://www.ip138.com",
+				"title": "查询网",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/ip138-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"ip138": {
+						"url": "https://www.ip138.com",
+						"title": "查询网",
+						"developer": "zhongjyuan",
+						"description": "iP地址查询--手机号码查询归属地 | 邮政编码查询 | iP地址归属地查询 | 身份证号码验证在线查询网",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/ip138-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["ip138"],
+				"menu": {
+					"ip138": {
+						"app": "ip138",
+						"title": "查询网",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Banner生成器",
+			"labels": ["tool"],
+			"icon": "../../assets/icon/program/patorjk-favicon.ico",
+			"summary": "../../assets/image/program/patorjk-summary.png",
+			"description": "Text to ASCII Art Generator (TAAG)",
+			"open": {
+				"url": "https://patorjk.com/software/taag/#p=display&f=Graffiti&t=zhongjyuan",
+				"title": "Banner生成器",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/patorjk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"patorjk": {
+						"url": "https://patorjk.com/software/taag/#p=display&f=Graffiti&t=zhongjyuan",
+						"title": "Banner生成器",
+						"developer": "zhongjyuan",
+						"description": "Text to ASCII Art Generator (TAAG)",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/patorjk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["patorjk"],
+				"menu": {
+					"patorjk": {
+						"app": "patorjk",
+						"title": "Banner生成器",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

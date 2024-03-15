@@ -1,0 +1,2016 @@
+{
+	"apps": {
+		"codeup": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://codeup.aliyun.com",
+			"tileUrl": "",
+			"title": "CodeUp",
+			"version": "1.0.0",
+			"developer": "tencent",
+			"description": "云效代码管理 Codeup，是基于 Git 的代码管理平台，数十万企业正在使用，提供代码托管、代码评审、代码扫描、质量检测、持续集成等功能，全方位保护企业代码资产，帮助企业实现安全、稳定、高效的代码托管和研发管理。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/codeup-favicon.ico",
+				"bg": "#292929"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"coding": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://zhongjyuan.coding.net",
+			"tileUrl": "",
+			"title": "Coding",
+			"version": "1.0.0",
+			"developer": "tencent",
+			"description": "CODING DevOps 一站式研发管理平台，学习腾讯云团队如何采用 DevOps 文化，了解 DevOps 的做法和 DevOps 好处，使研发团队在云端高效协同，实践敏捷开发与 DevOps，提升软件交付质量与速度。",
+			"icon": {
+				"type": "img",
+				"content": "./assets/icon/program/coding-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"gitcode": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://gitcode.net/zhongjyuan_jinyuan",
+			"tileUrl": "",
+			"title": "GitCode",
+			"version": "1.0.0",
+			"developer": "tencent",
+			"description": "GitCode 是 CSDN 为开发者提供的开源项目创新服务平台，秉承“创新、开放、协作、共享”的开源价值观，致力于为大规模开源开放协同创新助力赋能，打造创新成果孵化和新时代开发者培养的开源创新生态！支持公有云使用、私有化部署以及软硬一体化私有部署。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/gitcode-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"github": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": false,
+			"url": "https://github.com/zhongjyuan",
+			"tileUrl": "",
+			"title": "GitHub",
+			"version": "1.0.0",
+			"developer": "github",
+			"description": "GitHub是一个面向开源及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管，故名GitHub。",
+			"icon": {
+				"type": "fa",
+				"bg": "#292929",
+				"content": "github"
+			}
+		},
+		"gitee": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://gitee.com/zhongjyuan",
+			"tileUrl": "",
+			"title": "Gitee",
+			"version": "1.0.0",
+			"developer": "gitee",
+			"description": "面向企业提供一站式研发管理解决方案，包括代码管理、项目管理、文档协作、测试管理、CICD、效能度量等多个模块，支持SaaS、私有化等多种部署方式，帮助企业有序规划和管理研发过程，提升研发效率和质量。",
+			"icon": {
+				"type": "str",
+				"content": "G",
+				"bg": "rgb(216,2,18)"
+			}
+		},
+		"gitweixin": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://git.weixin.qq.com",
+			"tileUrl": "",
+			"title": "GitWeixin",
+			"version": "1.0.0",
+			"developer": "tencent",
+			"description": "微信开发者·代码管理是为开发者提供的一项代码管理服务，方便微信开发者进行代码推送、拉取、版本管理和多人协作",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/gitweixin-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"vscode": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": false,
+			"url": "https://vscode.dev",
+			"tileUrl": "",
+			"title": "VS Code",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "微软发布 VSCode 在线版，让你直接在浏览器中进行开发！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/vscode-favicon.ico"
+			}
+		},
+		"chatgpt-1": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://chat4.wuguokai.cn",
+			"tileUrl": "",
+			"title": "ChatGPT(1)",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(1)",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/chatgpt-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"chatgpt-2": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://ai.feilili.com",
+			"tileUrl": "",
+			"title": "ChatGPT(2)",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(2)",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/chatgpt-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"chatgpt-3": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://c.binjie.fun",
+			"tileUrl": "",
+			"title": "ChatGPT(3)",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(3)",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/chatgpt-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"chatgpt-4": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://ai.kunshanyuxin.com",
+			"tileUrl": "",
+			"title": "AI智能中台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：AI智能中台",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/chatgpt-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"tenglangai": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://wx.tenglangai.com/#/pages/template",
+			"tileUrl": "",
+			"title": "腾朗AI",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：腾朗AI",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/chatgpt-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"aiwht": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://www.aiwht.com",
+			"tileUrl": "",
+			"title": "AI万花筒",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "AIGC,AI工具,AI教程,AI学习,AI资源",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/aiwht-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"baidu-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://pan.baidu.com",
+			"tileUrl": "",
+			"title": "百度网盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "百度网盘为您提供文件的网络备份、同步和分享服务。空间大、速度快、安全稳固，支持教育网加速，支持手机端。注册使用百度网盘即可享受免费存储空间",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/baidu-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"kuake-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://pan.quark.cn",
+			"tileUrl": "",
+			"title": "夸克网盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "夸克网盘是夸克推出的一款云服务产品，功能包括云存储、高清看剧、文件在线解压、PDF一键转换等。通过夸克网盘可随时随地管理和使用照片、文档、手机资料，目前支持Android、iOS、PC、iPad。夸克网盘是夸克浏览器附带的功能，特点就是和浏览器本身的很多智能小工具打通了。像浏览器的很多文字识别、文件转换、文件扫描存档等功能，都可以兼容到夸克网盘的云空间。此外，很多手机浏览器都有文件管理、查看的功能，而夸克网盘不仅有着类似的功能，而且额外增加了一个网盘主打的自动备份功能，和浏览器的本地管理结合起来，效果更好。最方便的特点是“流畅播”功能，如果用夸克浏览器来播放在线视频，会发现它可以进行视频转存，把网页视频直接转存到夸克网盘，相当于更换了一个更加稳定的视频源，无论是在线观看还是下载，都会变得更加快捷。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/kuake-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"ali-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.aliyundrive.com",
+			"tileUrl": "",
+			"title": "阿里云盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "阿里云盘是一款速度快、不打扰、够安全、易于分享的个人网盘，欢迎你来体验。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/ali-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"tencent-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.weiyun.com/index.html",
+			"tileUrl": "",
+			"title": "腾讯微云",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "微云是腾讯公司为用户精心打造的一项智能云服务, 您可以通过微云方便地在手机和电脑之间同步文件、推送照片和传输数据。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/tencent-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"115-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://115.com",
+			"tileUrl": "",
+			"title": "115网盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "115网盘,网盘,云盘,网络U盘,离线下载,网络硬盘,免费网盘,云存储,分享,共享,网盘下载,网盘资源,同步",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/115-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"tianyi-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://cloud.189.cn/web/login.html",
+			"tileUrl": "",
+			"title": "天翼云盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "天翼云盘是中国电信推出的云存储服务，为用户提供跨平台的文件存储、备份、同步及分享服务，是国内领先的免费网盘，安全、可靠、稳定、快速。天翼云盘为用户守护数据资产。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/tianyi-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"jianguo-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.jianguoyun.com",
+			"tileUrl": "",
+			"title": "坚果云盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "坚果云是一款提供网盘|云盘|云服务的团队协助软件,可随时随地实现共享文件夹。坚果云网盘支持移动办公,协同办公,文件同步,数据备份,智能管理,在线编辑等功能。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/jianguo-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"huawei-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://cloud.huawei.com",
+			"tileUrl": "",
+			"title": "华为云空间",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "在线管理您的照片、联系人、备忘录等重要数据，并同步更新到您的其他华为设备，还可在设备丢失时，帮您远程定位、播放铃声、设置丢失模式、擦除数据，保护您的隐私安全。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/huawei-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"nainiu-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://cowtransfer.com",
+			"tileUrl": "",
+			"title": "奶牛快传",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "奶牛快传 (CowTransfer) 无需注册即可传输文件，上传下载不限速。传视频、传音频、传图片、跨国传、传大文件。10GB 免费云盘、会员 3TB 超大云盘。最受创意人、广告人及创作者喜爱的效率工具之一，快来体验吧！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/nainiu-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"lanzou-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://pc.woozooo.com",
+			"tileUrl": "",
+			"title": "蓝奏云存储",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "蓝奏, 上传, 网盘, 网络硬盘, 云盘, 云存储, 网众蓝奏",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/lanzou-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"quqi-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.quqi.com",
+			"tileUrl": "",
+			"title": "曲奇云盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "曲奇云盘是一款资源丰富,空间大,群组共享便捷的网盘,现注册就送2T超大空间.网盘内容广场,汇聚各类优质资源,无论短视频,电影,广播剧,漫画总能发现你喜欢的,还能一键加群,找到组织更简单,等你来发现更多精彩.",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/quqi-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"yunzhongzhuan-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.yunzhongzhuan.com/welcome/index.html",
+			"tileUrl": "",
+			"title": "云中转",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "云中转,云盘,文件,传输,上传,不限速,分享,存储,不限,空间,容量,在线,网盘,下载",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/yunzhongzhuan-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"yidong-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://yun.139.com/w/#/",
+			"tileUrl": "",
+			"title": "移动云盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "中国移动云盘（原名和彩云网盘）是中国移动面向所有用户推出的一款安全、智能、不限速、移动用户免流量的产品。产品涵盖存储备份、多端同步、在线管理、群组分享四大核心能力。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/yidong-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"chengtong-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.ctfile.com",
+			"tileUrl": "",
+			"title": "城通网盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "城通网盘是一款免费网盘，即免费网络存储空间服务。注册后可获得支持外链的50TB空间，最大单文件可达15GB，同时为用户提供每万次点击下载1000元的奖励。已为国内外数千万用户提供超过 5000TB 的网络储存空间。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/chengtong-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"feimao-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.feimaoyun.com/home",
+			"tileUrl": "",
+			"title": "飞猫云盘",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "飞猫盘是一款提供网盘|云盘|云服务的团队协作软件,可随时随地实现文件分享。橘猫云支持移动办公,协同办公,文件同步,数据备份,离线下载,在线编辑等功能。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/feimao-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"wenshushu-netdisk": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.wenshushu.cn",
+			"tileUrl": "",
+			"title": "文叔叔",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "文叔叔，免费空间 40GB，一款永不限速的云存储产品。传文件、收文件、网盘，还支持历史记录等高级功能。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/wenshushu-netdisk-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"pinduoduo": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": false,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://mobile.yangkeduo.com",
+			"tileUrl": "",
+			"title": "拼多多",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "拼多多，是国内移动互联网的主流电子商务应用产品。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/pdd-favicon.ico"
+			},
+			"size": {
+				"height": "800",
+				"width": "790"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"alibaba": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.1688.com",
+			"tileUrl": "",
+			"title": "1688",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "阿里巴巴(1688.com)是全球企业间(B2B)电子商务的著名品牌,为数千万网商提供海量商机信息和便捷安全的在线交易市场,也是商人们以商会友、真实互动的社区平台。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/alibaba-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"taobao": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.taobao.com",
+			"tileUrl": "",
+			"title": "淘宝",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "淘宝网 - 亚洲较大的网上交易平台，提供各类服饰、美容、家居、数码、话费/点卡充值… 数亿优质商品，同时提供担保交易(先收货后付款)等安全交易保障服务，并由商家提供退货承诺、破损补寄等消费者保障服务，让你安心享受网上购物乐趣！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/taobao-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"jingdong": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://www.jd.com",
+			"tileUrl": "",
+			"title": "京东",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "京东JD.COM-专业的综合网上购物商城，为您提供正品低价的购物选择、优质便捷的服务体验。商品来自全球数十万品牌商家，囊括家电、手机、电脑、服装、居家、母婴、美妆、个护、食品、生鲜等丰富品类，满足各种购物需求。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/jingdong-favicon.ico"
+			}
+		},
+		"weixin-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://weixin.qq.com",
+			"tileUrl": "",
+			"title": "微信创作者中心",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "创作者中心是微信视频号为创作者提供的一个创作工具平台，包括视频拍摄、编辑、发布、数据分析等多个功能，旨在帮助创作者更加便捷地进行视频创作和推广。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/weixin-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"douyin-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://creator.douyin.com",
+			"tileUrl": "",
+			"title": "抖音创作服务平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "抖音创作服务平台是抖音创作者的专属服务平台，支持用户作为创作者和管理机构两种登陆方式，并通过提供授权管理、内容管理、互动管理及数据管理等服务助力抖音用户高效运营！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/douyin-creator-favicon.ico"
+			}
+		},
+		"xigua-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://studio.ixigua.com",
+			"tileUrl": "",
+			"title": "西瓜创作平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "西瓜创作平台是西瓜创作者的专属创作平台，支持用户发布西瓜视频，并通过提供发布视频、内容管理、数据分析、评论管理、收益分析、创作激励、创作课程、消息管理等服务助力西瓜用户高效运营和创作！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/xigua-creator-favicon.ico"
+			}
+		},
+		"toutiao-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://mp.toutiao.com",
+			"tileUrl": "",
+			"title": "头条号",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "头条号是今日头条推出的开放的内容创作与分发平台，基于今日头条革命性的推荐引擎，实现媒体、企业、政府等机构与个人的内容创作、发布与精准分发。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/toutiao-creator-favicon.ico"
+			}
+		},
+		"kuaishou-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://cp.kuaishou.com",
+			"tileUrl": "",
+			"title": "快手创作者服务平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "快手创作者服务平台为创作者和机构提供强大的运营管理、高清视频上传、多维度数据分析、内容生产等辅助工具、依托平台丰富的资源提供热点趋势，更好的服务每个创作者。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/kuaishou-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"bilibili-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://passport.bilibili.com/login",
+			"tileUrl": "",
+			"title": "哔哩哔哩创作平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "哔哩哔哩（bilibili.com)是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/bilibili-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"weibo-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://weibo.com/login.php",
+			"tileUrl": "",
+			"title": "微博创作平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "随时随地发现新鲜事！微博带你欣赏世界上每一个精彩瞬间，了解每一个幕后故事。分享你想表达的，让全世界都能听到你的心声！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/weibo-creator-favicon.ico"
+			}
+		},
+		"weishi-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://h5.weishi.qq.com/weishi/account/login?r_url=http%3A%2F%2Fmedia.weishi.qq.com%2Fmedia%2Fvideo-manage",
+			"tileUrl": "",
+			"title": "微视创作平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：微视创作平台",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/weishi-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"pipixia-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.pipix.com/login?redirect=%2Fmp%2Fupload",
+			"tileUrl": "",
+			"title": "皮皮虾创作平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "皮皮虾app是一款主打轻幽默神评论的社区软件，来皮皮虾官网下载皮皮虾app，为你呈现海量搞笑视频神评论，开心每一天。皮皮虾app，皮一下很开心！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/pipixia-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"xiaohongshu-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://creator.xiaohongshu.com/login?lastUrl=%252Fcreator%252Fhome",
+			"tileUrl": "",
+			"title": "小红书创作服务平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "小红书创作服务平台为小红书创作者和机构提供视频上传、数据分析、粉丝管理、创作指导等多项运营服务，助力用户解锁更多创作者专属功能，体验高效创作！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/xiaohongshu-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"zhihu-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://www.zhihu.com/signin?next=%2Fcreator",
+			"tileUrl": "",
+			"title": "知乎创作平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "知乎，中文互联网高质量的问答社区和创作者聚集的原创内容平台，于 2011 年 1 月正式上线，以「让人们更好的分享知识、经验和见解，找到自己的解答」为品牌使命。知乎凭借认真、专业、友善的社区氛围、独特的产品机制以及结构化和易获得的优质内容，聚集了中文互联网科技、商业、影视、时尚、文化等领域最具创造力的人群，已成为综合性、全品类、在诸多领域具有关键影响力的知识分享社区和创作者聚集的原创内容平台，建立起了以社区驱动的内容变现商业模式。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/zhihu-creator-favicon.ico"
+			}
+		},
+		"csdn-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://passport.csdn.net/login?code=applets",
+			"tileUrl": "",
+			"title": "CSDN创作平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "CSDN是全球知名中文IT技术交流平台,创建于1999年,包含原创博客、精品问答、职业培训、技术论坛、资源下载等产品服务,提供原创、优质、完整内容的专业IT技术开发社区.",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/csdn-creator-favicon.ico"
+			}
+		},
+		"zuiyou-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://daren.izuiyou.com/login",
+			"tileUrl": "",
+			"title": "最右达人",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：最右达人",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/zuiyou-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"tenxun-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://mp.v.qq.com",
+			"tileUrl": "",
+			"title": "腾讯视频创作中心",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "腾讯视频创作平台是面向长中短各类视频创作者开放的内容合作平台，平台围绕入驻、上线、运营、结算等核心环节，搭建了全流程的在线合作服务体系，可支持短、中、长各类视频，包括但不限于网络电影、微短剧、知识、网络剧、纪录片、少儿、动漫、综艺等多品类内容进行入驻合作。平台愿与您携手，共享创作好时光，实现共赢。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/tenxun-creator-favicon.ico"
+			}
+		},
+		"youku-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://account.youku.com/?callback=http%3A%2F%2Fmp.youku.com%2Findex",
+			"tileUrl": "",
+			"title": "优酷视频创作中心",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：优酷视频创作中心",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/youku-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"mangguotv-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://7.mgtv.com/login",
+			"tileUrl": "",
+			"title": "芒果TV创作中心",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：芒果TV创作中心",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/mangguotv-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"aiqiyi-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://mp.iqiyi.com",
+			"tileUrl": "",
+			"title": "爱奇艺开放平台",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "爱奇艺开放平台是爱奇艺iQ号内容与爱奇艺进行合作的平台，提供视频合作（网络大电影、网剧、儿童、动漫、教育等类型视频）、自媒体、文学创作、漫画作品、泡泡圈主、直播主播等各种类型的深度合作。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/aiqiyi-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"baijiahao-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://baijiahao.baidu.com/builder/rc/home",
+			"tileUrl": "",
+			"title": "百家号",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "百家号，是百度为创作者打造的集创作、发布、变现于一体的内容创作平台，也是众多企业实现营销转化的运营新阵地。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/baijiahao-creator-favicon.svg"
+			}
+		},
+		"qiehao-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://om.qq.com/userAuth/index",
+			"tileUrl": "",
+			"title": "企鹅号",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "企鹅号是腾讯旗下的一站式内容创作运营平台，也是腾讯“大内容”生态的重要入口。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/qiehao-creator-favicon.ico"
+			}
+		},
+		"dayuhao-creator": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://mp.dayu.com",
+			"tileUrl": "",
+			"title": "大鱼号",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "大鱼号是阿里文娱体系为内容创作者提供的统一账号。大鱼号实现了阿里文娱体系一点接入，多点分发。内容创作者一点接入大鱼号，上传图文/视频可被分发到UC、优酷、土豆、淘系客户端，未来还会扩展到豌豆荚、神马搜索、PP助手等。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/dayuhao-creator-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"douyin": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": false,
+			"url": "https://www.douyin.com",
+			"tileUrl": "",
+			"title": "抖音",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "抖音让每一个人看见并连接更大的世界,鼓励表达、沟通和记录,激发创造,丰富人们的精神世界,让现实生活更美好。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/douyin-favicon.ico"
+			}
+		},
+		"bilibili": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.bilibili.com",
+			"tileUrl": "",
+			"title": "哔哩哔哩",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "哔哩哔哩（bilibili.com)是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/bilibili-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"xigua": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.ixigua.com",
+			"tileUrl": "",
+			"title": "西瓜视频",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "西瓜视频是一个开眼界、涨知识的视频 App，作为国内领先的中视频平台，它源源不断地为不同人群提供优质内容，让人们看到更丰富和有深度的世界，收获轻松的获得感，点亮对生活的好奇心。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/xigua-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"xiaohongshu": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.xiaohongshu.com",
+			"tileUrl": "",
+			"title": "小红书",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "2 亿人的生活经验，都在小红书",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/xiaohongshu-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"tenxun": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://v.qq.com",
+			"tileUrl": "",
+			"title": "腾讯视频",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "腾讯视频致力于打造中国领先的在线视频媒体平台，以丰富的内容、极致的观看体验、便捷的登录方式、24小时多平台无缝应用体验以及快捷分享的产品特性，主要满足用户在线观看视频的需求。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/tenxun-favicon.ico"
+			}
+		},
+		"youku": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://www.youku.com",
+			"tileUrl": "",
+			"title": "优酷视频",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "视频服务平台,提供视频播放,视频发布,视频搜索,视频分享",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/youku-favicon.ico"
+			}
+		},
+		"mangguotv": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.mgtv.com",
+			"tileUrl": "",
+			"title": "芒果TV",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "芒果TV-大家都在看的在线视频网站-热门综艺最新电影电视剧在线观看",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/mangguotv-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"aiqiyi": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://www.iqiyi.com",
+			"tileUrl": "",
+			"title": "爱奇艺",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "爱奇艺(IQIYI.COM)拥有海量、优质、高清的影视剧集等视频内容。爱奇艺VIP限时新用户特惠：首月6元，会员畅看顶级视听品质体验！当前热播《唐朝诡事录》《一年一度喜剧大赛2》《航海王》《请君》",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/aiqiyi-favicon.ico"
+			}
+		},
+		"kugou": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://www.kugou.com",
+			"tileUrl": "",
+			"title": "酷狗音乐",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "酷狗音乐在线正版音乐网站，为您提供酷狗音乐播放器下载 、在线音乐试听下载，提供听书、长音频、频道、听小说和MV播放服务。酷狗音乐，就是歌多！小说相声也很多！场景音乐也很多！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/kugou-favicon.ico"
+			}
+		},
+		"wangyiyun": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://music.163.com",
+			"tileUrl": "",
+			"title": "网易云音乐",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "网易云音乐是一款专注于发现与分享的音乐产品，依托专业音乐人、DJ、好友推荐及社交功能，为用户打造全新的音乐生活。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/wangyiyun-favicon.ico"
+			}
+		},
+		"tuguaishou": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://818ps.com",
+			"tileUrl": "",
+			"title": "图怪兽",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "图怪兽作图神器是一个在线编辑服务平台，图怪兽为用户提供图片模板，用户可通过替换修改文字来完成图片设计。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/tuguaishou-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"iconfont": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": true,
+			"url": "https://www.iconfont.cn",
+			"tileUrl": "",
+			"title": "阿里巴巴矢量图库",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "iconfont-国内功能很强大且图标内容很丰富的矢量图标库，提供矢量图标下载、在线存储、格式转换等功能。阿里巴巴体验团队倾力打造，设计和前端开发的便捷工具",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/iconfont-favicon.svg"
+			}
+		},
+		"processon": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.processon.com",
+			"tileUrl": "",
+			"title": "ProcessOn",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "ProcessOn是一款专业在线作图工具和知识分享社区，提供AI生成思维导图流程图。支持思维导图、流程图、组织结构图、网络拓扑图、鱼骨图、UML图等多种图形，同时可实现人与人之间的实时协作和共享，提升团队工作效率。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/processon-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"mock": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://www.mockplus.cn",
+			"tileUrl": "",
+			"title": "慕客",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "摹客集设计协作平台、原型设计和设计规范为一体，数百万设计师、产品经理和开发工程师必备设计神器、交互原型、标注切图、文档管理。设计+协作，摹客就够了！",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/mock-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"apifox": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "https://app.apifox.com",
+			"tileUrl": "",
+			"title": "APIFox",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "API 文档、API 调试、API Mock、API 自动化测试 一体化协作平台",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/apifox-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"jay": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "https://www.lovejay.top",
+			"tileUrl": "",
+			"title": "Jay资源库",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "互联网净土，白嫖党天堂，聚合全网优质资源，致力于做到一个网站解决所有问题",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/jay-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"tuou": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "outer",
+			"urlRandomToken": false,
+			"url": "https://tuostudy.com",
+			"tileUrl": "",
+			"title": "图欧学习资源库",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "分享了有23个类目的资源站，它内容非常全面，全是有关学习资源的，它几乎满足了各阶段的学习要求，比如，单词视频、课本音频、单词文本、电子书等。",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/tuou-favicon.ico"
+			}
+		}
+	}
+}

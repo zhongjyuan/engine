@@ -1,0 +1,498 @@
+{
+	"apps": [
+		{
+			"title": "ChatGPT(1)",
+			"labels": ["popular", "ai"],
+			"icon": "../../assets/icon/program/chatgpt-favicon.ico",
+			"summary": "./assets/image/program/chatgpt-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(1)",
+			"open": {
+				"url": "http://chat4.wuguokai.cn",
+				"title": "ChatGPT(1)",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/chatgpt-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"chatgpt-1": {
+						"url": "http://chat4.wuguokai.cn",
+						"title": "ChatGPT(1)",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(1)",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/chatgpt-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["chatgpt-1"],
+				"menu": {
+					"chatgpt-1": {
+						"app": "chatgpt-1",
+						"title": "ChatGPT(1)",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "ChatGPT(2)",
+			"labels": ["popular", "ai"],
+			"icon": "../../assets/icon/program/chatgpt-favicon.ico",
+			"summary": "./assets/image/program/chatgpt-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(2)",
+			"open": {
+				"url": "https://ai.feilili.com",
+				"title": "ChatGPT(2)",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/chatgpt-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"chatgpt-2": {
+						"url": "https://ai.feilili.com",
+						"title": "ChatGPT(2)",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(2)",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/chatgpt-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["chatgpt-2"],
+				"menu": {
+					"chatgpt-2": {
+						"app": "chatgpt-2",
+						"title": "ChatGPT(2)",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "ChatGPT(3)",
+			"labels": ["popular", "ai"],
+			"icon": "../../assets/icon/program/chatgpt-favicon.ico",
+			"summary": "./assets/image/program/chatgpt-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(3)",
+			"open": {
+				"url": "https://c.binjie.fun",
+				"title": "ChatGPT(3)",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/chatgpt-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"chatgpt-3": {
+						"url": "https://c.binjie.fun",
+						"title": "ChatGPT(3)",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：ChatGPT(3)",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/chatgpt-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["chatgpt-3"],
+				"menu": {
+					"chatgpt-3": {
+						"app": "chatgpt-3",
+						"title": "ChatGPT(3)",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "AI智能中台",
+			"labels": ["popular", "ai"],
+			"icon": "../../assets/icon/program/chatgpt-favicon.ico",
+			"summary": "./assets/image/program/chatgpt-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：AI智能中台",
+			"open": {
+				"url": "https://ai.kunshanyuxin.com",
+				"title": "AI智能中台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/chatgpt-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"chatgpt-4": {
+						"url": "https://ai.kunshanyuxin.com",
+						"title": "AI智能中台",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：AI智能中台",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/chatgpt-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["chatgpt-4"],
+				"menu": {
+					"chatgpt-4": {
+						"app": "chatgpt-4",
+						"title": "AI智能中台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "腾朗AI",
+			"labels": ["popular", "ai"],
+			"icon": "../../assets/icon/program/tenglangai-favicon.ico",
+			"summary": "./assets/image/program/tenglangai-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：腾朗AI",
+			"open": {
+				"url": "https://wx.tenglangai.com/#/pages/template",
+				"title": "腾朗AI",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tenglangai-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tenglangai": {
+						"url": "https://wx.tenglangai.com/#/pages/template",
+						"title": "腾朗AI",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：腾朗AI",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tenglangai-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tenglangai"],
+				"menu": {
+					"tenglangai": {
+						"app": "tenglangai",
+						"title": "腾朗AI",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "AI万花筒",
+			"labels": ["ai"],
+			"icon": "../../assets/icon/program/aiwht-favicon.ico",
+			"summary": "./assets/image/program/aiwht-summary.png",
+			"description": "AIGC,AI工具,AI教程,AI学习,AI资源",
+			"open": {
+				"url": "http://www.aiwht.com",
+				"title": "AI万花筒",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/aiwht-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"aiwht": {
+						"url": "http://www.aiwht.com",
+						"title": "AI万花筒",
+						"developer": "zhongjyuan",
+						"description": "AIGC,AI工具,AI教程,AI学习,AI资源",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/aiwht-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["aiwht"],
+				"menu": {
+					"aiwht": {
+						"app": "aiwht",
+						"title": "AI万花筒",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "腾讯智影",
+			"labels": ["ai"],
+			"icon": "../../assets/icon/program/zenvideo-favicon.ico",
+			"summary": "./assets/image/program/zenvideo-summary.png",
+			"description": "腾讯智影是一款云端智能视频创作工具，集素材搜集、视频剪辑、渲染导出和发布于一体的免费在线剪辑平台。强大的AI智能工具，支持文本配音、数字人播报、自动字幕识别、文章转视频、去水印、视频解说、横转竖等功能，拥有丰富的素材库，极大提升创作效率，帮助用户更好地进行视频化的表达。",
+			"open": {
+				"url": "https://zenvideo.qq.com",
+				"title": "腾讯智影",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/zenvideo-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"zenvideo": {
+						"url": "https://zenvideo.qq.com",
+						"title": "腾讯智影",
+						"developer": "zhongjyuan",
+						"description": "腾讯智影是一款云端智能视频创作工具，集素材搜集、视频剪辑、渲染导出和发布于一体的免费在线剪辑平台。强大的AI智能工具，支持文本配音、数字人播报、自动字幕识别、文章转视频、去水印、视频解说、横转竖等功能，拥有丰富的素材库，极大提升创作效率，帮助用户更好地进行视频化的表达。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/zenvideo-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["zenvideo"],
+				"menu": {
+					"zenvideo": {
+						"app": "zenvideo",
+						"title": "腾讯智影",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "Leonardo.AI",
+			"labels": ["ai"],
+			"icon": "../../assets/icon/program/aiwht-favicon.ico",
+			"summary": "./assets/image/program/aiwht-summary.png",
+			"description": "Leonardo.Ai是一个可以让你用人工智能来创建游戏素材的网站。无论你是想要制作物品、环境、头盔、建筑还是概念艺术，Leonardo.Ai都可以帮你快速地生成高质量的视觉资源，让你的游戏开发更加高效和有趣。",
+			"open": {
+				"url": "https://app.leonardo.ai",
+				"title": "Leonardo.AI",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/aiwht-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"leonardo": {
+						"url": "https://app.leonardo.ai",
+						"title": "Leonardo.AI",
+						"developer": "zhongjyuan",
+						"description": "Leonardo.Ai是一个可以让你用人工智能来创建游戏素材的网站。无论你是想要制作物品、环境、头盔、建筑还是概念艺术，Leonardo.Ai都可以帮你快速地生成高质量的视觉资源，让你的游戏开发更加高效和有趣。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/aiwht-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["leonardo"],
+				"menu": {
+					"leonardo": {
+						"app": "leonardo",
+						"title": "Leonardo.AI",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "文心一言",
+			"labels": ["ai"],
+			"icon": "../../assets/icon/program/yiyan-favicon.ico",
+			"summary": "./assets/image/program/yiyan-summary.png",
+			"description": "百度全新一代知识增强大语言模型，文心大模型家族的新成员，能够与人对话互动，回答问题，协助创作，高效便捷地帮助人们获取信息、知识和灵感。",
+			"open": {
+				"url": "https://yiyan.baidu.com",
+				"title": "文心一言",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/yiyan-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"yiyan": {
+						"url": "https://yiyan.baidu.com",
+						"title": "文心一言",
+						"developer": "zhongjyuan",
+						"description": "百度全新一代知识增强大语言模型，文心大模型家族的新成员，能够与人对话互动，回答问题，协助创作，高效便捷地帮助人们获取信息、知识和灵感。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/yiyan-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["yiyan"],
+				"menu": {
+					"yiyan": {
+						"app": "yiyan",
+						"title": "文心一言",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "通义千问",
+			"labels": ["ai"],
+			"icon": "../../assets/icon/program/tongyi-favicon.ico",
+			"summary": "./assets/image/program/tongyi-summary.png",
+			"description": "阿里大模型统一品牌，覆盖语言、听觉、多模态等领域；致力于实现接近人类智慧的通用智能，让AI从“单一感官”到“五官全开”",
+			"open": {
+				"url": "https://tongyi.aliyun.com",
+				"title": "通义千问",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tongyi-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"yiyan": {
+						"url": "https://tongyi.aliyun.com",
+						"title": "通义千问",
+						"developer": "zhongjyuan",
+						"description": "阿里大模型统一品牌，覆盖语言、听觉、多模态等领域；致力于实现接近人类智慧的通用智能，让AI从“单一感官”到“五官全开”",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tongyi-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tongyi"],
+				"menu": {
+					"tongyi": {
+						"app": "tongyi",
+						"title": "通义千问",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "WHEE",
+			"labels": ["popular", "ai"],
+			"icon": "../../assets/icon/program/whee-favicon.ico",
+			"summary": "./assets/image/program/whee-summary.png",
+			"description": "AI,AIGC,美图AI,美图AIGC,美图AI技术",
+			"open": {
+				"url": "https://www.whee.com",
+				"title": "WHEE",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/whee-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"whee": {
+						"url": "https://www.whee.com",
+						"title": "WHEE",
+						"developer": "zhongjyuan",
+						"description": "AI,AIGC,美图AI,美图AIGC,美图AI技术",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/whee-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["whee"],
+				"menu": {
+					"whee": {
+						"app": "whee",
+						"title": "WHEE",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "快文",
+			"labels": ["ai"],
+			"icon": "../../assets/icon/program/copyai-favicon.ico",
+			"summary": "./assets/image/program/copyai-summary.png",
+			"description": "快文CopyDone是必优科技旗下AI原创营销文案写作神器,通过强大的自然语言处理能力,通过输入关键词,快速生成原创的软文,可以发布在各个媒体和自媒体平台,大幅提高创作效率",
+			"open": {
+				"url": "http://copyai.cn",
+				"title": "快文",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/copyai-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"copyai": {
+						"url": "http://copyai.cn",
+						"title": "快文",
+						"developer": "zhongjyuan",
+						"description": "快文CopyDone是必优科技旗下AI原创营销文案写作神器,通过强大的自然语言处理能力,通过输入关键词,快速生成原创的软文,可以发布在各个媒体和自媒体平台,大幅提高创作效率",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/copyai-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["copyai"],
+				"menu": {
+					"copyai": {
+						"app": "copyai",
+						"title": "快文",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "集简云",
+			"labels": ["ai"],
+			"icon": "../../assets/icon/program/jijyun-favicon.ico",
+			"summary": "./assets/image/program/jijyun-summary.png",
+			"description": "集简云无代码集成与AI人工智能平台，无需开发集成企业微信，简道云，微信公众号，金数据，纷享销客，爱客CRM等数十种企业外部与内部系统，配合NLP语义分析技术与人工智能预测模型帮助企业搭建自动化与智能化的商业流程。",
+			"open": {
+				"url": "https://www.jijyun.cn",
+				"title": "集简云",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/jijyun-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"jijyun": {
+						"url": "https://www.jijyun.cn",
+						"title": "集简云",
+						"developer": "zhongjyuan",
+						"description": "集简云无代码集成与AI人工智能平台，无需开发集成企业微信，简道云，微信公众号，金数据，纷享销客，爱客CRM等数十种企业外部与内部系统，配合NLP语义分析技术与人工智能预测模型帮助企业搭建自动化与智能化的商业流程。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/jijyun-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["jijyun"],
+				"menu": {
+					"jijyun": {
+						"app": "jijyun",
+						"title": "集简云",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

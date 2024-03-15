@@ -1,0 +1,116 @@
+{
+	"apps": [
+		{
+			"title": "动态壁纸-星球大战",
+			"labels": ["theme"],
+			"icon": "../../program/plugin/wallpaper/starwar/icon/favicon.ico",
+			"summary": "../../program/plugin/wallpaper/starwar/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-壁纸插件：星球大战",
+			"open": {
+				"url": "./program/plugin/wallpaper/starwar/index.html",
+				"title": "星球大战",
+				"icon": {
+					"type": "img",
+					"content": "./program/plugin/wallpaper/starwar/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"starwar": {
+						"autoRun": 9,
+						"plugin": true,
+						"single": true,
+						"resizable": false,
+						"background": true,
+						"addressBar": false,
+						"urlRandomToken": false,
+						"url": "./program/plugin/wallpaper/starwar/index.html",
+						"title": "星球大战",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-壁纸插件：星球大战",
+						"icon": {
+							"type": "img",
+							"content": "./program/plugin/wallpaper/starwar/icon/favicon.ico"
+						},
+						"size": {
+							"width": "x+4",
+							"height": "y+4"
+						},
+						"position": {
+							"x": "-2",
+							"y": "-2",
+							"top": true,
+							"left": true,
+							"autoOffset": false
+						}
+					}
+				},
+				"shortcuts": ["starwar"],
+				"menu": {
+					"starwar": {
+						"app": "starwar",
+						"title": "星球大战",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "动态壁纸-新年倒计时",
+			"labels": ["popular", "theme"],
+			"icon": "../../program/plugin/wallpaper/countdown/icon/favicon.ico",
+			"summary": "../../program/plugin/wallpaper/countdown/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-壁纸插件：新年倒计时",
+			"open": {
+				"title": "新年倒计时",
+				"url": "./program/plugin/wallpaper/countdown/index.html",
+				"icon": {
+					"type": "img",
+					"content": "./program/plugin/wallpaper/countdown/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"countdown": {
+						"autoRun": 9,
+						"plugin": true,
+						"single": true,
+						"resizable": false,
+						"background": true,
+						"addressBar": false,
+						"urlRandomToken": false,
+						"url": "./program/plugin/wallpaper/countdown/index.html",
+						"title": "新年倒计时",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-壁纸插件：新年倒计时",
+						"icon": {
+							"type": "img",
+							"content": "./program/plugin/wallpaper/countdown/icon/favicon.ico"
+						},
+						"size": {
+							"width": "x+4",
+							"height": "y+4"
+						},
+						"position": {
+							"x": "-2",
+							"y": "-2",
+							"top": true,
+							"left": true,
+							"autoOffset": false
+						}
+					}
+				},
+				"shortcuts": ["countdown"],
+				"menu": {
+					"countdown": {
+						"app": "countdown",
+						"title": "新年倒计时",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

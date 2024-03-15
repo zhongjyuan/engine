@@ -1,0 +1,111 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: steelblue;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	overflow: hidden;
+	margin: 0;
+}
+
+.container {
+	background-color: rgba(0, 0, 0, 0.4);
+	padding: 20px 40px;
+	border-radius: 5px;
+}
+
+/* container的标题 */
+.container h1 {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+/* 注册 */
+.container a {
+	text-decoration: none;
+	color: lightblue;
+}
+
+/* 表单控制 */
+.form-control {
+	position: relative;
+	margin: 20px 0 40px;
+	width: 300px;
+}
+
+/* 登录按钮 */
+.btn {
+	cursor: pointer;
+	display: inline-block;
+	width: 100%;
+	background: lightblue;
+	padding: 15px;
+	font-family: inherit;
+	border: 0;
+	border-radius: 5px;
+}
+
+/* 按钮被点击的时候去掉边框线 */
+.btn:focus {
+	outline: 0;
+}
+
+/* 按钮已经被点击缩小到0.98 */
+.btn:active {
+	transform: scale(0.95);
+}
+
+/* 输入的内容距离底部框 */
+.text {
+	margin-top: 30px;
+}
+
+/* 输入框 */
+.form-control input {
+	background-color: transparent;
+	border: 0;
+	border-bottom: 2px #fff solid;
+	display: block;
+	width: 100%;
+	padding: 15px 0;
+	font-size: 18px;
+	color: #fff;
+}
+
+/* valid就是如果输入框里面是合法的输入，那么会给他渲染 */
+.form-control input:focus,
+.form-control input:valid {
+	/* 轮廓设置为0 */
+	outline: 0;
+	border-bottom-color: lightblue;
+}
+
+/* Email和password移动到输入框内 */
+.form-control label {
+	position: absolute;
+	top: 15px;
+	left: 0;
+}
+
+/*  */
+.form-control label span {
+	display: inline-block;
+	font-size: 18px;
+	min-width: 5px;
+	/* 动画的弹跳效果，这里涉及到了一个cubic bezier贝塞尔曲线，css3里面的内容，大家可以去尝试一下 */
+	/* https://www.runoob.com/cssref/func-cubic-bezier.html */
+	transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.form-control input:focus + label span,
+.form-control input:valid + label span {
+	color: lightblue;
+	/* 向上平移 */
+	transform: translateY(-30px);
+}

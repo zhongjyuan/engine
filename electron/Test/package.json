@@ -1,0 +1,100 @@
+{
+	"name": "workbench",
+	"productName": "WorkBench",
+	"version": "1.0.0",
+	"description": "zhongjyuan workbench",
+	"electronVersion": "27.1.2",
+	"main": "main.js",
+	"scripts": {
+		"watch": "node ./scripts/watch.js",
+		"standard": "standard --verbose src/**/*.js",
+		"lint": "prettier --write **/**/*.css **/**/*.md **/**/*.html **/**/*.json && standard --fix src/**/*.js | snazzy",
+		"start:electron": "electron . --development-mode",
+		"start": "npm run build && concurrently \"npm run watch\" \"npm run start:electron\"",
+		"build:localization": "node ./scripts/buildLocalization.js",
+		"build:main": "node ./scripts/buildMain.js",
+		"build:render": "node ./scripts/buildRender.js",
+		"build:renderStyles": "node ./scripts/buildRenderStyles.js",
+		"build:preload": "node ./scripts/buildPreload.js",
+		"build": "npm run build:main && npm run build:render && npm run build:renderStyles && npm run build:preload",
+		"update:siteList": "node ./exts/site/index.js",
+		"update:volleyList": "node ./exts/volley/index.js",
+		"update:suffixList": "node ./exts/suffix/index.js",
+		"package:windows": "npm run build && node ./scripts/packageWindows.js",
+		"package:macx86": "npm run build && node ./scripts/packageMac.js --platform=x86",
+		"package:macArm64": "npm run build && node ./scripts/packageMac.js --platform=arm64",
+		"package:linuxAmd64AppImage": "npm run build && node ./scripts/packageLinuxAppImage.js",
+		"package:linuxAmd64Redhat": "npm run build && node ./scripts/packageLinuxRedhat.js",
+		"package:linuxAmd64Debian": "npm run build && node ./scripts/packageLinuxDebian.js --platform=amd64",
+		"package:linuxArm64Debian": "npm run build && node ./scripts/packageLinuxDebian.js --platform=arm64",
+		"package:linuxArmhfDebian": "npm run build && node ./scripts/packageLinuxDebian.js --platform=armhf",
+		"package": "npm run package:windows && npm run package:macx86 && npm run package:macArm64 && npm run package:linuxAmd64AppImage && npm run package:linuxAmd64Redhat && npm run package:linuxAmd64Debian && npm run package:linuxArm64Debian && npm run package:linuxArmhfDebian"
+	},
+	"keywords": [
+		"zhongjyuan",
+		"workbench",
+		"window",
+		"nodejs",
+		"electronjs",
+		"typescript",
+		"javascript",
+		"actionscript"
+	],
+	"author": {
+		"name": "zhongjyuan",
+		"email": "zhongjyuan@outlook.com",
+		"url": "https://zhongjyuan.club"
+	},
+	"license": "Apache-2.0",
+	"contributors": [
+		{
+			"name": "zhongjyuan",
+			"email": "zhongjyuan@outlook.com",
+			"url": "https://zhongjyuan.club"
+		}
+	],
+	"homepage": "https://zhongjyuan.club",
+	"repository": {
+		"type": "gitee",
+		"url": "https://gitee.com/zhongjyuan-team/workbench"
+	},
+	"bugs": {
+		"url": "https://gitee.com/zhongjyuan-team/workbench/issues",
+		"email": "zhongjyuan@outlook.com"
+	},
+	"engines": {
+		"node": ">= 16.19.0",
+		"npm": ">= 9.6.0"
+	},
+	"dependencies": {
+		"dexie": "^3.2.4",
+		"dragula": "^3.7.3",
+		"electron-squirrel-startup": "^1.0.0",
+		"expr-eval": "^2.0.2",
+		"mousetrap": "^1.5.3",
+		"node-abi": "^3.8.0",
+		"pdfjs-dist": "2.12.313",
+		"quick-score": "^0.2.0",
+		"regedit": "^3.0.3",
+		"stemmer": "^1.0.5"
+	},
+	"devDependencies": {
+		"archiver": "^4.0.1",
+		"browserify": "^16.5.1",
+		"chokidar": "^3.4.0",
+		"clean-css": "^5.3.3",
+		"concurrently": "^5.2.0",
+		"decomment": "^0.9.0",
+		"electron": "27.1.2",
+		"electron-builder": "^22.14.13",
+		"electron-installer-windows": "^3.0.0",
+		"electron-packager": "^15.1.0",
+		"electron-rebuild": "^3.2.7",
+		"electron-renderify": "0.0.2",
+		"prebuild-install": "^7.0.1",
+		"prettier": "^2.2.1",
+		"snazzy": "^9.0.0",
+		"standard": "^14.3.4",
+		"uglify-js": "^3.17.4"
+	}
+}

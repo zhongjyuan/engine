@@ -1,0 +1,85 @@
+{
+	"startMenu": {
+		"width": 620,
+		"height": 494,
+		"sidebar": [
+			{
+				"app": "window-react",
+				"title": "Windows 11",
+				"params": {},
+				"hash": ""
+			},
+			{
+				"app": "browser",
+				"title": "浏览器",
+				"params": {},
+				"hash": ""
+			},
+			{
+				"app": "system",
+				"title": "系统设置"
+			}
+		],
+		"menu": {
+			"menu-1000": {
+				"app": "browser",
+				"title": "浏览器",
+				"params": {},
+				"hash": ""
+			},
+			"menu-1010": {
+				"app": "app-store",
+				"title": "应用商店",
+				"params": {},
+				"hash": ""
+			},
+			"menu-1020": {
+				"title": "系统应用",
+				"children": [
+					{
+						"app": "website",
+						"title": "官网",
+						"params": {},
+						"hash": ""
+					},
+					{
+						"app": "documents",
+						"title": "在线文档",
+						"params": {},
+						"hash": ""
+					},
+					{
+						"app": "font-awesome",
+						"title": "图标字体",
+						"params": {},
+						"hash": ""
+					},
+					{
+						"app": "image-host",
+						"title": "图床",
+						"params": {},
+						"hash": ""
+					}
+				]
+			},
+			"menu-1030": {
+				"app": "gitee",
+				"title": "gitee",
+				"params": {},
+				"hash": ""
+			},
+			"menu-1040": {
+				"app": "github",
+				"title": "github",
+				"params": {},
+				"hash": ""
+			},
+			"menu-1050": {
+				"app": "gitlab",
+				"title": "gitlab",
+				"params": {},
+				"hash": ""
+			}
+		}
+	}
+}

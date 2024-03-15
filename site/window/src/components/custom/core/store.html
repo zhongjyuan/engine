@@ -1,0 +1,40 @@
+<div id="store">
+	<div id="banner">{{ banner_text() }}</div>
+	<div class="container" :style="container_style">
+		<div class="row" :style="row_style">
+			<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" :style="col1_style">
+				<div class="row apps" :style="box_style">
+					<div
+						class="app col-xs-6 col-sm-3 col-md-2 col-lg-2"
+						:class="{active:app_is_active(app)}"
+						:style="col2_style"
+						v-show="app_is_active(app)"
+						v-for="app in apps"
+					>
+						<div class="icon">
+							<img :src="app.icon" @error="url_error($event.target)" />
+						</div>
+						<div class="title">{{app.title}}</div>
+						<div class="desc">{{app.description}}</div>
+						<div class="btn-group">
+							<div class="open" @click="app_open(app)">{{ lang("Open") }}</div>
+							<div class="setup" @click="app_setup(app)">{{ lang("Install") }}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" :style="col3_style">
+				<div class="search">
+					<input style="line-height: 1.5em; width: 100%; padding: 0.5em" :placeholder="lang('Search')" v-model="search" />
+				</div>
+				<div class="labelbox">
+					<div class="label" :class="{active:label.active}" :style="label_style(label)" v-for="label in labels" @click="label_click(label)">
+						{{label.name}}
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer">{{ footer_text() }}</div>
+</div>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="cn">
+	<head>
+		<title>天气</title>
+		<meta charset="utf-8" />
+
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="Cache" content="no-cache" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-control" content="no-cache" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+		<meta content="webkit" name="renderer" />
+		<meta content="True" name="HandheldFriendly" />
+		<meta content="no" name="msapplication-tap-highlight" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="Title" name="apple-mobile-web-app-title" />
+		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="width=device-width, initial-scale=1" name="viewport" />
+		<meta content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" name="viewport" />
+		<meta content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" name="viewport" />
+
+		<meta content="ZHONGJYUAN,WINDOW,云桌面,应用,插件,天气" name="keywords" />
+		<meta content="ZHONGJYUAN - 技术驱动,云桌面,系统内置插件[天气]：天气一！" name="description" />
+
+		<link type="image/x-icon" rel="shortcut icon" href="../../../favicon.ico" media="screen" />
+
+		<script type="text/javascript" src="../../../static/use/jquery-1.12.4.min.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="./static/index.css" />
+	</head>
+
+	<body>
+		<header>
+			<div class="bigbox">
+				<h1>
+					<a href="http://www.weather.com.cn" title="点击我了解更多" target="_blank">中国天气网</a>
+				</h1>
+				<div id="weather_search">
+					<span>
+						<input id="text" type="text" placeholder="输入要搜索的城市..." />
+					</span>
+					<span>
+						<input id="btn" type="button" value="查询" />
+					</span>
+				</div>
+			</div>
+		</header>
+		<section>
+			<div id="today_container">
+				<div>
+					<img src="./image/lei.png" id="today_img" alt="今日天气" />
+				</div>
+				<div>
+					<div class="main_info">
+						<span class="info" id="today_city">城市</span>| <span class="info" id="today_date">201X-XX-XX</span>|
+						<span class="info" id="today_week">星期X</span>|
+						<span class="info" id="today_other">---</span>
+					</div>
+					<div class="more_info">
+						今日温度：
+						<span class="info" id="today_wd">-----</span>
+						风力：
+						<span class="info" id="today_fl">-----</span>
+						风向：
+						<span class="info" id="today_fx">-----</span>
+						降雨量：
+						<span class="info" id="today_pm">--</span>
+					</div>
+					<div class="more_info" style="margin-left: 150px">
+						紫外线强度：
+						<span class="info" id="today_zwx">---</span>
+						能见度：
+						<span class="info" id="today_xc">---</span>
+						相对湿度:
+						<span class="info" id="today_gm">---</span>
+						降雨概率：
+						<span class="info" id="today_cy">---</span>
+					</div>
+					<div class="more_info" style="margin-left: 150px">
+						生活指数提示：
+						<span class="info" id="tips">天气暖和，适宜着单层......</span>
+					</div>
+				</div>
+			</div>
+
+			<div id="future_container">
+				<div class="future_box">
+					<img src="./image/qing.png" alt="天气" />
+					<span class="future_info">201X-XX-XX</span>
+					<span class="future_info">星期X</span>
+					<span class="future_info">--</span>
+					<span class="future_info">12-16℃</span>
+				</div>
+				<div class="future_box">
+					<img src="./image/shachen.png" alt="天气" />
+					<span class="future_info">201X-XX-XX</span>
+					<span class="future_info">星期X</span>
+					<span class="future_info">--</span>
+					<span class="future_info">12-16℃</span>
+				</div>
+				<div class="future_box">
+					<img src="./image/wu.png" alt="天气" />
+					<span class="future_info">201X-XX-XX</span>
+					<span class="future_info">星期X</span>
+					<span class="future_info">--</span>
+					<span class="future_info">12-16℃</span>
+				</div>
+				<div class="future_box">
+					<img src="./image/xue.png" alt="天气" />
+					<span class="future_info">201X-XX-XX</span>
+					<span class="future_info">星期X</span>
+					<span class="future_info">--</span>
+					<span class="future_info">12-16℃</span>
+				</div>
+				<div class="future_box">
+					<img src="./image/yin.png" alt="天气" />
+					<span class="future_info">201X-XX-XX</span>
+					<span class="future_info">星期X</span>
+					<span class="future_info">-</span>
+					<span class="future_info">12-16℃</span>
+				</div>
+				<div class="future_box">
+					<img src="./image/yu.png" alt="天气" />
+					<span class="future_info">201X-XX-XX</span>
+					<span class="future_info">星期X</span>
+					<span class="future_info">-</span>
+					<span class="future_info">12-16℃</span>
+				</div>
+			</div>
+		</section>
+		<script type="text/javascript" src="./static/index.js"></script>
+	</body>
+</html>

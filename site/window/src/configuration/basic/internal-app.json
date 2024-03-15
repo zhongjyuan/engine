@@ -1,0 +1,325 @@
+{
+	"apps": {
+		"weather": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/plugin/weather/index.html",
+			"tileUrl": "./program/plugin/weather/index.html",
+			"title": "天气",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：天气预报",
+			"icon": {
+				"type": "img",
+				"content": "./program/plugin/weather/icon/favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.1",
+				"y": "y*0.1",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"window-react": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/window-react",
+			"tileUrl": "",
+			"title": "Windows 11",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：Windows 11(react版)",
+			"icon": {
+				"type": "img",
+				"content": "./program/window-react/favicon.png"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"zhifubao": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": true,
+			"resizable": false,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": true,
+			"url": "./program/imitate/alipay/index.html",
+			"tileUrl": "",
+			"title": "支付宝",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-内置应用：支付宝",
+			"icon": {
+				"type": "img",
+				"content": "./program/imitate/zhifubao/icon/favicon.ico"
+			},
+			"size": {
+				"width": "400",
+				"height": "700"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"gitlab": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://gitlab.zhongjyuan.club/zhongjyuan",
+			"tileUrl": "",
+			"title": "gitlab",
+			"version": "1.0.0",
+			"developer": "gitlab",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：GitLab",
+			"icon": {
+				"type": "fa",
+				"bg": "#292929",
+				"content": "gitlab"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"codeserver": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://code.zhongjyuan.club",
+			"tileUrl": "",
+			"title": "Code Server",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：Code Server",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/codeserver-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"frp": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://frp.zhongjyuan.club",
+			"tileUrl": "",
+			"title": "FRP",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：FRP",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/frp-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"confluence": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://confluence.zhongjyuan.club",
+			"tileUrl": "",
+			"title": "Confluence",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：Confluence",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/confluence-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"jira": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://jira.zhongjyuan.club",
+			"tileUrl": "",
+			"title": "JIRA",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：Jira",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/jira-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"nacos": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://nacos.zhongjyuan.club/nacos",
+			"tileUrl": "",
+			"title": "Nacos",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：Nacos",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/nacos-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		},
+		"nexus": {
+			"badge": 0,
+			"autoRun": 0,
+			"plugin": false,
+			"single": false,
+			"resizable": true,
+			"background": false,
+			"addressBar": false,
+			"openMode": "normal",
+			"urlRandomToken": false,
+			"url": "http://nexus.zhongjyuan.club",
+			"tileUrl": "",
+			"title": "Nexus",
+			"version": "1.0.0",
+			"developer": "zhongjyuan",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：Nexus",
+			"icon": {
+				"type": "img",
+				"content": "/assets/icon/program/nexus-favicon.ico"
+			},
+			"size": {
+				"width": "x*0.8",
+				"height": "y*0.8-80"
+			},
+			"position": {
+				"x": "x*0.05",
+				"y": "y*0.05",
+				"top": true,
+				"left": true,
+				"autoOffset": true
+			}
+		}
+	}
+}

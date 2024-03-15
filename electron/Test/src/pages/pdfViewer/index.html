@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<!-- 字符编码 -->
+		<meta charset="UTF-8" />
+
+		<!-- 主题颜色 -->
+		<meta name="theme-color" id="meta-theme" />
+
+		<!-- 内容安全策略 -->
+		<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'" />
+
+		<!-- iconfont 样式表 -->
+		<link rel="stylesheet" href="../../../exts/iconfont/iconfont.css" />
+
+		<!-- 阅读器设置样式表 -->
+		<link rel="stylesheet" href="../css/setting.css" />
+
+		<!-- 阅读器主样式表 -->
+		<link rel="stylesheet" href="./css/index.css" />
+
+		<!-- PDF.js 核心脚本 -->
+		<script src="../../../node_modules/pdfjs-dist/build/pdf.min.js"></script>
+	</head>
+
+	<body>
+		<!-- 进度条 -->
+		<div id="progress-bar" class="viewer-ui"></div>
+
+		<!-- 左侧边栏 -->
+		<div class="side-gutter" id="side-gutter-left">
+			<!-- 页面计数器 -->
+			<div id="page-counter" class="viewer-ui hidden" data-string="PDFPageCounter" data-allowHTML></div>
+		</div>
+
+		<!-- 右侧边栏 -->
+		<div class="side-gutter" id="side-gutter-right">
+			<!-- 下载按钮 -->
+			<button id="download-button" class="i carbon:download viewer-ui hidden"></button>
+
+			<!-- 设置按钮 -->
+			<button id="settings-button" class="i carbon:settings-adjust viewer-ui hidden" data-label="viewSettings"></button>
+
+			<!-- 设置下拉菜单 -->
+			<div id="settings-dropdown" class="viewer-ui" hidden>
+				<!-- 主题选择按钮组 -->
+				<div class="setting-section theme-circles">
+					<button class="theme-circle selected" data-theme="light" data-label="buttonReaderLightTheme"></button>
+					<button class="theme-circle" data-theme="sepia" data-label="buttonReaderSepiaTheme"></button>
+					<button class="theme-circle" data-theme="dark" data-label="buttonReaderDarkTheme"></button>
+				</div>
+
+				<!-- 反转 PDF 页面复选框 -->
+				<div class="setting-section" id="invert-pdf-section">
+					<input type="checkbox" id="invert-pdf-checkbox" /><label for="invert-pdf-checkbox" data-string="PDFInvertPage"></label>
+				</div>
+			</div>
+		</div>
+
+		<!-- PDF 阅读器核心脚本 -->
+		<script src="../../../node_modules/pdfjs-dist/web/pdf_viewer.js"></script>
+
+		<!-- 语言包脚本 -->
+		<script src="../../../dist/language.js"></script>
+
+		<!-- 页面设置管理脚本 -->
+		<script src="../../settings/pageSettingManagement.js"></script>
+
+		<!-- 主题管理脚本 -->
+		<script src="../js/themeManagement.js"></script>
+
+		<!-- 阅读器入口脚本 -->
+		<script src="./js/index.js"></script>
+
+		<!-- 主题脚本 -->
+		<script src="./js/theme.js"></script>
+	</body>
+</html>

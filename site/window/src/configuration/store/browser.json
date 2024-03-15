@@ -1,0 +1,82 @@
+{
+	"apps": [
+		{
+			"title": "浏览器",
+			"labels": ["browser"],
+			"icon": "../../program/browser/icon/favicon.ico",
+			"summary": "../../program/browser/image/summary.png",
+			"description": "浏览器是用来检索、展示以及传递Web信息资源的应用程序。",
+			"open": {
+				"resizable": false,
+				"url": "/program/browser/index.html",
+				"title": "浏览器",
+				"icon": {
+					"type": "img",
+					"content": "/program/browser/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"browser": {
+						"resizable": false,
+						"url": "/program/browser/index.html",
+						"title": "浏览器",
+						"developer": "zhongjyuan",
+						"description": "浏览器是用来检索、展示以及传递Web信息资源的应用程序。",
+						"icon": {
+							"type": "img",
+							"content": "/program/browser/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["browser"],
+				"menu": {
+					"browser": {
+						"app": "browser",
+						"title": "浏览器",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "站联导航",
+			"labels": ["popular", "browser"],
+			"icon": "../../assets/icon/program/zhanlian-favicon.ico",
+			"summary": "../../assets/image/program/zhanlian-summary.png",
+			"description": "站联关注跨境电商最新行业动态，发现优秀的独立站和电商品牌，为从业者提供独立站搭建，跨境电商运营推广等一站式服务，与外贸人一起成长！",
+			"open": {
+				"url": "https://www.zhanlian.net",
+				"title": "站联导航",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/zhanlian-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"zhanlian": {
+						"url": "https://www.zhanlian.net",
+						"title": "站联导航",
+						"developer": "zhongjyuan",
+						"description": "站联关注跨境电商最新行业动态，发现优秀的独立站和电商品牌，为从业者提供独立站搭建，跨境电商运营推广等一站式服务，与外贸人一起成长！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/zhanlian-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["zhanlian"],
+				"menu": {
+					"zhanlian": {
+						"app": "zhanlian",
+						"title": "站联导航",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

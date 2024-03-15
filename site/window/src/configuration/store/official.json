@@ -1,0 +1,880 @@
+{
+	"apps": [
+		{
+			"title": "Confluence",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/confluence-favicon.ico",
+			"summary": "../../assets/image/program/confluence-summary.png",
+			"description": "Confluence是一个专业的企业知识管理与协同软件，也可以用于构建企业wiki。",
+			"open": {
+				"url": "http://confluence.zhongjyuan.club",
+				"title": "Confluence",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/confluence-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"confluence": {
+						"url": "http://confluence.zhongjyuan.club",
+						"title": "Confluence",
+						"developer": "zhongjyuan",
+						"description": "Confluence是一个专业的企业知识管理与协同软件，也可以用于构建企业wiki。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/confluence-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["confluence"],
+				"menu": {
+					"confluence": {
+						"app": "confluence",
+						"title": "Confluence",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "JIRA",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/jira-favicon.ico",
+			"summary": "../../assets/image/program/jira-summary.png",
+			"description": "JIRA是Atlassian公司出品的项目与事务跟踪工具，被广泛应用于缺陷跟踪、客户服务、需求收集、流程审批、任务跟踪、项目跟踪和敏捷管理等工作领域。",
+			"open": {
+				"url": "http://jira.zhongjyuan.club",
+				"title": "JIRA",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/jira-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"jira": {
+						"url": "http://jira.zhongjyuan.club",
+						"title": "JIRA",
+						"developer": "zhongjyuan",
+						"description": "JIRA是Atlassian公司出品的项目与事务跟踪工具，被广泛应用于缺陷跟踪、客户服务、需求收集、流程审批、任务跟踪、项目跟踪和敏捷管理等工作领域。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/jira-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["jira"],
+				"menu": {
+					"jira": {
+						"app": "jira",
+						"title": "JIRA",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "图怪兽",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/tuguaishou-favicon.ico",
+			"summary": "../../assets/image/program/tuguaishou-summary.png",
+			"description": "图怪兽作图神器是一个在线编辑服务平台，图怪兽为用户提供图片模板，用户可通过替换修改文字来完成图片设计。",
+			"open": {
+				"url": "https://818ps.com",
+				"title": "图怪兽",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tuguaishou-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tuguaishou": {
+						"url": "https://818ps.com",
+						"title": "图怪兽",
+						"developer": "zhongjyuan",
+						"description": "图怪兽作图神器是一个在线编辑服务平台，图怪兽为用户提供图片模板，用户可通过替换修改文字来完成图片设计。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tuguaishou-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tuguaishou"],
+				"menu": {
+					"tuguaishou": {
+						"app": "tuguaishou",
+						"title": "图怪兽",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "阿里巴巴矢量图库",
+			"labels": ["study"],
+			"icon": "../../assets/icon/program/iconfont-favicon.ico",
+			"summary": "../../assets/image/program/iconfont-summary.png",
+			"description": "iconfont-国内功能很强大且图标内容很丰富的矢量图标库，提供矢量图标下载、在线存储、格式转换等功能。阿里巴巴体验团队倾力打造，设计和前端开发的便捷工具",
+			"open": {
+				"openMode": "outer",
+				"url": "https://www.iconfont.cn",
+				"title": "阿里巴巴矢量图库",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/iconfont-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"iconfont": {
+						"openMode": "outer",
+						"url": "https://www.iconfont.cn",
+						"title": "阿里巴巴矢量图库",
+						"developer": "zhongjyuan",
+						"description": "iconfont-国内功能很强大且图标内容很丰富的矢量图标库，提供矢量图标下载、在线存储、格式转换等功能。阿里巴巴体验团队倾力打造，设计和前端开发的便捷工具",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/iconfont-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["iconfont"],
+				"menu": {
+					"iconfont": {
+						"app": "iconfont",
+						"title": "阿里巴巴矢量图库",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "ProcessOn",
+			"labels": ["study"],
+			"icon": "../../assets/icon/program/processon-favicon.ico",
+			"summary": "../../assets/image/program/processon-summary.png",
+			"description": "ProcessOn是一款专业在线作图工具和知识分享社区，提供AI生成思维导图流程图。支持思维导图、流程图、组织结构图、网络拓扑图、鱼骨图、UML图等多种图形，同时可实现人与人之间的实时协作和共享，提升团队工作效率。",
+			"open": {
+				"url": "https://www.processon.com",
+				"title": "ProcessOn",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/processon-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"processon": {
+						"url": "https://www.processon.com",
+						"title": "ProcessOn",
+						"developer": "zhongjyuan",
+						"description": "ProcessOn是一款专业在线作图工具和知识分享社区，提供AI生成思维导图流程图。支持思维导图、流程图、组织结构图、网络拓扑图、鱼骨图、UML图等多种图形，同时可实现人与人之间的实时协作和共享，提升团队工作效率。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/processon-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["processon"],
+				"menu": {
+					"processon": {
+						"app": "processon",
+						"title": "ProcessOn",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "慕客",
+			"labels": ["study"],
+			"icon": "../../assets/icon/program/mock-favicon.ico",
+			"summary": "../../assets/image/program/mock-summary.png",
+			"description": "摹客集设计协作平台、原型设计和设计规范为一体，数百万设计师、产品经理和开发工程师必备设计神器、交互原型、标注切图、文档管理。设计+协作，摹客就够了！",
+			"open": {
+				"url": "https://www.mockplus.cn",
+				"title": "慕客",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mock-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mock": {
+						"url": "https://www.mockplus.cn",
+						"title": "慕客",
+						"developer": "zhongjyuan",
+						"description": "摹客集设计协作平台、原型设计和设计规范为一体，数百万设计师、产品经理和开发工程师必备设计神器、交互原型、标注切图、文档管理。设计+协作，摹客就够了！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mock-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mock"],
+				"menu": {
+					"mock": {
+						"app": "mock",
+						"title": "慕客",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "猿如意",
+			"labels": ["study"],
+			"icon": "../../assets/icon/program/devbit-favicon.ico",
+			"summary": "../../assets/image/program/devbit-summary.png",
+			"description": "猿如意是一款面向开发者的辅助开发工具箱,包含了效率工具,开发工具下载,文档教程,代码片段搜索,全网搜索等功能模块.帮助开发者提升开发效率,帮你从“问题”找到“答案”.",
+			"open": {
+				"url": "https://devbit.csdn.net",
+				"title": "猿如意",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/devbit-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"devbit": {
+						"url": "https://devbit.csdn.net",
+						"title": "猿如意",
+						"developer": "zhongjyuan",
+						"description": "猿如意是一款面向开发者的辅助开发工具箱,包含了效率工具,开发工具下载,文档教程,代码片段搜索,全网搜索等功能模块.帮助开发者提升开发效率,帮你从“问题”找到“答案”.",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/devbit-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["devbit"],
+				"menu": {
+					"devbit": {
+						"app": "devbit",
+						"title": "猿如意",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "百度网盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/baidu-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/baidu-netdisk-summary.png",
+			"description": "百度网盘为您提供文件的网络备份、同步和分享服务。空间大、速度快、安全稳固，支持教育网加速，支持手机端。注册使用百度网盘即可享受免费存储空间",
+			"open": {
+				"url": "https://pan.baidu.com",
+				"title": "百度网盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/baidu-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"baidu-netdisk": {
+						"url": "https://pan.baidu.com",
+						"title": "百度网盘",
+						"developer": "zhongjyuan",
+						"description": "百度网盘为您提供文件的网络备份、同步和分享服务。空间大、速度快、安全稳固，支持教育网加速，支持手机端。注册使用百度网盘即可享受免费存储空间",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/baidu-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["baidu-netdisk"],
+				"menu": {
+					"baidu-netdisk": {
+						"app": "baidu-netdisk",
+						"title": "百度网盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "夸克网盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/kuake-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/kuake-netdisk-summary.png",
+			"description": "夸克网盘是夸克推出的一款云服务产品，功能包括云存储、高清看剧、文件在线解压、PDF一键转换等。通过夸克网盘可随时随地管理和使用照片、文档、手机资料，目前支持Android、iOS、PC、iPad。夸克网盘是夸克浏览器附带的功能，特点就是和浏览器本身的很多智能小工具打通了。像浏览器的很多文字识别、文件转换、文件扫描存档等功能，都可以兼容到夸克网盘的云空间。此外，很多手机浏览器都有文件管理、查看的功能，而夸克网盘不仅有着类似的功能，而且额外增加了一个网盘主打的自动备份功能，和浏览器的本地管理结合起来，效果更好。最方便的特点是“流畅播”功能，如果用夸克浏览器来播放在线视频，会发现它可以进行视频转存，把网页视频直接转存到夸克网盘，相当于更换了一个更加稳定的视频源，无论是在线观看还是下载，都会变得更加快捷。",
+			"open": {
+				"url": "https://pan.quark.cn",
+				"title": "夸克网盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/kuake-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"kuake-netdisk": {
+						"url": "https://pan.quark.cn",
+						"title": "夸克网盘",
+						"developer": "zhongjyuan",
+						"description": "夸克网盘是夸克推出的一款云服务产品，功能包括云存储、高清看剧、文件在线解压、PDF一键转换等。通过夸克网盘可随时随地管理和使用照片、文档、手机资料，目前支持Android、iOS、PC、iPad。夸克网盘是夸克浏览器附带的功能，特点就是和浏览器本身的很多智能小工具打通了。像浏览器的很多文字识别、文件转换、文件扫描存档等功能，都可以兼容到夸克网盘的云空间。此外，很多手机浏览器都有文件管理、查看的功能，而夸克网盘不仅有着类似的功能，而且额外增加了一个网盘主打的自动备份功能，和浏览器的本地管理结合起来，效果更好。最方便的特点是“流畅播”功能，如果用夸克浏览器来播放在线视频，会发现它可以进行视频转存，把网页视频直接转存到夸克网盘，相当于更换了一个更加稳定的视频源，无论是在线观看还是下载，都会变得更加快捷。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/kuake-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["kuake-netdisk"],
+				"menu": {
+					"kuake-netdisk": {
+						"app": "kuake-netdisk",
+						"title": "夸克网盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "阿里云盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/ali-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/ali-netdisk-summary.png",
+			"description": "阿里云盘是一款速度快、不打扰、够安全、易于分享的个人网盘，欢迎你来体验。",
+			"open": {
+				"url": "https://www.aliyundrive.com",
+				"title": "阿里云盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/ali-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"ali-netdisk": {
+						"url": "https://www.aliyundrive.com",
+						"title": "阿里云盘",
+						"developer": "zhongjyuan",
+						"description": "阿里云盘是一款速度快、不打扰、够安全、易于分享的个人网盘，欢迎你来体验。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/ali-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["ali-netdisk"],
+				"menu": {
+					"ali-netdisk": {
+						"app": "ali-netdisk",
+						"title": "阿里云盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "腾讯微云",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/tencent-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/tencent-netdisk-summary.png",
+			"description": "微云是腾讯公司为用户精心打造的一项智能云服务, 您可以通过微云方便地在手机和电脑之间同步文件、推送照片和传输数据。",
+			"open": {
+				"url": "https://www.weiyun.com/index.html",
+				"title": "腾讯微云",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tencent-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tencent-netdisk": {
+						"url": "https://www.weiyun.com/index.html",
+						"title": "腾讯微云",
+						"developer": "zhongjyuan",
+						"description": "微云是腾讯公司为用户精心打造的一项智能云服务, 您可以通过微云方便地在手机和电脑之间同步文件、推送照片和传输数据。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tencent-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tencent-netdisk"],
+				"menu": {
+					"tencent-netdisk": {
+						"app": "tencent-netdisk",
+						"title": "腾讯微云",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "115网盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/115-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/115-netdisk-summary.png",
+			"description": "115网盘,网盘,云盘,网络U盘,离线下载,网络硬盘,免费网盘,云存储,分享,共享,网盘下载,网盘资源,同步",
+			"open": {
+				"url": "https://115.com",
+				"title": "115网盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/115-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"115-netdisk": {
+						"url": "https://115.com",
+						"title": "115网盘",
+						"developer": "zhongjyuan",
+						"description": "115网盘,网盘,云盘,网络U盘,离线下载,网络硬盘,免费网盘,云存储,分享,共享,网盘下载,网盘资源,同步",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/115-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["115-netdisk"],
+				"menu": {
+					"115-netdisk": {
+						"app": "115-netdisk",
+						"title": "115网盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "天翼云盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/tianyi-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/tianyi-netdisk-summary.png",
+			"description": "天翼云盘是中国电信推出的云存储服务，为用户提供跨平台的文件存储、备份、同步及分享服务，是国内领先的免费网盘，安全、可靠、稳定、快速。天翼云盘为用户守护数据资产。",
+			"open": {
+				"url": "https://cloud.189.cn/web/login.html",
+				"title": "天翼云盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tianyi-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tianyi-netdisk": {
+						"url": "https://cloud.189.cn/web/login.html",
+						"title": "天翼云盘",
+						"developer": "zhongjyuan",
+						"description": "天翼云盘是中国电信推出的云存储服务，为用户提供跨平台的文件存储、备份、同步及分享服务，是国内领先的免费网盘，安全、可靠、稳定、快速。天翼云盘为用户守护数据资产。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tianyi-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tianyi-netdisk"],
+				"menu": {
+					"tianyi-netdisk": {
+						"app": "tianyi-netdisk",
+						"title": "天翼云盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "坚果云盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/jianguo-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/jianguo-netdisk-summary.png",
+			"description": "坚果云是一款提供网盘|云盘|云服务的团队协助软件,可随时随地实现共享文件夹。坚果云网盘支持移动办公,协同办公,文件同步,数据备份,智能管理,在线编辑等功能。",
+			"open": {
+				"url": "https://www.jianguoyun.com",
+				"title": "坚果云盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/jianguo-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"jianguo-netdisk": {
+						"url": "https://www.jianguoyun.com",
+						"title": "坚果云盘",
+						"developer": "zhongjyuan",
+						"description": "坚果云是一款提供网盘|云盘|云服务的团队协助软件,可随时随地实现共享文件夹。坚果云网盘支持移动办公,协同办公,文件同步,数据备份,智能管理,在线编辑等功能。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/jianguo-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["jianguo-netdisk"],
+				"menu": {
+					"jianguo-netdisk": {
+						"app": "jianguo-netdisk",
+						"title": "坚果云盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "华为云空间",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/huawei-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/huawei-netdisk-summary.png",
+			"description": "在线管理您的照片、联系人、备忘录等重要数据，并同步更新到您的其他华为设备，还可在设备丢失时，帮您远程定位、播放铃声、设置丢失模式、擦除数据，保护您的隐私安全。",
+			"open": {
+				"url": "https://cloud.huawei.com",
+				"title": "华为云空间",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/huawei-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"huawei-netdisk": {
+						"url": "https://cloud.huawei.com",
+						"title": "华为云空间",
+						"developer": "zhongjyuan",
+						"description": "在线管理您的照片、联系人、备忘录等重要数据，并同步更新到您的其他华为设备，还可在设备丢失时，帮您远程定位、播放铃声、设置丢失模式、擦除数据，保护您的隐私安全。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/huawei-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["huawei-netdisk"],
+				"menu": {
+					"huawei-netdisk": {
+						"app": "huawei-netdisk",
+						"title": "华为云空间",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "奶牛快传",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/nainiu-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/nainiu-netdisk-summary.png",
+			"description": "奶牛快传 (CowTransfer) 无需注册即可传输文件，上传下载不限速。传视频、传音频、传图片、跨国传、传大文件。10GB 免费云盘、会员 3TB 超大云盘。最受创意人、广告人及创作者喜爱的效率工具之一，快来体验吧！",
+			"open": {
+				"url": "https://cowtransfer.com",
+				"title": "奶牛快传",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/nainiu-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"nainiu-netdisk": {
+						"url": "https://cowtransfer.com",
+						"title": "奶牛快传",
+						"developer": "zhongjyuan",
+						"description": "奶牛快传 (CowTransfer) 无需注册即可传输文件，上传下载不限速。传视频、传音频、传图片、跨国传、传大文件。10GB 免费云盘、会员 3TB 超大云盘。最受创意人、广告人及创作者喜爱的效率工具之一，快来体验吧！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/nainiu-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["nainiu-netdisk"],
+				"menu": {
+					"nainiu-netdisk": {
+						"app": "nainiu-netdisk",
+						"title": "奶牛快传",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "蓝奏云存储",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/lanzou-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/lanzou-netdisk-summary.png",
+			"description": "蓝奏, 上传, 网盘, 网络硬盘, 云盘, 云存储, 网众蓝奏",
+			"open": {
+				"url": "https://pc.woozooo.com",
+				"title": "蓝奏云存储",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/lanzou-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"lanzou-netdisk": {
+						"url": "https://pc.woozooo.com",
+						"title": "蓝奏云存储",
+						"developer": "zhongjyuan",
+						"description": "蓝奏, 上传, 网盘, 网络硬盘, 云盘, 云存储, 网众蓝奏",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/lanzou-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["lanzou-netdisk"],
+				"menu": {
+					"lanzou-netdisk": {
+						"app": "lanzou-netdisk",
+						"title": "蓝奏云存储",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "曲奇云盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/quqi-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/lanzou-netdisk-summary.png",
+			"description": "曲奇云盘是一款资源丰富,空间大,群组共享便捷的网盘,现注册就送2T超大空间.网盘内容广场,汇聚各类优质资源,无论短视频,电影,广播剧,漫画总能发现你喜欢的,还能一键加群,找到组织更简单,等你来发现更多精彩.",
+			"open": {
+				"url": "https://www.quqi.com",
+				"title": "曲奇云盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/quqi-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"quqi-netdisk": {
+						"url": "https://www.quqi.com",
+						"title": "曲奇云盘",
+						"developer": "zhongjyuan",
+						"description": "曲奇云盘是一款资源丰富,空间大,群组共享便捷的网盘,现注册就送2T超大空间.网盘内容广场,汇聚各类优质资源,无论短视频,电影,广播剧,漫画总能发现你喜欢的,还能一键加群,找到组织更简单,等你来发现更多精彩.",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/quqi-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["quqi-netdisk"],
+				"menu": {
+					"quqi-netdisk": {
+						"app": "quqi-netdisk",
+						"title": "曲奇云盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "云中转",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/yunzhongzhuan-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/yunzhongzhuan-netdisk-summary.png",
+			"description": "云中转,云盘,文件,传输,上传,不限速,分享,存储,不限,空间,容量,在线,网盘,下载",
+			"open": {
+				"url": "https://www.yunzhongzhuan.com/welcome/index.html",
+				"title": "云中转",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/yunzhongzhuan-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"yunzhongzhuan-netdisk": {
+						"url": "https://www.yunzhongzhuan.com/welcome/index.html",
+						"title": "云中转",
+						"developer": "zhongjyuan",
+						"description": "云中转,云盘,文件,传输,上传,不限速,分享,存储,不限,空间,容量,在线,网盘,下载",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/yunzhongzhuan-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["yunzhongzhuan-netdisk"],
+				"menu": {
+					"yunzhongzhuan-netdisk": {
+						"app": "yunzhongzhuan-netdisk",
+						"title": "云中转",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "移动云盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/yidong-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/yidong-netdisk-summary.png",
+			"description": "中国移动云盘（原名和彩云网盘）是中国移动面向所有用户推出的一款安全、智能、不限速、移动用户免流量的产品。产品涵盖存储备份、多端同步、在线管理、群组分享四大核心能力。",
+			"open": {
+				"url": "https://yun.139.com/w/#/",
+				"title": "移动云盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/yidong-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"yidong-netdisk": {
+						"url": "https://yun.139.com/w/#/",
+						"title": "移动云盘",
+						"developer": "zhongjyuan",
+						"description": "中国移动云盘（原名和彩云网盘）是中国移动面向所有用户推出的一款安全、智能、不限速、移动用户免流量的产品。产品涵盖存储备份、多端同步、在线管理、群组分享四大核心能力。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/yidong-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["yidong-netdisk"],
+				"menu": {
+					"yidong-netdisk": {
+						"app": "yidong-netdisk",
+						"title": "移动云盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "城通网盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/chengtong-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/chengtong-netdisk-summary.png",
+			"description": "城通网盘是一款免费网盘，即免费网络存储空间服务。注册后可获得支持外链的50TB空间，最大单文件可达15GB，同时为用户提供每万次点击下载1000元的奖励。已为国内外数千万用户提供超过 5000TB 的网络储存空间。",
+			"open": {
+				"url": "https://www.ctfile.com",
+				"title": "城通网盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/chengtong-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"chengtong-netdisk": {
+						"url": "https://www.ctfile.com",
+						"title": "城通网盘",
+						"developer": "zhongjyuan",
+						"description": "城通网盘是一款免费网盘，即免费网络存储空间服务。注册后可获得支持外链的50TB空间，最大单文件可达15GB，同时为用户提供每万次点击下载1000元的奖励。已为国内外数千万用户提供超过 5000TB 的网络储存空间。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/chengtong-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["chengtong-netdisk"],
+				"menu": {
+					"chengtong-netdisk": {
+						"app": "chengtong-netdisk",
+						"title": "城通网盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "飞猫盘",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/feimao-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/feimao-netdisk-summary.png",
+			"description": "飞猫盘是一款提供网盘|云盘|云服务的团队协作软件,可随时随地实现文件分享。橘猫云支持移动办公,协同办公,文件同步,数据备份,离线下载,在线编辑等功能。",
+			"open": {
+				"url": "https://www.feimaoyun.com/home",
+				"title": "飞猫盘",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/feimao-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"feimao-netdisk": {
+						"url": "https://www.feimaoyun.com/home",
+						"title": "飞猫盘",
+						"developer": "zhongjyuan",
+						"description": "飞猫盘是一款提供网盘|云盘|云服务的团队协作软件,可随时随地实现文件分享。橘猫云支持移动办公,协同办公,文件同步,数据备份,离线下载,在线编辑等功能。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/feimao-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["feimao-netdisk"],
+				"menu": {
+					"feimao-netdisk": {
+						"app": "feimao-netdisk",
+						"title": "飞猫盘",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "文叔叔",
+			"labels": ["official"],
+			"icon": "../../assets/icon/program/wenshushu-netdisk-favicon.ico",
+			"summary": "../../assets/image/program/wenshushu-netdisk-summary.png",
+			"description": "文叔叔，免费空间 40GB，一款永不限速的云存储产品。传文件、收文件、网盘，还支持历史记录等高级功能。",
+			"open": {
+				"url": "https://www.wenshushu.cn",
+				"title": "文叔叔",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/wenshushu-netdisk-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"wenshushu-netdisk": {
+						"url": "https://www.wenshushu.cn",
+						"title": "文叔叔",
+						"developer": "zhongjyuan",
+						"description": "文叔叔，免费空间 40GB，一款永不限速的云存储产品。传文件、收文件、网盘，还支持历史记录等高级功能。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/wenshushu-netdisk-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["wenshushu-netdisk"],
+				"menu": {
+					"wenshushu-netdisk": {
+						"app": "wenshushu-netdisk",
+						"title": "文叔叔",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

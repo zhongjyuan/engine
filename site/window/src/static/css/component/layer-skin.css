@@ -1,0 +1,27 @@
+.layer .zhongjyuan {
+	overflow: hidden;
+	min-width: 300px;
+	border-radius: 10px;
+	background-color: white;
+}
+
+.layer .zhongjyuan .layer-title {
+	background-color: inherit;
+	border-bottom: 1px solid transparent;
+}
+
+.layer .zhongjyuan .layer-btn0,
+.layer .zhongjyuan .layer-btn1 {
+	padding: 0 1em;
+	font-size: 12px;
+	border-radius: 4px;
+}
+
+.layer .zhongjyuan .layer-content .layer-input {
+	outline: none;
+	margin: 0 auto;
+	display: block;
+	padding: 0.5em;
+	line-height: 20px;
+	width: calc(100% - 50px);
+}

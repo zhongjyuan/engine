@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+}
+
+.bg {
+    /* 后面设置的no-repeat center center/cover是让这个图像不要重复，居中，以及由中间覆盖整个屏幕 */
+    background: url('../img/photo-1.png') no-repeat center center/cover;
+    position: absolute;
+    /* 这里的top和left主要是处理图片模糊之后的边缘白框问题 */
+    top: -30px;
+    left: -30px;
+    /* 这里的calc里面的+两边一定要空格，不空格图片加载不出来 */
+    /* calc() 函数用于动态计算长度值。任何长度值都可以使用calc()函数进行计算； calc()函数支持 "+", "-", "*", "/" 运算；*/
+    height: calc(100vh + 60px);
+    width: calc(100vw + 60px);
+    z-index: -1;
+    /* 为图像设置高斯模糊，默认值为0，单位为像素，值较大越清晰 */
+    filter: blur(0px);
+}
+
+.loading-text {
+    font-size: 50px;
+    color: #fff;
+}

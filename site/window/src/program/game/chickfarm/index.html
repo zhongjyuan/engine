@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>养鸡庄园</title>
+		<meta charset="utf-8" />
+
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="Cache" content="no-cache" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-control" content="no-cache" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+		<meta content="webkit" name="renderer" />
+		<meta content="True" name="HandheldFriendly" />
+		<meta content="no" name="msapplication-tap-highlight" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="Title" name="apple-mobile-web-app-title" />
+		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="width=device-width, initial-scale=1" name="viewport" />
+		<meta content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" name="viewport" />
+		<meta content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" name="viewport" />
+
+		<meta content="ZHONGJYUAN,WINDOW,云桌面,游戏,养鸡庄园" name="keywords" />
+		<meta content="ZHONGJYUAN - 技术驱动,云桌面,游戏应用[养鸡庄园]：可在云桌面上运行的养鸡庄园！" name="description" />
+
+		<link rel="shortcut icon" type="image/x-icon" href="../../../favicon.ico" media="screen" />
+
+		<script src="../../../static/use/jquery-3.6.4.slim.min.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="./static/lib/viewui/styles/iview.css" />
+		<script type="text/javascript" src="./static/lib/vue/vue.js"></script>
+		<script type="text/javascript" src="./static/lib/viewui/iview.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="./static/css/base.css" />
+		<link type="text/css" rel="stylesheet" href="./static/css/index.css" />
+	</head>
+
+	<body>
+		<div id="app" :class="{onSubject: isSubject}">
+			<!-- 画布 -->
+			<div class="container" :class="{ beingskin: skinBox}">
+				<!-- 用户信息 -->
+				<div class="user-box" @click="showUser">
+					<div class="user-logo">
+						<div class="user-level">{{chick.level}}</div>
+						<span class="portrait-item portrait0"></span>
+					</div>
+					<div class="user-info">
+						<div class="user-name">{{user.name}}</div>
+						<div class="user-money">
+							<div class="user-mi">
+								<Icon type="logo-usd" />
+							</div>
+							<p>{{user.money}}</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 功能菜单 -->
+				<ul class="nav-list">
+					<li @click="showPopup(skin)">
+						<span class="nav-icon"><i class="ivu-icon ivu-icon-ios-shirt"></i></span><span class="nav-name">换装</span>
+					</li>
+					<li @click="showPopup(shop)">
+						<span class="nav-icon"><i class="ivu-icon ivu-icon-ios-basket"></i></span><span class="nav-name">商店</span>
+					</li>
+					<li @click="showPopup(bag)">
+						<span class="nav-icon"><i class="ivu-icon ivu-icon-ios-filing"></i></span><span class="nav-name">背包</span>
+					</li>
+					<li @click="showAchievement()">
+						<span class="nav-icon"><i class="ivu-icon ivu-icon-ios-filing"></i></span><span class="nav-name">勋章</span>
+					</li>
+					<li @click="showPopup(study)" class="n-green">
+						<span class="nav-icon"><i class="ivu-icon ivu-icon-ios-flask"></i></span><span class="nav-name">学习</span>
+					</li>
+				</ul>
+
+				<!-- 游戏内容 -->
+				<div class="content">
+					<!-- 太阳光 -->
+					<c-sunlight></c-sunlight>
+					<!-- 山峰 -->
+					<c-peak></c-peak>
+					<!-- 白云 -->
+					<c-clouds></c-clouds>
+					<div class="land-wrap">
+						<!-- 草地 -->
+						<c-grass></c-grass>
+						<!-- 房子 -->
+						<c-house></c-house>
+						<!-- 护栏 -->
+						<c-fence></c-fence>
+						<!-- 蜜蜂鲜花 -->
+						<c-bee></c-bee>
+						<!-- 鸡蛋 -->
+						<c-egg :eggnum="chick.egg.num" :eggprogress="chick.egg.progress" ref="paper"></c-egg>
+					</div>
+
+					<!-- 叶子 -->
+					<c-leaf></c-leaf>
+					<!-- 鸡饭碗 -->
+					<c-trough></c-trough>
+					<!-- chick -->
+					<div class="chick" :class="{noeat:!chick.eat}">
+						<!-- 进食倒计 -->
+						<div class="countdown-box">
+							<p class="countdown-text" :class="{active : !chick.eat }">{{content}}{{setTime}}</p>
+							<!-- 进食进度条 -->
+							<div class="progress" v-if="value != 0 && value < 100">
+								<div class="progress-content" :style="'width:' + value + '%' "></div>
+							</div>
+						</div>
+						<!-- 装扮-帽子 -->
+						<div class="skin-hat">
+							<keep-alive>
+								<component :is="chick.componentHat"></component>
+							</keep-alive>
+						</div>
+						<div class="chick-head"></div>
+						<div class="chick-body">
+							<!-- 装扮-衣服 -->
+							<keep-alive>
+								<component :is="chick.componentClothes"></component>
+							</keep-alive>
+							<!-- 青蛙衣服 -->
+						</div>
+						<div class="eye">
+							<span></span>
+							<span></span>
+						</div>
+						<div class="blusher">
+							<span></span>
+							<span></span>
+						</div>
+						<div class="face"></div>
+						<div class="wing-left"></div>
+						<div class="wing-content">
+							<span></span>
+						</div>
+						<div class="arm" style="display: none;">
+							<span></span>
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+						<div class="wing-r" style="display: none;"></div>
+						<div class="wing-right">
+							<span></span>
+							<span></span>
+							<span></span>
+							<span></span>
+							<span></span>
+							<span></span>
+							<span></span>
+							<span></span>
+							<div class="food">
+								<p></p>
+								<div class="dot-box">
+									<span></span>
+									<span></span>
+								</div>
+							</div>
+						</div>
+						<div class="mouth">
+							<span></span>
+							<span></span>
+							<p></p>
+						</div>
+						<div class="foot">
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+					<!-- 弹窗遮罩层 -->
+					<div class="popup-mask" v-show="skinBox" @click="hidePopup"></div>
+				</div>
+
+				<!-- 功能弹窗面板 -->
+				<div class="page-popup">
+					<!-- 换装功能 -->
+					<div class="popup-item" v-show="isSkin">
+						<div class="popup-head border-bottom-1px">
+							<span class="popup-title fl">换装</span>
+							<i class="ivu-icon ivu-icon-md-close-circle" @click="hidePopup"></i>
+						</div>
+						<div class="popup-content">
+							<!-- 换装内容 -->
+							<tabs :animated="false">
+								<tab-pane label="" icon="ios-egg">
+									<ul class="opt-list">
+										<li
+											v-for="suit in suits"
+											:key="suit.name"
+											:class="['opt-btn', { active: chick.currentSuit === suit.id && chick.currentHat === suit.id && chick.currentClothes === suit.id}]"
+											@click="replaceDress(0,suit.id)"
+										>
+											<span class="opt-mask fadeIn animated">
+												<Icon type="md-checkmark-circle" />
+											</span>
+											{{ suit.name }}
+										</li>
+									</ul>
+								</tab-pane>
+								<tab-pane label="" icon="ios-school">
+									<ul class="opt-list">
+										<li
+											v-for="hat in hats"
+											:key="hat.name"
+											:class="['opt-btn', { active: chick.currentHat === hat.id}]"
+											@click="replaceDress(1,hat.id)"
+										>
+											<span class="opt-mask fadeIn animated">
+												<Icon type="md-checkmark-circle" />
+											</span>
+											{{ hat.name }}
+										</li>
+									</ul>
+								</tab-pane>
+								<tab-pane label="" icon="ios-shirt">
+									<ul class="opt-list">
+										<li
+											v-for="clothe in clothes"
+											:key="clothe.name"
+											:class="['opt-btn', { active: chick.currentClothes === clothe.id}]"
+											@click="replaceDress(2,clothe.id)"
+										>
+											<span class="opt-mask fadeIn animated">
+												<Icon type="md-checkmark-circle" />
+											</span>
+											{{ clothe.name }}
+										</li>
+									</ul>
+								</tab-pane>
+								<tab-pane label="" icon="md-rose">
+									<p style="padding-top: 40px; text-align: center;">首饰饰品开发中...</p>
+								</tab-pane>
+								<tab-pane label="" icon="md-glasses">
+									<p style="padding-top: 40px; text-align: center;">眼睛饰品开发中...</p>
+								</tab-pane>
+							</tabs>
+						</div>
+					</div>
+
+					<!-- 商店功能 -->
+					<div class="popup-item" v-show="isShop">
+						<div class="popup-head border-bottom-1px">
+							<span class="popup-title fl">商店</span>
+							<i class="ivu-icon ivu-icon-md-close-circle" @click="hidePopup"></i>
+						</div>
+						<div class="popup-content">
+							<p style="padding-top: 50px; text-align: center;">商店功能开发中...</p>
+						</div>
+					</div>
+
+					<!-- 背包功能 -->
+					<div class="popup-item" v-show="isBag">
+						<div class="popup-head border-bottom-1px">
+							<span class="popup-title fl">背包</span>
+							<i class="ivu-icon ivu-icon-md-close-circle" @click="hidePopup"></i>
+						</div>
+						<div class="popup-content">
+							<tabs :animated="false">
+								<tab-pane label="粮食" icon="md-ice-cream">
+									<div class="food-box">
+										<ul class="food-list">
+											<li v-for="(food, index) in foods" @click="showFood(index)" :class="{ isMask: food.num == 0 || food.unlock == 0}">
+												<div class="food-item">
+													<div class="food-img">
+														<img :src="food.url" />
+													</div>
+													<p class="food-name">{{food.name}}</p>
+													<span class="food-num" v-if="food.num !== 0">{{food.num}}</span>
+													<div class="mask-bg shortage-tips" @click.stop="showShop(food.name)" v-if="food.num == 0 && food.unlock == 1">
+														<i-button :size="buttonSize" type="success">购买</i-button>
+													</div>
+													<div class="mask-bg shortage-tips" v-if="food.unlock == 0" @click.stop="showUnlock(food.name)">
+														<i-button :size="buttonSize" type="warning">解锁</i-button>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</tab-pane>
+								<tab-pane label="物品" icon="ios-archive">
+									<div class="food-box">
+										<ul class="food-list">
+											<li v-for="(good, index) in goods" v-if="good.num != 0" @click="showGood(good.name)">
+												<div class="food-item">
+													<div class="food-img egg-img">
+														<img :src="good.img" />
+													</div>
+													<p class="food-name">{{good.name}}</p>
+													<span class="food-num">{{good.num}}</span>
+												</div>
+											</li>
+										</ul>
+										<div class="no-data" v-show="goods.length == 0">暂无物品</div>
+									</div>
+								</tab-pane>
+							</tabs>
+						</div>
+					</div>
+
+					<!-- 学习功能 -->
+					<div class="popup-item" v-show="isStudy">
+						<div class="popup-head border-bottom-1px">
+							<span class="popup-title fl">学习</span>
+							<i class="ivu-icon ivu-icon-md-close-circle" @click="hidePopup"></i>
+						</div>
+
+						<div class="popup-content">
+							<tabs :animated="false">
+								<tab-pane v-for="(subject, index1) in subjects" :label="subject.type" :icon="subject.icon" :key="subject.type">
+									<ul class="subject-list">
+										<li
+											v-for="item in subject.list"
+											:key="item.name"
+											:class="{on:item.learning == 1, over:item.learning == 2}"
+											@click="onSubject(item,index1)"
+										>
+											<div class="subject-img">
+												<div class="learning-label">
+													<span v-if="item.learning == 0">未学习</span>
+													<span v-if="item.learning == 1">学习中</span>
+													<span v-if="item.learning == 2">已学完</span>
+												</div>
+												<img :src="item.img" />
+											</div>
+											<p class="subject-name">{{item.name}}</p>
+										</li>
+									</ul>
+								</tab-pane>
+							</tabs>
+							<p style="padding-top: 50px; text-align: center; display: none;">学习功能开发中...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 加载窗口 -->
+			<transition name="fade">
+				<div class="loading" v-if="isLoad">
+					<div class="pic">
+						<div class="egg-wrapper">
+							<div class="egg infinite"></div>
+						</div>
+						<p>鸡崽孵化中...</p>
+					</div>
+				</div>
+			</transition>
+
+			<!-- 用户信息 -->
+			<Modal v-model="modalUser" class-name="hide-footer" @on-ok="keepUser">
+				<div class="user-form" v-if="!editUserName">
+					<div class="head-portrait">
+						<span class="portrait-item portrait0"></span>
+					</div>
+					<div class="user-name">
+						{{user.name}}
+						<Icon type="ios-create" @click="editUser" />
+					</div>
+					<div class="user-zl">
+						<Row>
+							<i-col span="12">
+								<div class="uz-i">
+									<Icon type="ios-podium" class="c-green" />
+								</div>
+								<div class="uz-i">等级：{{chick.level}}</div>
+							</i-col>
+							<i-col span="12">
+								<div class="uz-i">
+									<Icon type="ios-heart" class="c-red" />
+								</div>
+								<div class="uz-i">粉丝：0</div>
+							</i-col>
+						</Row>
+						<Row>
+							<i-col span="12">
+								<div class="uz-i">
+									<Icon type="md-pricetags" class="c-blue" />
+								</div>
+								<div class="uz-i">积分：0</div>
+							</i-col>
+							<i-col span="12">
+								<div class="uz-i">
+									<Icon type="ios-medal" class="c-orange" />
+								</div>
+								<div class="uz-i">段位：0</div>
+							</i-col>
+						</Row>
+					</div>
+					<!-- <i-form :model="user" :label-width="80">
+			        <form-item label="用户名称">
+			            <i-input v-model="user.name" placeholder="设置用户名称..."></i-input>
+			        </form-item>
+			    </i-form> -->
+					<div>
+						<p>等级：{{chick.level}}级，经验：{{chick.exp}}，升级所需：{{chick.upgradeExp}}</p>
+					</div>
+				</div>
+
+				<div class="user-form" v-if="editUserName">
+					<i-form :model="user">
+						<p class="pl-title">修改用户名需要1000金币</p>
+						<form-item>
+							<i-input v-model="newUserName" placeholder="设置用户名称..."></i-input>
+						</form-item>
+						<i-button type="primary" @click="saveUser">保存</i-button>
+					</i-form>
+				</div>
+			</Modal>
+
+			<!-- 升级弹窗 -->
+			<Modal :value="modalLevel" @on-ok="levelUser">
+				<p class="c-modal__label">升级了</p>
+				<p class="c-modal__title" style="font-size: 20px;">恭喜您升到&nbsp;{{chick.level}}&nbsp;级了！</p>
+			</Modal>
+
+			<!-- 直接购买商品 -->
+			<Modal :value="modalShop" @on-ok="shopSettle" @on-cancel="hideShop">
+				<div class="shopping-box">
+					<p>{{currFood.name}}</p>
+					<p>单价：${{currFood.price}}/个</p>
+					<div class="num-form">
+						<div class="shop-btn" @click="shopReduce">
+							<Icon type="md-remove-circle" />
+						</div>
+						<div class="shop-input">
+							<i-input type="text" v-model="shoppingNum" placeholder="数量"></i-input>
+						</div>
+						<div class="shop-btn" @click="shopAdd">
+							<Icon type="md-add-circle" />
+						</div>
+					</div>
+					<p>总价：${{currFood.price * shoppingNum}}</p>
+				</div>
+			</Modal>
+
+			<!-- 查看食物详情 -->
+			<Modal :value="modalFood" class-name="hide-footer" @on-cancel="hideFood">
+				<div class="modal-box">
+					<div class="food-img">
+						<img :src="currFood.url" />
+					</div>
+					<div class="food-t">
+						<p>物品名称：{{currFood.name}}</p>
+						<p>拥有数量：{{currFood.num}}</p>
+						<p>进食时长：{{currFood.eatTime | SecondToDate}}</p>
+						<p>获得经验：{{currFood.exp}}</p>
+						<div class="food-t-btn">
+							<i-button type="primary" @click="feedClick">喂食</i-button>
+						</div>
+					</div>
+				</div>
+			</Modal>
+
+			<!-- 查看出售物品详情 -->
+			<Modal :value="modalGood" class-name="hide-footer" @on-cancel="hideGood">
+				<div class="modal-box" v-if="!goodDetails">
+					<div class="food-img">
+						<img :src="currGood.img" />
+					</div>
+					<div class="food-t">
+						<p>物品名称：{{currGood.name}}</p>
+						<p>拥有数量：{{currGood.num}}</p>
+						<p>出售价值：{{currGood.price}}</p>
+						<div class="food-t-btn">
+							<i-button type="primary" @click="setSell">出售</i-button>
+						</div>
+					</div>
+				</div>
+				<div class="shopping-box" v-if="goodDetails">
+					<p>{{currGood.name}}</p>
+					<div class="num-form">
+						<div class="shop-btn" @click="sellReduce"><span>-</span></div>
+						<div class="shop-input">
+							<i-input type="text" v-model="sellNum" placeholder="数量"></i-input>
+						</div>
+						<div class="shop-btn" @click="sellAdd">
+							<Icon type="md-add-circle" />
+						</div>
+					</div>
+					<p>出售总价：${{currGood.price * sellNum}}</p>
+					<i-button type="primary" @click="commitSell">出售</i-button>
+				</div>
+			</Modal>
+
+			<!-- 勋章列表 -->
+			<Modal v-model="modalAchievement" class-name="hide-footer" @on-cancel="hideAchievement">
+				<p style="margin-bottom: 10px;">成就数量：<span>{{targetList}}</span>/{{achievements.length}}</p>
+				<ul class="a-list">
+					<li v-for="(item, index) in achievements" :class="{ active: item.complete, onin: item.completeID == 1 }">
+						<div class="a-info">
+							<p>{{item.title}}<span class="fr">{{item.completeCurrCount}}/{{item.completeNeedCount}}</span></p>
+							<div>
+								{{item.desc}}
+								<div class="reward" v-if="item.completeID == 0">
+									<div class="reward-icon">
+										<Icon type="logo-usd" />
+									</div>
+									<span class="reward-profit">{{item.profit}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="a-right" v-if="item.complete && item.completeID == 0" @click="receiveAwards(item.title)">
+							<i-button type="primary">领取奖励</i-button>
+						</div>
+						<div class="a-right" v-if="item.completeID == 1">
+							<i-button type="primary">已完成</i-button>
+						</div>
+					</li>
+				</ul>
+			</Modal>
+
+			<!-- 解锁商品确认 -->
+			<Modal :value="modalUnlock" @on-ok="commitUnlock" @on-cancel="hideUnlock">
+				<div class="shopping-box">
+					<p>确定解锁吗？</p>
+					<p>解锁需要：${{currFood.unlockPrice}}</p>
+				</div>
+			</Modal>
+
+			<!-- 做题组件 -->
+			<c-subject @outsubject="hideSubject" :showsubject="isSubject"></c-subject>
+		</div>
+
+		<script src="./static/lib/vuex/vuex.min.js"></script>
+		<script src="./static/component/component.js"></script>
+
+		<script src="./config/skin.js"></script>
+		<script src="./config/food.js"></script>
+		<script src="./config/subject.js"></script>
+		<script src="./config/achievement.js"></script>
+
+		<script src="./static/js/store.js"></script>
+		<script src="./static/js/index.js"></script>
+	</body>
+</html>

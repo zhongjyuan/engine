@@ -1,0 +1,1094 @@
+{
+	"apps": [
+		{
+			"title": "微信创作者中心",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/weixin-creator-favicon.ico",
+			"summary": "../../assets/image/program/weixin-creator-summary.png",
+			"description": "创作者中心是微信视频号为创作者提供的一个创作工具平台，包括视频拍摄、编辑、发布、数据分析等多个功能，旨在帮助创作者更加便捷地进行视频创作和推广。",
+			"open": {
+				"url": "https://weixin.qq.com",
+				"title": "微信创作者中心",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/weixin-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"weixin-creator": {
+						"url": "https://weixin.qq.com",
+						"title": "微信创作者中心",
+						"developer": "zhongjyuan",
+						"description": "创作者中心是微信视频号为创作者提供的一个创作工具平台，包括视频拍摄、编辑、发布、数据分析等多个功能，旨在帮助创作者更加便捷地进行视频创作和推广。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/weixin-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["weixin-creator"],
+				"menu": {
+					"weixin-creator": {
+						"app": "weixin-creator",
+						"title": "微信创作者中心",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "抖音创作服务平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/douyin-creator-favicon.ico",
+			"summary": "../../assets/image/program/douyin-creator-summary.png",
+			"description": "抖音创作服务平台是抖音创作者的专属服务平台，支持用户作为创作者和管理机构两种登陆方式，并通过提供授权管理、内容管理、互动管理及数据管理等服务助力抖音用户高效运营！",
+			"open": {
+				"openMode": "outer",
+				"url": "https://creator.douyin.com",
+				"title": "抖音创作服务平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/douyin-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"douyin-creator": {
+						"openMode": "outer",
+						"url": "https://creator.douyin.com",
+						"title": "抖音创作服务平台",
+						"developer": "zhongjyuan",
+						"description": "抖音创作服务平台是抖音创作者的专属服务平台，支持用户作为创作者和管理机构两种登陆方式，并通过提供授权管理、内容管理、互动管理及数据管理等服务助力抖音用户高效运营！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/douyin-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["douyin-creator"],
+				"menu": {
+					"douyin-creator": {
+						"app": "douyin-creator",
+						"title": "抖音创作服务平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "西瓜创作平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/xigua-creator-favicon.ico",
+			"summary": "../../assets/image/program/xigua-creator-summary.png",
+			"description": "西瓜创作平台是西瓜创作者的专属创作平台，支持用户发布西瓜视频，并通过提供发布视频、内容管理、数据分析、评论管理、收益分析、创作激励、创作课程、消息管理等服务助力西瓜用户高效运营和创作！",
+			"open": {
+				"openMode": "outer",
+				"url": "https://studio.ixigua.com",
+				"title": "西瓜创作平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/xigua-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xigua-creator": {
+						"openMode": "outer",
+						"url": "https://studio.ixigua.com",
+						"title": "西瓜创作平台",
+						"developer": "zhongjyuan",
+						"description": "西瓜创作平台是西瓜创作者的专属创作平台，支持用户发布西瓜视频，并通过提供发布视频、内容管理、数据分析、评论管理、收益分析、创作激励、创作课程、消息管理等服务助力西瓜用户高效运营和创作！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/xigua-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xigua-creator"],
+				"menu": {
+					"xigua-creator": {
+						"app": "xigua-creator",
+						"title": "西瓜创作平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "头条号",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/toutiao-creator-favicon.ico",
+			"summary": "../../assets/image/program/toutiao-creator-summary.png",
+			"description": "头条号是今日头条推出的开放的内容创作与分发平台，基于今日头条革命性的推荐引擎，实现媒体、企业、政府等机构与个人的内容创作、发布与精准分发。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://mp.toutiao.com",
+				"title": "头条号",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/toutiao-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"toutiao-creator": {
+						"openMode": "outer",
+						"url": "https://mp.toutiao.com",
+						"title": "头条号",
+						"developer": "zhongjyuan",
+						"description": "头条号是今日头条推出的开放的内容创作与分发平台，基于今日头条革命性的推荐引擎，实现媒体、企业、政府等机构与个人的内容创作、发布与精准分发。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/toutiao-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["toutiao-creator"],
+				"menu": {
+					"toutiao-creator": {
+						"app": "toutiao-creator",
+						"title": "头条号",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "快手创作者服务平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/kuaishou-creator-favicon.ico",
+			"summary": "../../assets/image/program/kuaishou-creator-summary.png",
+			"description": "快手创作者服务平台为创作者和机构提供强大的运营管理、高清视频上传、多维度数据分析、内容生产等辅助工具、依托平台丰富的资源提供热点趋势，更好的服务每个创作者。",
+			"open": {
+				"url": "https://cp.kuaishou.com",
+				"title": "快手创作者服务平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/kuaishou-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"kuaishou-creator": {
+						"url": "https://cp.kuaishou.com",
+						"title": "快手创作者服务平台",
+						"developer": "zhongjyuan",
+						"description": "快手创作者服务平台为创作者和机构提供强大的运营管理、高清视频上传、多维度数据分析、内容生产等辅助工具、依托平台丰富的资源提供热点趋势，更好的服务每个创作者。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/kuaishou-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["kuaishou-creator"],
+				"menu": {
+					"kuaishou-creator": {
+						"app": "kuaishou-creator",
+						"title": "快手创作者服务平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "哔哩哔哩创作平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/bilibili-creator-favicon.ico",
+			"summary": "../../assets/image/program/bilibili-creator-summary.png",
+			"description": "哔哩哔哩（bilibili.com)是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。",
+			"open": {
+				"url": "https://passport.bilibili.com/login",
+				"title": "哔哩哔哩创作平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/bilibili-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"bilibili-creator": {
+						"url": "https://passport.bilibili.com/login",
+						"title": "哔哩哔哩创作平台",
+						"developer": "zhongjyuan",
+						"description": "哔哩哔哩（bilibili.com)是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/bilibili-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["bilibili-creator"],
+				"menu": {
+					"bilibili-creator": {
+						"app": "bilibili-creator",
+						"title": "哔哩哔哩创作平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "微博创作平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/weibo-creator-favicon.ico",
+			"summary": "../../assets/image/program/weibo-creator-summary.png",
+			"description": "随时随地发现新鲜事！微博带你欣赏世界上每一个精彩瞬间，了解每一个幕后故事。分享你想表达的，让全世界都能听到你的心声！",
+			"open": {
+				"openMode": "outer",
+				"url": "https://weibo.com/login.php",
+				"title": "微博创作平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/weibo-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"weibo-creator": {
+						"openMode": "outer",
+						"url": "https://weibo.com/login.php",
+						"title": "微博创作平台",
+						"developer": "zhongjyuan",
+						"description": "随时随地发现新鲜事！微博带你欣赏世界上每一个精彩瞬间，了解每一个幕后故事。分享你想表达的，让全世界都能听到你的心声！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/weibo-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["weibo-creator"],
+				"menu": {
+					"weibo-creator": {
+						"app": "weibo-creator",
+						"title": "微博创作平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "微视创作平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/weishi-creator-favicon.ico",
+			"summary": "../../assets/image/program/weishi-creator-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：微视创作平台",
+			"open": {
+				"url": "https://h5.weishi.qq.com/weishi/account/login?r_url=http%3A%2F%2Fmedia.weishi.qq.com%2Fmedia%2Fvideo-manage",
+				"title": "微视创作平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/weishi-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"weishi-creator": {
+						"url": "https://h5.weishi.qq.com/weishi/account/login?r_url=http%3A%2F%2Fmedia.weishi.qq.com%2Fmedia%2Fvideo-manage",
+						"title": "微视创作平台",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：微视创作平台",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/weishi-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["weishi-creator"],
+				"menu": {
+					"weishi-creator": {
+						"app": "weishi-creator",
+						"title": "微视创作平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "皮皮虾创作平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/pipixia-creator-favicon.ico",
+			"summary": "../../assets/image/program/pipixia-creator-summary.png",
+			"description": "皮皮虾app是一款主打轻幽默神评论的社区软件，来皮皮虾官网下载皮皮虾app，为你呈现海量搞笑视频神评论，开心每一天。皮皮虾app，皮一下很开心！",
+			"open": {
+				"url": "https://www.pipix.com/login?redirect=%2Fmp%2Fupload",
+				"title": "皮皮虾创作平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/pipixia-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"pipixia-creator": {
+						"url": "https://www.pipix.com/login?redirect=%2Fmp%2Fupload",
+						"title": "皮皮虾创作平台",
+						"developer": "zhongjyuan",
+						"description": "皮皮虾app是一款主打轻幽默神评论的社区软件，来皮皮虾官网下载皮皮虾app，为你呈现海量搞笑视频神评论，开心每一天。皮皮虾app，皮一下很开心！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/pipixia-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["pipixia-creator"],
+				"menu": {
+					"pipixia-creator": {
+						"app": "pipixia-creator",
+						"title": "皮皮虾创作平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "小红书创作服务平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/xiaohongshu-creator-favicon.ico",
+			"summary": "../../assets/image/program/xiaohongshu-creator-summary.png",
+			"description": "小红书创作服务平台为小红书创作者和机构提供视频上传、数据分析、粉丝管理、创作指导等多项运营服务，助力用户解锁更多创作者专属功能，体验高效创作！",
+			"open": {
+				"url": "https://creator.xiaohongshu.com/login?lastUrl=%252Fcreator%252Fhome",
+				"title": "小红书创作服务平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/xiaohongshu-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xiaohongshu-creator": {
+						"url": "https://creator.xiaohongshu.com/login?lastUrl=%252Fcreator%252Fhome",
+						"title": "小红书创作服务平台",
+						"developer": "zhongjyuan",
+						"description": "小红书创作服务平台为小红书创作者和机构提供视频上传、数据分析、粉丝管理、创作指导等多项运营服务，助力用户解锁更多创作者专属功能，体验高效创作！",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/xiaohongshu-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xiaohongshu-creator"],
+				"menu": {
+					"xiaohongshu-creator": {
+						"app": "xiaohongshu-creator",
+						"title": "小红书创作服务平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "知乎创作平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/zhihu-creator-favicon.ico",
+			"summary": "../../assets/image/program/zhihu-creator-summary.png",
+			"description": "知乎，中文互联网高质量的问答社区和创作者聚集的原创内容平台，于 2011 年 1 月正式上线，以「让人们更好的分享知识、经验和见解，找到自己的解答」为品牌使命。知乎凭借认真、专业、友善的社区氛围、独特的产品机制以及结构化和易获得的优质内容，聚集了中文互联网科技、商业、影视、时尚、文化等领域最具创造力的人群，已成为综合性、全品类、在诸多领域具有关键影响力的知识分享社区和创作者聚集的原创内容平台，建立起了以社区驱动的内容变现商业模式。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://www.zhihu.com/signin?next=%2Fcreator",
+				"title": "知乎创作平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/zhihu-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"zhihu-creator": {
+						"openMode": "outer",
+						"url": "https://www.zhihu.com/signin?next=%2Fcreator",
+						"title": "知乎创作平台",
+						"developer": "zhongjyuan",
+						"description": "知乎，中文互联网高质量的问答社区和创作者聚集的原创内容平台，于 2011 年 1 月正式上线，以「让人们更好的分享知识、经验和见解，找到自己的解答」为品牌使命。知乎凭借认真、专业、友善的社区氛围、独特的产品机制以及结构化和易获得的优质内容，聚集了中文互联网科技、商业、影视、时尚、文化等领域最具创造力的人群，已成为综合性、全品类、在诸多领域具有关键影响力的知识分享社区和创作者聚集的原创内容平台，建立起了以社区驱动的内容变现商业模式。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/zhihu-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["zhihu-creator"],
+				"menu": {
+					"zhihu-creator": {
+						"app": "zhihu-creator",
+						"title": "知乎创作平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "CSDN创作平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/csdn-creator-favicon.ico",
+			"summary": "../../assets/image/program/csdn-creator-summary.png",
+			"description": "CSDN是全球知名中文IT技术交流平台,创建于1999年,包含原创博客、精品问答、职业培训、技术论坛、资源下载等产品服务,提供原创、优质、完整内容的专业IT技术开发社区.",
+			"open": {
+				"openMode": "outer",
+				"url": "https://passport.csdn.net/login?code=applets",
+				"title": "CSDN创作平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/csdn-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"csdn-creator": {
+						"openMode": "outer",
+						"url": "https://passport.csdn.net/login?code=applets",
+						"title": "CSDN创作平台",
+						"developer": "zhongjyuan",
+						"description": "CSDN是全球知名中文IT技术交流平台,创建于1999年,包含原创博客、精品问答、职业培训、技术论坛、资源下载等产品服务,提供原创、优质、完整内容的专业IT技术开发社区.",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/csdn-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["csdn-creator"],
+				"menu": {
+					"csdn-creator": {
+						"app": "csdn-creator",
+						"title": "CSDN创作平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "最右达人",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/zuiyou-creator-favicon.ico",
+			"summary": "../../assets/image/program/zuiyou-creator-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：最右达人",
+			"open": {
+				"url": "https://daren.izuiyou.com/login",
+				"title": "最右达人",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/zuiyou-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"zuiyou-creator": {
+						"url": "https://daren.izuiyou.com/login",
+						"title": "最右达人",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：最右达人",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/zuiyou-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["zuiyou-creator"],
+				"menu": {
+					"zuiyou-creator": {
+						"app": "zuiyou-creator",
+						"title": "最右达人",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "腾讯视频创作中心",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/tenxun-creator-favicon.ico",
+			"summary": "../../assets/image/program/tenxun-creator-summary.png",
+			"description": "腾讯视频创作平台是面向长中短各类视频创作者开放的内容合作平台，平台围绕入驻、上线、运营、结算等核心环节，搭建了全流程的在线合作服务体系，可支持短、中、长各类视频，包括但不限于网络电影、微短剧、知识、网络剧、纪录片、少儿、动漫、综艺等多品类内容进行入驻合作。平台愿与您携手，共享创作好时光，实现共赢。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://mp.v.qq.com",
+				"title": "腾讯视频创作中心",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tenxun-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tenxun-creator": {
+						"openMode": "outer",
+						"url": "https://mp.v.qq.com",
+						"title": "腾讯视频创作中心",
+						"developer": "zhongjyuan",
+						"description": "腾讯视频创作平台是面向长中短各类视频创作者开放的内容合作平台，平台围绕入驻、上线、运营、结算等核心环节，搭建了全流程的在线合作服务体系，可支持短、中、长各类视频，包括但不限于网络电影、微短剧、知识、网络剧、纪录片、少儿、动漫、综艺等多品类内容进行入驻合作。平台愿与您携手，共享创作好时光，实现共赢。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tenxun-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tenxun-creator"],
+				"menu": {
+					"tenxun-creator": {
+						"app": "tenxun-creator",
+						"title": "腾讯视频创作中心",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "优酷视频创作中心",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/youku-creator-favicon.ico",
+			"summary": "../../assets/image/program/youku-creator-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：优酷视频创作中心",
+			"open": {
+				"url": "https://account.youku.com/?callback=http%3A%2F%2Fmp.youku.com%2Findex",
+				"title": "优酷视频创作中心",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/youku-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"youku-creator": {
+						"url": "https://account.youku.com/?callback=http%3A%2F%2Fmp.youku.com%2Findex",
+						"title": "优酷视频创作中心",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：优酷视频创作中心",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/youku-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["youku-creator"],
+				"menu": {
+					"youku-creator": {
+						"app": "youku-creator",
+						"title": "优酷视频创作中心",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "芒果TV创作中心",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/mangguotv-creator-favicon.ico",
+			"summary": "../../assets/image/program/mangguotv-creator-summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-外部应用：芒果TV创作中心",
+			"open": {
+				"url": "https://7.mgtv.com/login",
+				"title": "芒果TV创作中心",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mangguotv-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mangguotv-creator": {
+						"url": "https://7.mgtv.com/login",
+						"title": "芒果TV创作中心",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-外部应用：芒果TV创作中心",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mangguotv-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mangguotv-creator"],
+				"menu": {
+					"mangguotv-creator": {
+						"app": "mangguotv-creator",
+						"title": "芒果TV创作中心",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "爱奇艺开放平台",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/aiqiyi-creator-favicon.ico",
+			"summary": "../../assets/image/program/aiqiyi-creator-summary.png",
+			"description": "爱奇艺开放平台是爱奇艺iQ号内容与爱奇艺进行合作的平台，提供视频合作（网络大电影、网剧、儿童、动漫、教育等类型视频）、自媒体、文学创作、漫画作品、泡泡圈主、直播主播等各种类型的深度合作。",
+			"open": {
+				"url": "https://mp.iqiyi.com",
+				"title": "爱奇艺开放平台",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/aiqiyi-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"aiqiyi-creator": {
+						"url": "https://mp.iqiyi.com",
+						"title": "爱奇艺开放平台",
+						"developer": "zhongjyuan",
+						"description": "爱奇艺开放平台是爱奇艺iQ号内容与爱奇艺进行合作的平台，提供视频合作（网络大电影、网剧、儿童、动漫、教育等类型视频）、自媒体、文学创作、漫画作品、泡泡圈主、直播主播等各种类型的深度合作。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/aiqiyi-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["aiqiyi-creator"],
+				"menu": {
+					"aiqiyi-creator": {
+						"app": "aiqiyi-creator",
+						"title": "爱奇艺开放平台",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "百家号",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/baijiahao-creator-favicon.ico",
+			"summary": "../../assets/image/program/baijiahao-creator-summary.png",
+			"description": "百家号，是百度为创作者打造的集创作、发布、变现于一体的内容创作平台，也是众多企业实现营销转化的运营新阵地。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://baijiahao.baidu.com/builder/rc/home",
+				"title": "百家号",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/baijiahao-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"baijiahao-creator": {
+						"openMode": "outer",
+						"url": "https://baijiahao.baidu.com/builder/rc/home",
+						"title": "百家号",
+						"developer": "zhongjyuan",
+						"description": "百家号，是百度为创作者打造的集创作、发布、变现于一体的内容创作平台，也是众多企业实现营销转化的运营新阵地。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/baijiahao-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["baijiahao-creator"],
+				"menu": {
+					"baijiahao-creator": {
+						"app": "baijiahao-creator",
+						"title": "百家号",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "企鹅号",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/qiehao-creator-favicon.ico",
+			"summary": "../../assets/image/program/qiehao-creator-summary.png",
+			"description": "企鹅号是腾讯旗下的一站式内容创作运营平台，也是腾讯“大内容”生态的重要入口。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://om.qq.com/userAuth/index",
+				"title": "企鹅号",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/qiehao-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"qiehao-creator": {
+						"openMode": "outer",
+						"url": "https://om.qq.com/userAuth/index",
+						"title": "企鹅号",
+						"developer": "zhongjyuan",
+						"description": "企鹅号是腾讯旗下的一站式内容创作运营平台，也是腾讯“大内容”生态的重要入口。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/qiehao-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["qiehao-creator"],
+				"menu": {
+					"qiehao-creator": {
+						"app": "qiehao-creator",
+						"title": "企鹅号",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "大鱼号",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/dayuhao-creator-favicon.ico",
+			"summary": "../../assets/image/program/dayuhao-creator-summary.png",
+			"description": "大鱼号是阿里文娱体系为内容创作者提供的统一账号。大鱼号实现了阿里文娱体系一点接入，多点分发。内容创作者一点接入大鱼号，上传图文/视频可被分发到UC、优酷、土豆、淘系客户端，未来还会扩展到豌豆荚、神马搜索、PP助手等。",
+			"open": {
+				"url": "https://mp.dayu.com",
+				"title": "大鱼号",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/dayuhao-creator-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"dayuhao-creator": {
+						"url": "https://mp.dayu.com",
+						"title": "大鱼号",
+						"developer": "zhongjyuan",
+						"description": "大鱼号是阿里文娱体系为内容创作者提供的统一账号。大鱼号实现了阿里文娱体系一点接入，多点分发。内容创作者一点接入大鱼号，上传图文/视频可被分发到UC、优酷、土豆、淘系客户端，未来还会扩展到豌豆荚、神马搜索、PP助手等。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/dayuhao-creator-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["dayuhao-creator"],
+				"menu": {
+					"dayuhao-creator": {
+						"app": "dayuhao-creator",
+						"title": "大鱼号",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "抖音",
+			"labels": ["popular", "video"],
+			"icon": "../../assets/icon/program/douyin-favicon.ico",
+			"summary": "../../assets/image/program/douyin-summary.png",
+			"description": "抖音让每一个人看见并连接更大的世界,鼓励表达、沟通和记录,激发创造,丰富人们的精神世界,让现实生活更美好。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://www.douyin.com",
+				"title": "抖音",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/douyin-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"douyin": {
+						"openMode": "outer",
+						"url": "https://www.douyin.com",
+						"title": "抖音",
+						"developer": "zhongjyuan",
+						"description": "抖音让每一个人看见并连接更大的世界,鼓励表达、沟通和记录,激发创造,丰富人们的精神世界,让现实生活更美好。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/douyin-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["douyin"],
+				"menu": {
+					"douyin": {
+						"app": "douyin",
+						"title": "抖音",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "哔哩哔哩",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/bilibili-favicon.ico",
+			"summary": "../../assets/image/program/bilibili-summary.png",
+			"description": "哔哩哔哩（bilibili.com)是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。",
+			"open": {
+				"url": "https://www.bilibili.com",
+				"title": "哔哩哔哩",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/bilibili-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"bilibili": {
+						"url": "https://www.bilibili.com",
+						"title": "哔哩哔哩",
+						"developer": "zhongjyuan",
+						"description": "哔哩哔哩（bilibili.com)是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/bilibili-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["bilibili"],
+				"menu": {
+					"bilibili": {
+						"app": "bilibili",
+						"title": "哔哩哔哩",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "西瓜视频",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/xigua-favicon.ico",
+			"summary": "../../assets/image/program/xigua-summary.png",
+			"description": "西瓜视频是一个开眼界、涨知识的视频 App，作为国内领先的中视频平台，它源源不断地为不同人群提供优质内容，让人们看到更丰富和有深度的世界，收获轻松的获得感，点亮对生活的好奇心。",
+			"open": {
+				"url": "https://www.ixigua.com",
+				"title": "西瓜视频",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/xigua-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xigua": {
+						"url": "https://www.ixigua.com",
+						"title": "西瓜视频",
+						"developer": "zhongjyuan",
+						"description": "西瓜视频是一个开眼界、涨知识的视频 App，作为国内领先的中视频平台，它源源不断地为不同人群提供优质内容，让人们看到更丰富和有深度的世界，收获轻松的获得感，点亮对生活的好奇心。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/xigua-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xigua"],
+				"menu": {
+					"xigua": {
+						"app": "xigua",
+						"title": "西瓜视频",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "小红书",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/xiaohongshu-favicon.ico",
+			"summary": "../../assets/image/program/xiaohongshu-summary.png",
+			"description": "2 亿人的生活经验，都在小红书",
+			"open": {
+				"url": "https://www.xiaohongshu.com",
+				"title": "小红书",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/xiaohongshu-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xiaohongshu": {
+						"url": "https://www.xiaohongshu.com",
+						"title": "小红书",
+						"developer": "zhongjyuan",
+						"description": "2 亿人的生活经验，都在小红书",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/xiaohongshu-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xiaohongshu"],
+				"menu": {
+					"xiaohongshu": {
+						"app": "xiaohongshu",
+						"title": "小红书",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "腾讯视频",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/tenxun-favicon.ico",
+			"summary": "../../assets/image/program/tenxun-summary.png",
+			"description": "腾讯视频致力于打造中国领先的在线视频媒体平台，以丰富的内容、极致的观看体验、便捷的登录方式、24小时多平台无缝应用体验以及快捷分享的产品特性，主要满足用户在线观看视频的需求。",
+			"open": {
+				"openMode": "outer",
+				"url": "https://v.qq.com",
+				"title": "腾讯视频",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/tenxun-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tenxun": {
+						"openMode": "outer",
+						"url": "https://v.qq.com",
+						"title": "腾讯视频",
+						"developer": "zhongjyuan",
+						"description": "腾讯视频致力于打造中国领先的在线视频媒体平台，以丰富的内容、极致的观看体验、便捷的登录方式、24小时多平台无缝应用体验以及快捷分享的产品特性，主要满足用户在线观看视频的需求。",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/tenxun-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tenxun"],
+				"menu": {
+					"tenxun": {
+						"app": "tenxun",
+						"title": "腾讯视频",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "优酷视频",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/youku-favicon.ico",
+			"summary": "../../assets/image/program/youku-summary.png",
+			"description": "视频服务平台,提供视频播放,视频发布,视频搜索,视频分享",
+			"open": {
+				"openMode": "outer",
+				"url": "https://www.youku.com",
+				"title": "优酷视频",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/youku-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"youku": {
+						"openMode": "outer",
+						"url": "https://www.youku.com",
+						"title": "优酷视频",
+						"developer": "zhongjyuan",
+						"description": "视频服务平台,提供视频播放,视频发布,视频搜索,视频分享",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/youku-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["youku"],
+				"menu": {
+					"youku": {
+						"app": "youku",
+						"title": "优酷视频",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "芒果TV",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/mangguotv-favicon.ico",
+			"summary": "../../assets/image/program/mangguotv-summary.png",
+			"description": "芒果TV-大家都在看的在线视频网站-热门综艺最新电影电视剧在线观看",
+			"open": {
+				"url": "https://www.mgtv.com",
+				"title": "芒果TV",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/mangguotv-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"mangguotv": {
+						"url": "https://www.mgtv.com",
+						"title": "芒果TV",
+						"developer": "zhongjyuan",
+						"description": "芒果TV-大家都在看的在线视频网站-热门综艺最新电影电视剧在线观看",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/mangguotv-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["mangguotv"],
+				"menu": {
+					"mangguotv": {
+						"app": "mangguotv",
+						"title": "芒果TV",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "爱奇艺",
+			"labels": ["video"],
+			"icon": "../../assets/icon/program/aiqiyi-favicon.ico",
+			"summary": "../../assets/image/program/aiqiyi-summary.png",
+			"description": "爱奇艺(IQIYI.COM)拥有海量、优质、高清的影视剧集等视频内容。爱奇艺VIP限时新用户特惠：首月6元，会员畅看顶级视听品质体验！当前热播《唐朝诡事录》《一年一度喜剧大赛2》《航海王》《请君》",
+			"open": {
+				"openMode": "outer",
+				"url": "https://www.iqiyi.com",
+				"title": "爱奇艺",
+				"icon": {
+					"type": "img",
+					"content": "./assets/icon/program/aiqiyi-favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"aiqiyi": {
+						"openMode": "outer",
+						"url": "https://www.iqiyi.com",
+						"title": "爱奇艺",
+						"developer": "zhongjyuan",
+						"description": "爱奇艺(IQIYI.COM)拥有海量、优质、高清的影视剧集等视频内容。爱奇艺VIP限时新用户特惠：首月6元，会员畅看顶级视听品质体验！当前热播《唐朝诡事录》《一年一度喜剧大赛2》《航海王》《请君》",
+						"icon": {
+							"type": "img",
+							"content": "./assets/icon/program/aiqiyi-favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["aiqiyi"],
+				"menu": {
+					"aiqiyi": {
+						"app": "aiqiyi",
+						"title": "爱奇艺",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

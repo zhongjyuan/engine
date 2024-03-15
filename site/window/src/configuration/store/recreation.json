@@ -1,0 +1,1026 @@
+{
+	"apps": [
+		{
+			"title": "2048",
+			"labels": ["recreation"],
+			"icon": "../../program/game/2048/icon/favicon.ico",
+			"summary": "../../program/game/2048/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：2048",
+			"open": {
+				"url": "./program/game/2048/index.html",
+				"title": "2048",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/2048/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"2048": {
+						"url": "./program/game/2048/index.html",
+						"title": "2048",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：2048",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/2048/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["2048"],
+				"menu": {
+					"2048": {
+						"app": "2048",
+						"title": "2048",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "球球大作战",
+			"labels": ["recreation"],
+			"icon": "../../program/game/ballbattle/icon/favicon.ico",
+			"summary": "../../program/game/ballbattle/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：球球大作战",
+			"open": {
+				"title": "球球大作战",
+				"url": "./program/game/ballbattle/index.html",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/ballbattle/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"ballbattle": {
+						"url": "./program/game/ballbattle/index.html",
+						"title": "球球大作战",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：球球大作战",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/ballbattle/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["ballbattle"],
+				"menu": {
+					"ballbattle": {
+						"app": "ballbattle",
+						"title": "球球大作战",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "小鸟飞行闪躲",
+			"labels": ["recreation"],
+			"icon": "../../program/game/birdattacks/icon/favicon.ico",
+			"summary": "../../program/game/birdattacks/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：小鸟闪躲飞行",
+			"open": {
+				"url": "./program/game/birdattacks/index.html",
+				"title": "小鸟飞行闪躲",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/birdattacks/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"birdattacks": {
+						"url": "./program/game/birdattacks/index.html",
+						"title": "小鸟飞行闪躲",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：小鸟闪躲飞行",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/birdattacks/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["birdattacks"],
+				"menu": {
+					"birdattacks": {
+						"app": "birdattacks",
+						"title": "小鸟飞行闪躲",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "越狱突围",
+			"labels": ["recreation"],
+			"icon": "../../program/game/breakout/icon/favicon.ico",
+			"summary": "../../program/game/breakout/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：越狱突围",
+			"open": {
+				"url": "./program/game/breakout/index.html",
+				"title": "越狱突围",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/breakout/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"breakout": {
+						"url": "./program/game/breakout/index.html",
+						"title": "越狱突围",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：越狱突围",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/breakout/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["breakout"],
+				"menu": {
+					"breakout": {
+						"app": "breakout",
+						"title": "越狱突围",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "不会玩的游戏",
+			"labels": ["popular", "recreation"],
+			"icon": "../../program/game/buhuiwan/icon/favicon.ico",
+			"summary": "../../program/game/buhuiwan/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：不会玩的游戏",
+			"open": {
+				"url": "./program/game/buhuiwan/index.html",
+				"title": "不会玩的游戏",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/buhuiwan/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"buhuiwan": {
+						"url": "./program/game/buhuiwan/index.html",
+						"title": "不会玩的游戏",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：不会玩的游戏",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/buhuiwan/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["buhuiwan"],
+				"menu": {
+					"buhuiwan": {
+						"app": "buhuiwan",
+						"title": "不会玩的游戏",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "一个都不能死",
+			"labels": ["recreation"],
+			"icon": "../../program/game/cannotdie/icon/favicon.ico",
+			"summary": "../../program/game/cannotdie/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：一个都不能死",
+			"open": {
+				"url": "./program/game/cannotdie/index.html",
+				"title": "一个都不能死",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/cannotdie/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"cannotdie": {
+						"url": "./program/game/cannotdie/index.html",
+						"title": "一个都不能死",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：一个都不能死",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/cannotdie/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["cannotdie"],
+				"menu": {
+					"cannotdie": {
+						"app": "cannotdie",
+						"title": "一个都不能死",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "捕鱼达人",
+			"labels": ["recreation"],
+			"icon": "../../program/game/catchfish/icon/favicon.ico",
+			"summary": "../../program/game/catchfish/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：捕鱼达人",
+			"open": {
+				"url": "./program/game/catchfish/index.html",
+				"title": "捕鱼达人",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/catchfish/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"catchfish": {
+						"url": "./program/game/catchfish/index.html",
+						"title": "捕鱼达人",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：捕鱼达人",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/catchfish/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["catchfish"],
+				"menu": {
+					"catchfish": {
+						"app": "catchfish",
+						"title": "捕鱼达人",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "养鸡庄园",
+			"labels": ["recreation"],
+			"icon": "../../program/game/chickfarm/icon/favicon.ico",
+			"summary": "../../program/game/chickfarm/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：养鸡庄园",
+			"open": {
+				"url": "./program/game/chickfarm/index.html",
+				"title": "养鸡庄园",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/chickfarm/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"chickfarm": {
+						"url": "./program/game/chickfarm/index.html",
+						"title": "养鸡庄园",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：养鸡庄园",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/chickfarm/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["chickfarm"],
+				"menu": {
+					"chickfarm": {
+						"app": "chickfarm",
+						"title": "养鸡庄园",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "方块历险记",
+			"labels": ["recreation"],
+			"icon": "../../program/game/diamond/icon/favicon.ico",
+			"summary": "../../program/game/diamond/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：方块历险记",
+			"open": {
+				"url": "./program/game/diamond/index.html",
+				"title": "方块历险记",
+				"icon": {
+					"type": "str",
+					"content": "险",
+					"bg": "#375980"
+				}
+			},
+			"setup": {
+				"apps": {
+					"diamond": {
+						"url": "./program/game/diamond/index.html",
+						"title": "方块历险记",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：方块历险记",
+						"icon": {
+							"type": "str",
+							"content": "险",
+							"bg": "#375980"
+						}
+					}
+				},
+				"shortcuts": ["diamond"],
+				"menu": {
+					"diamond": {
+						"app": "diamond",
+						"title": "方块历险记",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "大鱼吃小鱼",
+			"labels": ["recreation"],
+			"icon": "../../program/game/eatfish/icon/favicon.ico",
+			"summary": "../../program/game/eatfish/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：大鱼吃小鱼",
+			"open": {
+				"url": "./program/game/eatfish/index.html",
+				"title": "大鱼吃小鱼",
+				"icon": {
+					"type": "str",
+					"content": "鱼",
+					"bg": "#375980"
+				}
+			},
+			"setup": {
+				"apps": {
+					"eatfish": {
+						"url": "./program/game/eatfish/index.html",
+						"title": "大鱼吃小鱼",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：大鱼吃小鱼",
+						"icon": {
+							"type": "str",
+							"content": "鱼",
+							"bg": "#375980"
+						}
+					}
+				},
+				"shortcuts": ["eatfish"],
+				"menu": {
+					"eatfish": {
+						"app": "eatfish",
+						"title": "大鱼吃小鱼",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "捕鱼猫",
+			"labels": ["recreation"],
+			"icon": "../../program/game/fishercat/icon/favicon.ico",
+			"summary": "../../program/game/fishercat/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：捕鱼猫",
+			"open": {
+				"url": "./program/game/fishercat/index.html",
+				"title": "捕鱼猫",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/fishercat/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"fishercat": {
+						"url": "./program/game/fishercat/index.html",
+						"title": "捕鱼猫",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：捕鱼猫",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/fishercat/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["fishercat"],
+				"menu": {
+					"fishercat": {
+						"app": "fishercat",
+						"title": "捕鱼猫",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "开心消消乐",
+			"labels": ["recreation"],
+			"icon": "../../program/game/kaixinxiaoxiaole/icon/favicon.ico",
+			"summary": "../../program/game/kaixinxiaoxiaole/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：开心消消乐",
+			"open": {
+				"url": "./program/game/kaixinxiaoxiaole/index.html",
+				"title": "开心消消乐",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/kaixinxiaoxiaole/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"kaixinxiaoxiaole": {
+						"url": "./program/game/kaixinxiaoxiaole/index.html",
+						"title": "开心消消乐",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：开心消消乐",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/kaixinxiaoxiaole/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["kaixinxiaoxiaole"],
+				"menu": {
+					"kaixinxiaoxiaole": {
+						"app": "kaixinxiaoxiaole",
+						"title": "开心消消乐",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "泡泡龙",
+			"labels": ["recreation"],
+			"icon": "../../program/game/puzzlebobble/icon/favicon.ico",
+			"summary": "../../program/game/puzzlebobble/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：泡泡龙",
+			"open": {
+				"url": "./program/game/puzzlebobble/index.html",
+				"title": "泡泡龙",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/puzzlebobble/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"puzzlebobble": {
+						"url": "./program/game/puzzlebobble/index.html",
+						"title": "泡泡龙",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：泡泡龙",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/puzzlebobble/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["puzzlebobble"],
+				"menu": {
+					"puzzlebobble": {
+						"app": "puzzlebobble",
+						"title": "泡泡龙",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "拯救蘑菇",
+			"labels": ["popular", "recreation"],
+			"icon": "../../program/game/rescuemushroom/icon/favicon.ico",
+			"summary": "../../program/game/rescuemushroom/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：拯救蘑菇",
+			"open": {
+				"url": "./program/game/rescuemushroom/index.html",
+				"title": "拯救蘑菇",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/rescuemushroom/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"rescuemushroom": {
+						"url": "./program/game/rescuemushroom/index.html",
+						"title": "拯救蘑菇",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：拯救蘑菇",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/rescuemushroom/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["rescuemushroom"],
+				"menu": {
+					"rescuemushroom": {
+						"app": "rescuemushroom",
+						"title": "拯救蘑菇",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "射击鸭子",
+			"labels": ["recreation"],
+			"icon": "../../program/game/shootduck/icon/favicon.ico",
+			"summary": "../../program/game/shootduck/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：射击鸭子",
+			"open": {
+				"url": "./program/game/shootduck/index.html",
+				"title": "射击鸭子",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/shootduck/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"shootduck": {
+						"url": "./program/game/shootduck/index.html",
+						"title": "射击鸭子",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：射击鸭子",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/shootduck/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["shootduck"],
+				"menu": {
+					"shootduck": {
+						"app": "shootduck",
+						"title": "射击鸭子",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "见缝插针",
+			"labels": ["recreation"],
+			"icon": "../../program/game/stickpin/icon/favicon.ico",
+			"summary": "../../program/game/stickpin/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：见缝插针",
+			"open": {
+				"url": "./program/game/stickpin/index.html",
+				"title": "见缝插针",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/stickpin/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"stickpin": {
+						"url": "./program/game/stickpin/index.html",
+						"title": "见缝插针",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：见缝插针",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/stickpin/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["stickpin"],
+				"menu": {
+					"stickpin": {
+						"app": "stickpin",
+						"title": "见缝插针",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "坦克大战",
+			"labels": ["recreation"],
+			"icon": "../../program/game/tank/icon/favicon.ico",
+			"summary": "../../program/game/tank/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：坦克大战",
+			"open": {
+				"url": "./program/game/tank/index.html",
+				"title": "坦克大战",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/tank/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tank": {
+						"url": "./program/game/tank/index.html",
+						"title": "坦克大战",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：坦克大战",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/tank/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tank"],
+				"menu": {
+					"tank": {
+						"app": "tank",
+						"title": "坦克大战",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "俄罗斯方块",
+			"labels": ["recreation"],
+			"icon": "../../program/game/tetris/icon/favicon.ico",
+			"summary": "../../program/game/tetris/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：俄罗斯方块",
+			"open": {
+				"url": "./program/game/tetris/index.html",
+				"title": "俄罗斯方块",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/tetris/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"tetris": {
+						"url": "./program/game/tetris/index.html",
+						"title": "俄罗斯方块",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：俄罗斯方块",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/tetris/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["tetris"],
+				"menu": {
+					"tetris": {
+						"app": "tetris",
+						"title": "俄罗斯方块",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "金山打字",
+			"labels": ["recreation"],
+			"icon": "../../program/game/typewrite/icon/favicon.ico",
+			"summary": "../../program/game/typewrite/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：金山打字",
+			"open": {
+				"title": "金山打字",
+				"url": "./program/game/typewrite/index.html",
+				"icon": {
+					"type": "fa",
+					"content": "gamepad",
+					"bg": "#375980"
+				}
+			},
+			"setup": {
+				"apps": {
+					"typewrite": {
+						"url": "./program/game/typewrite/index.html",
+						"title": "金山打字",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：金山打字",
+						"icon": {
+							"type": "fa",
+							"content": "gamepad",
+							"bg": "#375980"
+						}
+					}
+				},
+				"shortcuts": ["typewrite"],
+				"menu": {
+					"typewrite": {
+						"app": "typewrite",
+						"title": "金山打字",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "打字游戏",
+			"labels": ["recreation"],
+			"icon": "../../program/game/typing/icon/favicon.ico",
+			"summary": "../../program/game/typing/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：打字游戏",
+			"open": {
+				"title": "打字游戏",
+				"url": "./program/game/typing/index.html",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/typing/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"typing": {
+						"url": "./program/game/typing/index.html",
+						"title": "打字游戏",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：打字游戏",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/typing/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["typing"],
+				"menu": {
+					"typing": {
+						"app": "typing",
+						"title": "打字游戏",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "打地鼠",
+			"labels": ["recreation"],
+			"icon": "../../program/game/whacamole/icon/favicon.ico",
+			"summary": "../../program/game/whacamole/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：打地鼠",
+			"open": {
+				"url": "./program/game/whacamole/index.html",
+				"title": "打地鼠",
+				"icon": {
+					"type": "str",
+					"content": "鼠",
+					"bg": "#375980"
+				}
+			},
+			"setup": {
+				"apps": {
+					"whacamole": {
+						"url": "./program/game/whacamole/index.html",
+						"title": "打地鼠",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：打地鼠",
+						"icon": {
+							"type": "str",
+							"content": "鼠",
+							"bg": "#375980"
+						}
+					}
+				},
+				"shortcuts": ["whacamole"],
+				"menu": {
+					"whacamole": {
+						"app": "whacamole",
+						"title": "打地鼠",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "消消乐",
+			"labels": ["recreation"],
+			"icon": "../../program/game/xiaoxiaole/icon/favicon.ico",
+			"summary": "../../program/game/xiaoxiaole/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：消消乐",
+			"open": {
+				"url": "./program/game/xiaoxiaole/index.html",
+				"title": "消消乐",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/xiaoxiaole/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xiaoxiaole": {
+						"url": "./program/game/xiaoxiaole/index.html",
+						"title": "消消乐",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：消消乐",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/xiaoxiaole/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xiaoxiaole"],
+				"menu": {
+					"xiaoxiaole": {
+						"app": "xiaoxiaole",
+						"title": "消消乐",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "消消乐1",
+			"labels": ["recreation"],
+			"icon": "../../program/game/xiaoxiaole1/icon/favicon.ico",
+			"summary": "../../program/game/xiaoxiaole1/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内部游戏：消消乐1",
+			"open": {
+				"url": "./program/game/xiaoxiaole1/index.html",
+				"title": "消消乐1",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/xiaoxiaole1/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xiaoxiaole1": {
+						"url": "./program/game/xiaoxiaole1/index.html",
+						"title": "消消乐1",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内部游戏：消消乐1",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/xiaoxiaole1/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xiaoxiaole1"],
+				"menu": {
+					"xiaoxiaole1": {
+						"app": "xiaoxiaole1",
+						"title": "消消乐1",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "旋转八卦",
+			"labels": ["recreation"],
+			"icon": "../../program/game/xzbg/icon/favicon.ico",
+			"summary": "../../program/game/xzbg/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置游戏：旋转八卦",
+			"open": {
+				"url": "./program/game/xzbg/index.html",
+				"title": "旋转八卦",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/xzbg/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"xzbg": {
+						"url": "./program/game/xzbg/index.html",
+						"title": "旋转八卦",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置游戏：旋转八卦",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/xzbg/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["xzbg"],
+				"menu": {
+					"xzbg": {
+						"app": "xzbg",
+						"title": "旋转八卦",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "羊了个羊",
+			"labels": ["recreation"],
+			"icon": "../../program/game/ylgy/icon/favicon.ico",
+			"summary": "../../program/game/ylgy/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置游戏：羊了个羊",
+			"open": {
+				"url": "./program/game/ylgy/index.html",
+				"title": "羊了个羊",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/ylgy/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"ylgy": {
+						"url": "./program/game/ylgy/index.html",
+						"title": "羊了个羊",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置游戏：羊了个羊",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/ylgy/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["ylgy"],
+				"menu": {
+					"ylgy": {
+						"app": "ylgy",
+						"title": "羊了个羊",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		},
+		{
+			"title": "蜘蛛纸牌",
+			"labels": ["recreation"],
+			"icon": "../../program/game/zhizhuzhipai/icon/favicon.ico",
+			"summary": "../../program/game/zhizhuzhipai/image/summary.png",
+			"description": "[ZHONGJYUAN]-云桌面-内置游戏：蜘蛛纸牌",
+			"open": {
+				"url": "./program/game/zhizhuzhipai/index.html",
+				"title": "蜘蛛纸牌",
+				"icon": {
+					"type": "img",
+					"content": "./program/game/zhizhuzhipai/icon/favicon.ico"
+				}
+			},
+			"setup": {
+				"apps": {
+					"zhizhuzhipai": {
+						"url": "./program/game/zhizhuzhipai/index.html",
+						"title": "蜘蛛纸牌",
+						"version": "1.0.0",
+						"developer": "zhongjyuan",
+						"description": "[ZHONGJYUAN]-云桌面-内置游戏：蜘蛛纸牌",
+						"icon": {
+							"type": "img",
+							"content": "./program/game/zhizhuzhipai/icon/favicon.ico"
+						}
+					}
+				},
+				"shortcuts": ["zhizhuzhipai"],
+				"menu": {
+					"zhizhuzhipai": {
+						"app": "zhizhuzhipai",
+						"title": "蜘蛛纸牌",
+						"params": {},
+						"hash": ""
+					}
+				}
+			}
+		}
+	]
+}

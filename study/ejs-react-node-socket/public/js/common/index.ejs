@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>手游弹弹堂中控</title>
+    <link href="/public/css/app.css" type="text/css" rel="stylesheet">
+    <link href="/public/css/appIndex.css" type="text/css" rel="stylesheet">
+    <link href="/public/css/desktop.css" type="text/css" rel="stylesheet">
+    <link href="/public/css/widget.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css">
+    <link href="/public/build/main.css" type="text/css" rel="stylesheet">
+    <!--<link href="http://127.0.0.1:90/static/dist/main.css" type="text/css" rel="stylesheet">-->
+</head>
+<body>
+<div id="root" style="height: 100%">
+    <div>
+        <%- __html__ %>
+    </div>
+</div>
+<script>
+    window.__INITIAL_STATE__ = <%- __state__ %>;
+</script>
+<script type="text/javascript" src="/public/commonJs/eventemitter.js"></script>
+<script type="text/javascript" src="/public/commonJs/xlsx.full.min.js"></script>
+<script type="text/javascript" src="/public/config/baseConfig.js"></script>
+<script type="text/javascript" src="/public/commonJs/socket.io.js"></script>
+<script type="text/javascript" src="/public/commonJs/dateUtils.js"></script>
+<script type="text/javascript" src="/public/commonJs/arrayUtils.js"></script>
+<script type="text/javascript" src="/public/commonJs/commomUtils.js"></script>
+<script type="text/javascript" src="/public/commonJs/downExlFile.js"></script>
+<script type="text/javascript" src="/public/build/vendor.js"></script>
+<script type="text/javascript" src="/public/build/bundle.js"></script>
+<!--<script type="text/javascript" src="http://127.0.0.1:90/static/dist/bundle.js"></script>-->
+</body>
+</html>
