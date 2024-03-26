@@ -1,5 +1,12 @@
 import { useRoutes } from "react-router-dom";
-import routes from "./routers/index.jsx";
+
+import routes from "./routers/index";
+
+import "./common/i18nconf";
+
+import "./assets/css/global.css";
+import "./assets/css/index.css";
+import "./assets/css/reset.css";
 
 function App() {
 	const element = useRoutes(routes);

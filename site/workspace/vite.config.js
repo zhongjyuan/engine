@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import { VitePWA } from "vite-plugin-pwa"; // 导入 Vite PWA 插件
 import { createStyleImportPlugin, AntdResolve } from "vite-plugin-style-import";
 
@@ -8,11 +8,14 @@ import react from "@vitejs/plugin-react";
 // 定义 Vite 配置
 const config = (
 	{ mode } // 使用箭头函数定义配置对象
-) =>
-	defineConfig({
+) => {
+	const env = loadEnv(mode, process.cwd(), "");
+
+	return defineConfig({
 		base: "./", //相对路径
 
 		define: {
+			__APP_ENV__: env.APP_ENV,
 			"process.env.NODE_ENV": `"${mode}"`, // 定义 process.env.NODE_ENV 变量为当前模式值
 		},
 
@@ -102,13 +105,14 @@ const config = (
 			https: false, // 是否启用 HTTPS
 
 			proxy: {
-				"/api": {
+				[env.VITE_APP_BASE_API]: {
 					changeOrigin: true, // 更改请求来源
-					target: "https://mock.apifox.com/m1/4184586-0-default", // 代理目标地址
-					rewrite: (path) => path.replace(/^\api/, "/"), // 重写路径
+					target: env.VITE_SERVER, // 代理目标地址
+					rewrite: (path) => path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), "/"), // 重写路径
 				},
 			},
 		},
 	});
+};
 
 export default config; // 导出配置对象

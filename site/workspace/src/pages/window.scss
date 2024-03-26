@@ -1,0 +1,18 @@
+.window {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+}
+
+.screen {
+	z-index: 0;
+	position: relative;
+}
+
+.desktop {
+	top: 0;
+	width: 100vw;
+	height: calc(100vh - 48px);
+	position: absolute;
+	overflow: hidden;
+}

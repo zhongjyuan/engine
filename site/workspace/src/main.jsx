@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 
 import { Provider } from "react-redux";
@@ -7,17 +7,16 @@ import { BrowserRouter } from "react-router-dom";
 import store from "./stores/index";
 
 import App from "./App";
+import Loading from "./components/loading";
 
-import "./assets/css/global.css";
-import "./assets/css/index.css";
-import "./assets/css/reset.css";
-
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("zhongjyuan")).render(
 	<React.StrictMode>
-		<Provider store={store}>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</Provider>
+		<Suspense fallback={<Loading />}>
+			<Provider store={store}>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</Provider>
+		</Suspense>
 	</React.StrictMode>
 );

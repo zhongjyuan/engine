@@ -1,0 +1,14 @@
+.background-screen {
+	min-width: 100vw;
+	min-height: 100vh;
+	background-color: var(--wintheme);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	transition: all 0.2s ease;
+}
+
+.background-screen video {
+	height: calc(100vh - 48px);
+    max-width: none !important;
+}

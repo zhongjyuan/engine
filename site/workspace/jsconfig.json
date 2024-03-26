@@ -1,0 +1,11 @@
+// 配置 JavaScript 项目的编译选项
+{
+	"compilerOptions": {
+		"baseUrl": "./", // 基本路径为当前目录
+		"paths": {
+			"@/*": ["./src/*"],
+		}
+	},
+	// "include": ["src/**/*", "config/**/*", "static/**/*"],
+	"exclude": ["node_modules"] // 排除 'node_modules' 目录下的文件
+}

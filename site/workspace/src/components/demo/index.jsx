@@ -1,16 +1,5 @@
-import React from "react";
-import "./index.scss";
+import { DatePicker } from "antd";
 
-export default class Test extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		return (
-			<div class="content">
-				<div>测试组件</div>
-			</div>
-		);
-	}
-}
+export default () => {
+	return <DatePicker />;
+};
