@@ -55,7 +55,6 @@ document.body.dataset.theme = initialState.person.theme;
  */
 const handle = (tmpState, changed) => {
 	setLocalStorage("setting", tmpState, changed);
-	return tmpState;
 };
 
 /**
@@ -77,7 +76,10 @@ export const settingSlice = createSlice({
 		set: (state, action) => {
 			let tmpState = { ...state }; // 复制原始状态对象以避免直接修改
 			tmpState = updatePropertyValue(tmpState, action.payload.path, action.payload.value); // 更新属性值
-			return handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			// return tmpState;
 		},
 
 		/**
@@ -89,7 +91,10 @@ export const settingSlice = createSlice({
 		load: (state, action) => {
 			let tmpState = { ...state }; // 复制原始状态对象以避免直接修改
 			tmpState = { ...action.payload }; // 覆盖整个状态对象
-			return handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			// return tmpState;
 		},
 
 		/**
@@ -101,7 +106,10 @@ export const settingSlice = createSlice({
 		toggle: (state, action) => {
 			let tmpState = { ...state }; // 复制原始状态对象以避免直接修改
 			tmpState = updatePropertyValue(tmpState, action.payload); // 更新属性值
-			return handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			// return tmpState;
 		},
 
 		/**
@@ -113,7 +121,10 @@ export const settingSlice = createSlice({
 		setTheme: (state, action) => {
 			let tmpState = { ...state }; // 复制原始状态对象以避免直接修改
 			tmpState.person.theme = action.payload; // 更新主题
-			return handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			handle(tmpState, true); // 调用处理函数并传入更新后的状态副本
+
+			// return updatedState; // 返回更新后的状态副本
 		},
 
 		/**
@@ -125,18 +136,23 @@ export const settingSlice = createSlice({
 		network: (state, action) => {
 			let tmpState = { ...state }; // 复制原始状态对象以避免直接修改
 			let airPlaneModeStatus = tmpState.network.airplane; // 获取飞行模式状态
+
 			if (tmpState.network.wifi.state === true && !airPlaneModeStatus) {
 				tmpState = updatePropertyValue(tmpState, "network.wifi.state"); // 更新网络Wi-Fi状态
 			}
+
 			if (tmpState.devices.bluetooth === true && !airPlaneModeStatus) {
 				tmpState = updatePropertyValue(tmpState, "devices.bluetooth"); // 更新蓝牙状态
 			}
 			tmpState = updatePropertyValue(tmpState, "network.airplane"); // 更新飞行模式状态
-			return handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			handle(tmpState, true); // 调用处理函数并返回更新后的状态
+
+			// return tmpState;
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addDefaultCase((state) => handle(state, false));
+		builder.addDefaultCase((state) => state);
 	},
 });
 

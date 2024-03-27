@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { Icon } from "@/components/global";
 
-import { windowOnContextMenu } from "@/actions/menu";
+import { contextMenuClickDispatch } from "@/actions";
 
 import { contextMenuOptionsSelector } from "@/selectors/context-menu";
 
@@ -29,7 +29,7 @@ export const ContextMenu = () => {
 			if (option.type === "hr") {
 				menus.push(<div key={index} className="context-menu-hr"></div>); // 分隔线
 			} else {
-				var { icon, type, name, options, dot, check } = option;
+				var { icon, type, name, opts, dot, check } = option;
 				var menuItem = (
 					<div
 						key={index}
@@ -38,7 +38,7 @@ export const ContextMenu = () => {
 						data-slice={option.slice}
 						data-action={option.action}
 						data-payload={option.payload}
-						onClick={(event) => windowOnContextMenu(event, menu)}
+						onClick={(event) => contextMenuClickDispatch(event, menu)}
 					>
 						{/* 菜单项内容 */}
 						{menuData.ispace !== false && (
@@ -53,7 +53,7 @@ export const ContextMenu = () => {
 						<div className="option-name">{name}</div>
 
 						{/* 右侧箭头图标 */}
-						{options && <Icon className="option-micon option-micon-right" fafa="faChevronRight" width={10} color="#999" />}
+						{opts && <Icon className="option-micon option-micon-right" fafa="faChevronRight" width={10} color="#999" />}
 
 						{/* 圆点图标 */}
 						{dot && <Icon className="option-micon option-micon-do" fafa="faCircle" width={4} height={4} />}
@@ -62,9 +62,9 @@ export const ContextMenu = () => {
 						{check && <Icon className="option-micon option-micon-check" fafa="faCheck" width={8} height={8} />}
 
 						{/* 递归调用生成子菜单项 */}
-						{options && (
+						{opts && (
 							<div className="context-menu-option-sub" style={{ minWidth: menuData.secwid }}>
-								{renderContextMenu(options)}
+								{renderContextMenu(opts)}
 							</div>
 						)}
 					</div>

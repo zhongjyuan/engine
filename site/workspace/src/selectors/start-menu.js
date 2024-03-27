@@ -10,17 +10,17 @@ export const processStartMenuSelector = createSelector(
 	(state) => state.apps,
 	(state) => state.startmenu,
 	(apps, startmenu) => {
-		// 从 startmenu 对象中解构出 pnApps 和 rcApps
-		const { pnApps, rcApps } = startmenu;
+		// 从 startmenu 对象中解构出 pinnedApps 和 recentApps
+		const { pinnedApps, recentApps } = startmenu;
 
-		// 计算 pnApps 末尾需要的空槽位数量
-		const emptySlots = (6 - (pnApps.length % 6)) % 6;
+		// 计算 pinnedApps 末尾需要的空槽位数量
+		const emptySlots = (6 - (pinnedApps.length % 6)) % 6;
 
-		// 在 pnApps 末尾添加空槽位
-		const updatedPnApps = [...pnApps, ...Array(emptySlots).fill({ empty: true })];
+		// 在 pinnedApps 末尾添加空槽位
+		const updatedPnApps = [...pinnedApps, ...Array(emptySlots).fill({ empty: true })];
 
-		// 更新 rcApps 中每个应用程序的 lastUsed 字段
-		const updatedRcApps = rcApps.map((app) => {
+		// 更新 recentApps 中每个应用程序的 lastUsed 字段
+		const updatedRcApps = recentApps.map((app) => {
 			let updatedLastUsed = app.lastUsed;
 			if (updatedLastUsed < 0) {
 				updatedLastUsed = "最近添加";
@@ -56,8 +56,8 @@ export const processStartMenuSelector = createSelector(
 		// 返回包含处理后应用程序数据的更新后启动菜单对象
 		return {
 			...startmenu,
-			pnApps: updatedPnApps,
-			rcApps: updatedRcApps,
+			pinnedApps: updatedPnApps,
+			recentApps: updatedRcApps,
 			contApps: categorizedApps,
 			allApps: filteredApps,
 		};

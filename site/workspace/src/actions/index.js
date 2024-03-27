@@ -1,11 +1,10 @@
 import store from "@/stores";
 
 export * from "./app";
+export * from "./click";
 export * from "./desktop";
 export * from "./file";
-export * from "./menu";
 export * from "./setting";
-export * from "./start";
 export * from "./taskbar";
 
 /**
@@ -33,18 +32,20 @@ export const windowOnStart = setTimeout(() => {
 export const windowOnClick = (event) => {
 	// 定义需要处理的动作数组及对应的 action 类型
 	var actions = [
-		["start", "start/hide"], // 开始动作对应的隐藏动作
-		["widget", "widget/hide"], // 控件动作对应的隐藏动作
-		["context-menu", "context-menu/hide"], // 上下文菜单动作对应的隐藏动作
-		["band", "pane/bandHide"], // band 动作对应的 pane 隐藏动作
-		["side", "pane/sideHide"], // side 动作对应的 pane 隐藏动作
-		["calendar", "pane/calendarHide"], // 日历动作对应的 pane 隐藏动作
+		[["start"], "start/hide"], // 开始动作对应的隐藏动作
+		[["widget"], "widget/hide"], // 控件动作对应的隐藏动作
+		[["context-menu"], "context-menu/hide"], // 上下文菜单动作对应的隐藏动作
+		[["band"], "pane/bandHide"], // band 动作对应的 pane 隐藏动作
+		[["side"], "pane/sideHide"], // side 动作对应的 pane 隐藏动作
+		[["calendar", "CALNPREV", "CALNNEXT"], "pane/calendarHide"], // 日历动作对应的 pane 隐藏动作
 	];
 
 	var actionSlice = "";
+	var actionType = "";
 	try {
 		// 获取事件目标上的 data-action 属性，如果不存在则为空字符串
 		actionSlice = event.target.dataset.slice || "";
+		actionType = event.target.dataset.action || "";
 	} catch (err) {
 		// 处理可能的错误，比如获取不到 dataset 时的异常
 	}
@@ -54,7 +55,7 @@ export const windowOnClick = (event) => {
 
 	// 遍历 actions 数组，根据条件判断是否需要 dispatch 对应的 action
 	actions.forEach((action, i) => {
-		if (!actionSlice.startsWith(action[0]) && !targetSlice.startsWith(action[0])) {
+		if (!action[0].includes(actionSlice) && !action[0].includes(actionType) && !action[0].includes(targetSlice)) {
 			// 如果目标动作不是当前遍历到的动作，则进行分发对应的隐藏动作
 			store.dispatch({ type: action[1] });
 		}
@@ -88,34 +89,6 @@ export const windowOnContextMenu = (event) => {
 		// 触发显示上下文菜单的 action
 		store.dispatch({ type: "context-menu/show", payload: data });
 	}
-};
-
-/**
- * 处理点击事件，并根据事件目标的数据集中的信息执行相应的操作。
- * @param {Event} event - 点击事件对象。
- * @param {Function} [beforeCallback] - 前置回调函数，默认为空。
- * @param {Function} [afterCallback] - 后置回调函数，默认为空。
- */
-export const clickDispatch = (event, beforeCallback = () => {}, afterCallback = () => {}) => {
-	// 解构出事件目标的数据集中的 slice、action 和 payload
-	var { slice, action, payload } = event.target.dataset;
-
-	var type = action; // 将 action 设置为默认的 type
-	if (slice) {
-		// 如果存在 slice，则将 slice 和 action 拼接作为新的 type
-		type = `${slice}/${action}`;
-	}
-
-	// 调用前置回调函数
-	beforeCallback();
-
-	// 如果 type 存在，则调用 store.dispatch 发送包含 type 和 payload 的操作对象
-	if (type) {
-		store.dispatch({ type, payload });
-	}
-
-	// 调用后置回调函数
-	afterCallback();
 };
 
 /**

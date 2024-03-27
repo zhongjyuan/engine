@@ -297,7 +297,7 @@ export const appSlice = createSlice({
 				}
 			});
 
-			return tmpState; // 返回更新后的状态对象
+			// return tmpState; // 返回更新后的状态对象
 		},
 
 		/**
@@ -325,7 +325,7 @@ export const appSlice = createSlice({
 			// 更新 tmpState 中的 edge 对象
 			tmpState["edge"] = obj;
 
-			return tmpState; // 返回更新后的 state 对象
+			// return tmpState; // 返回更新后的 state 对象
 		},
 
 		/**
@@ -361,7 +361,7 @@ export const appSlice = createSlice({
 			// 更新状态对象中的终端窗口信息
 			tmpState["terminal"] = terminal;
 
-			return tmpState; // 返回更新后的状态对象
+			// return tmpState; // 返回更新后的状态对象
 		},
 
 		/**
@@ -382,7 +382,7 @@ export const appSlice = createSlice({
 			tmpState[action.payload.icon].max = null;
 			tmpState[action.payload.icon].z = 0;
 
-			return tmpState;
+			// return tmpState;
 		},
 
 		/**
@@ -399,7 +399,7 @@ export const appSlice = createSlice({
 			// 删除指定名称的应用程序信息
 			delete tmpState[action.payload];
 
-			return tmpState; // 返回更新后的状态对象
+			// return tmpState; // 返回更新后的状态对象
 		},
 	},
 	extraReducers: (builder) => {

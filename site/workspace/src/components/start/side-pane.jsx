@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import * as Actions from "@/actions";
+import { clickDispatch } from "@/actions";
 import { getPropertyValue } from "@/utils";
 
 import { Icon } from "@/components/global";
@@ -34,7 +34,7 @@ export const SidePane = () => {
 
 	// 设置亮度值
 	const setBrightnessValue = (brgt) => {
-		document.getElementById("brightoverlay").style.opacity = (100 - brgt) / 100;
+		document.getElementById("bright-overlay").style.opacity = (100 - brgt) / 100;
 		dispatch({
 			type: "setting/set",
 			payload: {
@@ -55,21 +55,21 @@ export const SidePane = () => {
 
 		dispatch({ type: "taskbar/setAudio", payload: aud });
 
-		sliderBackground(vSlider, e.target.value);
+		sliderBackground(vSlider, event.target.value);
 	};
 
 	// 设置亮度
 	const setBrightness = (event) => {
-		var brgt = document.getElementById("brightnessSlider").value;
+		var brgt = document.getElementById("brightness-slider").value;
 		if (!event) {
 			// 电池节省模式
 			var state = setting.system.power.saver.state;
-			var factor = state ? 0.7 : 100 / 70;
+			var factor = !state ? 0.7 : 100 / 70;
 			var newBrgt = brgt * factor;
 
 			setBrightnessValue(newBrgt);
 
-			document.getElementById("brightnessSlider").value = newBrgt;
+			document.getElementById("brightness-slider").value = newBrgt;
 		} else {
 			// 亮度滑块
 			setBrightnessValue(brgt);
@@ -78,21 +78,15 @@ export const SidePane = () => {
 
 	// 侧边栏点击事件
 	const sidePaneClick = (event) => {
-		var action = {
-			type: event.target.dataset.action,
-			payload: event.target.dataset.payload,
-		};
-
-		if (action.type) {
-			if (action.type != action.type.toUpperCase()) {
-				Actions[action.type](action.payload);
-			} else {
-				dispatch(action);
+		clickDispatch(
+			event,
+			null,
+			(data) => {},
+			(data) => {
+				// 电池节省模式处理
+				if (data.payload === "system.power.saver.state") setBrightness();
 			}
-		}
-
-		// 电池节省模式处理
-		if (action.payload === "system.power.saver.state") setBrightness();
+		);
 	};
 
 	// 副作用钩子，处理页面加载完成后的操作
@@ -146,11 +140,11 @@ export const SidePane = () => {
 				</div>
 				<div className="slider-setting">
 					<Icon className="mx-2" src="brightness" ui width={20} />
-					<input id="brightnessSlider" className="sliders bSlider" onChange={setBrightness} type="range" min="10" max="100" defaultValue="100" />
+					<input id="brightness-slider" className="sliders bSlider" type="range" min="10" max="100" defaultValue="100" onChange={setBrightness} />
 				</div>
 				<div className="slider-setting">
 					<Icon className="mx-2" src={"audio" + taskbar.audio} ui width={18} />
-					<input className="sliders vSlider" onChange={setVolume} type="range" min="0" max="100" defaultValue="100" />
+					<input id="audio-slider" className="sliders vSlider" type="range" min="0" max="100" defaultValue="100" onChange={setVolume} />
 				</div>
 			</div>
 			<div className="p-1 bottom-bar">

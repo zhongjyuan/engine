@@ -1,11 +1,15 @@
 import store from "@/stores";
 
+import { deepClone } from "@/utils";
+
 /**
  * 根据菜单中指定位置的选项是否被选中来刷新操作。
  * @param {Object} pl - 传入的参数对象。
  * @param {Object} menu - 菜单对象。
  */
-export const refreshDesktop = (pl, menu) => {
+export const refreshDesktop = (context) => {
+	var { business: menu } = context;
+
 	// 检查菜单中指定位置的选项是否被选中
 	var isOptionSelected = menu.menus.desk[0].opts[4].check;
 
@@ -25,12 +29,14 @@ export const refreshDesktop = (pl, menu) => {
  * @param {Object} payload - 要传递给 store 的数据。
  * @param {Object} menu - 菜单对象。
  */
-export const toggleDesktopDisplay = (payload, menu) => {
+export const toggleDesktopDisplay = (context) => {
+	var { business: menu } = context;
+
 	// 复制一份菜单对象，避免直接修改传入的参数
-	var updatedMenu = { ...menu };
+	var updatedMenu = deepClone(menu);
 
 	// 切换桌面选项的状态（选中/未选中）
-	updatedMenu.menus.desk[0].opts[4].check ^= 1;
+	updatedMenu.menus.desk[0].opts[4].check = !updatedMenu.menus.desk[0].opts[4].check;
 
 	// 发送 desktop/toggle 类型的操作到 store
 	store.dispatch({ type: "desktop/toggle" });
@@ -44,9 +50,11 @@ export const toggleDesktopDisplay = (payload, menu) => {
  * @param {string} sort - 排序参数，可以是 "name", "size" 或其他。
  * @param {Object} menu - 菜单对象。
  */
-export const toggleDesktopSort = (sort, menu) => {
+export const toggleDesktopSort = (context) => {
+	var { payload: sort, business: menu } = context;
+
 	// 复制一份菜单对象，避免直接修改传入的参数
-	var updatedMenu = { ...menu };
+	var updatedMenu = deepClone(menu);
 
 	// 将所有排序选项的提示点重置为 false
 	updatedMenu.menus.desk[1].opts[0].dot = false;
@@ -63,7 +71,7 @@ export const toggleDesktopSort = (sort, menu) => {
 	}
 
 	// 调用 refresh 函数刷新菜单显示
-	refresh("", updatedMenu);
+	refreshDesktop({ business: updatedMenu });
 
 	// 发送 desktop/sort 类型的操作到 store，payload 为排序参数
 	store.dispatch({ type: "desktop/sort", payload: sort });
@@ -77,9 +85,11 @@ export const toggleDesktopSort = (sort, menu) => {
  * @param {string} size - 图标大小参数，可以是 "large", "medium" 或其他。
  * @param {Object} menu - 菜单对象。
  */
-export const toggleDesktopIconSize = (size, menu) => {
+export const toggleDesktopIconSize = (context) => {
+	var { payload: size, business: menu } = context;
+
 	// 复制一份菜单对象，避免直接修改传入的参数
-	var updatedMenu = { ...menu };
+	var updatedMenu = deepClone(menu);
 
 	// 将所有选项的提示点重置为 false
 	updatedMenu.menus.desk[0].opts.forEach((option) => (option.dot = false));
@@ -102,7 +112,7 @@ export const toggleDesktopIconSize = (size, menu) => {
 	}
 
 	// 调用 refresh 函数刷新菜单显示
-	refresh("", updatedMenu);
+	refreshDesktop({ business: updatedMenu });
 
 	// 发送 desktop/setSize 类型的操作到 store，payload 为图标大小系数
 	store.dispatch({ type: "desktop/setSize", payload: iconSizeFactor });

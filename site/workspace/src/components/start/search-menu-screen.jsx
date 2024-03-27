@@ -173,7 +173,7 @@ export const SearchMenuScreen = ({ menu, query, setQuery, match }) => {
 			<div className="search-menu-result w-full flex justify-between">
 				<div className="search-menu-left-side flex-col px-1" data-width={query.length != 0}>
 					<div className="text-sm font-semibold mb-4">{query.length ? "最佳匹配" : "最近"}</div>
-					{query.length ? renderSearchResults(query, match) : renderDefaultResults(menu.rcApps, menu.qksrch)}
+					{query.length ? renderSearchResults(query, match) : renderDefaultResults(menu.recentApps, menu.quickSearch)}
 				</div>
 				{query.length ? renderMatchDetails(match) : null}
 			</div>

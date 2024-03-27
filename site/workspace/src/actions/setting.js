@@ -1,6 +1,8 @@
 import store from "@/stores";
 import { getLocalStorageOrDefault } from "@/utils";
 
+import { loadWidget } from ".";
+
 /**
  * 加载设置信息函数，用于初始化应用程序的设置信息。
  */
@@ -26,7 +28,7 @@ export const loadSettings = () => {
 
 	// 在非开发模式下，加载小部件数据
 	if (import.meta.env.MODE != "development") {
-		loadWidget();
+		// loadWidget();
 	}
 };
 

@@ -41,6 +41,19 @@ export const randomNumber = (rememberedValue = null, shouldRemember = false, max
 	return Math.floor(Math.random() * max); // 返回普通生成的随机数
 };
 
+// 深拷贝函数的示例实现（仅作参考）
+export const deepClone = (obj) => {
+	if (obj === null || typeof obj !== "object") {
+		return obj;
+	}
+
+	if (Array.isArray(obj)) {
+		return obj.map(deepClone);
+	}
+
+	return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, deepClone(value)]));
+};
+
 /**
  * 获取对象中指定路径下的值。
  * @param {Object} obj - 要查找值的对象。

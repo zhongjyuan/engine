@@ -2,19 +2,19 @@ import request from "./axios";
 
 function http({ url, data, method, headers, onDownloadProgress, signal, beforeRequest, afterRequest }) {
 	const successHandler = (res) => {
-        console.log("res.data")
+		console.log("res.data");
 		if (res.data.status === "Success" || typeof res.data === "string") return res.data;
 
 		if (res.data.status === "Unauthorized") {
 			// removeToken();
 			window.location.reload();
 		}
-        console.log(res.data)
+		console.log(res.data);
 		return Promise.reject(res.data);
 	};
 
 	const failHandler = (error) => {
-        console.log("res.error")
+		console.log("res.error");
 		afterRequest?.();
 		throw new Error(error.message || "Error");
 	};

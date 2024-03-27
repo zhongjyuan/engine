@@ -54,16 +54,16 @@ const defaultWallpapes = [
 	"I/11.jpg",
 ];
 
-var wps = getLocalStorageOrDefault("wps", 3);
+var index = getLocalStorageOrDefault("wps", 3);
 var locked = getLocalStorageOrDefault("locked", true);
 
 export const initialState = {
 	themes: ["default", "dark", "A", "B", "D", "C"],
 	images: ["jpg", "png", "jpeg", "gif"],
 	videos: ["mp4", "webm", "jpeg", "ogg"],
-	wps: wps,
-	src: defaultWallpapes[wps],
-	default: defaultWallpapes[wps],
+	index: index,
+	src: defaultWallpapes[index],
+	default: defaultWallpapes[index],
 	locked: locked,
 	locksrc: "/static/image/wallpaper/lock/0.jpg",
 	booted: false || import.meta.env.MODE == "development",
@@ -119,12 +119,12 @@ export const wallpaperSlice = createSlice({
 		 * 作用：切换至下一张壁纸并更新相关状态
 		 */
 		next: (state, action) => {
-			let twps = (state.wps + 1) % defaultWallpapes.length;
+			let twps = (state.index + 1) % defaultWallpapes.length;
 
-			setLocalStorage("wps", twps);
+			setLocalStorage("index", twps);
 			return {
 				...state,
-				wps: twps,
+				index: twps,
 				src: defaultWallpapes[twps],
 			};
 		},
@@ -188,22 +188,22 @@ export const wallpaperSlice = createSlice({
 		 */
 		set: (state, action) => {
 			var isIndex = !Number.isNaN(parseInt(action.payload)),
-				wps = 0,
+				index = 0,
 				src = "";
 
 			if (isIndex) {
-				wps = getLocalStorageOrDefault("wps", 0);
-				src = defaultWallpapes[wps] ? defaultWallpapes[wps] : defaultWallpapes[0];
+				index = getLocalStorageOrDefault("wps", 0);
+				src = defaultWallpapes[index] ? defaultWallpapes[index] : defaultWallpapes[0];
 			} else {
 				const idx = defaultWallpapes.findIndex((item) => item === action.payload);
-				setLocalStorage("wps", idx);
+				setLocalStorage("index", idx);
 				src = action.payload;
-				wps = defaultWallpapes[idx];
+				index = defaultWallpapes[idx];
 			}
 
 			return {
 				...state,
-				wps: wps,
+				index: index,
 				src: src,
 			};
 		},

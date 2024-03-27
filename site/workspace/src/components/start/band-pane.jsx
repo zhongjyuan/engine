@@ -18,11 +18,11 @@ export const BandPane = () => {
 		<div className="bandpane dpShad" data-hide={sidepane.banhide} style={{ "--slice": "band" }}>
 			<div className="bandContainer">
 				{/* 计算器图标 */}
-				<Icon className="hvlight" width={17} click="CALCUAPP" payload="togg" open="true" src="calculator" />
+				<Icon className="hvlight" src="calculator" width={17} click="CALCUAPP" payload="togg" open="true" />
 				{/* Spotify 图标 */}
-				<Icon className="hvlight" width={17} click="SPOTIFY" payload="togg" open="true" src="spotify" />
+				<Icon className="hvlight" src="spotify" width={17} click="SPOTIFY" payload="togg" open="true" />
 				{/* 记事本图标 */}
-				<Icon className="hvlight" width={17} click="NOTEPAD" payload="togg" src="notepad" />
+				<Icon className="hvlight" src="notepad" width={17} click="NOTEPAD" payload="togg" />
 			</div>
 		</div>
 	);

@@ -34,17 +34,17 @@ export const recentApps = allApps
 	});
 
 export const initialState = {
-	pnApps: pinnedApps,
-	pnAppNames: pinnedAppNames,
-	rcApps: recentApps,
-	rcAppNames: recentAppNames,
+	pinnedApps: pinnedApps,
+	pinnedAppNames: pinnedAppNames,
+	recentApps: recentApps,
+	recentAppNames: recentAppNames,
 	hide: true,
 	menu: false,
 	showAll: false,
 	alpha: false,
 	pwctrl: false,
-	curAlpha: "A",
-	qksrch: [
+	currentAlpha: "A",
+	quickSearch: [
 		["faClock", 1, "历史上的今天"],
 		["faChartLine", null, "今日行情"],
 		["faFilm", null, "近期电影"],
@@ -102,7 +102,7 @@ export const startSlice = createSlice({
 				hide: !(state.hide || !state.menu), // 切换隐藏状态
 				menu: true, // 设置菜单为显示状态
 				alpha: false, // alpha状态设为false
-				curAlpha: "A", // 设置当前alpha值为"A"
+				currentAlpha: "A", // 设置当前alpha值为"A"
 				pwctrl: false, // 密码控制设为false
 				showAll: state.menu && state.showAll ? true : null, // 根据条件设置showAll状态
 			};
@@ -120,7 +120,7 @@ export const startSlice = createSlice({
 				showAll: !state.showAll, // 切换显示所有状态
 				alpha: false, // alpha状态设为false
 				pwctrl: false, // 密码控制设为false
-				curAlpha: "A", // 设置当前alpha值为"A"
+				currentAlpha: "A", // 设置当前alpha值为"A"
 			};
 		},
 
@@ -135,7 +135,7 @@ export const startSlice = createSlice({
 				...state,
 				alpha: !state.alpha, // 切换alpha状态
 				pwctrl: false, // 密码控制设为false
-				curAlpha: action.payload || "A", // 设置当前alpha值为传入的payload值，默认为"A"
+				currentAlpha: action.payload || "A", // 设置当前alpha值为传入的payload值，默认为"A"
 			};
 		},
 
@@ -166,8 +166,6 @@ export const startSlice = createSlice({
 				pwctrl: true, // 开启密码控制状态
 			};
 		},
-
-		STARTUPDATE: (state, action) => updateStartMenu(state),
 	},
 	extraReducers: (builder) => {
 		/**

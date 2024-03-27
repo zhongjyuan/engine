@@ -19,11 +19,11 @@ export const initialState = {
 				icon: "view",
 				type: "svg",
 				opts: [
-					{ name: "大图标", action: "toggleIconSize", payload: "large" },
-					{ name: "中等图标", action: "toggleIconSize", payload: "medium" },
-					{ name: "小图标", action: "toggleIconSize", payload: "small", dot: true },
+					{ name: "大图标", action: "toggleDesktopIconSize", payload: "large" },
+					{ name: "中等图标", action: "toggleDesktopIconSize", payload: "medium" },
+					{ name: "小图标", action: "toggleDesktopIconSize", payload: "small", dot: true },
 					{ type: "hr" },
-					{ name: "显示桌面图标", action: "toggleDesktop", check: true },
+					{ name: "显示桌面图标", action: "toggleDesktopDisplay", check: true },
 				],
 			},
 			{
@@ -31,12 +31,12 @@ export const initialState = {
 				icon: "sort",
 				type: "svg",
 				opts: [
-					{ name: "名称", action: "toggleSort", payload: "name" },
-					{ name: "大小", action: "toggleSort", payload: "size" },
-					{ name: "修改日期", action: "toggleSort", payload: "date" },
+					{ name: "名称", action: "toggleDesktopSort", payload: "name" },
+					{ name: "大小", action: "toggleDesktopSort", payload: "size" },
+					{ name: "修改日期", action: "toggleDesktopSort", payload: "date" },
 				],
 			},
-			{ name: "刷新", action: "refresh", type: "svg", icon: "refresh" },
+			{ name: "刷新", type: "svg", icon: "refresh", action: "refreshDesktop" },
 			{ type: "hr" },
 			{
 				name: "新建",
@@ -48,9 +48,9 @@ export const initialState = {
 			{ name: "显示设置", icon: "display", type: "svg", action: "SETTINGS", payload: "full" },
 			{ name: "个性化", icon: "personalize", type: "svg", action: "SETTINGS", payload: "full" },
 			{ type: "hr" },
-			{ name: "下一个桌面背景", action: "wallpaper/next" },
-			{ name: "在终端中打开", icon: "terminal", action: "app/openTerminal", payload: "C:\\Users\\zhongjyuan\\Desktop" },
-			{ name: "关于", action: "desktop/openAbout", icon: "win/info", payload: true },
+			{ name: "下一个桌面背景", slice: "wallpaper", action: "next" },
+			{ name: "在终端中打开", icon: "terminal", slice: "app", action: "openTerminal", payload: "C:\\Users\\zhongjyuan\\Desktop" },
+			{ name: "关于", icon: "win/info", slice: "desktop", action: "openAbout", payload: true },
 		],
 		task: [
 			{
@@ -64,23 +64,23 @@ export const initialState = {
 			{
 				name: "搜索",
 				opts: [
-					{ name: "显示", action: "taskbar/showSearch", payload: true },
-					{ name: "隐藏", action: "taskbar/showSearch", payload: false },
+					{ name: "显示", slice: "taskbar", action: "showSearch", payload: true },
+					{ name: "隐藏", slice: "taskbar", action: "showSearch", payload: false },
 				],
 			},
 			{
 				name: "小部件",
 				opts: [
-					{ name: "显示", action: "taskbar/showWidget", payload: true },
-					{ name: "隐藏", action: "taskbar/showWidget", payload: false },
+					{ name: "显示", slice: "taskbar", action: "showWidget", payload: true },
+					{ name: "隐藏", slice: "taskbar", action: "showWidget", payload: false },
 				],
 			},
 			{ type: "hr" },
-			{ name: "显示桌面", action: "app/showDesktop" },
+			{ name: "显示桌面", slice: "app", action: "showDesktop" },
 		],
 		app: [
 			{ name: "打开", action: "performApp", payload: "open" },
-			{ name: "以管理员身份运行", action: "performApp", payload: "open", icon: "win/shield" },
+			{ name: "以管理员身份运行", icon: "win/shield", action: "performApp", payload: "open" },
 			{ name: "打开文件所在的位置", dsb: true },
 			{ name: "从开始菜单取消固定", dsb: true },
 			{ name: "压缩为 ZIP 文件", dsb: true },
@@ -109,12 +109,7 @@ export const contextMenuSlice = createSlice({
 		 * @returns {Object} - 更新后的状态对象
 		 */
 		set: (state, action) => {
-			// 复制原始状态对象以避免直接修改
-			let tmpState = { ...state };
-
-			tmpState = { ...action.payload }; // 设置菜单状态为传入的payload内容
-
-			return tmpState; // 返回更新后的状态
+			return { ...action.payload }; // 返回更新后的状态
 		},
 
 		/**
@@ -125,12 +120,7 @@ export const contextMenuSlice = createSlice({
 		 * @returns {Object} - 更新后的状态对象
 		 */
 		hide: (state, action) => {
-			// 复制原始状态对象以避免直接修改
-			let tmpState = { ...state };
-
-			tmpState.hide = true; // 设置隐藏状态为true
-
-			return tmpState; // 返回更新后的状态
+			return { ...state, hide: true };
 		},
 
 		/**
@@ -141,17 +131,15 @@ export const contextMenuSlice = createSlice({
 		 * @returns {Object} - 更新后的状态对象
 		 */
 		show: (state, action) => {
-			// 复制原始状态对象以避免直接修改
-			let tmpState = { ...state };
-
-			tmpState.hide = false; // 设置隐藏状态为false
-			tmpState.top = (action.payload && action.payload.top) || 272; // 设置菜单顶部位置
-			tmpState.left = (action.payload && action.payload.left) || 430; // 设置菜单左侧位置
-			tmpState.opts = (action.payload && action.payload.menu) || "desk"; // 设置菜单选项
-			tmpState.attr = action.payload && action.payload.attr; // 设置菜单属性
-			tmpState.dataset = action.payload && action.payload.dataset; // 设置菜单数据集
-
-			return tmpState; // 返回更新后的状态
+			return {
+				...state,
+				hide: false, // 设置隐藏状态为false
+				top: (action.payload && action.payload.top) || 272, // 设置菜单顶部位置
+				left: (action.payload && action.payload.left) || 430, // 设置菜单左侧位置
+				opts: (action.payload && action.payload.menu) || "desk", // 设置菜单选项
+				attr: action.payload && action.payload.attr, // 设置菜单属性
+				dataset: action.payload && action.payload.dataset, // 设置菜单数据集
+			};
 		},
 	},
 	extraReducers: (builder) => {

@@ -7,7 +7,9 @@ import { generateName, setLocalStorage, getLocalStorageOrDefault } from "@/utils
  * @param {string} act - 操作类型，可以是 "open" 或 "delshort"。
  * @param {HTMLElement} menu - 菜单元素。
  */
-export const performApp = (act, menu) => {
+export const performApp = (context) => {
+	var { payload: act, business:menu } = context;
+
 	// 解构出事件目标的数据集中的 slice、action 和 payload
 	var { slice, action, payload } = menu.dataset;
 
@@ -50,9 +52,11 @@ export const performApp = (act, menu) => {
  * 安装应用程序，将应用程序数据添加到已安装应用列表并更新桌面布局。
  * @param {Object} data - 应用程序数据对象。
  */
-export const installApp = (data) => {
+export const installApp = (context) => {
+	var { payload } = context;
+
 	// 克隆传入的应用程序数据，并设置类型为 "app"，pwa 属性为 true
-	var app = { ...data, type: "app", pwa: true };
+	var app = { ...payload, type: "app", pwa: true };
 
 	// 获取本地存储中的已安装应用列表
 	var installed = JSON.parse(getLocalStorageOrDefault("installed", "[]"));
@@ -86,7 +90,9 @@ export const installApp = (data) => {
  * @param {string} act - 操作类型，可以是 "delete"。
  * @param {HTMLElement} menu - 菜单元素。
  */
-export const uninstallApp = (act, menu) => {
+export const uninstallApp = (context) => {
+	var { payload: act, business:menu } = context;
+
 	// 解构出事件目标的数据集中的 slice、action 和 payload
 	var { slice, action, payload } = menu.dataset;
 

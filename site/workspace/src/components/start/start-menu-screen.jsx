@@ -27,7 +27,7 @@ const PinnedApp = ({ index, app, onClick }) => {
 		return (
 			<div
 				id={app.name}
-				key={index} // 设置 key 值为索引
+				key={`${app.name}-${index}`} // 设置 key 值为索引
 				className="pinned-app prtclk" // 添加样式类名
 				value={app.action != null} // 根据条件设置值
 				data-slice={app.slice}
@@ -58,7 +58,7 @@ const RecentApp = ({ index, app, onClick }) => {
 		return (
 			<div
 				id={app.name}
-				key={index} // 设置 React 中的唯一 key 属性
+				key={`${app.name}-${index}`} // 设置 React 中的唯一 key 属性
 				className="recent-app" // 添加 CSS 类名
 				value={app.action != null} // 根据条件设置 value 属性
 				data-slice={app.slice}
@@ -96,7 +96,7 @@ const AlphaApp = ({ index, apps, onClick }) => {
 	return (
 		<div
 			id={`char${name}`} // 设置 id 为索引
-			key={index} // 设置 key 值为字符名
+			key={`${name}-${index}`} // 设置 key 值为字符名
 			className={apps.length === 0 ? "all-app dull-app" : "all-app prtclk"} // 根据条件设置样式类名
 			data-slice="start"
 			data-action="setAlpha" // 设置数据属性 action
@@ -128,7 +128,7 @@ const AllApp = ({ index, apps, onClick }) => {
 
 	// 添加索引对应的组件
 	tpApps.push(
-		<div id={`char${name}`} key={index} className="all-app prtclk" data-slice="start" data-action="setAlpha" onClick={onClick}>
+		<div id={`char${name}`} key={`${name}-${index}`} className="all-app prtclk" data-slice="start" data-action="setAlpha" onClick={onClick}>
 			<div className="all-app-name">{name}</div>
 		</div>
 	);
@@ -137,8 +137,8 @@ const AllApp = ({ index, apps, onClick }) => {
 	apps.forEach((app, j) => {
 		tpApps.push(
 			<div
-				id={app.name}
-				key={j}
+				id={`${app.name}-${j}`}
+				key={`${app.name}-${j}`}
 				className="all-app prtclk"
 				data-slice={app.slice}
 				data-action={app.action}
@@ -177,8 +177,8 @@ export const StartMenuScreen = ({ menu }) => {
 							</div>
 						</div>
 						<div className="menu-pinned-apps">
-							{menu.pnApps.map((app, index) => (
-								<PinnedApp key={index} app={app} onClick={startMenuClick} />
+							{menu.pinnedApps.map((app, index) => (
+								<PinnedApp index={index} app={app} onClick={startMenuClick} />
 							))}
 						</div>
 					</div>
@@ -192,8 +192,8 @@ export const StartMenuScreen = ({ menu }) => {
 							</div>
 						</div>
 						<div className="menu-recent-apps">
-							{menu.rcApps.slice(0, 6).map((app, index) => (
-								<RecentApp key={index} app={app} onClick={startMenuClick} />
+							{menu.recentApps.slice(0, 6).map((app, index) => (
+								<RecentApp index={index} app={app} onClick={startMenuClick} />
 							))}
 						</div>
 					</div>
@@ -230,7 +230,7 @@ export const StartMenuScreen = ({ menu }) => {
 			{/* 菜单栏 */}
 			<div className="start-menu-bar-screen">
 				<div className="profile handcr">
-					<Icon src="avatar" ui rounded width={26} click="app/external" payload="htpp://tab.zhongjyuan.club" />
+					<Icon src="avatar" ui rounded width={26} slice="app" action="external" payload="htpp://tab.zhongjyuan.club" />
 					<div className="name">{person.name}</div>
 				</div>
 				<div className="bar-power-menu relative">
@@ -251,7 +251,7 @@ export const StartMenuScreen = ({ menu }) => {
 							<span>重启</span>
 						</div>
 					</div>
-					<PowerIcon width="20" height="20" fill="none" />
+					<PowerIcon width="20" height="20" fill="none" data-slice="start" data-action="passwordCtrl" onClick={startMenuClick} />
 				</div>
 			</div>
 		</>

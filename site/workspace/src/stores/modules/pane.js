@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
 	quicks: [
-		{ ui: true, src: "wifi", name: "WiFi", state: "network.wifi.state", action: "setting/toggle" },
-		{ ui: true, src: "bluetooth", name: "蓝牙", state: "devices.bluetooth", action: "setting/toggle" },
+		{ ui: true, src: "wifi", name: "WiFi", state: "network.wifi.state", slice: "setting", action: "toggle" },
+		{ ui: true, src: "bluetooth", name: "蓝牙", state: "devices.bluetooth", slice: "setting", action: "toggle" },
 		{ ui: true, src: "airplane", name: "飞行模式", state: "network.airplane", action: "toggleFlight" },
-		{ ui: true, src: "saver", name: "省电模式", state: "system.power.saver.state", action: "setting/toggle" },
+		{ ui: true, src: "saver", name: "省电模式", state: "system.power.saver.state", slice: "setting", action: "toggle" },
 		{ ui: true, src: "sun", name: "背景主题", state: "person.theme", action: "toggleTheme" },
-		{ ui: true, src: "nightlight", name: "夜间模式", state: "system.display.nightlight.state", action: "setting/toggle" },
+		{ ui: true, src: "nightlight", name: "夜间模式", state: "system.display.nightlight.state", slice: "setting", action: "toggle" },
 	],
 	hide: true,
 	banhide: true,

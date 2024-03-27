@@ -82,17 +82,35 @@ const Taskbar = () => {
 				<div className="task-right">
 					{/* 任务栏右侧区域 */}
 					{/* 展开/隐藏任务栏 */}
-					<div className="px-2 prtclk handcr hvlight flex" data-slice="pane" data-action="bandToggle" onClick={clickDispatch}>
+					<div
+						className="px-2 prtclk handcr hvlight flex"
+						style={{ "--slice": "band" }}
+						data-slice="pane"
+						data-action="bandToggle"
+						onClick={clickDispatch}
+					>
 						<Icon fafa="faChevronUp" width={10} />
 					</div>
 					{/* 网络、音频、电池信息 */}
-					<div className="prtclk handcr my-1 px-1 hvlight flex rounded" data-slice="pane" data-action="sideToggle" onClick={clickDispatch}>
+					<div
+						className="prtclk handcr my-1 px-1 hvlight flex rounded"
+						style={{ "--slice": "side" }}
+						data-slice="pane"
+						data-action="sideToggle"
+						onClick={clickDispatch}
+					>
 						<Icon className="task-right-icon" src="wifi" ui width={16} />
 						<Icon className="task-right-icon" src={"audio" + tasks.audio} ui width={16} />
 						<Battery />
 					</div>
 					{/* 当前日期时间 */}
-					<div className="task-right-date m-1 handcr prtclk rounded hvlight" data-slice="pane" data-action="calendarToggle" onClick={clickDispatch}>
+					<div
+						className="task-right-date m-1 handcr prtclk rounded hvlight"
+						style={{ "--slice": "calendar" }}
+						data-slice="pane"
+						data-action="calendarToggle"
+						onClick={clickDispatch}
+					>
 						<div>{time.toLocaleTimeString("zh-CN", { hour: "numeric", minute: "numeric" })}</div>
 						<div>{time.toLocaleDateString("zh-CN", { year: "2-digit", month: "2-digit", day: "numeric" })}</div>
 					</div>

@@ -30,8 +30,8 @@ export const Calendar = () => {
 			window.dycalendar.draw({
 				target: "#dycalendar",
 				type: "month",
-				dayformat: "ddd",
-				monthformat: "full",
+				dayformat: "zd",
+				monthformat: "zfull",
 				prevnextbutton: "show",
 				highlighttoday: true,
 			});
@@ -42,7 +42,7 @@ export const Calendar = () => {
 	return (
 		<div className={`calnpane ${collapse} dpShad`} data-hide={sidepane.calhide} style={{ "--slice": "calendar" }}>
 			{/* 顶部栏 */}
-			<div className="topBar pl-4 text-sm">
+			<div className="topBar pl-4 text-sm" onClick={collapse ? collapseToggler : null}>
 				{/* 当前日期 */}
 				<div className="date">{new Date().toLocaleDateString("zh-CN", { weekday: "long", month: "long", day: "numeric" })}</div>
 				{/* 折叠按钮 */}

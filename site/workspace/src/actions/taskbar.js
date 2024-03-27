@@ -5,7 +5,9 @@ import store from "@/stores";
  * @param {string} align - 对齐参数，可以是 "left" 或 "right"。
  * @param {Object} menu - 菜单对象。
  */
-export const toggleTaskAlign = (align, menu) => {
+export const toggleTaskAlign = (context) => {
+	var { payload: align, business: menu } = context;
+	
 	// 复制一份菜单对象，避免直接修改传入的参数
 	var updatedMenu = { ...menu };
 

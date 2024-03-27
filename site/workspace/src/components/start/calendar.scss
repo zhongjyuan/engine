@@ -24,6 +24,7 @@
 
 	&.collapse {
 		max-height: 50px;
+		visibility: visible !important;
 	}
 
 	&[data-hide="true"] {
