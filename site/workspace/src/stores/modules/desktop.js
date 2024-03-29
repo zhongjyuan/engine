@@ -16,7 +16,7 @@ export const initialState = {
 	hide: false,
 	size: 1,
 	sort: "none",
-	abOpen: false,
+	aboutOpen: false,
 };
 
 export const desktopSlice = createSlice({
@@ -54,8 +54,8 @@ export const desktopSlice = createSlice({
 
 			return { ...state, apps: arr };
 		},
-		openAbout: (state, action) => {
-			return { ...state, abOpen: action.payload };
+		aboutToggle: (state, action) => {
+			return { ...state, aboutOpen: action.payload };
 		},
 	},
 	extraReducers: (builder) => {

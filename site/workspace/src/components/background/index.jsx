@@ -1,5 +1,5 @@
-import "@/components/background/index.scss";
+import "./index.scss";
 
-export * from "@/components/background/background";
-export * from "@/components/background/bootscreen";
-export * from "@/components/background/lockscreen";
+export * from "./background";
+export * from "./bootscreen";
+export * from "./lockscreen";

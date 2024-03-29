@@ -54,7 +54,7 @@ document.body.dataset.theme = initialState.person.theme;
  * @returns {object} - 更新后的临时状态对象
  */
 const handle = (tmpState, changed) => {
-	setLocalStorage("setting", tmpState, changed);
+	setLocalStorage("setting", tmpState, true, changed);
 };
 
 /**

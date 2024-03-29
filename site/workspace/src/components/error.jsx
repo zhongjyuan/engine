@@ -1,15 +1,23 @@
-import React from "react";
-
-// import "@/components/error.scss";
+import React, { useEffect } from "react";
 
 export const Fallback = ({ error, resetErrorBoundary }) => {
+	useEffect(() => {
+		// 在组件挂载时加载 JavaScript 文件
+		const script = document.createElement("script");
+		script.src = "static/js/error.js";
+		document.body.appendChild(script);
+
+		// 在组件卸载时清除资源
+		return () => {
+			document.body.removeChild(script);
+		};
+	}, []); // 只在组件挂载和卸载时执行一次
+
 	return (
 		<div>
 			<meta charSet="UTF-8" />
 			<title>404 - Page</title>
-			<script src="https://win11.blueedge.me/script.js"></script>
-			<link rel="stylesheet" href="https://win11.blueedge.me/style.css" />
-			{/* partial:index.partial.html */}
+			<link rel="stylesheet" href="static/css/error.css" />
 			<div id="page">
 				<div id="container">
 					<h1>:(</h1>
@@ -20,13 +28,13 @@ export const Fallback = ({ error, resetErrorBoundary }) => {
 					<div id="details">
 						<div id="qr">
 							<div id="image">
-								<img src="https://win11.blueedge.me/img/qr.png" alt="QR Code" />
+								<img src="static/image/wechat.png" alt="QR Code" />
 							</div>
 						</div>
 						<div id="stopcode">
 							<h4>
 								For more information about this issue and possible fixes, visit
-								<br /> <a href="https://github.com/blueedgetechno/win11React/issues">https://github.com/blueedgetechno/win11React/issues</a>{" "}
+								<br /> <a href="https://gitee.com/zhongjyuan">https://gitee.com/zhongjyuan</a>
 							</h4>
 							<h5>
 								If you call a support person, give them this info:

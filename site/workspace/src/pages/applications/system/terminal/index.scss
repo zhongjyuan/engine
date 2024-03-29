@@ -1,0 +1,56 @@
+.wind-terminal {
+	background: rgb(16, 16, 16);
+}
+
+.terminal-cmd {
+	position: absolute;
+	height: 100%;
+}
+
+.terminal-cmd-action {
+	height: auto;
+	display: flex;
+}
+
+.terminal-cmd-input {
+  background: inherit;
+  color: inherit;
+  font-family: inherit;
+  padding-right: 100px;
+  // width: calc(100% - 120px);
+  // max-width: calc();
+  position: relative;
+  caret-color: transparent;
+  margin: 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 8px;
+    height: 2px;
+    background: #ccc;
+    animation: blink 1s step-end infinite;
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+    border: none;
+    caret-color: #ccc;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.terminal-cmd-line {
+	font-size: 0.84em;
+	font-family: "consolas", monospace;
+	height: 1.2em;
+	margin: 0;
+	font-weight: 400;
+	overflow: hidden;
+	max-width: 100%;
+}

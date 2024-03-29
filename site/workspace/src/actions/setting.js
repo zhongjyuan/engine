@@ -8,7 +8,7 @@ import { loadWidget } from ".";
  */
 export const loadSettings = () => {
 	// 从 localStorage 中获取设置信息，如果不存在则初始化为空对象
-	var setting = getLocalStorageOrDefault("setting", {});
+	var setting = getLocalStorageOrDefault("setting", {}, true);
 
 	// 如果设置中的个人信息为 null，则使用 store 中的 setting 数据进行初始化
 	if (setting.person == null) {

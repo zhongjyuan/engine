@@ -1,0 +1,68 @@
+.wind-whiteboard {
+	background: var(--comp-txt);
+}
+
+.whiteboard-action-container {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.whiteboard-tool-container {
+	min-width: 60px;
+	height: 60px;
+	background: #fefefe;
+	display: flex;
+	box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.25);
+	padding: 0 12px;
+}
+
+.whiteboard-paint {
+	position: relative;
+	width: 48px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 4px;
+	transition: all 50ms ease-in-out;
+
+	&[data-active="true"] {
+		background: #ddd;
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			width: 6px;
+			height: 6px;
+			border-radius: 10px;
+			background: #222;
+		}
+	}
+
+	&:hover {
+		background: #eee;
+	}
+
+	svg {
+		margin-top: 36%;
+		max-height: 72%;
+	}
+
+	img {
+		margin-top: 36%;
+		width: 56%;
+	}
+}
+
+.whiteboard-canva-container {
+	position: relative;
+	flex-grow: 1;
+	z-index: 0;
+}

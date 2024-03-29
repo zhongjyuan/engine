@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Battery from "@/components/battery";
-import { Icon, Image } from "@/components/global";
+import { Icon, Image, Battery } from "@/components/global";
 
 import "./locksreen.scss";
 

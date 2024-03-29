@@ -1,5 +1,7 @@
 import store from "@/stores";
 
+import { deepClone } from "@/utils";
+
 /**
  * 改变任务栏对齐方式操作，根据传入的对齐参数和菜单对象执行相应的操作。
  * @param {string} align - 对齐参数，可以是 "left" 或 "right"。
@@ -7,9 +9,9 @@ import store from "@/stores";
  */
 export const toggleTaskAlign = (context) => {
 	var { payload: align, business: menu } = context;
-	
+
 	// 复制一份菜单对象，避免直接修改传入的参数
-	var updatedMenu = { ...menu };
+	var updatedMenu = deepClone(menu);
 
 	// 获取当前任务栏对齐方式
 	var currentAlign = align === "left" ? 0 : 1;

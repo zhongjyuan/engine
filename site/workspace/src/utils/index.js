@@ -12,6 +12,20 @@ export const isAbsolutePath = (path) => {
 };
 
 /**
+ * 检查给定的字符串是否是有效的 URL。
+ *
+ * @param {string} urlString - 要检查是否表示有效 URL 的字符串。
+ * @returns {boolean} - 如果输入字符串是有效的 URL，则返回 true，否则返回 false。
+ */
+export const isValidURL = (urlString) => {
+	// 匹配 URL 的正则表达式模式
+	const urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+
+	// 对输入字符串使用 URL 正则表达式模式进行测试
+	return urlRegex.test(urlString);
+};
+
+/**
  * 生成一个随机的大写字母和数字组合的字符串作为名称。
  *
  * @returns {string} - 随机生成的名称

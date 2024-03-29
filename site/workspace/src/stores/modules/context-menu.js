@@ -45,12 +45,12 @@ export const initialState = {
 				opts: [{ name: "文件夹" }, { name: "快捷方式" }, { name: "文本文档" }, { name: "ZIP 压缩文件" }],
 			},
 			{ type: "hr" },
-			{ name: "显示设置", icon: "display", type: "svg", action: "SETTINGS", payload: "full" },
-			{ name: "个性化", icon: "personalize", type: "svg", action: "SETTINGS", payload: "full" },
+			{ name: "显示设置", icon: "display", type: "svg", slice: "app", action: "openSettings", payload: "full" },
+			{ name: "个性化", icon: "personalize", type: "svg", slice: "app", action: "openSettings", payload: "full" },
 			{ type: "hr" },
 			{ name: "下一个桌面背景", slice: "wallpaper", action: "next" },
 			{ name: "在终端中打开", icon: "terminal", slice: "app", action: "openTerminal", payload: "C:\\Users\\zhongjyuan\\Desktop" },
-			{ name: "关于", icon: "win/info", slice: "desktop", action: "openAbout", payload: true },
+			{ name: "关于", icon: "win/info", slice: "desktop", action: "aboutToggle", payload: true },
 		],
 		task: [
 			{

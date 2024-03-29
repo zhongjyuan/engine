@@ -1,0 +1,39 @@
+.wind-notepad {
+	--bg1: #f9f9f9;
+
+	background: var(--fakeMica);
+	color: var(--dark-txt);
+
+	.wind-rest {
+		background: var(--bg1);
+	}
+}
+
+.notepad-content {
+	background: inherit;
+	color: var(--txt-col);
+	font-family: inherit;
+	font-size: 0.88em;
+	resize: none;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	outline: none;
+	border: none;
+	padding: 4px 8px;
+
+	&::selection {
+		background: var(--clrPrm);
+		color: var(--wintheme);
+	}
+
+	&:active,
+	&:focus {
+		outline: none;
+		border: none;
+	}
+}
+
+body[data-theme="dark"] .wind-notepad {
+	--bg1: #282828;
+}

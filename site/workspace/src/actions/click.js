@@ -23,12 +23,12 @@ export const clickDispatch = (event, businessData = null, beforeCallback = (data
 	};
 
 	if (data.type) {
-		beforeCallback(data);
-
 		var dispatchAction = !slice ? Actions[data.type] : store.dispatch;
-		dispatchAction(data);
-
-		afterCallback(data);
+		if (dispatchAction) {
+			beforeCallback(data);
+			dispatchAction(data);
+			afterCallback(data);
+		}
 	}
 };
 

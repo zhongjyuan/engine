@@ -8,7 +8,7 @@ import { generateName, setLocalStorage, getLocalStorageOrDefault } from "@/utils
  * @param {HTMLElement} menu - 菜单元素。
  */
 export const performApp = (context) => {
-	var { payload: act, business:menu } = context;
+	var { payload: act, business: menu } = context;
 
 	// 解构出事件目标的数据集中的 slice、action 和 payload
 	var { slice, action, payload } = menu.dataset;
@@ -59,14 +59,14 @@ export const installApp = (context) => {
 	var app = { ...payload, type: "app", pwa: true };
 
 	// 获取本地存储中的已安装应用列表
-	var installed = JSON.parse(getLocalStorageOrDefault("installed", "[]"));
+	var installed = getLocalStorageOrDefault("installed", [], true);
 
 	// 将新应用程序添加到已安装应用列表中
 	installed.push(app);
 	setLocalStorage("installed", JSON.stringify(installed));
 
 	// 获取本地存储中的桌面布局数据
-	var desktopApps = JSON.parse(getLocalStorageOrDefault("desktop") || JSON.stringify(store.getState().desktop.appNames));
+	var desktopApps = getLocalStorageOrDefault("desktop", store.getState().desktop.appNames, true);
 
 	// 将新应用程序名称添加到桌面布局数据中
 	desktopApps.push(app.name);
@@ -91,7 +91,7 @@ export const installApp = (context) => {
  * @param {HTMLElement} menu - 菜单元素。
  */
 export const uninstallApp = (context) => {
-	var { payload: act, business:menu } = context;
+	var { payload: act, business: menu } = context;
 
 	// 解构出事件目标的数据集中的 slice、action 和 payload
 	var { slice, action, payload } = menu.dataset;
@@ -125,8 +125,7 @@ export const uninstallApp = (context) => {
 					store.dispatch({ type: "app/removeApp", payload: app.icon });
 
 					// 获取本地存储中的已安装应用列表
-					var installed = getLocalStorageOrDefault("installed", "[]");
-					installed = JSON.parse(installed);
+					var installed = getLocalStorageOrDefault("installed", [], true);
 
 					// 过滤掉被删除应用的信息
 					installed = installed.filter((x) => x.icon != app.icon);
